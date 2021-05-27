@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>cema_ui</RootNamespace>
+    <Description>Ui application for the cema proyect</Description>
+    <Version>1.0.0-SNAPSHOT</Version>
+  </PropertyGroup>
+
+</Project>
