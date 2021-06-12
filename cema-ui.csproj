@@ -7,4 +7,11 @@
     <Version>1.0.0-SNAPSHOT</Version>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="vue.config.js" />
+  </ItemGroup>                      
 </Project>

@@ -1,10 +1,86 @@
 ﻿@page
 @model IndexModel
-@{
-    ViewData["Title"] = "Home page";
-}
+@{ ViewData["Title"] = "Ingreso"; }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container" id="app">
+    <div class="row text-center">
+        <div class="col-md-5 offset-md-7 " style="margin-top:100px">
+            <form style="border-radius: 20px; background-color:darkgray;opacity:0.8; ">
+                <div class="row">
+                    <div class="col-md-10 offset-md-1">
+                        <img src="~/Images/Logo_login.png" style="width: 75%;" />
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="col-md-12 login-from-row">
+                        <input type="text" v-model="datos.Usuario" placeholder="Usuario" required />
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="col-md-12 login-from-row">
+                        <input type="password" v-model="datos.Contraseña" placeholder="Contraseña" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="offset-md-1 col-md-4 login-from-row" style="padding-top:8px;">
+                        <input type="checkbox" id="cbox2" value="true"> <label for="cbox2">Recuerdame</label>
+                    </div>
+                    <div class="col-md-7 login-from-row">
+
+                        <a class="nav-link text-info" asp-area="" asp-page="">¿Olvidaste tu contraseña?</a>
+
+                    </div>
+                </div>
+                <div class="row" style="margin-top:15px;">
+                    <div class="col-md-12 login-from-row">
+                        @*<button class="btn btn-dark text-white" v-on:click="validar()">Iniciar Secion</button>*@
+                        <a class="btn btn-dark text-white" v-on:click="validar()">Iniciar Secion</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 from-row" style="padding-top:8px;">
+                        <label>¿Por primera vez en <b>CEMA</b>?</label>
+                        <a class="nav-link text-info" >Suscribete ya</a>
+
+                    </div>
+                    <div class="col-md-6 from-row">
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            datos: {
+                Usuario: null,
+                Contraseña: null,
+                Recuerdame: false
+            },
+            modelo: {
+
+            }
+        },
+        methods: {
+            validar() {
+                axios
+                    .get('http://192.168.100.5:30023/v1/users/login/' + this.datos.Usuario + '?password=' + this.datos.Contraseña, {
+                        headers: { 'Content-type': 'text/html; charset=UTF-8' }
+                    })
+                    .then(response => {
+                        if (response.status == 200) {
+                            window.location.href = "/Principal"
+                        }
+                    })
+                    .catch(function (response) {
+                        alert("Credenciales Invalidas")
+                        console.log(response);
+                    });
+            }
+        }
+    })
+    
+</script>

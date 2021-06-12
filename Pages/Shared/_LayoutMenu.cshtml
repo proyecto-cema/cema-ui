@@ -6,14 +6,10 @@
     <title>@ViewData["Title"] - cema_ui</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-
-    <script src="~/js/vue.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
-<body style="background-image:url('Images/Fondo_login.png')">
-    @*<header>
+<body>
+    <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">cema_ui</a>
@@ -36,20 +32,22 @@
                 </div>
             </div>
         </nav>
-    </header>*@
+    </header>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
+    @*<a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2021 - cema_ui - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            </div>
+        </footer>*@
 
-    @*<footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - cema_ui - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>*@
-
-   
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/vue.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
