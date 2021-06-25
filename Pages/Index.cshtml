@@ -75,15 +75,18 @@
                     })
                     .then(response => {
                         if (response.status === 200) {
-                            window.location.href = "/Principal"
-                        }else if (response.status === 404 || response.status === 401){
-                            alert("Credenciales Invalidas")
-                            console.log(response);
+                            window.location.href = "/Principal";
                         }
                     })
-                    .catch(function (response) {
-                        alert("Parece que hay un error con el endpoint")
-                        console.log(response);
+                    .catch(function (error) {
+                        let response = error.response;
+                        if (response.status === 404 || response.status === 401){
+                            alert("Credenciales Invalidas");
+                            console.log(response);
+                        } else {
+                            alert("Parece que hay un error con el endpoint");
+                            console.log(response.status);
+                        }
                     });
             }
         }
