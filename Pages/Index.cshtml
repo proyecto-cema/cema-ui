@@ -1,29 +1,32 @@
 ﻿@page
 @model IndexModel
-@{ ViewData["Title"] = "Ingreso"; }
+@{
+    ViewData["Title"] = "Ingreso";
+    ViewData["url"] = "http://192.168.100.5:30023";
+}
 
 <div class="container" id="app">
     <div class="row text-center">
         <div class="col-md-5 offset-md-7 " style="margin-top:100px">
-            <form style="border-radius: 20px; background-color:darkgray;opacity:0.8; ">
+            <form style="border-radius: 10px; background: rgba(0, 0, 0, 0.5);">
                 <div class="row">
                     <div class="col-md-10 offset-md-1">
-                        <img src="~/Images/Logo_login.png" style="width: 75%;" />
+                        <img src="~/Images/Logo_login.png" style="width: 75%;" alt="Fondo de Vacas"/>
                     </div>
                 </div>
                 <div class="row" style="margin:5px;">
                     <div class="col-md-12 login-from-row">
-                        <input type="text" v-model="datos.Usuario" placeholder="Usuario" required />
+                        <input type="text" v-model="user_data.username" placeholder="Usuario" required />
                     </div>
                 </div>
                 <div class="row" style="margin:5px;">
                     <div class="col-md-12 login-from-row">
-                        <input type="password" v-model="datos.Contraseña" placeholder="Contraseña" required />
+                        <input type="password" v-model="user_data.password" placeholder="Contraseña" required />
                     </div>
                 </div>
                 <div class="row">
                     <div class="offset-md-1 col-md-4 login-from-row" style="padding-top:8px;">
-                        <input type="checkbox" id="cbox2" value="true"> <label for="cbox2">Recuerdame</label>
+                        <input type="checkbox" id="cbox2" value="true"> <label style="color:white" for="cbox2">Recuerdame</label>
                     </div>
                     <div class="col-md-7 login-from-row">
 
@@ -33,13 +36,13 @@
                 </div>
                 <div class="row" style="margin-top:15px;">
                     <div class="col-md-12 login-from-row">
-                        @*<button class="btn btn-dark text-white" v-on:click="validar()">Iniciar Secion</button>*@
-                        <a class="btn btn-dark text-white" v-on:click="validar()">Iniciar Secion</a>
+                        @*<button class="btn btn-dark text-white" v-on:click="login_data_validate()">Iniciar Sesión</button>*@
+                        <a class="btn btn-dark text-white" v-on:click="login_data_validate()">Iniciar Sesión</a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12 from-row" style="padding-top:8px;">
-                        <label>¿Por primera vez en <b>CEMA</b>?</label>
+                        <label style="color:white">¿Por primera vez en <b>CEMA</b>?</label>
                         <a class="nav-link text-info" >Suscribete ya</a>
 
                     </div>
@@ -55,28 +58,31 @@
     var app = new Vue({
         el: '#app',
         data: {
-            datos: {
-                Usuario: null,
-                Contraseña: null,
-                Recuerdame: false
+            user_data: {
+                username: null,
+                password: null,
+                remember_me: false
             },
             modelo: {
 
             }
         },
         methods: {
-            validar() {
+            login_data_validate() {
                 axios
-                    .get('http://192.168.100.5:30023/v1/users/login/' + this.datos.Usuario + '?password=' + this.datos.Contraseña, {
+                    .get('@ViewData["url"]' + '/v1/users/login/' + this.user_data.username + '?password=' + this.user_data.password, {
                         headers: { 'Content-type': 'text/html; charset=UTF-8' }
                     })
                     .then(response => {
-                        if (response.status == 200) {
+                        if (response.status === 200) {
                             window.location.href = "/Principal"
+                        }else if (response.status === 404 || response.status === 401){
+                            alert("Credenciales Invalidas")
+                            console.log(response);
                         }
                     })
                     .catch(function (response) {
-                        alert("Credenciales Invalidas")
+                        alert("Parece que hay un error con el endpoint")
                         console.log(response);
                     });
             }
