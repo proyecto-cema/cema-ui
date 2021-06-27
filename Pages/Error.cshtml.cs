@@ -10,7 +10,7 @@ namespace cema_ui.Pages
     public class ErrorModel : PageModel
     {
         public string RequestId { get; set; }
-
+        public string ExceptionMessage { get; set; }
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
         private readonly ILogger<ErrorModel> _logger;
@@ -20,9 +20,11 @@ namespace cema_ui.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public void OnGet(string msg)
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+
+            ExceptionMessage = msg;
         }
     }
 }

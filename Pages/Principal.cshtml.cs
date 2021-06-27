@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using System;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
 namespace cema_ui.Pages
@@ -15,6 +16,11 @@ namespace cema_ui.Pages
         public void OnGet()
         {
 
+        }
+
+        public void OnGetUserData(string username)
+        {
+            Console.WriteLine("Logged as " + username);
         }
     }
 }
