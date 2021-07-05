@@ -24,6 +24,7 @@ spec:
         image: cemaregistry.azurecr.io/cema/cema-ui:$VERSION
         ports:
         - containerPort: 80
+        imagePullPolicy: Always
         resources:
           requests:
             cpu: 250m
