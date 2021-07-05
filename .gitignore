@@ -18,3 +18,5 @@ UpgradeLog.XML
 *.vssscc
 *.scc
 *.sqlsuo
+
+.vs/
