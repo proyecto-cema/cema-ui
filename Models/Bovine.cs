@@ -7,14 +7,14 @@ namespace cema_ui.Models
 {
     public class Bovine
     {
-        public int tag { get; set; }
+        public string tag { get; set; }
         public string description { get; set; }
-        public gerne gerne { get; set; }
-        public DateTime taggingDate { get; set; }
+        public string genre { get; set; }
+        public DateTime? taggingDate { get; set; }
     }
-    public class gerne
+    public class genre
     {
-        public int idGerne { set; get; }
+        public int idGenre { set; get; }
         public string name { get; set; }
     }
 

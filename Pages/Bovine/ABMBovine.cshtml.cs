@@ -11,7 +11,8 @@ using cema_ui.Models;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using Newtonsoft.Json;
-
+using System.IO;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace cema_ui.Pages
 {
@@ -23,55 +24,81 @@ namespace cema_ui.Pages
         public string valid { get; set; }
         [BindProperty] public Models.Bovine bovine { get; set; }
 
+        //[BindProperty]
+        //public int[] SelectedgenreId { get; set; }
+        //[BindProperty]
+        //public List<genre> genres { get; set; }
+
         public ABMBovine(ILogger<login> logger)
         {
             _logger = logger;
         }
-        
-        public void OnGet(bool Newbool)
+
+        [Route("/Bovine/ABMBovine/{id}")]
+        public async Task<IActionResult> OnGet(int id)
         {
-            if (Newbool == false)
+            //SelectedgenreId = new int[] { 1, 2 };
+            //var Genres = new List<genre>() {
+            // new genre() { idGenre = 1, name = "male" },
+            // new genre() { idGenre = 2, name = "feminine" }
+
+            //};
+            //genres = new SelectList(Genres, nameof(Genres.idGenre), nameof(Genres.name), null);
+            bovine = new Models.Bovine();
+            bovine.taggingDate = null;
+            if (id == -1)
             {
-                title = "Editar Bovino";
+                   
+                title = "Registrar Bovino";
+                //bovine.genre = "male";
+                return null;
             }
             else
             {
-                title = "Registrar Bovino";
+                title = "Editar Bovino";
+
+                string responseContent = "[]";
+                try
+                {
+                    using var client = new HttpClient();
+                    client.Timeout = TimeSpan.FromMinutes(0.5);
+                    client.BaseAddress = _baseUrl;
+                    var builder = new UriBuilder
+                    {
+                        Scheme = Uri.UriSchemeHttp,
+                        Port = 30024,
+                        Host = "192.168.100.5",
+                        Path = "v1/bovines/" + id
+                    };
+                    var query = HttpUtility.ParseQueryString(builder.Query);
+                    builder.Query = query.ToString()!;
+
+                    HttpResponseMessage response = await client.GetAsync(builder.ToString());
+                    if (response.IsSuccessStatusCode)
+                    {
+                        valid = "is-valid";
+                        responseContent = await response.Content.ReadAsStringAsync();
+                        var bovin = System.Text.Json.JsonSerializer.Deserialize<Models.Bovine>(responseContent);
+                        bovine = bovin;
+                        return null;
+                        
+                        //if (bovin.genre == "male"){
+                        //    bovine = 1;
+                        //}
+                    }
+                    else if (response.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.NotFound)
+                    {
+                        valid = "is-invalid";
+                        return null;
+                    }
+                    return null;
+
+                }
+                catch (Exception ex)
+                {
+                    return RedirectToPage("Error", new { msg = ex.Message });
+                }
             }
-            //    string responseContent = "[]";
-            //    try
-            //    {
-            //        using var client = new HttpClient();
-            //        client.Timeout = TimeSpan.FromMinutes(0.5);
-            //        client.BaseAddress = _baseUrl;
-            //        var builder = new UriBuilder
-            //        {
-            //            Scheme = Uri.UriSchemeHttp,
-            //            Port = 30024,
-            //            Host = "192.168.100.5",
-            //            Path = "v1/bovines/" + Tag
-            //        };
-            //        var query = HttpUtility.ParseQueryString(builder.Query);
-            //        builder.Query = query.ToString()!;
-
-            //        HttpResponseMessage response = await client.GetAsync(builder.ToString());
-            //        if (response.IsSuccessStatusCode)
-            //        {
-            //            valid = "is-valid";
-            //            responseContent = await response.Content.ReadAsStringAsync();
-            //        }
-            //        else if (response.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.NotFound)
-            //        {
-            //            valid = "is-invalid";
-            //            return null;
-            //        }
-            //        return RedirectToPage("Principal", "UserData", new { username = Tag }, "");
-
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        return RedirectToPage("Error", new { msg = ex.Message });
-            //    }
         }
         public async Task<IActionResult> OnPost()
         {
@@ -91,23 +118,25 @@ namespace cema_ui.Pages
                 var query = HttpUtility.ParseQueryString(builder.Query);
                 
                 builder.Query = query.ToString()!;
-                HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(bovine), Encoding.UTF8);
+                var json = JsonConvert.SerializeObject(bovine);
+                var stringContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
                 
-                HttpResponseMessage response = await client.PostAsync(builder.ToString(),httpContent);
+                HttpResponseMessage response = await client.PostAsync(builder.ToString(),stringContent);
                 Console.WriteLine(response);
 
                 if (response.IsSuccessStatusCode)
                 {
                     valid = "is-valid";
                     responseContent = await response.Content.ReadAsStringAsync();
+                    return Redirect("~/Principal");
+
                 }
                 else if (response.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.NotFound)
                 {
-                    valid = "is-invalid";
+                    valid = "is-invalid-post";
                     return null;
                 }
-
-                return RedirectToPage("Principal", "UserData", new { username = bovine.tag }, "");
+                return null;
             }
             catch (Exception ex)
             {
@@ -115,8 +144,7 @@ namespace cema_ui.Pages
             }
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteBovine()
+        public async Task<IActionResult> OnPostDelete()
         {
             string responseContent = "[]";
             try
@@ -142,6 +170,8 @@ namespace cema_ui.Pages
                     {
                         valid = "is-valid";
                         responseContent = await response.Content.ReadAsStringAsync();
+                        return Redirect("~/Principal");
+
                     }
                     else if (response.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.NotFound)
                     {
@@ -154,7 +184,7 @@ namespace cema_ui.Pages
                     valid = "invalid-Delete";
                     return null;
                 }
-                return RedirectToPage("Principal", "UserData", new { username = bovine.tag}, "");
+                return null;
 
             }
             catch (Exception ex){

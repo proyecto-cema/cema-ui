@@ -23,34 +23,59 @@
                             </div>
                             <div class="col-6">
                                 <div style="text-align:left!important;"><label>Fecha de caravaneo</label></div>
-                                <input class="form-control " type="datetime-local" asp-for="bovine.taggingDate" placeholder="Fecha" required />
+                                <input class="form-control " type="date" asp-for="bovine.taggingDate" placeholder="Fecha" required />
                             </div>
                             <div class="col-6">
                                 <div style="text-align:left!important;"><label>Sexo</label></div>
-                                <select name="Sexo" class="form-control">
+                                <select id="sexo" name="bovine.genre" data-val="true" class="form-control">
                                     <option value="">Seleccionar</option>
-                                    <option value="1">Macho</option>
-                                    <option value="2">Hembra</option>
+                                    <option value="male" selected="@(Model.bovine.genre == "male")">male</option>
+                                    <option value="femenine" selected="@(Model.bovine.genre == "femenine")">feminine</option>
                                 </select>
                             </div>
                         </div>
                         <div style="text-align:left!important;"><label>Descripcion</label></div>
                         <input class="form-control" type="text" asp-for="bovine.description" placeholder="Descripcion" required />
                     </div>
-                    <div class="col-md-12 alert alert-danger alert-dismissible fade show" role="alert" hidden="@(Model.valid == "invalid-Delete1")">
+                    <div class="col-12" style="margin:10px;"></div>
+                    <div class="col-md-12 alert alert-danger alert-dismissible fade show" role="alert" hidden="@(Model.valid != "is-invalid")">
+                        ERROR No se encontro el bovino<br />
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="col-md-12 alert alert-danger alert-dismissible fade show" role="alert" hidden="@(Model.valid != "is-invalid-post")">
+                        El tag del bovino ya se encuentra utilizado<br />
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="col-md-12 alert alert-danger alert-dismissible fade show" role="alert" hidden="@(Model.valid != "invalid-Delete")">
                         No se pudo eliminar el bovino<br />
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="col-12" style="margin:10px;"></div>
-                    <div class="col-12 align-self-end">
-                        <button class="btn btn-info">Guardar</button>
-                        <button class="btn btn-dark">Cancelar</button>
-                    </div>
-                    @*<button asp-action="DeleteBovine" class="btn btn-danger float-right">Borrar</button>*@
-                    @*<button type="submit" asp-page-handler="delete" asp-route-id="bovine.tag">Borrar</button>*@
+                    <div class="col-12 " style="margin-bottom:10px;">
+                        <div class="row">
+                            <div class="col-4">
+                                <div hidden="@(Model.title != "Registrar Bovino")">
+                                    <form method="post">
+                                        <button class="btn btn-danger" type="submit" asp-page-handler="delete">
+                                            Eliminar
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <button type="submit" class="btn btn-info">Guardar</button>
+                            </div>
+                            <div class="col-4">
 
+                                <a class="btn btn-dark" href='javascript:history.go(-1)'>Cancelar</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
