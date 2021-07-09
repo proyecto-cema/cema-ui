@@ -69,3 +69,64 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+/*ABMBovine
+    ---------------------------------------
+*/
+.imageIdBovine {
+    width: 40% !important;
+}
+@media(max-width: 900px) {
+    .imageIdBovine {
+        width: 30% !important;
+    }
+} 
+.space {
+    margin: 10px;
+}
+.textLeft {
+    text-align: left !important;
+}
+.alingMessage {
+    margin-left:30px;
+}
+
+.marginBotons {
+    margin-bottom: 10px;
+}
+.borderDiv {
+    border: solid;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.TextCenterImage {
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.contenedor {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+}
+
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('https://netdna.bootstrapcdn.com/bootstrap/3.0.0/fonts/glyphicons-halflings-regular.eot');
+    src: url('https://netdna.bootstrapcdn.com/bootstrap/3.0.0/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),url('https://netdna.bootstrapcdn.com/bootstrap/3.0.0/fonts/glyphicons-halflings-regular.woff') format('woff'),url('https://netdna.bootstrapcdn.com/bootstrap/3.0.0/fonts/glyphicons-halflings-regular.ttf') format('truetype'),url('https://netdna.bootstrapcdn.com/bootstrap/3.0.0/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+}
+
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+}
+.invalid-arrow {
+    background-position: center right calc(0.6em + 0.1875rem) !important;
+}

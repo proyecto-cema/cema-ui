@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -11,63 +9,58 @@ using cema_ui.Models;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using Newtonsoft.Json;
-using System.IO;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
 
 namespace cema_ui.Pages
 {
     public class ABMBovine : PageModel
     {
+        private readonly IConfiguration Config;
         private readonly ILogger<login> _logger;
         private readonly Uri _baseUrl = new("http://192.168.100.5:30024");
-        public string title { get; set; }
+        [BindProperty] public string title { get; set; }
+        [BindProperty] public string tagImage { get; set; }
+        [BindProperty] public bool edicion { get; set; }
+        [BindProperty] public string? valid_tag { get; set; }
+        [BindProperty] public string? valid_date { get; set; }
+        [BindProperty] public string? valid_genre { get; set; }
         public string valid { get; set; }
-        [BindProperty] public Models.Bovine bovine { get; set; }
+        public string succes { get; set; }
+        [BindProperty] public Models.Bovine? bovine { get; set; }
 
-        //[BindProperty]
-        //public int[] SelectedgenreId { get; set; }
-        //[BindProperty]
-        //public List<genre> genres { get; set; }
-
-        public ABMBovine(ILogger<login> logger)
+        public ABMBovine(ILogger<login> logger, IConfiguration configuration)
         {
             _logger = logger;
+            Config = configuration;
         }
-
+        [Route("/Bovine/ABMBovine")]
         [Route("/Bovine/ABMBovine/{id}")]
-        public async Task<IActionResult> OnGet(int id)
+        public async Task<IActionResult> OnGet(int? id)
         {
-            //SelectedgenreId = new int[] { 1, 2 };
-            //var Genres = new List<genre>() {
-            // new genre() { idGenre = 1, name = "male" },
-            // new genre() { idGenre = 2, name = "feminine" }
-
-            //};
-            //genres = new SelectList(Genres, nameof(Genres.idGenre), nameof(Genres.name), null);
             bovine = new Models.Bovine();
             bovine.taggingDate = null;
-            if (id == -1)
+            valid = null;
+            edicion = true;
+            if (id == null)
             {
-                   
+                edicion = false;
                 title = "Registrar Bovino";
-                //bovine.genre = "male";
                 return null;
             }
             else
             {
-                title = "Editar Bovino";
-
+                title = "Bovino";
                 string responseContent = "[]";
                 try
                 {
                     using var client = new HttpClient();
                     client.Timeout = TimeSpan.FromMinutes(0.5);
-                    client.BaseAddress = _baseUrl;
                     var builder = new UriBuilder
                     {
                         Scheme = Uri.UriSchemeHttp,
-                        Port = 30024,
-                        Host = "192.168.100.5",
+                        Port = Convert.ToInt32(Config["ports:users"]),
+                        Host = Config["api_root"],
                         Path = "v1/bovines/" + id
                     };
                     var query = HttpUtility.ParseQueryString(builder.Query);
@@ -76,21 +69,27 @@ namespace cema_ui.Pages
                     HttpResponseMessage response = await client.GetAsync(builder.ToString());
                     if (response.IsSuccessStatusCode)
                     {
-                        valid = "is-valid";
+                        title = "Editar Bovino";
                         responseContent = await response.Content.ReadAsStringAsync();
-                        var bovin = System.Text.Json.JsonSerializer.Deserialize<Models.Bovine>(responseContent);
-                        bovine = bovin;
-                        return null;
+                        bovine = System.Text.Json.JsonSerializer.Deserialize<Models.Bovine>(responseContent);
+                        DateTime date = (DateTime)bovine.taggingDate;
+                        date=date.AddDays(1);
+                        bovine.taggingDate = date;
                         
-                        //if (bovin.genre == "male"){
-                        //    bovine = 1;
-                        //}
-                    }
-                    else if (response.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.NotFound)
-                    {
-                        valid = "is-invalid";
+                        tagImage = bovine.tag;
                         return null;
                     }
+                    else if (response.StatusCode is HttpStatusCode.Unauthorized)
+                    {
+                        valid = "No esta autorizado a realizar esta accion";
+                        return null;
+                    }
+                    else if (response.StatusCode is HttpStatusCode.NotFound)
+                    {
+                        valid = "El bovino buscado no se encuentra";
+                        return null;
+                    }
+
                     return null;
 
                 }
@@ -103,40 +102,119 @@ namespace cema_ui.Pages
         public async Task<IActionResult> OnPost()
         {
             string responseContent = "[]";
+            valid = null;
+            succes = null;
             try
             {
+                if (bovine.tag == null)
+                {
+                    valid = "invalid";
+                    valid_tag = " Ingrese caravana";
+                }
+                if (bovine.taggingDate == null)
+                {
+                    valid = "invalid";
+                    valid_date = " Ingrese fecha caravaneo";
+                }
+                if (bovine.genre == null)
+                {
+                    valid = "invalid";
+                    valid_genre = " Seleccione sexo";
+                }
+                if (valid != null)
+                {
+                    title = "Registrar Bovino";
+                    valid = null;
+                    return null;
+                }
                 using var client = new HttpClient();
                 client.Timeout = TimeSpan.FromMinutes(0.5);
-                client.BaseAddress = _baseUrl;
                 var builder = new UriBuilder
                 {
                     Scheme = Uri.UriSchemeHttp,
-                    Port = 30024,
-                    Host = "192.168.100.5",
-                    Path = "v1/bovines/"
+                    Port = Convert.ToInt32(Config["ports:users"]),
+                    Host = Config["api_root"],
+                    Path = "v1/bovines/" + bovine.tag
                 };
+
                 var query = HttpUtility.ParseQueryString(builder.Query);
-                
                 builder.Query = query.ToString()!;
                 var json = JsonConvert.SerializeObject(bovine);
                 var stringContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
-                
-                HttpResponseMessage response = await client.PostAsync(builder.ToString(),stringContent);
-                Console.WriteLine(response);
-
-                if (response.IsSuccessStatusCode)
+                if (edicion == true)
                 {
-                    valid = "is-valid";
-                    responseContent = await response.Content.ReadAsStringAsync();
-                    return Redirect("~/Principal");
+                    //Editar un bovino
+                    HttpResponseMessage responsePut = await client.PutAsync(builder.ToString(), stringContent);
+                    if (responsePut.IsSuccessStatusCode)
+                    {
+                        return Redirect("~/Principal");
+                    }
+                    else if (responsePut.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.NotFound)
+                    {
+                        valid = " Error Usted no se encuentra autorizado";
+                        return null;
+                    }
+                    else
+                    {
+                        valid = "Error al modificar los datos del bovino";
+                        return null;
+                    }
 
                 }
-                else if (response.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.NotFound)
+                else
                 {
-                    valid = "is-invalid-post";
-                    return null;
+                    //Registrar bovino nuevo
+                    HttpResponseMessage response = await client.GetAsync(builder.ToString());
+                    if (response.IsSuccessStatusCode)
+                    {
+                        valid_tag = " Esta caravana ya se encuentra en uso. Por favor, revise e intente de nuevo";
+                        title = "Registrar bovino";
+                        return null;
+                    }
+                    else if (response.StatusCode is HttpStatusCode.NotFound)
+                    {
+                        builder = new UriBuilder
+                        {
+                            Scheme = Uri.UriSchemeHttp,
+                            Port = Convert.ToInt32(Config["ports:users"]),
+                            Host = Config["api_root"],
+                            Path = "v1/bovines/"
+                        };
+
+                        query = HttpUtility.ParseQueryString(builder.Query);
+
+                        builder.Query = query.ToString()!;
+                        HttpResponseMessage responsePost = await client.PostAsync(builder.ToString(), stringContent);
+                        if (responsePost.IsSuccessStatusCode)
+                        {
+                            title = "Registrar bovino";
+                            succes = "El bovino se a guardado correctamente";
+                            bovine = new Models.Bovine();
+                            tagImage = "0";
+                            return null;
+                        }
+                        else if (responsePost.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.NotFound)
+                        {
+                            valid = " Error Usted no se encuentra autorizado";
+                            return null;
+                        }
+                        else if (responsePost.StatusCode is HttpStatusCode.Conflict)
+                        {
+                            valid_tag = " Esta caravana ya se encuentra en uso. Por favor, revise e intente de nuevo";
+                            return null;
+                        }
+                        else
+                        {
+                            valid = "Error al guardar el bovino";
+                            return null;
+                        }
+                    }
+                    else
+                    {
+                        valid = "Error al validar la exitencia del bovino.";
+                        return null;
+                    }
                 }
-                return null;
             }
             catch (Exception ex)
             {
@@ -149,16 +227,21 @@ namespace cema_ui.Pages
             string responseContent = "[]";
             try
             {
+                if (bovine.tag == null)
+                {
+                    valid = "Debe ingresar el tag del bovino a eliminar";
+                    return null;
+                }
                 using var client = new HttpClient();
                 client.Timeout = TimeSpan.FromMinutes(0.5);
-                client.BaseAddress = _baseUrl;
                 var builder = new UriBuilder
                 {
                     Scheme = Uri.UriSchemeHttp,
-                    Port = 30024,
-                    Host = "192.168.100.5",
+                    Port = Convert.ToInt32(Config["ports:users"]),
+                    Host = Config["api_root"],
                     Path = "v1/bovines/" + bovine.tag
                 };
+
                 var query = HttpUtility.ParseQueryString(builder.Query);
                 builder.Query = query.ToString()!;
 
@@ -168,26 +251,26 @@ namespace cema_ui.Pages
                     HttpResponseMessage responseDelete = await client.DeleteAsync(builder.ToString());
                     if (response.IsSuccessStatusCode)
                     {
-                        valid = "is-valid";
                         responseContent = await response.Content.ReadAsStringAsync();
                         return Redirect("~/Principal");
 
                     }
                     else if (response.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.NotFound)
                     {
-                        valid = "invalid-Delete";
+                        valid = "Error Usted no se encuentra autorizado";
                         return null;
                     }
                 }
                 else if (response.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.NotFound)
                 {
-                    valid = "invalid-Delete";
+                    valid = "No se encuntra el bovino que intenta eliminar";
                     return null;
                 }
                 return null;
 
             }
-            catch (Exception ex){
+            catch (Exception ex)
+            {
                 return RedirectToPage("Error", new { msg = ex.Message });
             }
         }
