@@ -20,3 +20,4 @@ UpgradeLog.XML
 *.sqlsuo
 
 .vs/
+.editorconfig

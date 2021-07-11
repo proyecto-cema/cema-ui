@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace cema_ui.Pages
@@ -12,19 +13,16 @@ namespace cema_ui.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        private readonly Uri _baseUrl = new("http://192.168.100.5:30023");
+        
+        private readonly IConfiguration Config;
         public string valid { get; private set; }
         [BindProperty] public string Username { get; set; }
         [BindProperty] public string Password { get; set; }
         
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(ILogger<IndexModel> logger, IConfiguration configuration)
         {
             _logger = logger;
-        }
-
-        public void OnGet()
-        {
-
+            Config = configuration;
         }
 
         public async Task<IActionResult> OnPost()
@@ -34,12 +32,13 @@ namespace cema_ui.Pages
             {
                 using var client = new HttpClient();
                 client.Timeout = TimeSpan.FromMinutes(0.5);
-                client.BaseAddress = _baseUrl;
+                _logger.LogInformation("Hitting backend endpoint in {}:{}", Config["api_root"], Config["ports:users"]);
+
                 var builder = new UriBuilder
                 {
                     Scheme = Uri.UriSchemeHttp,
-                    Port = 30023,
-                    Host = "192.168.100.5",
+                    Port = Convert.ToInt32(Config["ports:users"]),
+                    Host = Config["api_root"],
                     Path = "v1/users/login/"+Username
                 };
                 var query = HttpUtility.ParseQueryString(builder.Query);
@@ -47,7 +46,7 @@ namespace cema_ui.Pages
                 builder.Query = query.ToString()!;
 
                 HttpResponseMessage response = await client.GetAsync(builder.ToString());
-                Console.WriteLine(response);
+                _logger.LogInformation(response.ToString());
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -62,6 +61,7 @@ namespace cema_ui.Pages
                 return RedirectToPage("Principal", "UserData", new {username = Username}, "");
             }catch (Exception ex)
             {
+                _logger.LogInformation(ex.ToString());
                 return RedirectToPage("Error", new { msg = ex.Message });
             }
         }

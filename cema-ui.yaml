@@ -31,8 +31,10 @@ spec:
           limits:
             cpu: 500m
         env:
-        - name: $ENV
-          value: "azure-vote-back"
+        - name: ASPNETCORE_ENVIRONMENT
+          value: $ENV
+        - name: DOTNET_ENVIRONMENT
+          value: $ENV
       imagePullSecrets:
       - name: regcred
 ---
