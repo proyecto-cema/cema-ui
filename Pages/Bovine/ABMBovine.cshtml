@@ -43,7 +43,7 @@
                                 <div class="textLeft"><label for="taggingDate" class="form-label">Fecha de caravaneo</label></div>
                                 <input class="form-control  @(@Model.valid_date != null ? "is-invalid" : "")" id="taggingDate" type="date" asp-for="bovine.taggingDate" placeholder="Fecha" required />
                                 <div class="invalid-feedback text-left">
-                                    <span class="glyphicon glyphicon-exclamation-sign"></span> Por favor increse la fecha de caravaneo
+                                    <span class="glyphicon glyphicon-exclamation-sign"></span> Por favor ingrese la fecha de caravaneo
                                 </div>
                             </div>
                             <div class="col-lg-6 offset-lg-0 col-sm-10 offset-sm-1 col-10 offset-1">
@@ -54,11 +54,11 @@
                                     <option value="Femenino" selected="@(Model.bovine.genre == "Femenino")">Femenino</option>
                                 </select>
                                 <div class="invalid-feedback text-left">
-                                    <span class="glyphicon glyphicon-exclamation-sign"></span> Debe ingresar la descripcion del bovino
+                                    <span class="glyphicon glyphicon-exclamation-sign"></span> Debe seleccionar el sexo del bovino
                                 </div>
                             </div>
                             <div class="col-lg-12 offset-lg-0 col-sm-10 offset-sm-1 col-10 offset-1">
-                                <div class="textLeft"><label>Descripcion</label></div>
+                                <div class="textLeft"><label>Descripción</label></div>
                                 <textarea class="form-control" type="text" asp-for="bovine.description" placeholder="Descripcion" required maxlength="300" rows="4"></textarea>
                             </div>
                         </div>
