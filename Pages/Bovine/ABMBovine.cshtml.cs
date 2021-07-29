@@ -59,7 +59,7 @@ namespace cema_ui.Pages
                     var builder = new UriBuilder
                     {
                         Scheme = Uri.UriSchemeHttp,
-                        Port = Convert.ToInt32(Config["ports:users"]),
+                        Port = Convert.ToInt32(Config["ports:bovine"]),
                         Host = Config["api_root"],
                         Path = "v1/bovines/" + id
                     };
@@ -132,7 +132,7 @@ namespace cema_ui.Pages
                 var builder = new UriBuilder
                 {
                     Scheme = Uri.UriSchemeHttp,
-                    Port = Convert.ToInt32(Config["ports:users"]),
+                    Port = Convert.ToInt32(Config["ports:bovine"]),
                     Host = Config["api_root"],
                     Path = "v1/bovines/" + bovine.tag
                 };
@@ -176,7 +176,7 @@ namespace cema_ui.Pages
                         builder = new UriBuilder
                         {
                             Scheme = Uri.UriSchemeHttp,
-                            Port = Convert.ToInt32(Config["ports:users"]),
+                            Port = Convert.ToInt32(Config["ports:bovine"]),
                             Host = Config["api_root"],
                             Path = "v1/bovines/"
                         };
@@ -237,7 +237,7 @@ namespace cema_ui.Pages
                 var builder = new UriBuilder
                 {
                     Scheme = Uri.UriSchemeHttp,
-                    Port = Convert.ToInt32(Config["ports:users"]),
+                    Port = Convert.ToInt32(Config["ports:bovine"]),
                     Host = Config["api_root"],
                     Path = "v1/bovines/" + bovine.tag
                 };
