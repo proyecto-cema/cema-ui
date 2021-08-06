@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import router from '../router'
+import {BASE_URL, LOGIN_PORT} from '../constants'
 
 export default createStore({
   state: {
@@ -36,7 +37,7 @@ export default createStore({
     },
     async ingresoUsuario({commit}, usuario){
       try {
-        const res = await fetch('https://localhost:8080/v1/accounts/login',{
+        const res = await fetch("http://"+BASE_URL+":"+LOGIN_PORT+"/login/",{
           method: 'POST',
           body: JSON.stringify({
             email: usuario.email,

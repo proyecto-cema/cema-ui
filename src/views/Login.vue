@@ -5,15 +5,15 @@
     </div>
     <form @submit.prevent="procesarFormulario">
         <input 
-            type="email" 
-            placeholder="email"
+            type="text"
+            placeholder="Usuario"
             class="form-control my-2"
             v-model.trim="email"
             :class="[error.tipo === 'email' ? 'is-invalid' : '']"
         >
         <input 
             type="password" 
-            placeholder="password"
+            placeholder="Contraseña"
             class="form-control my-2"
             v-model.trim="pass1"
             :class="[error.tipo === 'password' ? 'is-invalid' : '']"
@@ -40,9 +40,6 @@ export default {
   },
   computed: {
     bloquear() {
-      if (!this.email.includes("@")) {
-        return true;
-      }
       if (this.pass1.length > 5) {
         return false;
       }
