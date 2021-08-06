@@ -7,27 +7,20 @@
             <router-link 
                 class="btn btn-dark" 
                 to="/"
-                v-if="usuarioAutenticado"
+                v-if="isAuthenticated"
             >
-                Tareas
+                Cargar Vaca
             </router-link>
-            <router-link 
-                class="btn btn-dark" 
-                to="/registro"
-                v-if="!usuarioAutenticado"
-            >
-                Registrar
-            </router-link>
-            <router-link 
-                class="btn btn-dark" 
+            <router-link
+                class="btn btn-dark"
                 to="/login"
-                v-if="!usuarioAutenticado"
+                v-if="!isAuthenticated"
             >
                 Ingresar
             </router-link>
             <button 
                 class="btn btn-dark"
-                v-if="usuarioAutenticado"
+                v-if="isAuthenticated"
                 @click="cerrarSesion"
             >
                 Cerrar Sesión
@@ -41,7 +34,7 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
     name: 'NavBar',
     computed: {
-        ...mapGetters(['usuarioAutenticado'])
+        ...mapGetters(['isAuthenticated'])
     },
     methods: {
         ...mapActions(['cerrarSesion'])

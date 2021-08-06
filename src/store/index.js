@@ -35,31 +35,26 @@ export default createStore({
       localStorage.removeItem('usuario')
       router.push('/ingreso')
     },
-    async ingresoUsuario({commit}, usuario){
+    async logUserIn({commit}, userData){
       try {
-        const res = await fetch("http://"+BASE_URL+":"+LOGIN_PORT+"/login/",{
-          method: 'POST',
-          body: JSON.stringify({
-            email: usuario.email,
-            password: usuario.password
-          })
-        })
-        const userDB = await res.json()
-        console.log('Usuario:', userDB)
-        if(userDB.error){
-          console.log(userDB.error)
-          return commit('setError', userDB.error.message)
+        const res = await fetch("http://"+BASE_URL+":"+LOGIN_PORT+"/v1/users/login/"+userData.email+"?password="+userData.password);
+        const userDB = await res.json();
+        console.log('Usuario:', userDB);
+        console.log(res)
+        if(res.status === 404 || res.status === 401){
+          console.log(res.statusText);
+          return commit('setError', res.statusText);
         }
-        commit('setUser', userDB)
-        commit('setError', null)
-        router.push('/')
+        commit('setUser', userDB);
+        commit('setError', null);
+        router.push('/');
       } catch (error) {
-        console.error(error)  
+        console.error(error);
       }
     },
   },
   getters: {
-    usuarioAutenticado(state){
+    isAuthenticated(state){
       return !!state.user
     }
   },

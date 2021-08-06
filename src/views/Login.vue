@@ -40,7 +40,7 @@ export default {
   },
   computed: {
     bloquear() {
-      if (this.pass1.length > 5) {
+      if (this.pass1.length > 3) {
         return false;
       }
       return true;
@@ -48,15 +48,16 @@ export default {
     ...mapState(['error'])
   },
   methods: {
-    ...mapActions(["ingresoUsuario"]),
+    ...mapActions(["logUserIn"]),
     async procesarFormulario() {
       try {
-        await this.ingresoUsuario({ email: this.email, password: this.pass1 });
+        await this.logUserIn({ email: this.email, password: this.pass1 });
         if(this.error !== null) {
+
           return
         }
         this.email = "";
-        this.pass1 = ""; 
+        this.pass1 = "";
       } catch (error) {
         console.error(error)
       }
