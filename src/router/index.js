@@ -4,8 +4,6 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import About from '../views/About.vue'
 
-const isAuthenticated = store.getters['isAuthenticated'];
-
 const routes = [
   {
     path: '/',
@@ -30,7 +28,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' })
+  if (to.name !== 'Login' && !store.getters.isAuthenticated) next({ name: 'Login' })
   else next()
 })
 

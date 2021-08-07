@@ -45,8 +45,9 @@ export default createStore({
           console.log(res.statusText);
           return commit('setError', res.statusText);
         }
-        commit('setUser', userDB);
+        commit('setUser', userDB.email);
         commit('setError', null);
+        localStorage.setItem('usuario', JSON.stringify(userDB))
         router.push('/');
       } catch (error) {
         console.error(error);
