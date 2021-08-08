@@ -1,23 +1,25 @@
-[Oo]bj
-[Bb]in
-*.user
-*.suo
-*.[Cc]ache
-*.bak
-*.ncb
-*.log
-*.DS_Store
-[Tt]humbs.db
-_ReSharper.*
-*.resharper
-Ankh.NoLoad
-setup.exe
-_UpgradeReport_Files/
-UpgradeLog.XML
-*.vspscc
-*.vssscc
-*.scc
-*.sqlsuo
+.DS_Store
+node_modules
+/dist
 
+
+# local env files
+.env
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 .vs/
-.editorconfig
+obj/
