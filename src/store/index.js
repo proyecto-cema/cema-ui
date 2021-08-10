@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import router from '../router'
-import {BASE_URL, BOVINE_PORT, LOGIN_PORT} from '../constants'
+import {BASE_URL, BOVINE_CONTEXT, LOGIN_CONTEXT} from '../constants'
 
 export default createStore({
   state: {
@@ -37,14 +37,14 @@ export default createStore({
     },
     async logUserIn({commit}, userData){
       try {
-        const res = await fetch(BASE_URL+":"+LOGIN_PORT+"/v1/users/login/"+userData.email+"?password="+userData.password,
+        let headers = new Headers();
+        headers.append('Authorization', 'Basic ' + Buffer.from("cema:cema").toString('base64'));
+        headers.append('Content-Type', 'application/json');
+        const res = await fetch(BASE_URL + LOGIN_CONTEXT +"/v1/users/login/"+userData.email+"?password="+userData.password,
         {
           method: 'GET', // *GET, POST, PUT, DELETE, etc.
           mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Y2VtYTpzbGlwa25vdA==',
-          },
+          headers: headers,
         });
         const userDB = await res.json();
         console.log('Usuario:', userDB);
@@ -63,15 +63,15 @@ export default createStore({
     },
     async registerUser({commit}, email, pass, userData){
       try {
-        const res = await fetch(BASE_URL+":"+LOGIN_PORT+"/v1/users/login/"+email+"?password=12345",
+        let headers = new Headers();
+        headers.append('Authorization', 'Basic ' + Buffer.from("cema:cema").toString('base64'));
+        headers.append('Content-Type', 'application/json');
+        const res = await fetch(BASE_URL+"/"+LOGIN_CONTEXT+"/v1/users/prueba3?password=12345",
             {
               method: 'PUT', // *GET, POST, PUT, DELETE, etc.
               mode: 'cors',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic Y2VtYTpzbGlwa25vdA==',
-              },
-              body: JSON.stringify(userData)
+              headers: headers,
+              body: '{ "email": "merlinsn@gmail.com", "lastName": "Nuñez", "name": "Merlin", "phone": "3541330188", "role": "admin" }'
             }
           );
         const helper = await res.json();

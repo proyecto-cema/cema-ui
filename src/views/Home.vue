@@ -26,7 +26,7 @@ export default {
     ...mapActions(["registerUser"]),
     async procesarFormulario() {
       try {
-        await this.registerUser("pruebasuper@gmail.com", "1231412",{
+        await this.registerUser("prueba", "1231412",{
           "email": "pruebasuper@gmail.com",
           "lastName": "super",
           "name": "prueba",
