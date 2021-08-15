@@ -15,18 +15,16 @@ export default createStore({
       if(payload === null) {
         return state.error = {tipo: null, mensaje: null}
       }
-      if(payload === "EMAIL_NOT_FOUND"){
-        return state.error = {tipo: 'email', mensaje: 'Email no registrado'}
-      }
-      if(payload === "INVALID_PASSWORD"){
+      if(payload === "Unauthorized"){
         return state.error = {tipo: 'password', mensaje: 'Contraseña incorrecta'}
       }
-      if(payload === "EMAIL_EXISTS"){
-        return state.error = {tipo: 'email', mensaje: 'Email ya registrado'}
+      if(payload === "Not Found"){
+        return state.error = {tipo: 'UserPass', mensaje: 'Usuario o Contraseña incorrectos'}
       }
-      if(payload === "INVALID_EMAIL"){
-        return state.error = {tipo: 'email', mensaje: 'Formato incorrecto de email'}
+      if(payload === "Server"){
+        return state.error = {tipo: 'Server', mensaje: 'ERROR en el servidor, intente nuevamente mas tarde.'}
       }
+      return state.error = {tipo: 'Undefained', mensaje: 'ERROR indefinido, intente nuevamente mas tarde.'}
     }
   },
   actions: {
@@ -37,7 +35,7 @@ export default createStore({
     },
     async logUserIn({commit}, userData){
       try {
-        const res = await fetch("http://"+BASE_URL+":"+LOGIN_PORT+"/v1/users/login/"+userData.email+"?password="+userData.password);
+        const res = await fetch("http://"+BASE_URL+":"+LOGIN_PORT+"/v1/users/login/"+userData.user+"?password="+userData.password);
         const userDB = await res.json();
         console.log('Usuario:', userDB);
         console.log(res)
@@ -45,14 +43,22 @@ export default createStore({
           console.log(res.statusText);
           return commit('setError', res.statusText);
         }
-        commit('setUser', userDB.email);
+        commit('setUser', userDB.user);
         commit('setError', null);
-        localStorage.setItem('usuario', JSON.stringify(userDB))
+        localStorage.setItem('usuario', JSON.stringify(userDB));
         router.push('/');
       } catch (error) {
+        commit('setError','Server')
         console.error(error);
       }
     },
+    async cargarLocalStorage({commit, state}) {
+      if(localStorage.getItem('usuario')){
+        commit('setUser', JSON.parse(localStorage.getItem('usuario')))
+      }else{
+        return commit('setUser', null)
+      }
+    }
   },
   getters: {
     isAuthenticated(state){

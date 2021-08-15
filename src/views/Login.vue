@@ -11,22 +11,22 @@
               type="text"
               placeholder="Usuario"
               class="form-control my-2"
-              v-model.trim="email"
-              :class="[error.tipo === 'email' ? 'is-invalid' : '']"
+              v-model.trim="user"
+              :class="[error.tipo === 'user' ? 'is-invalid' : '']"
           >
           <input 
               type="password" 
               placeholder="Contraseña"
               class="form-control my-2"
-              v-model.trim="pass1"
-              :class="[error.tipo === 'password' ? 'is-invalid' : '']"
+              v-model.trim="pass"
+              :class="[error.tipo === 'pass' ? 'is-invalid' : '']"
           >
           <div class="row">
             <div class="col-lg-5 col-md-12" style="padding-top:8px;">
               <input type="checkbox" id="cbox2" value="true"> <label style="color:white" for="cbox2">Recuerdame</label>
             </div>
             <div class="col-lg-7 col-md-12 negrita in-line">
-              <a class="nav-link text-info in-line negrita">¿Olvidaste tu contraseña?</a>
+              <a class="nav-link text-info in-line negrita" v-on:click="Redirect" >¿Olvidaste tu contraseña?</a>
             </div>
           </div>
           <button 
@@ -49,17 +49,18 @@
 <script>
 import { mapActions, mapState } from "vuex";
 
+
 export default {
   name: "Login",
   data() {
     return {
-      email: "",
-      pass1: "",
+      user: "",
+      pass: ""
     };
   },
   computed: {
     bloquear() {
-      if (this.pass1.length > 3) {
+      if (this.pass.length > 3) {
         return false;
       }
       return true;
@@ -68,14 +69,28 @@ export default {
   },
   methods: {
     ...mapActions(["logUserIn"]),
+    Redirect(){
+      this.$router.push('/');
+    },
     async procesarFormulario() {
+      this.error=null;
+      if(this.user==null || this.user==""){
+        this.error.tipo="user"
+        this.error.mensaje="Debe ingregar su usuario"
+        return
+      }
+      if(this.pass==null || this.pass==""){
+        this.error.tipo="pass"
+        this.error.mensaje="Por favor ingrese su contraseña"
+        return
+      }
       try {
-        await this.logUserIn({ email: this.email, password: this.pass1 });
+        await this.logUserIn({ user: this.user, password: this.pass });
         if (this.error !== null) {
           return;
         }
-        this.email = "";
-        this.pass1 = "";
+        this.user = "";
+        this.pass = "";
       } catch (error) {
         console.error(error);
       }
