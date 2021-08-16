@@ -61,26 +61,6 @@ export default createStore({
         console.error(error);
       }
     },
-    async registerUser({commit}, email, pass, userData){
-      try {
-        let headers = new Headers();
-        headers.append('Authorization', 'Basic ' + Buffer.from("cema:cema").toString('base64'));
-        headers.append('Content-Type', 'application/json');
-        const res = await fetch(BASE_URL+"/"+LOGIN_CONTEXT+"/v1/users/prueba3?password=12345",
-            {
-              method: 'PUT', // *GET, POST, PUT, DELETE, etc.
-              mode: 'cors',
-              headers: headers,
-              body: '{ "email": "merlinsn@gmail.com", "lastName": "Nuñez", "name": "Merlin", "phone": "3541330188", "role": "admin" }'
-            }
-          );
-        const helper = await res.json();
-        console.log('Bovine:', helper);
-        console.log(res)
-      } catch (error) {
-        console.error(error);
-      }
-    },
   },
   getters: {
     isAuthenticated(state){
