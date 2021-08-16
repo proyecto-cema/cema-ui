@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import router from '../router'
-import {BASE_URL, LOGIN_PORT} from '../constants'
+import {BASE_URL, BOVINE_CONTEXT, LOGIN_CONTEXT} from '../constants'
 
 export default createStore({
   state: {
@@ -37,7 +37,15 @@ export default createStore({
     },
     async logUserIn({commit}, userData){
       try {
-        const res = await fetch("http://"+BASE_URL+":"+LOGIN_PORT+"/v1/users/login/"+userData.email+"?password="+userData.password);
+        let headers = new Headers();
+        headers.append('Authorization', 'Basic ' + Buffer.from("cema:cema").toString('base64'));
+        headers.append('Content-Type', 'application/json');
+        const res = await fetch(BASE_URL + LOGIN_CONTEXT +"/v1/users/login/"+userData.email+"?password="+userData.password,
+        {
+          method: 'GET', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors',
+          headers: headers,
+        });
         const userDB = await res.json();
         console.log('Usuario:', userDB);
         console.log(res)
