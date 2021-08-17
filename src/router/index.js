@@ -7,9 +7,9 @@ import AddBovine from '../views/Bovine/AddBovine.vue'
 
 const routes = [
   {
-    path: '/',
+    path: '/addBovine',
     name: 'AddBovine',
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: false },
     component: AddBovine
   },
   {

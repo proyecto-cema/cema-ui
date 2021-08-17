@@ -38,9 +38,9 @@ export default createStore({
         let headers = new Headers();
         headers.append('Authorization', 'Basic ' + Buffer.from("cema:cema").toString('base64'));
         headers.append('Content-Type', 'application/json');
-        const res = await fetch(BASE_URL + LOGIN_CONTEXT +"/v1/users/login/"+userData.email+"?password="+userData.password,
+        const res = await fetch(BASE_URL + LOGIN_CONTEXT +"/v1/users/login/"+userData.user+"?password="+userData.pass,
         {
-          method: 'GET', // *GET, POST, PUT, DELETE, etc.
+          method: 'POST', // *GET, POST, PUT, DELETE, etc.
           mode: 'cors',
           headers: headers,
         });
