@@ -1,6 +1,6 @@
 <template>
-  <!-- <NavBar /> -->
   <div v-if="!$route.meta.plainLayout">
+    <NavBar />
     <div class="container">
       <router-view/>
     </div>
@@ -12,11 +12,19 @@
 
 <script>
 import NavBar from "./components/NavBar.vue";
+import {mapActions} from "vuex";
+
 
 export default {
   name: 'App',
   components: {
     NavBar
+  },
+  methods: {
+    ...mapActions(['loadLocalStorage'])
+  },
+  created(){
+    this.loadLocalStorage()
   }
 }
 </script>

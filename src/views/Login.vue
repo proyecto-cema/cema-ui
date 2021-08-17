@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div class="imagen-fondo Portada">
     <div class="container">
       <div class="row text-center"  >
