@@ -1,7 +1,12 @@
 <template>
   <!-- <NavBar /> -->
-  <div class="container"> 
-    <router-view />
+  <div v-if="!$route.meta.plainLayout">
+    <div class="container">
+      <router-view/>
+    </div>
+  </div>
+  <div v-if="$route.meta.plainLayout">
+    <router-view/>
   </div>
 </template>
 
