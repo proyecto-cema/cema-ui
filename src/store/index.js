@@ -60,7 +60,7 @@ export default createStore({
         console.error(error);
       }
     },
-    async cargarLocalStorage({commit, state}) {
+    async loadLocalStorage({commit, state}) {
       if(localStorage.getItem('usuario')){
         commit('setUser', JSON.parse(localStorage.getItem('usuario')))
       }else{
