@@ -9,7 +9,7 @@ const routes = [
   {
     path: '/',
     name: 'AddBovine',
-    meta: { requiresAuth: false },
+    meta: { requiresAuth: true },
     component: AddBovine
   },
   {
