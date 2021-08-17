@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <NavBar/>
   <div class="row text-center"  >
     <!-- <div class="col-md-7 offset-md-5 col-lg-6 offset-lg-6 col-xl-5 offset-xl-7" style="margin-top:100px"> -->
