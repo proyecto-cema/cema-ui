@@ -13,19 +13,19 @@ export default createStore({
     },
     setError(state, payload){
       if(payload === null) {
-        return state.error = {tipo: null, mensaje: null}
+        return state.error = {type: null, message: null}
       }
       if(payload === "EMAIL_NOT_FOUND"){
-        return state.error = {tipo: 'email', mensaje: 'Email no registrado'}
+        return state.error = {type: 'email', message: 'Email no registrado'}
       }
       if(payload === "INVALID_PASSWORD"){
-        return state.error = {tipo: 'password', mensaje: 'Contraseña incorrecta'}
+        return state.error = {type: 'password', message: 'Contraseña incorrecta'}
       }
       if(payload === "EMAIL_EXISTS"){
-        return state.error = {tipo: 'email', mensaje: 'Email ya registrado'}
+        return state.error = {type: 'email', message: 'Email ya registrado'}
       }
       if(payload === "INVALID_EMAIL"){
-        return state.error = {tipo: 'email', mensaje: 'Formato incorrecto de email'}
+        return state.error = {type: 'email', message: 'Formato incorrecto de email'}
       }
     }
   },

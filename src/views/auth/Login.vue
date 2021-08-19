@@ -3,32 +3,32 @@
     <div class="container">
       <div class="row text-center"  >
         <div class="col-md-7 offset-md-5 col-lg-6 offset-lg-6 col-xl-5 offset-xl-7" style="margin-top:100px">
-          <form @submit.prevent="procesarFormulario" style="border-radius: 10px; background: rgba(0, 0, 0, 0.5);">
+          <form @submit.prevent="processForm" style="border-radius: 10px; background: rgba(0, 0, 0, 0.5);">
             <div class="col-md-10 offset-md-1">
-              <img src="../assets/images/Logo_cema.png" style="width: 75%;" alt="Logo CEMA"/>
-              <div class="alert alert-danger" v-if="error.tipo !== null">
-                {{error.mensaje}}
+              <img src="../../assets/images/cema_logo.png" style="width: 75%;" alt="Logo CEMA"/>
+              <div class="alert alert-danger" v-if="error.type !== null">
+                {{error.message}}
               </div>
               <input
                   type="text"
                   placeholder="Usuario"
                   class="form-control my-2"
                   v-model.trim="user"
-                  :class="[error.tipo === 'user' ? 'is-invalid' : '']"
+                  :class="[error.type === 'user' ? 'is-invalid' : '']"
               >
               <input
                   type="password"
                   placeholder="Contraseña"
                   class="form-control my-2"
                   v-model.trim="pass"
-                  :class="[error.tipo === 'pass' ? 'is-invalid' : '']"
+                  :class="[error.type === 'pass' ? 'is-invalid' : '']"
               >
               <div class="row">
                 <div class="col-lg-5 col-md-12" style="padding-top:8px;">
                   <input type="checkbox" id="cbox2" value="true"> <label style="color:white" for="cbox2">Recuerdame</label>
                 </div>
                 <div class="col-lg-7 col-md-12 negrita in-line">
-                  <a class="nav-link text-info in-line negrita" v-on:click="Redirect" >¿Olvidaste tu contraseña?</a>
+                  <a class="nav-link text-info in-line negrita" >¿Olvidaste tu contraseña?</a>
                 </div>
               </div>
               <button
@@ -64,32 +64,26 @@ export default {
   },
   computed: {
     bloquear() {
-      if (this.pass.length > 3) {
-        return false;
-      }
-      return true;
+      return this.pass.length <= 3;
+
     },
-    ...mapState(["error"]),
+    ...mapState("auth", ["error"]),
   },
   methods: {
-    ...mapActions(["logUserIn"]),
-    Redirect(){
-      this.$router.push('/');
-    },
-    async procesarFormulario() {
-      this.error=null;
-      if(this.user==null || this.user==""){
-        this.error.tipo="user"
-        this.error.mensaje="Debe ingregar su usuario"
+    ...mapActions("auth", ["logUserIn"]),
+    async processForm() {
+      if(this.user == null || this.user === ""){
+        this.error.type="user"
+        this.error.message="Debe ingregar su usuario"
         return
       }
-      if(this.pass==null || this.pass==""){
-        this.error.tipo="pass"
-        this.error.mensaje="Por favor ingrese su contraseña"
+      if(this.pass == null || this.pass === ""){
+        this.error.type="pass"
+        this.error.message="Por favor ingrese su contraseña"
         return
       }
       try {
-        await this.logUserIn({ user: this.user, password: this.pass });
+        await this.logUserIn({user: this.user, password: this.pass});
         if (this.error !== null) {
           return;
         }
@@ -104,7 +98,7 @@ export default {
 </script>
 <style>
 .imagen-fondo{
-  background-image: url("../assets/images/Fondo_login.png");
+  background-image: url("../../assets/images/login_background.png");
 }
 .Portada {
   height: 100vh;

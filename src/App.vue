@@ -21,7 +21,7 @@ export default {
     NavBar
   },
   methods: {
-    ...mapActions(['loadLocalStorage'])
+    ...mapActions("auth", ['loadLocalStorage'])
   },
   created(){
     this.loadLocalStorage()

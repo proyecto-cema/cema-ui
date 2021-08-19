@@ -2,7 +2,7 @@
   <nav class="navbar navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <router-link to="/" class="navbar-brand">
-        <img src="../assets/images/Logo_cema.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
+        <img src="../assets/images/cema_logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
       </router-link>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -69,10 +69,10 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
     name: 'NavBar',
     computed: {
-        ...mapGetters(['isAuthenticated'])
+        ...mapGetters("auth", ['isAuthenticated'])
     },
     methods: {
-        ...mapActions(['cerrarSesion'])
+        ...mapActions("auth", ['logout'])
     }
 }
 </script>
