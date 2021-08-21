@@ -9,7 +9,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item dropdown" v-if="isAuthenticated">
+          <li class="nav-item dropdown" v-if="currentUser">
             <a class="nav-link dropdown-toggle" href="#" id="dropdownBovinos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Bovinos
             </a>
@@ -26,38 +26,45 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item dropdown" v-if="isAuthenticated">
+          <li class="nav-item dropdown" v-if="currentUser">
             <a class="nav-link dropdown-toggle" href="#" id="dropdownActividades" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Actividades
             </a>
             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownActividades">
             </ul>
           </li>
-          <li class="nav-item dropdown" v-if="isAuthenticated">
+          <li class="nav-item dropdown" v-if="currentUser">
             <a class="nav-link dropdown-toggle" href="#" id="dropdownSalud" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Salud
             </a>
             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownSalud">
             </ul>
           </li>
-          <li class="nav-item">
-            <router-link
-                class="nav-link"
-                to="/login"
-                v-if="!isAuthenticated"
-            >
-              Ingresar
-            </router-link>
-          </li>
-          <li
-              class="nav-item"
-              v-if="isAuthenticated"
-              @click="cerrarSesion"
-          >
-            <a class="nav-link">
-              Cerrar Sesión
-            </a>
-          </li>
+
+          <div v-if="!currentUser" class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <router-link
+                  class="nav-link"
+                  to="/login"
+              >
+                Ingresar
+              </router-link>
+            </li>
+          </div>
+
+          <div v-if="currentUser" class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <router-link to="/" class="nav-link">
+                <font-awesome-icon icon="user" />
+                {{ currentUser.username }}
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" @click.prevent="logOut">
+                <font-awesome-icon icon="sign-out-alt" /> Cerrar Sesión
+              </a>
+            </li>
+          </div>
         </ul>
       </div>
     </div>
@@ -69,10 +76,15 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
     name: 'NavBar',
     computed: {
-        ...mapGetters("auth", ['isAuthenticated'])
+      currentUser() {
+        return this.$store.state.auth.user;
+      },
     },
     methods: {
-        ...mapActions("auth", ['logout'])
+      logOut() {
+        this.$store.dispatch('auth/logout');
+        this.$router.push('/login');
+      }
     }
 }
 </script>

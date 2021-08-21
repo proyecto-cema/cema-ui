@@ -13,7 +13,7 @@
                   type="text"
                   placeholder="Usuario"
                   class="form-control my-2"
-                  v-model.trim="user"
+                  v-model.trim="username"
                   :class="[error.type === 'user' ? 'is-invalid' : '']"
               >
               <input
@@ -34,7 +34,14 @@
               <button
                   type="submit"
                   class="btn btn-dark text-white button-margin"
-              >Iniciar Sesión</button>
+                  :disabled="loading"
+              >
+                <span
+                  v-show="loading"
+                  class="spinner-border spinner-border-sm">
+                </span>
+                <span>Iniciar Sesión</span>
+              </button>
               <div class="row" style="padding-bottom:15px;" >
                 <div class="col-md-7 in-line " style="padding-top:8px;">
                   <label style="color:white">¿Por primera vez en <b>CEMA</b>?</label>
@@ -58,21 +65,30 @@ export default {
   name: "Login",
   data() {
     return {
-      user: "",
-      pass: ""
+      username: "",
+      pass: "",
+      loading: false,
     };
   },
   computed: {
     bloquear() {
       return this.pass.length <= 3;
-
+    },
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
     },
     ...mapState("auth", ["error"]),
   },
+  created() {
+    if (this.loggedIn) {
+      this.$router.push("/");
+    }
+  },
   methods: {
-    ...mapActions("auth", ["logUserIn"]),
+    ...mapActions("auth", ["login"]),
     async processForm() {
-      if(this.user == null || this.user === ""){
+      this.loading = true;
+      if(this.username == null || this.username === ""){
         this.error.type="user"
         this.error.message="Debe ingregar su usuario"
         return
@@ -83,11 +99,25 @@ export default {
         return
       }
       try {
-        await this.logUserIn({user: this.user, password: this.pass});
+        let user = {username: this.username, password: this.pass};
+        this.login(user).then(
+            () => {
+              this.$router.push("/");
+            },
+            (error) => {
+              this.loading = false;
+              this.message =
+                  (error.response &&
+                      error.response.data &&
+                      error.response.data.message) ||
+                  error.message ||
+                  error.toString();
+            }
+        );
         if (this.error !== null) {
           return;
         }
-        this.user = "";
+        this.username = "";
         this.pass = "";
       } catch (error) {
         console.error(error);
