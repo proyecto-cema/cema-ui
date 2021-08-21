@@ -4,8 +4,8 @@ import {BASE_URL, LOGIN_CONTEXT, LOGIN_VERSION} from "../constants";
 
 
 class UserService {
-    getUserBoard() {
-        return axios.post(BASE_URL + LOGIN_CONTEXT + LOGIN_VERSION + 'users', { headers: authHeader() });
+    getUserData() {
+        return axios.post(BASE_URL + LOGIN_CONTEXT + LOGIN_VERSION + 'users', {},{ headers: authHeader() });
     }
 }
 

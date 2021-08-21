@@ -53,10 +53,10 @@ const actions = {
             error => {
                 if(error.response.status === 404 || error.response.status === 401){
                     console.log(error.response.statusText);
-                    return commit('setError', error.response.statusText);
+                    commit('setError', error.response.statusText);
                 }
                 commit('loginFailure');
-                console.log(error)
+                console.log(error);
                 return Promise.reject(error);
             }
         );
@@ -68,9 +68,6 @@ const actions = {
 }
 
 const getters = {
-    isAuthenticated(state) {
-        return !!state.user
-    }
 }
 
 export default {

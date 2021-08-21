@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {BASE_URL, LOGIN_CONTEXT, LOGIN_VERSION} from "../constants";
+import UserService from "./user.service";
 
 
 class AuthService {
@@ -10,8 +11,15 @@ class AuthService {
                 password: user.password
             })
             .then(response => {
-                if (response.data.accessToken) {
+                console.log(response.data)
+                if (response.data.token) {
                     localStorage.setItem('user', JSON.stringify(response.data));
+                    UserService.getUserData().then(
+                        (userResponse) => {
+                            localStorage.setItem('user', JSON.stringify({...userResponse.data, ...response.data}));
+                        }
+                    );
+
                 }
 
                 return response.data;

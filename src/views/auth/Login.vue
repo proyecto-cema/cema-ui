@@ -59,6 +59,7 @@
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
+import UserService from "../../services/user.service";
 
 
 export default {
@@ -81,6 +82,19 @@ export default {
   },
   created() {
     if (this.loggedIn) {
+      UserService.getUserData().then(
+          (response) => {
+            this.content = response.data;
+          },
+          (error) => {
+            this.content =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+          }
+      );
       this.$router.push("/");
     }
   },
@@ -102,6 +116,7 @@ export default {
         let user = {username: this.username, password: this.pass};
         this.login(user).then(
             () => {
+              console.log("Logged in as ", user, this.loggedIn)
               this.$router.push("/");
             },
             (error) => {
@@ -112,6 +127,7 @@ export default {
                       error.response.data.message) ||
                   error.message ||
                   error.toString();
+              console.log(error)
             }
         );
         if (this.error !== null) {

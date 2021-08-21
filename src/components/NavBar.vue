@@ -56,7 +56,7 @@
             <li class="nav-item">
               <router-link to="/" class="nav-link">
                 <font-awesome-icon icon="user" />
-                {{ currentUser.username }}
+                {{ currentUser.userName }}
               </router-link>
             </li>
             <li class="nav-item">
