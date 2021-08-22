@@ -1,5 +1,3 @@
-import router from "../../router";
-import {BASE_URL, LOGIN_CONTEXT} from "../../constants";
 import AuthService from '../../services/auth/auth.service';
 
 const user = JSON.parse(localStorage.getItem('user'));

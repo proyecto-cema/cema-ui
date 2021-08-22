@@ -9,39 +9,41 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item dropdown" v-if="currentUser">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdownBovines" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Bovinos
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownBovines">
-              <li>
-                <router-link class="nav-link" to="/bovinos/nuevo">
-                  Cargar Bovino
-                </router-link>
-              </li>
-              <li>
-                <router-link class="nav-link" to="/bovinos/listado">
-                  Listar Bovinos
-                </router-link>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown" v-if="currentUser">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdownActivities" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Actividades
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownActivities">
-            </ul>
-          </li>
-          <li class="nav-item dropdown" v-if="currentUser">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdownHealth" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Salud
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownHealth">
-            </ul>
-          </li>
+          <div v-if="currentUser" class="navbar-nav me-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdownBovines" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Bovinos
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownBovines">
+                <li>
+                  <router-link class="nav-link" to="/bovinos/nuevo">
+                    Cargar Bovino
+                  </router-link>
+                </li>
+                <li>
+                  <router-link class="nav-link" to="/bovinos/listado">
+                    Listar Bovinos
+                  </router-link>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdownActivities" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Actividades
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownActivities">
+              </ul>
+            </li>
+            <li class="nav-item dropdown" >
+              <a class="nav-link dropdown-toggle" href="#" id="dropdownHealth" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Salud
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownHealth">
+              </ul>
+            </li>
+          </div>
 
-          <div v-if="!currentUser" class="navbar-nav ml-auto">
+          <div v-if="!currentUser" class="navbar-nav">
             <li class="nav-item">
               <router-link
                   class="nav-link"
@@ -52,7 +54,7 @@
             </li>
           </div>
 
-          <div v-if="currentUser" class="navbar-nav ml-auto">
+          <div v-if="currentUser" class="navbar-nav">
             <li class="nav-item">
               <router-link to="/" class="nav-link">
                 <font-awesome-icon icon="user" />
@@ -71,7 +73,6 @@
   </nav>
 </template>
 <script>
-import { mapActions, mapGetters } from 'vuex'
 
 export default {
     name: 'NavBar',
