@@ -59,7 +59,7 @@
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
-import UserService from "../../services/user.service";
+import UserService from "../../services/users/user.service";
 
 
 export default {
@@ -116,7 +116,7 @@ export default {
         let user = {username: this.username, password: this.pass};
         this.login(user).then(
             () => {
-              console.log("Logged in as ", user, this.loggedIn)
+              console.log("Logged in as", user.username)
               this.$router.push("/");
             },
             (error) => {

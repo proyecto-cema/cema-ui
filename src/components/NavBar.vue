@@ -10,10 +10,10 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item dropdown" v-if="currentUser">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdownBovinos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownBovines" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Bovinos
             </a>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownBovinos">
+            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownBovines">
               <li>
                 <router-link class="nav-link" to="/bovinos/nuevo">
                   Cargar Bovino
@@ -27,17 +27,17 @@
             </ul>
           </li>
           <li class="nav-item dropdown" v-if="currentUser">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdownActividades" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownActivities" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Actividades
             </a>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownActividades">
+            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownActivities">
             </ul>
           </li>
           <li class="nav-item dropdown" v-if="currentUser">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdownSalud" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownHealth" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Salud
             </a>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownSalud">
+            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownHealth">
             </ul>
           </li>
 
@@ -56,7 +56,7 @@
             <li class="nav-item">
               <router-link to="/" class="nav-link">
                 <font-awesome-icon icon="user" />
-                {{ currentUser.userName }}
+                {{ currentUser["userName"] }}
               </router-link>
             </li>
             <li class="nav-item">
