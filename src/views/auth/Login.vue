@@ -25,7 +25,7 @@
               >
               <div class="row">
                 <div class="col-lg-5 col-md-12" style="padding-top:8px;">
-                  <input type="checkbox" id="cbox2" value="true"> <label style="color:white" for="cbox2">Recuerdame</label>
+                  <input type="checkbox" id="cbox2" value="remember" checked> <label style="color:white" for="cbox2">Recuerdame</label>
                 </div>
                 <div class="col-lg-7 col-md-12 negrita in-line">
                   <a class="nav-link text-info in-line negrita" >¿Olvidaste tu contraseña?</a>
@@ -47,7 +47,7 @@
                   <label style="color:white">¿Por primera vez en <b>CEMA</b>?</label>
                 </div>
                 <div class="col-md-5 in-line negrita">
-                  <a class="nav-link text-info">Suscribete ya</a>
+                  <a class="nav-link text-info" href="mailto:proyecto-cema.outlook.com">Contáctanos</a>
                 </div>
               </div>
             </div>
