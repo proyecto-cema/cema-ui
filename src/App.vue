@@ -12,7 +12,6 @@
 
 <script>
 import NavBar from "./components/NavBar.vue";
-import {mapActions} from "vuex";
 
 
 export default {
@@ -20,11 +19,5 @@ export default {
   components: {
     NavBar
   },
-  methods: {
-    ...mapActions(['loadLocalStorage'])
-  },
-  created(){
-    this.loadLocalStorage()
-  }
 }
 </script>
