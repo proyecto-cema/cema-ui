@@ -4,7 +4,8 @@ import {BASE_URL, BOVINE_PORT} from '../constants'
 
 export default createStore({
   state: {
-    user: '',
+    bovine: '',
+    user:'',
     error: {tipo: null, mensaje: null}
   },
   mutations: {
@@ -15,8 +16,8 @@ export default createStore({
       if(payload === null) {
         return state.error = {tipo: null, mensaje: null}
       }
-      if(payload === "EMAIL_NOT_FOUND"){
-        return state.error = {tipo: 'email', mensaje: 'Email no registrado'}
+      if(payload === "Not found bovine"){
+        return state.error = {tipo: 'general', mensaje: 'No se encuentra el bovino'}
       }
       if(payload === "INVALID_PASSWORD"){
         return state.error = {tipo: 'password', mensaje: 'Contraseña incorrecta'}
@@ -35,8 +36,10 @@ export default createStore({
       localStorage.removeItem('usuario')
       router.push('/ingreso')
     },
-    async addBovine({commit}, bovineData){
+    async saveBovine({commit},edicion, bovineData){
       try {
+        if(edicion==true){
+        }else{}
         const url = "http://"+BASE_URL+":"+BOVINE_PORT+"/v1/bovines/";
         // The data we are going to send in our request
         let data = {
@@ -62,11 +65,67 @@ export default createStore({
         commit('setUser', userDB.email);
         commit('setError', null);
         localStorage.setItem('usuario', JSON.stringify(userDB))
-        router.push('/');
       } catch (error) {
         console.error(error);
       }
     },
+    async getBovine({commit}, Bovine){
+      try {
+        let headers = new Headers();
+        // headers.append('Authorization', 'Basic ' + Buffer.from("cema:cema").toString('base64'));
+        headers.append('Authorization', 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtZXJsaW4iLCJleHAiOjE2Mjk1Mjc4MjgsImlhdCI6MTYyOTUwOTgyOH0.gbv4X3TR5cP5y_UVQ0LKhSwtvtFvy8FMj3Yp5YQUhtQINQZSCfzlUFGWcpWa5rUjSrHi6_1fBSG5JPNfXYTbrQ');
+        headers.append('Content-Type', 'application/json');
+        const res = await fetch("http://"+BASE_URL+":30024/v1/bovines/"+Bovine.tag,
+        {
+          method: 'GET', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors',
+          headers: headers,
+        });
+        const bovinoDB = await res.json();
+        console.log('Bovino:', bovinoDB);
+        console.log(res)
+        if(res.status===200)
+        {
+          commit('setBovine',bovinoDB)
+          commit('setError','Server')
+        }
+        if(res.status === 404 || res.status === 401){
+          console.log(res.statusText);
+          return commit('setError', res.statusText);
+        }
+        commit('setError', null);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async deleteBovine({commit}, Bovine){
+      try {
+        let headers = new Headers();
+        //headers.append('Authorization', 'Basic ' + Buffer.from("cema:cema").toString('base64'));
+        headers.append('Authorization', 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtZXJsaW4iLCJleHAiOjE2Mjk1Mjc4MjgsImlhdCI6MTYyOTUwOTgyOH0.gbv4X3TR5cP5y_UVQ0LKhSwtvtFvy8FMj3Yp5YQUhtQINQZSCfzlUFGWcpWa5rUjSrHi6_1fBSG5JPNfXYTbrQ');
+        headers.append('Content-Type', 'application/json');
+        const res = await fetch("http://"+BASE_URL+":30024/v1/bovines/"+Bovine.tag,
+        {
+          method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors',
+          headers: headers,
+        });
+        const bovinoDB = await res.json();
+        console.log('Bovino:', bovinoDB);
+        console.log(res)
+        if(res.status===200)
+        {
+          router.push('/');
+        }
+        if(res.status === 404 || res.status === 401){
+          console.log(res.statusText);
+          return commit('setError', res.statusText);
+        }
+        commit('setError', null);
+      } catch (error) {
+        console.error(error);
+      }
+    }
   },
   getters: {
     isAuthenticated(state){
