@@ -9,7 +9,7 @@ import login from "./login";
 let routes = []
 const localRoutes = [
   {
-    path: '/home',
+    path: '/',
     name: 'Home',
     meta: { requiresAuth: true },
     component: Home
@@ -30,8 +30,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-  console.log("isAuthenticated", store.getters.isAuthenticated);
-  if (requiresAuth && !store.getters.isAuthenticated) {
+  const isAuth = store.state.auth.user;
+  if (requiresAuth && !isAuth) {
       next("/login");
   } else {
       next();
