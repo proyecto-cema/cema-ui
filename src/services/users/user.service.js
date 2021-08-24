@@ -1,11 +1,10 @@
-import {httpUsers} from "../http-common"
-import authHeader from "../auth/auth-header";
-
+import { httpUsers } from '../http-common'
+import authHeader from '../auth/auth-header'
 
 class UserService {
-    getUserData() {
-        return httpUsers.post("users", {}, authHeader())
-    }
+  getUserData () {
+    return httpUsers.post('users', {}, { headers: authHeader() })
+  }
 }
 
-export default new UserService();
+export default new UserService()
