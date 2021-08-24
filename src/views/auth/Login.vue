@@ -82,19 +82,6 @@ export default {
   },
   created() {
     if (this.loggedIn) {
-      UserService.getUserData().then(
-          (response) => {
-            this.content = response.data;
-          },
-          (error) => {
-            this.content =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                error.message ||
-                error.toString();
-          }
-      );
       this.$router.push("/");
     }
   },
