@@ -2,9 +2,9 @@ import AddBovine from '../views/Bovine/AddBovine.vue'
 
 const routes = [
     {
-        path: '/bovinos/nuevo',
+        path: '/bovinos/formulario/:tag?',
         name: 'AddBovine',
-        meta: { requiresAuth: false },
+        meta: { requiresAuth: true },
         component: AddBovine
     },
     {

@@ -4,7 +4,7 @@ import authHeader from "../auth/auth-header";
 
 class UserService {
     getUserData() {
-        return httpUsers.post("users", {}, authHeader())
+        return httpUsers.post("users", {}, { headers: authHeader()})
     }
 }
 

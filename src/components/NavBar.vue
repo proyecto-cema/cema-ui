@@ -16,7 +16,7 @@
               </a>
               <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownBovines">
                 <li>
-                  <router-link class="nav-link" to="/bovinos/nuevo">
+                  <router-link class="nav-link" to="/bovinos/formulario">
                     Cargar Bovino
                   </router-link>
                 </li>
