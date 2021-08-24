@@ -10,13 +10,13 @@
           <p>{{ confirmationMessage }}</p>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary text-white" data-bs-dismiss="modal"
-                  type="button" v-on:click="acceptModal()">
-            {{ btnAccept !== null ? btnAccept: "Si"}}
-          </button>
           <button class="btn btn-dark text-white" data-bs-dismiss="modal"
                   type="button" v-on:click="rejectModal()">
             {{ btnReject !== null ? btnReject: "No"}}
+          </button>
+          <button class="btn btn-primary text-white" data-bs-dismiss="modal"
+                  type="button" v-on:click="acceptModal()">
+            {{ btnAccept !== null ? btnAccept: "Si"}}
           </button>
         </div>
       </div>

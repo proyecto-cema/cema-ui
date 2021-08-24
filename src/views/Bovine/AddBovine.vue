@@ -79,23 +79,23 @@
             <div class="row">
               <div class="col-lg-2 offset-lg-6 col-sm-4 col-4"
                    v-bind:class="this.edit?'offset-lg-6':'offset-lg-8 offset-sm-4 offset-4'">
-                <button class="btn btn-primary text-white button-margin" data-bs-target="#SaveModal" data-bs-toggle="modal"
+                <button class="btn btn-dark text-white button-margin" data-bs-target="#CancelModal" data-bs-toggle="modal"
                         type="button">
-                  Guardar
+                  Cancelar
                 </button>
               </div>
               <div v-if=(this.edit) class="col-lg-2 col-sm-4 col-4">
                 <div>
                   <button class="btn btn-danger text-white button-margin" data-bs-target="#DeleteModal" data-bs-toggle="modal"
                           type="button">
-                    Elimilar
+                    Eliminar
                   </button>
                 </div>
               </div>
               <div class="col-lg-2 col-sm-4 col-4">
-                <button class="btn btn-dark text-white button-margin" data-bs-target="#CancelModal" data-bs-toggle="modal"
+                <button class="btn btn-primary text-white button-margin" data-bs-target="#SaveModal" data-bs-toggle="modal"
                         type="button">
-                  Cancelar
+                  Guardar
                 </button>
               </div>
             </div>
@@ -154,6 +154,8 @@ export default {
     console.log(this.edit)
     if (this.edit){
       this.formRetrieveBovine()
+    }else{
+      this.borrarDatos();
     }
   },
   computed: {
@@ -173,8 +175,8 @@ export default {
       this.success = null;
       this.errorSave = {
         tag: (this.bovine.tag == null || this.bovine.tag === ""),
-        taggingDate: (this.bovine.genre == null || this.bovine.genre === ""),
-        genre: (this.bovine.taggingDate == null || this.bovine.taggingDate === "")
+        taggingDate: (this.bovine.taggingDate == null || this.bovine.taggingDate === ""),
+        genre: (this.bovine.genre == null || this.bovine.genre === "")
       }
       if (this.errorSave.taggingDate || this.errorSave.tag || this.errorSave.genre) {
         console.error(this.errorSave)
