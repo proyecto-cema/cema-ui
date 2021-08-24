@@ -1,4 +1,5 @@
 import AddBovine from '../views/Bovine/AddBovine.vue'
+import ListBovine from '../views/Bovine/ListBovine.vue'
 
 const routes = [
     {
@@ -10,8 +11,8 @@ const routes = [
     {
         path: '/bovinos/listado',
         name: 'ListBovine',
-        meta: { requiresAuth: true },
-        component: AddBovine
+        meta: { requiresAuth: false },
+        component: ListBovine
     }
 ]
 
