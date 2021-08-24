@@ -1,10 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import store from '@/store';
+import store from '@/store'
 import Home from '../views/Home.vue'
 import About from '../views/About.vue'
-import bovine from "./bovine";
-import login from "./login";
-
+import bovine from './bovine'
+import login from './login'
 
 let routes = []
 const localRoutes = [
@@ -29,13 +28,13 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-  const isAuth = store.state.auth.user;
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  const isAuth = store.state.auth.user
   if (requiresAuth && !isAuth) {
-      next("/login");
+    next('/login')
   } else {
-      next();
+    next()
   }
-});
+})
 
 export default router
