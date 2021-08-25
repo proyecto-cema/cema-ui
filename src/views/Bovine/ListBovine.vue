@@ -1,114 +1,91 @@
 <template>
-  <div class="row text-center"  >
-    <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10   col-sm-12">
-      <form @submit.prevent="procesarFormulario" style="border-radius: 10px;margin-top:100px; background: #ffffff;" class="borderDiv">
-        <div>
-          <div style="background-color:black;padding-bottom: 1px;margin-bottom: 5px;">
-            <h3 style="color:white">Listado Bovinos</h3>
-          </div>
-          <div class="col-10 offset-1">
-            <div class="row">
-              <div class="col-12 col-md-6 marginSeccion">
-                <div class="textLeft"><label>Caravana</label></div>
-                  <input 
-                  type="text"
-                  placeholder="Tag"
-                  class="form-control marginButton"
-                  v-model.trim="bovine.tag"
-                  maxlength="10" required
-                >
-              </div>
-              <div class="col-12 col-md-6 marginSeccion">
-                <div class="textLeft"><label>Fecha de caravaneo</label></div>
-                <input 
-                  type="date"
-                  placeholder="Fecha"
-                  class="form-control marginButton"
-                  v-model.trim="bovine.taggingDate"
-                >
-              </div>
-              <div class="col-12 col-md-6 marginSeccion">
-                <div class="textLeft"><label>Sexo</label></div>
-                <select id="sexo" v-model="bovine.genre" class="form-control invalid-arrow marginButton">
-                  <option value="" selected="selected">Seleccionar</option>
-                  <option value="Masculino" selected="Masculino">Masculino</option>
-                  <option value="Femenino" selected="Femenino">Femenino</option>
-                </select>   
-              </div>
-              <div class="col-12 col-md-6" style="margin-top: 15px;">
-                <button type="button" class="btn btn-info text-white button-margin" style="float: left;" data-bs-toggle="modal" data-bs-target="#SabeModal">
-                   Buscar    
-                </button>
-                <button type="button" class="btn btn-info text-white button-margin" style="float: right;" data-bs-toggle="modal" data-bs-target="#SabeModal">
-                  Agregar Nuevo    
-                </button>  
-              </div>
-              <div class="col-12">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">TAG</th>
-                      <th scope="col">Genero</th>
-                      <th scope="col">Descripcion</th>
-                      <th scope="col">Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th >123</th>
-                      <td>Masculino</td>
-                      <td>Otto</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <th >124</th>
-                      <td>Masculino</td>
-                      <td>Thornton</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <th >125</th>
-                      <td>Masculino</td>
-                      <td>the Bird</td>
-                      <td></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div> 
-            </div>
-          </div>
-        </div>
-      </form>
+  <form @submit.prevent="procesarFormulario">
+    <div style="background-color:black;padding-bottom: 1px;margin-bottom: 5px;">
+      <h3 style="color:white">Listado Bovinos</h3>
     </div>
-  </div>
+    <div class="row">
+      <div class="col-12 col-md-6 marginSeccion">
+        <div class="textLeft"><label>Caravana</label></div>
+        <input
+            v-model.trim="search.tag"
+            class="form-control marginButton"
+            maxlength="10"
+            placeholder="Tag"
+            required type="text"
+        >
+      </div>
+      <div class="col-12 col-md-6 marginSeccion">
+        <div class="textLeft"><label>Fecha de caravaneo</label></div>
+        <input
+            v-model.trim="search.taggingDate"
+            class="form-control marginButton"
+            placeholder="Fecha"
+            type="date"
+        >
+      </div>
+      <div class="col-12 col-md-6 marginSeccion">
+        <div class="textLeft"><label>Sexo</label></div>
+        <select id="sexo" v-model="search.genre" class="form-control invalid-arrow marginButton">
+          <option selected="selected" value="">Seleccionar</option>
+          <option selected value="Masculino">Masculino</option>
+          <option selected value="Femenino">Femenino</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-6" style="margin-top: 15px;">
+        <button class="btn btn-info text-white button-margin" data-bs-target="#SabeModal" data-bs-toggle="modal"
+                style="float: left;" type="button">
+          Buscar
+        </button>
+        <button class="btn btn-info text-white button-margin" data-bs-target="#SabeModal" data-bs-toggle="modal"
+                style="float: right;" type="button">
+          Agregar Nuevo
+        </button>
+      </div>
+      <div class="col-12">
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">TAG</th>
+            <th scope="col">Descripcion</th>
+            <th scope="col">Genero</th>
+            <th scope="col">Fecha</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr v-for="bovine in bovines">
+              <td v-for="attr in bovine">{{ attr }}</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </form>
 </template>
 <script>
-import { mapActions, mapState } from "vuex";
+import {mapActions} from "vuex";
 
 export default {
   name: "ListBovine",
   data() {
     return {
+      search: {tag:null,genre:null,taggingDate:null},
       fields: ['first_name', 'last_name', 'age'],
-      bovines: [
-        { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-        { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-        { age: 89, first_name: 'Geneva', last_name: 'Wilson' }
-      ],
-      bovine:[{}]
+      bovines: [],
     };
   },
+  mounted() {
+    this.listBovines(0, 10).then(
+        (response) => {
+          this.bovines = response.data;
+          console.log(response);
+        }
+    )
+  },
   computed: {
-    ...mapState("bovine", ["bovine"]),
-    ...mapState("bovine", ["error"]),
-    
   },
   methods: {
-    ...mapActions("bovine", ["getAllBovine"]),
-    ...mapActions("bovine", ["deleteBovine"]),
-    ...mapActions("bovine", ["borrarDatos"]),
-
-    
+    ...mapActions("bovine", ["listBovines", "deleteBovine", "clearBovineData"]),
   },
 };
 </script>
@@ -116,16 +93,13 @@ export default {
 .textLeft {
   text-align: left !important;
 }
+
 .marginButton {
-  margin-top: 0px !important;
+  margin-top: 0 !important;
 }
+
 .marginSeccion {
   margin-bottom: 8px;
-}
-.borderDiv {
-  border: solid;
-  padding-left: 0px;
-  padding-right: 0px;
 }
 
 

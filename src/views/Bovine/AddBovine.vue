@@ -1,7 +1,6 @@
 <template>
   <div class="row text-center">
-    <div class="offset-lg-2 col-10 col-lg-8 col-sm-10">
-
+    <div class="offset-lg-2 col-12 col-lg-8">
       <form class="borderDiv" style="border-radius: 10px;margin-top:100px; background: #ffffff;"
             @submit.prevent="">
         <div style="background-color:black;padding-bottom: 1px;margin-bottom: 5px;">
@@ -23,7 +22,7 @@
                     :class="[errorSave.tag ? 'is-invalid' : '']"
                     :readonly="edit"
                     class="form-control marginButton"
-                    maxlength="10" placeholder="Tag" required
+                    maxlength="10" placeholder="Caravana" required
                     type="text"
                 >
                 <div v-if="errorSave.tag" class="textError">
@@ -48,8 +47,8 @@
                 <select id="sexo" v-model="bovine.genre" :class="[errorSave.genre ? 'is-invalid' : '']"
                         class="form-control invalid-arrow marginButton" required>
                   <option selected="selected" value="">Seleccionar</option>
-                  <option selected="Masculino" value="Masculino">Masculino</option>
-                  <option selected="Femenino" value="Femenino">Femenino</option>
+                  <option selected value="Masculino">Masculino</option>
+                  <option selected value="Femenino">Femenino</option>
                 </select>
                 <div v-if="errorSave.genre" class="textError">
                   <span class="is-invalid"></span> Seleccione el género del bovino
@@ -77,7 +76,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-lg-2 offset-lg-6 col-sm-4 col-4"
+              <div class="col-lg-2 col-sm-4 col-4"
                    v-bind:class="this.edit?'offset-lg-6':'offset-lg-8 offset-sm-4 offset-4'">
                 <button class="btn btn-dark text-white button-margin" data-bs-target="#CancelModal" data-bs-toggle="modal"
                         type="button">
@@ -155,19 +154,19 @@ export default {
     if (this.edit){
       this.formRetrieveBovine()
     }else{
-      this.borrarDatos();
+      this.clearBovineData();
     }
   },
   computed: {
     ...mapState("bovine", ["bovine", "error"]),
   },
   methods: {
-    ...mapActions("bovine", ["getBovine", "saveBovine", "deleteBovine", "borrarDatos"]),
+    ...mapActions("bovine", ["getBovine", "saveBovine", "deleteBovine", "clearBovineData"]),
 
     successCall(message) {
       this.success = message;
       this.edit = false;
-      this.borrarDatos();
+      this.clearBovineData();
     },
     async formSaveBovine() {
       this.showModal = true

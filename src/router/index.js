@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
-import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 import bovine from './bovine'
 import login from './login'
@@ -11,7 +10,7 @@ const localRoutes = [
     path: '/',
     name: 'Home',
     meta: { requiresAuth: true },
-    component: Home
+    redirect: { name: 'ListBovine' }
   },
   {
     path: '/about',

@@ -53,7 +53,7 @@ const actions = {
             }
         );
     },
-    borrarDatos({commit}) {
+    clearBovineData({commit}) {
         commit('setBovine', null)
     },
     async saveBovine({commit}, {edit, bovine}) {
@@ -73,10 +73,25 @@ const actions = {
     },
     async deleteBovine({commit}, tag) {
         return BovineService.deleteBovine(tag).then(
-            bovine => {
+            response => {
                 console.log("Delete bovine with tag:", tag)
                 commit('setBovine', null);
-                return Promise.resolve(bovine);
+                return Promise.resolve(response);
+            },
+            error => {
+                if(error.status === 404 || error.status === 401){
+                    commit('setError', error.statusText);
+                }
+                console.error(error);
+                return Promise.reject(error);
+            }
+        );
+    },
+    async listBovines({commit}, page, size) {
+        return BovineService.getBovineList(page, size).then(
+            response => {
+                console.log(response.data);
+                return Promise.resolve(response);
             },
             error => {
                 if(error.status === 404 || error.status === 401){
