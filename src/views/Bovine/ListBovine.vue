@@ -32,11 +32,13 @@
         </select>
       </div>
       <div class="col-12 col-md-6" style="margin-top: 15px;">
-        <button class="btn btn-info text-white button-margin" data-bs-target="#SabeModal" data-bs-toggle="modal"
+        <button class="btn btn-info text-white button-margin"
+                v-on:click="this.searchBovines()"
                 style="float: left;" type="button">
           Buscar
         </button>
-        <button class="btn btn-info text-white button-margin" data-bs-target="#SabeModal" data-bs-toggle="modal"
+        <button class="btn btn-info text-white button-margin"
+                v-on:click="this.$router.push('/bovinos/formulario')"
                 style="float: right;" type="button">
           Agregar Nuevo
         </button>
@@ -84,25 +86,26 @@ export default {
     };
   },
   mounted() {
-    this.listBovines(0, 10).then(
-        (response) => {
-          this.bovines = response.data;
-          console.log(response);
-        }
-    )
+    this.searchBovines();
   },
   computed: {
   },
   methods: {
     ...mapActions("bovine", ["listBovines", "deleteBovine", "clearBovineData"]),
     async formDeleteBovine(tag, index) {
-      this.errorSave = {};
-      this.success = null;
       this.deleteBovine(tag).then(
           () => {
             this.bovines.splice(index, 1);
           }
       );
+    },
+    async searchBovines(page=0, size=10) {
+      this.listBovines(page, size, this.search).then(
+          (response) => {
+            this.bovines = response.data;
+            console.log(response);
+          }
+      )
     }
   },
 };

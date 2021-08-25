@@ -87,8 +87,8 @@ const actions = {
             }
         );
     },
-    async listBovines({commit}, page, size) {
-        return BovineService.getBovineList(page, size).then(
+    async listBovines({commit}, page, size, searchParams) {
+        return BovineService.getBovineList(page, size, searchParams).then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);

@@ -18,8 +18,8 @@ class BovineService {
     return httpBovines.delete('bovines/' + tag, { headers: authHeader() })
   }
 
-  getBovineList (page=0, size=10) {
-    return httpBovines.get('bovines/search', { params:{page:page, size:size}, headers: authHeader() })
+  getBovineList (page=0, size=10, searchParams={tag:null, genre:null, taggingDate:null}) {
+    return httpBovines.get('bovines/search', { params:{page:page, size:size, ...searchParams}, headers: authHeader() })
   }
 }
 
