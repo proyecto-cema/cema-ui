@@ -52,9 +52,18 @@
           </tr>
           </thead>
           <tbody>
-            <tr v-for="bovine in bovines">
-              <td v-for="attr in bovine">{{ attr }}</td>
-              <td></td>
+            <tr v-for="(bovine, index) in bovines" :key="bovine.tag">
+              <td v-for="attr in bovine" :key="attr">{{ attr }}</td>
+              <td>
+                <font-awesome-icon
+                    v-on:click="this.$router.push('/bovinos/formulario/?tag='+bovine.tag)"
+                    icon="edit">
+                </font-awesome-icon>
+                <font-awesome-icon
+                    v-on:click="formDeleteBovine(bovine.tag, index)"
+                    icon="trash">
+                </font-awesome-icon>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -69,7 +78,7 @@ export default {
   name: "ListBovine",
   data() {
     return {
-      search: {tag:null,genre:null,taggingDate:null},
+      search: {tag:null, genre:null, taggingDate:null},
       fields: ['first_name', 'last_name', 'age'],
       bovines: [],
     };
@@ -86,6 +95,15 @@ export default {
   },
   methods: {
     ...mapActions("bovine", ["listBovines", "deleteBovine", "clearBovineData"]),
+    async formDeleteBovine(tag, index) {
+      this.errorSave = {};
+      this.success = null;
+      this.deleteBovine(tag).then(
+          () => {
+            this.bovines.splice(index, 1);
+          }
+      );
+    }
   },
 };
 </script>
