@@ -12,8 +12,17 @@ const mutations = {
         state.bovine = payload === null ? {tag: null, genre: "", description: null, taggingDate: null} : payload
         state.error = {type: null, message: null};
     },
-    setError(state, payload) {
+    setError(state, error) {
         let message = 'ERROR indefinido, intente nuevamente mas tarde.';
+        let payload;
+        if(error.response){
+            if([404, 401, 409].includes(error.response.status)){
+                payload = error.response.statusText;
+            }
+        }else{
+            payload = error.message;
+        }
+        console.error(error);
         switch (payload){
             case null:
                 return state.error = {type: null, message: null};
@@ -45,10 +54,7 @@ const actions = {
                 return Promise.resolve(bovine);
             },
             error => {
-                if(error.status === 404 || error.status === 401){
-                    commit('setError', error.statusText);
-                }
-                console.error(error);
+                commit('setError', error);
                 return Promise.reject(error);
             }
         );
@@ -63,10 +69,7 @@ const actions = {
                 return Promise.resolve(bovine);
             },
             error => {
-                if([404, 401, 409].includes(error.status)){
-                    commit('setError', error.statusText);
-                }
-                console.error(error);
+                commit('setError', error);
                 return Promise.reject(error);
             }
         );
@@ -79,10 +82,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                if(error.status === 404 || error.status === 401){
-                    commit('setError', error.statusText);
-                }
-                console.error(error);
+                commit('setError', error);
                 return Promise.reject(error);
             }
         );
@@ -94,10 +94,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                if(error.status === 404 || error.status === 401){
-                    commit('setError', error.statusText);
-                }
-                console.error(error);
+                commit('setError', error);
                 return Promise.reject(error);
             }
         );
