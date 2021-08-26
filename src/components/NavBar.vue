@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar navbar-expand-lg navbar-dark bg-dark d-flex">
     <div class="container-fluid">
       <router-link to="/" class="navbar-brand">
         <img src="../assets/images/cema_logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top"/>
@@ -8,11 +8,11 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <div v-if="currentUser" class="navbar-nav me-auto">
+        <ul class="navbar-nav mb-2 mb-lg-0 flex-grow-1">
+          <div v-if="currentUser" class="navbar-nav flex-grow-1">
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdownBovines" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Bovinos
+                <font-awesome-icon icon="hat-cowboy"/> Bovinos
               </a>
               <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownBovines">
                 <li>
@@ -29,14 +29,14 @@
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdownActivities" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Actividades
+                <font-awesome-icon icon="lightbulb"/> Actividades
               </a>
               <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownActivities">
               </ul>
             </li>
             <li class="nav-item dropdown" >
               <a class="nav-link dropdown-toggle" href="#" id="dropdownHealth" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Salud
+                <font-awesome-icon icon="heartbeat"/> Salud
               </a>
               <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownHealth">
               </ul>
@@ -49,7 +49,7 @@
                   class="nav-link"
                   to="/login"
               >
-                Ingresar
+                <font-awesome-icon icon="sign-in-alt" /> Ingresar
               </router-link>
             </li>
           </div>
