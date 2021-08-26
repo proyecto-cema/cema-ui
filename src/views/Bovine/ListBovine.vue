@@ -1,7 +1,7 @@
 <template>
   <div class="row text-center"  >
     <div class="col-12">
-      <form @submit.prevent="procesarFormulario" style="border-radius: 10px;margin-top:100px; background: #ffffff;" class="borderDiv">
+      <form @submit.prevent="procesarFormulario" style="border-radius: 10px;margin-top:50px; background: #ffffff;" class="borderDiv">
         <div>
           <div class="header">
             <h3 style="color:white">Listado Bovinos</h3>
@@ -13,7 +13,7 @@
                   + Agregar Nuevo    
                 </button>  
               </div>
-              <div class="col-12 col-md-6  col-lg-4 marginSeccion">
+              <div class="col-12 col-md-6 col-lg-4 marginSeccion">
                 <input
                   v-model.trim="search.tag"
                   class="form-control marginButton"
@@ -55,11 +55,12 @@
              <div class="col-12 table-responsive">
                 <table class="table">
                   <thead>
-                    <tr v-if="headers.totalelements != 0">
+                    <tr v-if="headers.totalElements !== 0">
                       <th scope="col">Caravana</th>
-                      <th scope="col">Descripcion</th>
-                      <th scope="col">Genero</th>
-                      <th scope="col">Fecha</th>
+                      <th scope="col" v-if="!this.isMobile">Descripcion</th>
+                      <th scope="col" v-if="!this.isMobile">Genero</th>
+                      <th scope="col">Fecha de Caravaneo</th>
+                      <th scope="col">Acciones</th>
                     </tr>
                     <tr v-else>
                       <th scope="col">No hay resultados disponibles</th>
@@ -68,9 +69,9 @@
                   <tbody>
                     <tr v-for="(bovine, index) in bovines" :key="bovine.tag">
                       <td>{{ bovine.tag }}</td>
-                      <td>{{ bovine.description }}</td>
-                      <td>{{ bovine.genre }}</td>
-                      <td>{{moment(date).format('YYYY/MM/DD')}}</td>
+                      <td v-if="!this.isMobile">{{ bovine.description }}</td>
+                      <td v-if="!this.isMobile">{{ bovine.genre }}</td>
+                      <td>{{moment(bovine.taggingDate).format('DD/MM/YYYY')}}</td>
                       <td>
                         <font-awesome-icon
                             class="marginEdit"
@@ -86,13 +87,24 @@
                   </tbody>
                 </table>
                 </div>
-                <div class="col-12" style="margin-bottom: 15px;">
+                <div class="col-12" style="margin-bottom: 15px;" v-if="headers.totalPages > 1">
                   <div class="btn-group" role="group" aria-label="Large button group" >
-                    <button type="button" class="btn btn-outline-dark" v-on:click="this.searchPrevBovines()">Anterior</button>
-                    <div v-for="i in headers.totalpages" :key="i">
-                      <button type="button" class="btn btn-outline-dark botonPages" style="" v-on:click="this.searchPrevBovines()">{{i}}</button>
+                    <button type="button" class="btn btn-outline-dark" :class="headers.currentPage <= 0? 'disabled':''"
+                            v-on:click="this.searchBovinePage(this.headers.currentPage-1)">
+                      Anterior
+                    </button>
+                    <div v-for="i in headers.totalPages" :key="i">
+                      <button type="button" class="btn botonPages"
+                              :class="headers.currentPage === i-1? 'btn-dark':'btn-outline-dark'"
+                              v-on:click="this.searchBovinePage(i-1)">
+                        {{i}}
+                      </button>
                     </div>
-                  <button type="button" class="btn btn-outline-dark" v-on:click="this.searchNextBovines()">Siguiente</button>
+                  <button type="button" class="btn btn-outline-dark"
+                          :class="headers.currentPage >= headers.totalPages-1? 'disabled':''"
+                          v-on:click="this.searchBovinePage(this.headers.currentPage+1)">
+                    Siguiente
+                  </button>
                 </div>
               </div> 
             </div>
@@ -111,31 +123,33 @@ export default {
     return {
       search: {tag:null, genre:"", description:null},
       bovines: [],
-      size:10,
-      page:0,
-      headers: {totalpages:0 ,currentpage:0 ,totalelements:0},
+      headers: {totalPages:0 ,currentPage:0 ,totalElements:0},
+      isMobile: false
     };
+  },
+  beforeDestroy () {
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('resize', this.onResize, { passive: true })
+    }
   },
   mounted() {
     this.searchBovines();
+    this.onResize()
+    window.addEventListener('resize', this.onResize, { passive: true })
   },
   computed: {
   },
   methods: {
     ...mapActions("bovine", ["listBovines", "deleteBovine", "clearBovineData"]),
-    moment: function () {
+    onResize () {
+      this.isMobile = screen.width <= 760
+    },
+    moment() {
       return moment();
     },
-    async searchNextBovines() {
-      this.page=this.page+1;
-      this.searchBovines(this.page,this.size)
-    },
-    async searchPrevBovines() {
-      if(this.page!=0)
-      {
-        this.page=this.page-1;
-      }
-      this.searchBovines(this.page,this.size)
+    async searchBovinePage(page) {
+      console.log(`You are in page ${this.headers.currentPage}, and requesting ${page} page`);
+      await this.searchBovines(page, this.isMobile ? 5 : 10)
     },
     async clearBovineData() {
       this.bovines=[];
@@ -154,9 +168,9 @@ export default {
           (response) => {
             this.bovines = response.data;
             console.log(response);
-            this.headers.totalpages=parseInt(response.headers["total-pages"]);
-            this.headers.currentpage=response.headers["current-page"];
-            this.headers.totalelements=response.headers["total-elements"];
+            this.headers.totalPages=parseInt(response.headers["total-pages"]);
+            this.headers.currentPage=parseInt(response.headers["current-page"]);
+            this.headers.totalElements=parseInt(response.headers["total-elements"]);
           }
       )
     }
