@@ -143,6 +143,7 @@ export default {
     ...mapActions("bovine", ["listBovines", "deleteBovine", "clearBovineData"]),
     onResize () {
       this.isMobile = screen.width <= 760
+      this.searchBovinePage(this.headers.currentPage);
     },
     moment() {
       return moment();

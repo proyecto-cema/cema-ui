@@ -36,7 +36,7 @@
                     :class="[errorSave.taggingDate  ? 'is-invalid' : '']"
                     class="form-control marginButton"
                     placeholder="Fecha" required
-                    type="date"
+                    type="date" :max="getToday"
                 >
                 <div v-if="errorSave.taggingDate" class="textError">
                   <span class="is-invalid"></span> Ingrese la fecha del caravaneo
@@ -126,6 +126,7 @@
 import {mapActions, mapState} from "vuex";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { Modal } from 'bootstrap'
+import moment from "moment";
 
 
 export default {
@@ -159,6 +160,9 @@ export default {
   },
   computed: {
     ...mapState("bovine", ["bovine", "error"]),
+    getToday(){
+      return moment().format("YYYY-MM-DD")
+    }
   },
   methods: {
     ...mapActions("bovine", ["getBovine", "saveBovine", "deleteBovine", "clearBovineData"]),
