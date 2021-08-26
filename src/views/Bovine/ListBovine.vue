@@ -3,7 +3,7 @@
     <div class="col-12">
       <form @submit.prevent="procesarFormulario" style="border-radius: 10px;margin-top:100px; background: #ffffff;" class="borderDiv">
         <div>
-          <div style="background-color:black;padding-bottom: 1px;margin-bottom: 5px;">
+          <div class="header">
             <h3 style="color:white">Listado Bovinos</h3>
           </div>
           <div class="col-10 offset-1">
@@ -25,8 +25,8 @@
               <div class="col-12 col-md-6 col-lg-4  marginSeccion">
                 <select id="sexo" v-model="search.genre" class="form-control invalid-arrow marginButton">
                   <option selected="selected" value="">Sexo (Seleccionar)</option>
-                  <option selected value="Masculino">Masculino</option>
-                  <option selected value="Femenino">Femenino</option>
+                  <option selected value="Macho">Macho</option>
+                  <option selected value="Hembra">Hembra</option>
                 </select>
               </div>
               <div class="col-12 col-md-6 col-lg-4  marginSeccion">
@@ -183,5 +183,10 @@ export default {
   margin-right: 15px;
   margin-left: 15px;
 }
-
+.header{
+  background-color:black;
+  padding-bottom: 1px;margin-bottom: 5px;
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px;
+}
 </style>

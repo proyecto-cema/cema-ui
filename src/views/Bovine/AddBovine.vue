@@ -3,7 +3,7 @@
     <div class="offset-lg-2 col-12 col-lg-8">
       <form class="borderDiv" style="border-radius: 10px;margin-top:100px; background: #ffffff;"
             @submit.prevent="">
-        <div style="background-color:black;padding-bottom: 1px;margin-bottom: 5px;">
+        <div class="header" >
           <h3 style="color:white">{{ edit ? "Editar Bovino" : "Registrar Bovino" }}</h3>
         </div>
         <div class="row">
@@ -47,8 +47,8 @@
                 <select id="sexo" v-model="bovine.genre" :class="[errorSave.genre ? 'is-invalid' : '']"
                         class="form-control invalid-arrow marginButton" required>
                   <option selected="selected" value="">Seleccionar</option>
-                  <option selected value="Masculino">Masculino</option>
-                  <option selected value="Femenino">Femenino</option>
+                  <option selected value="Macho">Macho</option>
+                  <option selected value="Hembra">Hembra</option>
                 </select>
                 <div v-if="errorSave.genre" class="textError">
                   <span class="is-invalid"></span> Seleccione el género del bovino
@@ -257,5 +257,10 @@ export default {
   color: red;
   font-size: 14px;
 }
-
+.header{
+  background-color:black;
+  padding-bottom: 1px;margin-bottom: 5px;
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px;
+}
 </style>
