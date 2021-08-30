@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 import About from '../views/About.vue'
 import bovine from './bovine'
+import establishment from './establishment'
 import login from './login'
 
 let routes = []
@@ -19,7 +20,7 @@ const localRoutes = [
     component: About
   }
 ]
-routes = routes.concat(localRoutes, bovine, login)
+routes = routes.concat(localRoutes, bovine, login, establishment)
 
 const router = createRouter({
   history: createWebHistory(),

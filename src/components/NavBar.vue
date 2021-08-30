@@ -32,6 +32,11 @@
                 <font-awesome-icon icon="lightbulb"/> Actividades
               </a>
               <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownActivities">
+                <li>
+                  <router-link class="nav-link" to="/establecimiento/formulario">
+                    Cargar Establecimiento
+                  </router-link>
+                </li>
               </ul>
             </li>
             <li class="nav-item dropdown" >
