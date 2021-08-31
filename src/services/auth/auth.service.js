@@ -8,19 +8,11 @@ class AuthService {
                 password: user.password
             })
             .then(response => {
-                let allData = null;
                 if (response.data.token) {
-                    allData = httpUsers.post('users', {},{ headers: { Authorization: 'Bearer ' + response.data.token } }).then(
-                        (userResponse) => {
-                            allData = {...userResponse.data, ...response.data};
-                            localStorage.setItem('user', JSON.stringify(allData));
-                            return allData;
-                        }
-                    );
-
+                    localStorage.setItem('user', JSON.stringify(response.data));
                 }
-                console.log(allData)
-                return allData !== null ? allData : response.data;
+                console.log(response.data)
+                return response.data;
             });
     }
 
