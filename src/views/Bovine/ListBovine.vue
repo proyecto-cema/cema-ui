@@ -113,10 +113,16 @@
       </form>
     </div>
   </div>
+  <confirmation-modal
+      :confirmation-message="'¿Confirma que desea eliminar al bovino con caravana ' + this.deleted['tag'] + '?'"
+      modal-id="DeleteModal" title="Eliminar"
+      @acceptModal="modalDelete()" @rejectModal="this.modal.hide(); this.deleted = {}"></confirmation-modal>
 </template>
 <script>
 import {mapActions} from "vuex";
-import moment from 'moment' 
+import moment from 'moment'
+import {Modal} from "bootstrap";
+import ConfirmationModal from "../../components/ConfirmationModal";
 export default {
   name: "ListBovine",
   data() {
@@ -124,20 +130,24 @@ export default {
       search: {tag:null, genre:"", description:null},
       bovines: [],
       headers: {totalPages:0 ,currentPage:0 ,totalElements:0},
-      isMobile: false
+      isMobile: false,
+      deleted: {},
+      modal: null
     };
+  },
+  components:{
+    ConfirmationModal
   },
   beforeDestroy () {
     if (typeof window !== 'undefined') {
-      window.removeEventListener('resize', this.onResize, { passive: true })
+      window.removeEventListener('resize', this.onResize, { passive: true });
     }
   },
   mounted() {
+    this.modal = new Modal(document.getElementById('DeleteModal'));
     this.searchBovines();
-    this.onResize()
-    window.addEventListener('resize', this.onResize, { passive: true })
-  },
-  computed: {
+    this.onResize();
+    window.addEventListener('resize', this.onResize, { passive: true });
   },
   methods: {
     ...mapActions("bovine", ["listBovines", "deleteBovine", "clearBovineData"]),
@@ -157,9 +167,17 @@ export default {
       this.search= {tag:null, genre:"", description:null};
     },
     async formDeleteBovine(tag, index) {
-      this.deleteBovine(tag).then(
+      this.deleted = {
+        tag: tag,
+        index: index
+      };
+      this.modal.show()
+    },
+    async modalDelete(){
+      this.modal.hide()
+      this.deleteBovine(this.deleted["tag"]).then(
           () => {
-            this.bovines.splice(index, 1);
+            this.bovines.splice(this.deleted["index"], 1);
           }
       );
     },
