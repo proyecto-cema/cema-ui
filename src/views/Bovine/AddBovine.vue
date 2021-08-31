@@ -16,7 +16,7 @@
           <div class="col-lg-7 col-sm-12">
             <div class="row">
               <div class="col-lg-6 offset-lg-0 col-sm-10 offset-sm-1 col-10 offset-1 marginSeccion">
-                <div class="textLeft"><label>Caravana</label></div>
+                <div class="textLeft"><label>Caravana<small style="color: red">*</small></label></div>
                 <input
                     v-model.trim="bovine.tag"
                     :class="[errorSave.tag ? 'is-invalid' : '']"
@@ -30,7 +30,7 @@
                 </div>
               </div>
               <div class="col-lg-6 offset-lg-0 col-sm-10 offset-sm-1 col-10 offset-1 marginSeccion">
-                <div class="textLeft"><label>Fecha de caravaneo</label></div>
+                <div class="textLeft"><label>Fecha de caravaneo<small style="color: red">*</small></label></div>
                 <input
                     v-model.trim="bovine.taggingDate"
                     :class="[errorSave.taggingDate  ? 'is-invalid' : '']"
@@ -43,7 +43,7 @@
                 </div>
               </div>
               <div class="col-lg-6 offset-lg-0 col-sm-10 offset-sm-1 col-10 offset-1 marginSeccion">
-                <div class="textLeft"><label>Sexo</label></div>
+                <div class="textLeft"><label>Sexo<small style="color: red">*</small></label></div>
                 <select id="sexo" v-model="bovine.genre" :class="[errorSave.genre ? 'is-invalid' : '']"
                         class="form-control invalid-arrow marginButton" required>
                   <option selected="selected" value="">Seleccionar</option>
@@ -51,7 +51,7 @@
                   <option selected value="Hembra">Hembra</option>
                 </select>
                 <div v-if="errorSave.genre" class="textError">
-                  <span class="is-invalid"></span> Seleccione el género del bovino
+                  <span class="is-invalid"></span> Seleccione el sexo del bovino
                 </div>
               </div>
               <div class="col-lg-12 offset-lg-0 col-sm-10 offset-sm-1 col-10 offset-1 marginSeccion">
