@@ -4,8 +4,6 @@ import {
   BASE_URL,
   BOVINE_CONTEXT,
   BOVINE_VERSION,
-  ESTABLISHMENT_CONTEXT,
-  ESTABLISHMENT_VERSION,
   LOGIN_CONTEXT,
   LOGIN_VERSION
 } from '../constants'
@@ -26,6 +24,3 @@ export const httpAdministration = axios.create({
   baseURL: BASE_URL + ADMINISTRATION_CONTEXT + ADMINISTRATION_VERSION,
   headers: headers
 })
-
-
-ADMINISTRATION_VERSION

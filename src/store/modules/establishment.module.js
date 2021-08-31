@@ -2,13 +2,13 @@ import EstablishmentService from '../../services/Administration/establishment.se
 import UsersService from '../../services/users/user.service';
 
 const state = {
-    establishment: {name: null, cuig: null, location: null, phone: null, email: null, owner: "" },
+    establishment: {name: null, cuig: null, location: null, phone: null, email: null, ownerUserName: "" },
     error: {type: null, message: null}
 }
 
 const mutations = {
     setEstablishment(state, payload) {
-        state.establishment = payload === null ? { name: null, cuig: null, location: null, phone: null, email: null, owner: "" } : payload
+        state.establishment = payload === null ? { name: null, cuig: null, location: null, phone: null, email: null, ownerUserName: "" } : payload
         state.error = {type: null, message: null};
     },
     setError(state, error) {
@@ -48,6 +48,7 @@ const actions = {
         return EstablishmentService.getEstablishmentByCuig(cuig).then(
             response => {
                 let establishment = response.data;
+                console.log(establishment)
                 commit('setEstablishment', establishment);
                 return Promise.resolve(establishment);
             },

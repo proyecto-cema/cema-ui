@@ -63,10 +63,10 @@
               </div>
               <div class="col-12 col-md-6 marginSeccion">
                 <div class="textLeft"><label>Propietario</label></div>
-                <select id="sexo" v-model="establishment.owner" :class="[errorSave.owner ? 'is-invalid' : '']"
+                <select id="sexo" v-model="establishment.ownerUserName" :class="[errorSave.owner ? 'is-invalid' : '']"
                         class="form-control invalid-arrow marginButton" required>
                   <option selected="selected" value="">Seleccionar</option>
-                  <option v-for="owner in owners" :value="owner.username" :key="owner">{{owner.name+" "+owner.lastName }}</option>
+                  <option v-for="owner in owners" :value="owner.userName" :key="owner.userName">{{owner.name+" "+owner.lastName }}</option>
                 </select>
                 <div v-if="errorSave.owner" class="textError">
                   <span class="is-invalid"></span> Seleccione el propietario
@@ -157,9 +157,9 @@ export default {
   mounted() {
     this.searchOwners()
     this.cuig = this.$route.query.cuig;
-    console.log(this.cuig);
+    console.log("Owners:"+ this.owners);
     this.edit = !(this.cuig == null || this.cuig === "");
-    console.log(this.edit)
+    
     if (this.edit){
       this.formRetrieveEstablishment()
     }else{
@@ -225,6 +225,8 @@ export default {
     },
     async searchOwners() {
       this.owners=null;
+      //Se busca todos los usuarios con el rol patron
+      //Usuarios Rol patron son los dueños de los establecimientos
       this.listOwners('patron').then(
           (response) => {
             this.owners = response.data;

@@ -4,7 +4,7 @@ const routes = [
   {
     path: '/establecimiento/formulario',
     name: 'AddEstablishment',
-    meta: { requiresAuth: false },
+    meta: { requiresAuth: true },
     component: AddEstablishment
   }
 ]
