@@ -12,11 +12,11 @@
         <div class="modal-footer">
           <button class="btn btn-dark text-white" data-bs-dismiss="modal"
                   type="button" v-on:click="rejectModal()">
-            {{ btnReject !== null ? btnReject: "No"}}
+            {{ btnReject ? btnReject: "No"}}
           </button>
           <button class="btn btn-primary text-white" data-bs-dismiss="modal"
                   type="button" v-on:click="acceptModal()">
-            {{ btnAccept !== null ? btnAccept: "Si"}}
+            {{ btnAccept ? btnAccept: "Si"}}
           </button>
         </div>
       </div>
@@ -53,10 +53,10 @@ export default {
   },
   methods: {
     acceptModal() {
-      this.$emit('acceptModal')
+      this.$emit('acceptModal');
     },
     rejectModal() {
-      this.$emit('rejectModal')
+      this.$emit('rejectModal');
     }
   }
 }

@@ -92,8 +92,8 @@
                 </div>
               </div>
               <div class="col-lg-2 col-sm-4 col-4">
-                <button class="btn btn-primary text-white button-margin" data-bs-target="#SaveModal" data-bs-toggle="modal"
-                        type="button">
+                <button class="btn btn-primary text-white button-margin" :disabled="!this.bovine.tag"
+                        type="button" v-on:click="preSave()">
                   Guardar
                 </button>
               </div>
@@ -109,13 +109,14 @@
        Se cerrará la ventana y se perderán todos los cambios."
       modal-id="CancelModal" title="Cancelar" @acceptModal="this.$router.push('/')"></confirmation-modal>
   <confirmation-modal
-      confirmation-message="¿Confirma que desea guardar los datos del bovino?"
+      :confirmation-message="'¿Confirma que desea guardar los datos del bovino con caravana ' + this.bovine.tag + '?'"
       modal-id="SaveModal" title="Guardar" @acceptModal="formSaveBovine()"></confirmation-modal>
   <confirmation-modal
-      confirmation-message="¿Confirma que desea eliminar bovino?"
+      :confirmation-message="'¿Confirma que desea eliminar bovino ' + this.bovine.tag + '?'"
       modal-id="DeleteModal" title="Eliminar" @acceptModal="formDeleteBovine()"></confirmation-modal>
   <confirmation-modal
-      confirmation-message="El bovino buscado no se encuentra, ¿desea crear uno nuevo o volver al inicio?"
+      :confirmation-message="'El bovino con caravana ' + this.bovine.tag + ' no se encuentra, ' +
+       '¿desea crear uno nuevo o volver al inicio?'"
       modal-id="SearchModal" title="Bovino no encontrado"
       btn-accept="Nuevo" btn-reject="Inicio"
       @acceptModal="this.$router.push('/bovinos/formulario')"
@@ -133,7 +134,6 @@ export default {
   name: "AddBovine",
   data() {
     return {
-      showModal: false,
       success: null,
       edit: false,
       errorSave: {
@@ -172,19 +172,22 @@ export default {
       this.edit = false;
       this.clearBovineData();
     },
-    async formSaveBovine() {
-      this.showModal = true
+    async preSave(){
       this.errorSave = {};
       this.success = null;
       this.errorSave = {
-        tag: (this.bovine.tag == null || this.bovine.tag === ""),
-        taggingDate: (this.bovine.taggingDate == null || this.bovine.taggingDate === ""),
-        genre: (this.bovine.genre == null || this.bovine.genre === "")
+        tag: (!this.bovine.tag),
+        taggingDate: (!this.bovine.taggingDate),
+        genre: (!this.bovine.genre)
       }
       if (this.errorSave.taggingDate || this.errorSave.tag || this.errorSave.genre) {
         console.error(this.errorSave)
         return
       }
+      let modal = new Modal(document.getElementById('SaveModal'));
+      modal.show()
+    },
+    async formSaveBovine() {
       let data = {
         edit: this.edit,
         bovine: this.bovine
