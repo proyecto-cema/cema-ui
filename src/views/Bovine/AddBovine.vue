@@ -10,7 +10,7 @@
           <div class="col-lg-4 col-sm-12">
             <div class="contenedor">
               <img alt="Identificador" class="imageIdBovine" src="../../assets/images/Bovine/tag_bovino.png"/>
-              <div class="TextCenterImage"><h4>{{ currentUser["establishmentCuig"] }}<br>{{ bovine.tag }}</h4></div>
+              <div class="TextCenterImage"><h4>{{ bovine.establishmentCuig }}<br>{{ bovine.tag }}</h4></div>
             </div>
           </div>
           <div class="col-lg-7 col-sm-12">
@@ -162,11 +162,7 @@ export default {
     ...mapState("bovine", ["bovine", "error"]),
     getToday(){
       return moment().format("YYYY-MM-DD")
-    },
-    currentUser() {
-      console.log(this.$store.state.auth.user)
-        return this.bovine.cuig = this.$store.state.auth.user;
-      }
+    }
   },
   methods: {
     ...mapActions("bovine", ["getBovine", "saveBovine", "deleteBovine", "clearBovineData"]),

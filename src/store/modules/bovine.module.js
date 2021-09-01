@@ -3,13 +3,13 @@ import moment from 'moment'
 
 
 const state = {
-    bovine: {tag: null, genre: "", description: null, taggingDate: null, cuig: null},
+    bovine: {tag: null, genre: "", description: null, taggingDate: null, establishmentCuig: null},
     error: {type: null, message: null}
 }
 
 const mutations = {
     setBovine(state, payload) {
-        state.bovine = payload === null ? {tag: null, genre: "", description: null, taggingDate: null, cuig: null} : payload
+        state.bovine = payload === null ? {tag: null, genre: "", description: null, taggingDate: null, establishmentCuig: null} : payload
         state.error = {type: null, message: null};
     },
     setError(state, error) {
