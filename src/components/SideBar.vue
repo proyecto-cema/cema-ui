@@ -121,8 +121,6 @@ a:focus {
 
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
-  color: #fff;
-  background: #435f91;
 }
 
 a[data-toggle="collapse"] {
@@ -140,8 +138,6 @@ a[data-toggle="collapse"] {
 ul ul a {
   font-size: 0.9em !important;
   padding-left: 30px !important;
-  color: #fff;
-  background: #435f91;
 }
 
 @media (max-width: 768px) {

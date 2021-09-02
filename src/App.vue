@@ -41,6 +41,10 @@ export default {
   right: 0;
 }
 
+.full-width {
+  height: 94vh;
+}
+
 #content.active {
   width: 100%;
 }

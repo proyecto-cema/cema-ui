@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar navbar-expand-lg navbar-dark bg-dark d-flex">
+  <nav class="navbar navbar navbar-expand-lg navbar-dark bg-dark d-flex" style="height: 6vh">
     <div class="container-fluid">
       <a class="navbar-brand">Nombre Establecimiento</a>
       <div class="navbar-nav flex-grow-1"></div>
