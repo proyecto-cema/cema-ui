@@ -1,0 +1,156 @@
+<template>
+  <nav id="sidebar">
+    <router-link to="/" class="sidebar-header">
+      <img src="../assets/images/cema_logo.png" alt="" width="200" class="d-inline-block align-text-top"/>
+    </router-link>
+
+    <ul class="list-unstyled components" v-if="currentUser">
+      <li v-for="(navItem, i) in sidenavItems" class="nav-item">
+        <router-link v-if="!navItem.isCollapsible" class="nav-link"
+                     @click.native="navItemCollapse(i)"
+                     active-class="active" :to="{name: navItem.route}" exact>
+          <font-awesome-icon v-if="navItem.icon" :icon="navItem.icon" class=""/>
+          <span class="nav-link-text">{{ navItem.name }}</span>
+        </router-link>
+        <a v-if="navItem.isCollapsible" class="nav-link dropdown-toggle"
+           href="javascript:void(0)" @click="navItemCollapse(i)"
+           data-toggle="collapse" :aria-expanded="navItem.expanded">
+          <font-awesome-icon style="width: 40px; padding-right: 10px" v-if="navItem.icon" :icon="navItem.icon"/>
+          <span class="nav-link-text" >{{ navItem.name }}</span>
+        </a>
+        <div v-if="navItem.isCollapsible" class="collapse" :class="navItem.expanded ? 'show' : ''">
+          <ul class="nav nav-sm flex-column">
+            <li v-for="subItem in navItem.items" class="nav-item">
+              <router-link class="nav-link" :to="{name: subItem.route}">{{ subItem.name }}</router-link>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</template>
+
+<script>
+export default {
+  name: 'SideBar',
+  data(){
+    return {
+      sidenavItems: [
+        {name: 'Bovinos', isCollapsible: true, expanded: false, icon:'hat-cowboy', items: [
+            {name: 'Cargar Bovino', route: 'AddBovine'},
+            {name: 'Listar Bovinos', route: 'ListBovine'}
+          ]
+        },
+        {name: 'Actividades', isCollapsible: true, expanded: false, icon:'lightbulb', items: []},
+        {name: 'Salud', isCollapsible: true, expanded: false, icon:'heartbeat', items: []},
+      ]
+    }
+  },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+  },
+  methods: {
+    logOut() {
+      this.$store.dispatch('auth/logout');
+      this.$router.push('/login');
+    },
+    navItemCollapse(index) {
+      this.sidenavItems = this.sidenavItems.map( (item, i) => {
+        item.expanded = !item.expanded;
+        if(i !== index) {
+          item.expanded = false;
+        }
+        return item;
+      })
+    }
+  }
+}
+</script>
+
+<style scoped>
+a,
+a:hover,
+a:focus {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+#sidebar {
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 999;
+  background: #212529;
+  color: #fff;
+  transition: all 0.3s;
+}
+
+#sidebar.active {
+  margin-left: -250px;
+}
+
+#sidebar .sidebar-header {
+  padding: 20px;
+  background: #22282c;
+}
+
+#sidebar ul.components {
+  padding: 20px 0;
+  border-bottom: 1px solid #22282c;
+}
+
+#sidebar ul p {
+  color: #fff;
+  padding: 10px;
+}
+
+#sidebar ul li a {
+  padding: 10px;
+  font-size: 1.1em;
+  display: block;
+}
+
+#sidebar ul li a:hover {
+  color: #000000;
+  background: #fff;
+}
+
+#sidebar ul li.active>a,
+a[aria-expanded="true"] {
+  color: #fff;
+  background: #435f91;
+}
+
+a[data-toggle="collapse"] {
+  position: relative;
+}
+
+.dropdown-toggle::after {
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+}
+
+ul ul a {
+  font-size: 0.9em !important;
+  padding-left: 30px !important;
+  color: #fff;
+  background: #435f91;
+}
+
+@media (max-width: 768px) {
+  #sidebar {
+    margin-left: -250px;
+  }
+
+  #sidebar.active {
+    margin-left: 0;
+  }
+}
+</style>

@@ -1,72 +1,28 @@
 <template>
   <nav class="navbar navbar navbar-expand-lg navbar-dark bg-dark d-flex">
     <div class="container-fluid">
-      <router-link to="/" class="navbar-brand">
-        <img src="../assets/images/cema_logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top"/>
-      </router-link>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mb-2 mb-lg-0 flex-grow-1">
-          <div v-if="currentUser" class="navbar-nav flex-grow-1">
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="dropdownBovines" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <font-awesome-icon icon="hat-cowboy"/> Bovinos
-              </a>
-              <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownBovines">
-                <li>
-                  <router-link class="nav-link" to="/bovinos/formulario">
-                    Cargar Bovino
-                  </router-link>
-                </li>
-                <li>
-                  <router-link class="nav-link" to="/bovinos/listado">
-                    Listar Bovinos
-                  </router-link>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="dropdownActivities" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <font-awesome-icon icon="lightbulb"/> Actividades
-              </a>
-              <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownActivities">
-              </ul>
-            </li>
-            <li class="nav-item dropdown" >
-              <a class="nav-link dropdown-toggle" href="#" id="dropdownHealth" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <font-awesome-icon icon="heartbeat"/> Salud
-              </a>
-              <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownHealth">
-              </ul>
-            </li>
-          </div>
-
-          <div v-if="!currentUser" class="navbar-nav">
-            <li class="nav-item">
-              <router-link
-                  class="nav-link"
-                  to="/login"
-              >
-                <font-awesome-icon icon="sign-in-alt" /> Ingresar
-              </router-link>
-            </li>
-          </div>
-
-          <div v-if="currentUser" class="navbar-nav">
-            <li class="nav-item">
-              <router-link to="/" class="nav-link">
-                <font-awesome-icon icon="user" />
-                {{ currentUser["user"]["userName"] }}
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" @click.prevent="logOut">
+      <a class="navbar-brand">Nombre Establecimiento</a>
+      <div class="navbar-nav flex-grow-1"></div>
+      <div class="d-none d-sm-block mb-2 mb-lg-0">
+        <ul v-if="!currentUser" class="navbar-nav">
+          <li class="nav-item">
+            <router-link class="nav-link" to="/login">
+              <font-awesome-icon icon="sign-in-alt" /> Ingresar
+            </router-link>
+          </li>
+        </ul>
+        <ul v-if="currentUser" class="navbar-nav">
+          <li class="nav-item dropdown btn-group">
+            <a class="nav-link dropdown-toggle" id="dropdownUser" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <font-awesome-icon icon="user" />
+              {{ currentUser["user"]["name"] + ' ' + currentUser["user"]["lastName"] }}
+            </a>
+            <div class="dropdown-menu dropdown-menu-dark dropdown-menu-right" aria-labelledby="dropdownUser">
+              <a class="nav-link dropdown-item" @click.prevent="logOut">
                 <font-awesome-icon icon="sign-out-alt" /> Cerrar Sesión
               </a>
-            </li>
-          </div>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -89,6 +45,10 @@ export default {
     }
 }
 </script>
-<style lang="">
-    
+<style>
+.navbar-brand {
+  transform: translateX(-50%);
+  left: 50%;
+  position: absolute;
+}
 </style>
