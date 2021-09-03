@@ -1,25 +1,34 @@
 <template>
-  <nav class="navbar navbar navbar-expand-lg navbar-dark bg-dark d-flex" style="height: 6vh">
+  <nav class="navbar navbar navbar-expand-lg navbar-dark bg-dark d-flex">
     <div class="container-fluid">
-      <a class="navbar-brand">Nombre Establecimiento</a>
+      <button aria-controls="navbarSupportedContent"
+              aria-expanded="false" aria-label="Toggle navigation" class="btn btn-dark d-inline-block ml-auto"
+              data-target="#navbarSupportedContent" data-toggle="collapse"
+              type="button" v-on:click="toggleSideNav()">
+        <font-awesome-icon icon="align-justify"/>
+      </button>
+      <a class="navbar-brand" :class="this.sidenav ? '': 'd-none d-md-block'">Nombre Establecimiento</a>
       <div class="navbar-nav flex-grow-1"></div>
       <div class="d-none d-sm-block mb-2 mb-lg-0">
         <ul v-if="!currentUser" class="navbar-nav">
           <li class="nav-item">
             <router-link class="nav-link" to="/login">
-              <font-awesome-icon icon="sign-in-alt" /> Ingresar
+              <font-awesome-icon icon="sign-in-alt"/>
+              Ingresar
             </router-link>
           </li>
         </ul>
         <ul v-if="currentUser" class="navbar-nav">
           <li class="nav-item dropdown btn-group">
-            <a class="nav-link dropdown-toggle" id="dropdownUser" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <font-awesome-icon icon="user" />
+            <a id="dropdownUser" aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
+               data-bs-toggle="dropdown" role="button">
+              <font-awesome-icon icon="user"/>
               {{ currentUser["user"]["name"] + ' ' + currentUser["user"]["lastName"] }}
             </a>
-            <div class="dropdown-menu dropdown-menu-dark dropdown-menu-right" aria-labelledby="dropdownUser">
+            <div aria-labelledby="dropdownUser" class="dropdown-menu dropdown-menu-dark dropdown-menu-right">
               <a class="nav-link dropdown-item" @click.prevent="logOut">
-                <font-awesome-icon icon="sign-out-alt" /> Cerrar Sesión
+                <font-awesome-icon icon="sign-out-alt"/>
+                Cerrar Sesión
               </a>
             </div>
           </li>
@@ -30,19 +39,26 @@
 </template>
 <script>
 
+import {mapActions, mapState} from "vuex";
+
 export default {
-    name: 'NavBar',
-    computed: {
-      currentUser() {
-        return this.$store.state.auth.user;
-      },
+  name: 'NavBar',
+  computed: {
+    ...mapState(['sidenav']),
+    currentUser() {
+      return this.$store.state.auth.user;
     },
-    methods: {
-      logOut() {
-        this.$store.dispatch('auth/logout');
-        this.$router.push('/login');
-      }
+  },
+  methods: {
+    ...mapActions(['setSideNav']),
+    toggleSideNav() {
+      this.setSideNav();
+    },
+    logOut() {
+      this.$store.dispatch('auth/logout');
+      this.$router.push('/login');
     }
+  }
 }
 </script>
 <style>

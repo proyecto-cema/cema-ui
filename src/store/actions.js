@@ -1,1 +1,5 @@
-export default {}
+export default {
+    setSideNav({ commit }) {
+        commit('toggleSideNav');
+    },
+}

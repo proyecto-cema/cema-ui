@@ -1,5 +1,5 @@
 <template>
-  <nav id="sidebar">
+  <nav id="sidebar" :class="sidenav ? '':'active'">
     <router-link to="/" class="sidebar-header">
       <img src="../assets/images/cema_logo.png" alt="" width="200" class="d-inline-block align-text-top"/>
     </router-link>
@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import {mapState} from "vuex";
+
 export default {
   name: 'SideBar',
   data(){
@@ -47,6 +49,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(['sidenav']),
     currentUser() {
       return this.$store.state.auth.user;
     },

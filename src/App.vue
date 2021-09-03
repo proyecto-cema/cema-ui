@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper" v-if="!$route.meta.plainLayout">
     <SideBar />
-    <div id="content">
+    <div id="content" :class="this.sideNav ? '':'active'">
       <NavBar />
       <div class="container">
         <router-view/>
@@ -24,6 +24,11 @@ export default {
     NavBar,
     SideBar
   },
+  computed: {
+    sideNav() {
+      return this.$store.state.sidenav;
+    }
+  }
 }
 </script>
 
@@ -39,10 +44,6 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-}
-
-.full-width {
-  height: 94vh;
 }
 
 #content.active {
