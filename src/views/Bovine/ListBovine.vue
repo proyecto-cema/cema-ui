@@ -10,7 +10,7 @@
             <div class="row">
               <div>
                 <button type="button" class="btn btn-info text-white button-margin" style="float: right;" v-on:click="this.$router.push('/bovinos/formulario/')">
-                  + Agregar Nuevo    
+                  + Nuevo Bovino    
                 </button>  
               </div>
               <div class="col-12 col-md-6 col-lg-4 marginSeccion">
@@ -24,7 +24,7 @@
               </div>
               <div class="col-12 col-md-6 col-lg-4  marginSeccion">
                 <select id="sexo" v-model="search.genre" class="form-control invalid-arrow marginButton">
-                  <option selected="selected" value="">Sexo (Seleccionar)</option>
+                  <option selected="selected" value="">Sexo</option>
                   <option selected value="Macho">Macho</option>
                   <option selected value="Hembra">Hembra</option>
                 </select>
@@ -32,7 +32,7 @@
               <div class="col-12 col-md-6 col-lg-4  marginSeccion">
                 <input 
                   type="text"
-                  placeholder="Descripcion"
+                  placeholder="Descripción"
                   class="form-control marginButton"
                   v-model.trim="search.description"
                   maxlength="10" required
@@ -43,7 +43,7 @@
                   <button class="btn btn-dark text-white button-margin"
                     v-on:click="this.clearBovineData()"
                     style="float: left; margin-right: 15px;" type="button">
-                    Reestablecer
+                    Restablecer
                   </button>
                   <button class="btn btn-info text-white button-margin"
                     v-on:click="this.searchBovines()"
@@ -57,21 +57,21 @@
                   <thead>
                     <tr v-if="headers.totalElements !== 0">
                       <th scope="col">Caravana</th>
-                      <th scope="col" v-if="!this.isMobile">Descripcion</th>
-                      <th scope="col" v-if="!this.isMobile">Genero</th>
+                      <th scope="col" v-if="!this.isMobile">Descripción</th>
                       <th scope="col">Fecha de Caravaneo</th>
+                      <th scope="col" v-if="!this.isMobile">Sexo</th>
                       <th scope="col">Acciones</th>
                     </tr>
                     <tr v-else>
-                      <th scope="col">No hay resultados disponibles</th>
+                      <th scope="col">No se encontraron resultados para las condiciones de búsquedas ingresadas.</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="(bovine, index) in bovines" :key="bovine.tag">
                       <td>{{ bovine.tag }}</td>
                       <td v-if="!this.isMobile">{{ bovine.description }}</td>
-                      <td v-if="!this.isMobile">{{ bovine.genre }}</td>
                       <td>{{moment(bovine.taggingDate).format('DD/MM/YYYY')}}</td>
+                      <td v-if="!this.isMobile">{{ bovine.genre }}</td>
                       <td>
                         <font-awesome-icon
                             class="marginEdit"
