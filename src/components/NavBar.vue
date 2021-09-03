@@ -3,6 +3,7 @@
     <div class="container-fluid">
       <button aria-controls="navbarSupportedContent"
               aria-expanded="false" aria-label="Toggle navigation" class="btn btn-dark d-inline-block ml-auto"
+              :class="this.sidenav ? 'd-lg-none':''"
               data-target="#navbarSupportedContent" data-toggle="collapse"
               type="button" v-on:click="toggleSideNav()">
         <font-awesome-icon icon="align-justify"/>

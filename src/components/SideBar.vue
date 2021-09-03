@@ -8,8 +8,8 @@
       <li v-for="(navItem, i) in sidenavItems" class="nav-item">
         <router-link v-if="!navItem.isCollapsible" class="nav-link"
                      @click.native="navItemCollapse(i)"
-                     active-class="active" :to="{name: navItem.route}" exact>
-          <font-awesome-icon v-if="navItem.icon" :icon="navItem.icon" class=""/>
+                     active-class="activeSideBar" :to="{name: navItem.route}" exact>
+          <font-awesome-icon style="width: 40px; padding-right: 10px" v-if="navItem.icon" :icon="navItem.icon"/>
           <span class="nav-link-text">{{ navItem.name }}</span>
         </router-link>
         <a v-if="navItem.isCollapsible" class="nav-link dropdown-toggle"
@@ -38,11 +38,7 @@ export default {
   data(){
     return {
       sidenavItems: [
-        {name: 'Bovinos', isCollapsible: true, expanded: false, icon:'hat-cowboy', items: [
-            {name: 'Cargar Bovino', route: 'AddBovine'},
-            {name: 'Listar Bovinos', route: 'ListBovine'}
-          ]
-        },
+        {name: 'Bovinos', isCollapsible: false, icon:'hat-cowboy', route: 'ListBovine'},
         {name: 'Actividades', isCollapsible: true, expanded: false, icon:'lightbulb', items: []},
         {name: 'Salud', isCollapsible: true, expanded: false, icon:'heartbeat', items: []},
       ]
@@ -117,7 +113,7 @@ a:focus {
   display: block;
 }
 
-#sidebar ul li a:hover {
+#sidebar ul li a:hover, .activeSideBar {
   color: #000000;
   background: #fff;
 }
