@@ -150,6 +150,7 @@ export default {
       this.formRetrieveBovine()
     }else{
       this.clearBovineData();
+      this.bovine.establishmentCuig = this.$store.state.auth.user.user.establishmentCuig;
     }
   },
   computed: {
@@ -210,10 +211,6 @@ export default {
           this.edit = false;
         }
       )
-      if(this.bovine.establishmentCuig == null)
-      {
-        this.bovine.establishmentCuig = this.$store.state.auth.user.establishmentCuig;
-      }
     },
     async formDeleteBovine() {
       this.errorSave = {};

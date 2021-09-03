@@ -114,8 +114,8 @@ a:focus {
   display: block;
 }
 
-#sidebar ul li a:hover, .activeSideBar {
-  color: #000000;
+#sidebar ul li a:hover, .activeSideBar, .activeSideBar:active{
+  color: #000000 !important;
   background: #fff;
 }
 
