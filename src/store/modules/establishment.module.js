@@ -1,15 +1,14 @@
-import BovineService from '../../services/bovines/bovine.service';
-import moment from 'moment'
-
+import EstablishmentService from '../../services/Administration/establishment.service';
+import UsersService from '../../services/users/user.service';
 
 const state = {
-    bovine: {tag: null, genre: "", description: null, taggingDate: null, establishmentCuig: null},
+    establishment: {name: null, cuig: null, location: null, phone: null, email: null, ownerUserName: "" },
     error: {type: null, message: null}
 }
 
 const mutations = {
-    setBovine(state, payload) {
-        state.bovine = payload === null ? {tag: null, genre: "", description: null, taggingDate: null, establishmentCuig: null} : payload
+    setEstablishment(state, payload) {
+        state.establishment = payload === null ? { name: null, cuig: null, location: null, phone: null, email: null, ownerUserName: "" } : payload
         state.error = {type: null, message: null};
     },
     setError(state, error) {
@@ -30,10 +29,10 @@ const mutations = {
                 message = 'No esta autorizado';
                 break;
             case "Conflict":
-                message = 'El bovino que esta intentando registrar ya existe';
+                message = 'El establecimiento que esta intentando registrar ya existe';
                 break;
             case "Not Found":
-                message = 'Bovino no encontrado';
+                message = 'Establecimiento no encontrado';
                 break;
             case "Server":
                 message = 'ERROR en el servidor, intente nuevamente mas tarde.';
@@ -45,13 +44,13 @@ const mutations = {
 }
 
 const actions = {
-    async getBovine({commit}, tag) {
-        return BovineService.getBovineByTag(tag).then(
+    async getEstablishment({commit}, cuig) {
+        return EstablishmentService.getEstablishmentByCuig(cuig).then(
             response => {
-                let bovine = response.data;
-                bovine.taggingDate = moment(String(bovine.taggingDate)).format('YYYY-MM-DD');
-                commit('setBovine', bovine);
-                return Promise.resolve(bovine);
+                let establishment = response.data;
+                console.log(establishment)
+                commit('setEstablishment', establishment);
+                return Promise.resolve(establishment);
             },
             error => {
                 commit('setError', error);
@@ -59,14 +58,14 @@ const actions = {
             }
         );
     },
-    clearBovineData({commit}) {
-        commit('setBovine', null)
+    clearEstablishmentData({commit}) {
+        commit('setEstablishment', null)
     },
-    async saveBovine({commit}, {edit, bovine}) {
-        return BovineService.setBovine(bovine, edit).then(
-            bovine => {
-                console.log(edit ? "Edited": "Created", "bovine:", bovine)
-                return Promise.resolve(bovine);
+    async saveEstablishment({commit}, {edit, establishment}) {
+        return EstablishmentService.setEstablishment(establishment, edit).then(
+            establishment => {
+                console.log(edit ? "Edited": "Created", "establishment:", establishment)
+                return Promise.resolve(establishment);
             },
             error => {
                 commit('setError', error);
@@ -74,11 +73,11 @@ const actions = {
             }
         );
     },
-    async deleteBovine({commit}, tag) {
-        return BovineService.deleteBovine(tag).then(
+    async deleteEstablishment({commit}, cuig) {
+        return EstablishmentService.deleteEstablishment(cuig).then(
             response => {
-                console.log("Delete bovine with tag:", tag)
-                commit('setBovine', null);
+                console.log("Delete establishment with cuig:", cuig)
+                commit('setEstablishment', null);
                 return Promise.resolve(response);
             },
             error => {
@@ -87,8 +86,8 @@ const actions = {
             }
         );
     },
-    async listBovines({commit}, data) {
-        return BovineService.getBovineList(data.page, data.size, data.search).then(
+    async listOwners({commit}) {
+        return UsersService.getOwnerList('patron').then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);
@@ -98,7 +97,8 @@ const actions = {
                 return Promise.reject(error);
             }
         );
-    },
+    }
+ 
 }
 
 

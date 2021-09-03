@@ -11,9 +11,10 @@ import {
     faSignOutAlt,
     faTrash,
     faUser,
+    faBuilding,
     faUserPlus
 } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt, faHatCowboy, faLightbulb, faHeartbeat, faEdit, faTrash, faAlignJustify)
+library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt, faHatCowboy, faLightbulb, faHeartbeat, faEdit, faTrash, faBuilding, faAlignJustify)
 
 export {FontAwesomeIcon}

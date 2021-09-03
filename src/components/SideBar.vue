@@ -39,6 +39,7 @@ export default {
     return {
       sidenavItems: [
         {name: 'Bovinos', isCollapsible: false, icon:'hat-cowboy', route: 'ListBovine'},
+        {name: 'Administración', isCollapsible: false, icon:'building', route: 'AddEstablishment'},
         {name: 'Actividades', isCollapsible: true, expanded: false, icon:'lightbulb', items: []},
         {name: 'Salud', isCollapsible: true, expanded: false, icon:'heartbeat', items: []},
       ]

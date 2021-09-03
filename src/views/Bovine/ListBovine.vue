@@ -3,7 +3,7 @@
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
       <button class="btn btn-info text-white" type="button"
               v-on:click="this.$router.push({name: 'AddBovine'})">
-        + Agregar Nuevo
+        + Nuevo Bovino
       </button>
     </div>
     <form @submit.prevent="">
@@ -11,7 +11,7 @@
         <div class="col-12 col-md-6 col-lg-4">
           <input
               v-model.trim="search.tag"
-              class="form-control "
+              class="form-control"
               maxlength="10"
               placeholder="Caravana"
               type="text"
@@ -54,13 +54,13 @@
         <thead>
         <tr v-if="headers.totalElements !== 0">
           <th scope="col">Caravana</th>
-          <th scope="col">Fecha de Caravaneo</th>
-          <th v-if="!this.isMobile" scope="col">Genero</th>
-          <th v-if="!this.isMobile" scope="col">Descripcion</th>
+          <th scope="col">Fecha de caravaneo</th>
+          <th v-if="!this.isMobile" scope="col">Sexo</th>
+          <th v-if="!this.isMobile" scope="col">Descripción</th>
           <th class="text-end" scope="col">Acciones</th>
         </tr>
         <tr v-else>
-          <th scope="col">No hay resultados disponibles</th>
+          <th scope="col">No se encontraron resultados para las condiciones de búsquedas ingresadas.</th>
         </tr>
         </thead>
         <tbody>
