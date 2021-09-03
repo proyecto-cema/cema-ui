@@ -1,114 +1,118 @@
 <template>
-  <div class="row text-center">
+  <div class="row text-center d-flex align-items-center full-width">
     <div class="offset-lg-2 col-12 col-lg-8">
-      <form class="borderDiv" style="border-radius: 10px;margin-top:100px; background: #ffffff;" @submit.prevent="">
-        <div class="header" >
+      <div class="card">
+        <div class="card-header bg-dark text-white" >
           <h3 style="color:white">{{ edit ? "Editar Establecimiento" : "Registrar Establecimiento" }}</h3>
         </div>
-          <div class="offset-1 col-10">
-            <div class="row">
-              <div class="col-12 col-md-6 marginSeccion">
-                <div class="textLeft"><label>Nombre</label></div>
-                <input
-                    v-model.trim="establishment.name"
-                    :class="[errorSave.name ? 'is-invalid' : '']"
-                    class="form-control marginButton"
-                    placeholder="Nombre" required
-                    type="text"
-                >
-                <div v-if="errorSave.name" class="textError">
-                  <span :class="is-invalid"></span> Ingrese el nombre del establecimiento
+        <div class="card-body">
+          <form  @submit.prevent="">
+            <div class="offset-1 col-10">
+              <div class="row">
+                <div class="col-12 col-md-6 marginSeccion">
+                  <div class="textLeft"><label>Nombre</label></div>
+                  <input
+                      v-model.trim="establishment.name"
+                      :class="[errorSave.name ? 'is-invalid' : '']"
+                      class="form-control marginButton"
+                      placeholder="Nombre" required
+                      type="text"
+                  >
+                  <div v-if="errorSave.name" class="textError">
+                    <span :class="is-invalid"></span> Ingrese el nombre del establecimiento
+                  </div>
                 </div>
-              </div>
-              <div class="col-12 col-md-6 marginSeccion">
-                <div class="textLeft"><label>CUIG</label></div>
-                <input
-                    v-model.trim="establishment.cuig"
-                    :readonly="edit"
-                    :class="[errorSave.cuig ? 'is-invalid' : '']"
-                    class="form-control marginButton"
-                    placeholder="CUIG" required
-                    type="text"
-                >
-                <div v-if="errorSave.cuig" class="textError">
-                  <span :class="is-invalid"></span> Ingrese el CUIG del establecimiento
+                <div class="col-12 col-md-6 marginSeccion">
+                  <div class="textLeft"><label>CUIG</label></div>
+                  <input
+                      v-model.trim="establishment.cuig"
+                      :readonly="edit"
+                      :class="[errorSave.cuig ? 'is-invalid' : '']"
+                      class="form-control marginButton"
+                      placeholder="CUIG" required
+                      type="text"
+                  >
+                  <div v-if="errorSave.cuig" class="textError">
+                    <span :class="is-invalid"></span> Ingrese el CUIG del establecimiento
+                  </div>
                 </div>
-              </div>
-              <div class="col-12 col-md-6 marginSeccion">
-                <div class="textLeft"><label>Ubicacion</label></div>
-                <input
-                    v-model.trim="establishment.location"
-                    class="form-control marginButton"
-                    placeholder="Ubicacion"
-                    type="text"
-                >
-              </div>
-              <div class="col-12 col-md-6 marginSeccion">
-                <div class="textLeft"><label>Teléfono</label></div>
-                <input
-                    v-model.trim="establishment.phone"
-                    class="form-control marginButton"
-                    placeholder="Teléfono"
-                    type="text"
-                >
-              </div>
-              <div class="col-12 col-md-6 marginSeccion">
-                <div class="textLeft"><label>Correo Electrónico</label></div>
-                <input
-                    v-model.trim="establishment.email"
-                    class="form-control marginButton"
-                    placeholder="Correo Electrónico"
-                    type="text"
-                >
-              </div>
-              <div class="col-12 col-md-6 marginSeccion">
-                <div class="textLeft"><label>Propietario</label></div>
-                <select id="sexo" v-model="establishment.ownerUserName" :class="[errorSave.owner ? 'is-invalid' : '']"
-                        class="form-control invalid-arrow marginButton" required>
-                  <option selected="selected" value="">Seleccionar</option>
-                  <option v-for="owner in owners" :value="owner.userName" :key="owner.userName">{{owner.name+" "+owner.lastName }}</option>
-                </select>
-                <div v-if="errorSave.owner" class="textError">
-                  <span class="is-invalid"></span> Seleccione el propietario
+                <div class="col-12 col-md-6 marginSeccion">
+                  <div class="textLeft"><label>Ubicacion</label></div>
+                  <input
+                      v-model.trim="establishment.location"
+                      class="form-control marginButton"
+                      placeholder="Ubicacion"
+                      type="text"
+                  >
+                </div>
+                <div class="col-12 col-md-6 marginSeccion">
+                  <div class="textLeft"><label>Teléfono</label></div>
+                  <input
+                      v-model.trim="establishment.phone"
+                      class="form-control marginButton"
+                      placeholder="Teléfono"
+                      type="text"
+                  >
+                </div>
+                <div class="col-12 col-md-6 marginSeccion">
+                  <div class="textLeft"><label>Correo Electrónico</label></div>
+                  <input
+                      v-model.trim="establishment.email"
+                      class="form-control marginButton"
+                      placeholder="Correo Electrónico"
+                      type="text"
+                  >
+                </div>
+                <div class="col-12 col-md-6 marginSeccion">
+                  <div class="textLeft"><label>Propietario</label></div>
+                  <select id="sexo" v-model="establishment.ownerUserName" :class="[errorSave.owner ? 'is-invalid' : '']"
+                          class="form-control invalid-arrow marginButton" required>
+                    <option selected="selected" value="">Seleccionar</option>
+                    <option v-for="owner in owners" :value="owner.userName" :key="owner.userName">{{owner.name+" "+owner.lastName }}</option>
+                  </select>
+                  <div v-if="errorSave.owner" class="textError">
+                    <span class="is-invalid"></span> Seleccione el propietario
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-12">
-            <div class="col-lg-10 offset-lg-1 col-sm-10 offset-sm-1 col-10 offset-1 marginSeccion">
-              <div v-if="error.type !== null" class="alert alert-danger alert-dismissible">
-                {{ error.message }}
+            <div class="col-12">
+              <div class="col-lg-10 offset-lg-1 col-sm-10 offset-sm-1 col-10 offset-1 marginSeccion">
+                <div v-if="error.type !== null" class="alert alert-danger alert-dismissible">
+                  {{ error.message }}
+                </div>
+                <div v-if="success !== null" class="alert alert-success alert-dismissible">
+                  {{ success }}
+                </div>
               </div>
-              <div v-if="success !== null" class="alert alert-success alert-dismissible">
-                {{ success }}
-              </div>
-            </div>
-            <div class="row" style="margin-right: 0px;">
-              <div class="col-lg-2 col-sm-4 col-4"
-                   v-bind:class="this.edit?'offset-lg-6':'offset-lg-8 offset-sm-4 offset-4'">
-                <button class="btn btn-dark text-white button-margin" data-bs-target="#CancelModal" data-bs-toggle="modal"
-                        type="button">
-                  Cancelar
-                </button>
-              </div>
-              <div v-if=(this.edit) class="col-lg-2 col-sm-4 col-4">
-                <div>
-                  <button class="btn btn-danger text-white button-margin" data-bs-target="#DeleteModal" data-bs-toggle="modal"
+              <div class="row" style="margin-right: 0px;">
+                <div class="col-lg-2 col-sm-4 col-4"
+                    v-bind:class="this.edit?'offset-lg-6':'offset-lg-8 offset-sm-4 offset-4'">
+                  <button class="btn btn-dark text-white button-margin" data-bs-target="#CancelModal" data-bs-toggle="modal"
                           type="button">
-                    Eliminar
+                    Cancelar
+                  </button>
+                </div>
+                <div v-if=(this.edit) class="col-lg-2 col-sm-4 col-4">
+                  <div>
+                    <button class="btn btn-danger text-white button-margin" data-bs-target="#DeleteModal" data-bs-toggle="modal"
+                            type="button">
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-4">
+                  <button class="btn btn-primary text-white button-margin" data-bs-target="#SaveModal" data-bs-toggle="modal"
+                          type="button">
+                    Guardar
                   </button>
                 </div>
               </div>
-              <div class="col-lg-2 col-sm-4 col-4">
-                <button class="btn btn-primary text-white button-margin" data-bs-target="#SaveModal" data-bs-toggle="modal"
-                        type="button">
-                  Guardar
-                </button>
-              </div>
             </div>
-          </div>
-        
-      </form>
+          
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 
