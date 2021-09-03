@@ -156,6 +156,7 @@ export default {
       this.formRetrieveBovine()
     }else{
       this.clearBovineData();
+      this.bovine.establishmentCuig = this.$store.state.auth.user.establishmentCuig;
     }
   },
   computed: {
