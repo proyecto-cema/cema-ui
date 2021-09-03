@@ -10,7 +10,7 @@
           <div class="col-lg-4 col-sm-12">
             <div class="contenedor">
               <img alt="Identificador" class="imageIdBovine" src="../../assets/images/Bovine/tag_bovino.png"/>
-              <div class="TextCenterImage"><h4>{{ bovine.tag }}</h4></div>
+              <div class="TextCenterImage"><h4>{{ bovine.establishmentCuig }}<br>{{ bovine.tag }}</h4></div>
             </div>
           </div>
           <div class="col-lg-7 col-sm-12">
@@ -206,6 +206,10 @@ export default {
           this.edit = false;
         }
       )
+      if(this.bovine.establishmentCuig == null)
+      {
+        this.bovine.establishmentCuig = this.$store.state.auth.user.establishmentCuig;
+      }
     },
     async formDeleteBovine() {
       this.errorSave = {};
