@@ -109,7 +109,6 @@
                 </div>
               </div>
             </div>
-          
           </form>
         </div>
       </div>
@@ -229,9 +228,7 @@ export default {
     },
     async searchOwners() {
       this.owners=null;
-      //Se busca todos los usuarios con el rol patron
-      //Usuarios Rol patron son los dueños de los establecimientos
-      this.listOwners('patron').then(
+      this.listOwners().then(
           (response) => {
             this.owners = response.data;
             console.log(response);

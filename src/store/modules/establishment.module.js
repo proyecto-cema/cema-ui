@@ -86,8 +86,8 @@ const actions = {
             }
         );
     },
-    async listOwners({commit},role) {
-        return UsersService.getOwnerList(role).then(
+    async listOwners({commit}) {
+        return UsersService.getOwnerList('patron').then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);
