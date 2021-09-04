@@ -1,5 +1,5 @@
 <template>
-  <div class="row text-center d-flex align-items-center full-width">
+  <div class="row text-center d-flex align-items-center">
     <div class="offset-lg-2 col-12 col-lg-8">
       <div class="card">
         <div class="card-header bg-dark text-white">

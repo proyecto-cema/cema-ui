@@ -1,5 +1,5 @@
 <template>
-  <div class="full-width text-center">
+  <div class="text-center">
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
       <button class="btn btn-info text-white" type="button"
               v-on:click="this.$router.push({name: 'AddBovine'})">

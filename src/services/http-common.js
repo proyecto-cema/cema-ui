@@ -24,3 +24,9 @@ export const httpAdministration = axios.create({
   baseURL: BASE_URL + ADMINISTRATION_CONTEXT + ADMINISTRATION_VERSION,
   headers: headers
 })
+
+export const getHttpError = function (object, key) {
+  let defaultError = {type: 'Undefined', message: 'ERROR indefinido, intente nuevamente mas tarde.'};
+  let result = object[key];
+  return (typeof result !== "undefined") ? result : defaultError;
+}

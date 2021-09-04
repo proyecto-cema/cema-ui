@@ -89,12 +89,12 @@ export default {
     ...mapActions("auth", ["login"]),
     async processForm() {
       this.loading = true;
-      if(this.username == null || this.username === ""){
+      if(!this.username){
         this.error.type="user"
         this.error.message="Debe ingregar su usuario"
         return
       }
-      if(this.pass == null || this.pass === ""){
+      if(!this.pass){
         this.error.type="pass"
         this.error.message="Por favor ingrese su contraseña"
         return
@@ -108,16 +108,10 @@ export default {
             },
             (error) => {
               this.loading = false;
-              this.message =
-                  (error.response &&
-                      error.response.data &&
-                      error.response.data.message) ||
-                  error.message ||
-                  error.toString();
               console.log(error)
             }
         );
-        if (this.error !== null) {
+        if (!this.error) {
           return;
         }
         this.username = "";

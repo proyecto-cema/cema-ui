@@ -1,5 +1,7 @@
 import BovineService from '../../services/bovines/bovine.service';
 import moment from 'moment'
+import {BOVINE_ERRORS} from "../../constants";
+import {getHttpError} from "../../services/http-common";
 
 
 const state = {
@@ -13,34 +15,7 @@ const mutations = {
         state.error = {type: null, message: null};
     },
     setError(state, error) {
-        let message = 'ERROR indefinido, intente nuevamente mas tarde.';
-        let payload;
-        if(error.response){
-            if([404, 401, 409].includes(error.response.status)){
-                payload = error.response.statusText;
-            }
-        }else{
-            payload = error.message;
-        }
-        console.error(error);
-        switch (payload){
-            case null:
-                return state.error = {type: null, message: null};
-            case "Unauthorized":
-                message = 'No esta autorizado';
-                break;
-            case "Conflict":
-                message = 'El bovino que esta intentando registrar ya existe';
-                break;
-            case "Not Found":
-                message = 'Bovino no encontrado';
-                break;
-            case "Server":
-                message = 'ERROR en el servidor, intente nuevamente mas tarde.';
-                break;
-
-        }
-        return state.error = {type: 'Server', message: message}
+        return state.error = getHttpError(BOVINE_ERRORS, error.response.status);
     }
 }
 
