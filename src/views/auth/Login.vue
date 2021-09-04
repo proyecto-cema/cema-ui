@@ -129,7 +129,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .imagen-fondo{
   background-image: url("../../assets/images/login_background.png");
 }

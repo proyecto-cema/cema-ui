@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from './plugins/font-awesome'
 
 createApp(App)
-  .use(store)
-  .use(router)
-  .component('font-awesome-icon', FontAwesomeIcon)
-  .mount('#app')
+    .use(store)
+    .use(router)
+    .component('font-awesome-icon', FontAwesomeIcon)
+    .mount('#app')
