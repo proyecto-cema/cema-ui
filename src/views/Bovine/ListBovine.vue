@@ -9,28 +9,17 @@
     <form @submit.prevent="">
       <div class="row">
         <div class="col-12 col-md-6 col-lg-4">
-          <input
-              v-model.trim="search.tag"
-              class="form-control"
-              maxlength="10"
-              placeholder="Caravana"
-              type="text"
-          >
+          <cema-input v-model.trim="search.tag" component-type="input" required maxlength="10"
+                      input-title="Caravana" input-id="bovineTag" :label="false" type="text"></cema-input>
         </div>
         <div class="col-12 col-md-6 col-lg-4">
-          <select id="sexo" v-model="search.genre" class="form-select invalid-arrow">
-            <option selected value="">Sexo</option>
-            <option value="Macho">Macho</option>
-            <option value="Hembra">Hembra</option>
-          </select>
+          <cema-input v-model="search.genre" component-type="select" required
+                      input-title="Sexo" input-id="bovineGenre" :label="false"
+                      :options="['Macho', 'Hembra']"></cema-input>
         </div>
         <div class="col-12 col-md-6 col-lg-4">
-          <input
-              v-model.trim="search.description"
-              class="form-control"
-              placeholder="Descripcion"
-              type="text"
-          >
+          <cema-input v-model.trim="search.description" component-type="input" required
+                      input-title="Descripcion" input-id="bovineDescription" :label="false" type="text"></cema-input>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-2">
           <button class="btn btn-dark text-white"
@@ -114,6 +103,7 @@ import {mapActions} from "vuex";
 import moment from 'moment'
 import {Modal} from "bootstrap";
 import ConfirmationModal from "../../components/ConfirmationModal";
+import CemaInput from "../../components/CemaInput";
 
 export default {
   name: "ListBovine",
@@ -131,7 +121,8 @@ export default {
     };
   },
   components: {
-    ConfirmationModal
+    ConfirmationModal,
+    CemaInput
   },
   beforeDestroy() {
     if (typeof window !== 'undefined') {

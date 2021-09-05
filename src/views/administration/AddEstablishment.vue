@@ -9,67 +9,37 @@
           <form @submit.prevent="">
             <div class="row ms-2 me-2">
               <div class="mb-3 col-12 col-md-6">
-                <label for="establishmentName" class="form-label">Nombre<small style="color: red">*</small></label>
-                <input
-                    id="establishmentName"
-                    v-model.trim="establishment.name"
-                    :class="[errorSave.name ? 'is-invalid' : '']"
-                    class="form-control"
-                    placeholder="Nombre" required type="text">
-                <div v-if="errorSave.name" class="textError">
-                  <span class="is-invalid"></span> Ingrese el nombre del establecimiento
-                </div>
+                <cema-input v-model.trim="establishment.name" required
+                            :error-data="{required: true, errorStatus: errorSave.name,
+                                    errorMessage: 'Ingrese el nombre del establecimiento'}"
+                            input-title="Nombre" input-id="establishmentName" type="text"></cema-input>
               </div>
               <div class="mb-3 col-12 col-md-6">
-                <label for="establishmentCUIG" class="form-label">CUIG<small style="color: red">*</small></label>
-                <input
-                    id="establishmentCUIG"
-                    v-model.trim="establishment.cuig"
-                    :readonly="edit"
-                    :class="[errorSave.cuig ? 'is-invalid' : '']"
-                    class="form-control"
-                    placeholder="CUIG" required type="text">
-                <div v-if="errorSave.cuig" class="textError">
-                  <span class="is-invalid"></span> Ingrese el CUIG del establecimiento
-                </div>
+                <cema-input v-model.trim="establishment.cuig" required :readonly="edit"
+                            :error-data="{required: true, errorStatus: errorSave.cuig,
+                                    errorMessage: 'Ingrese el CUIG del establecimiento'}"
+                            input-title="CUIG" input-id="establishmentCUIG" type="text"></cema-input>
               </div>
               <div class="mb-3 col-12 col-md-6">
-                <label for="establishmentLocation" class="form-label">Ubicación</label>
-                <input
-                    id="establishmentLocation"
-                    v-model.trim="establishment.location"
-                    class="form-control"
-                    placeholder="Ubicación" type="text">
+                <cema-input v-model.trim="establishment.location" type="text"
+                            input-title="Ubicación" input-id="establishmentLocation"></cema-input>
               </div>
               <div class="mb-3 col-12 col-md-6">
-                <label for="establishmentPhone" class="form-label">Teléfono</label>
-                <input
-                    id="establishmentPhone"
-                    v-model.trim="establishment.phone"
-                    class="form-control"
-                    placeholder="Teléfono" type="text">
+                <cema-input v-model.trim="establishment.phone" type="text"
+                            input-title="Teléfono" input-id="establishmentPhone"></cema-input>
               </div>
               <div class="mb-3 col-12 col-md-6">
-                <label for="establishmentEmail" class="form-label">Correo Electrónico</label>
-                <input
-                    id="establishmentEmail"
-                    v-model.trim="establishment.email"
-                    class="form-control"
-                    placeholder="Correo Electrónico" type="email">
+                <cema-input v-model.trim="establishment.email" type="email"
+                            input-title="Correo Electrónico" input-id="establishmentEmail"></cema-input>
               </div>
               <div class="mb-3 col-12 col-md-6">
-                <label for="establishmentOwner" class="form-label">Propietario<small style="color: red">*</small></label>
-                <select
-                    id="establishmentOwner"
-                    v-model="establishment.ownerUserName"
-                    :class="[errorSave.owner ? 'is-invalid' : '']"
-                    class="form-select" required>
-                  <option selected="selected" value="">Seleccionar</option>
-                  <option v-for="owner in owners" :value="owner.userName" :key="owner.userName">{{owner.name+" "+owner.lastName }}</option>
-                </select>
-                <div v-if="errorSave.owner" class="textError">
-                  <span class="is-invalid"></span> Seleccione el propietario
-                </div>
+                <cema-input v-model="establishment.ownerUserName" component-type="select" required
+                            :error-data="{required: true, errorStatus: errorSave.owner,
+                                    errorMessage: 'Seleccione el propietario'}"
+                            input-title="Propietario" input-id="establishmentOwner"
+                            :options="owners" optionKey="userName" v-slot="{ option }">
+                  {{ option.name+" "+option.lastName }}
+                </cema-input>
               </div>
             </div>
             <div class="col-12">
@@ -124,6 +94,7 @@
 import {mapActions, mapState} from "vuex";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { Modal } from 'bootstrap';
+import CemaInput from "../../components/CemaInput";
 
 
 export default {
@@ -142,7 +113,8 @@ export default {
     };
   },
   components:{
-    ConfirmationModal
+    ConfirmationModal,
+    CemaInput
   },
   mounted() {
     this.searchOwners()
@@ -179,7 +151,7 @@ export default {
       this.errorSave = {
         name: (!this.establishment.name),
         cuig: (!this.establishment.cuig),
-        owner: (!this.establishment.owner)
+        owner: (!this.establishment.ownerUserName)
       }
       if (this.errorSave.name || this.errorSave.cuig || this.errorSave.owner) {
         console.error(this.errorSave)
