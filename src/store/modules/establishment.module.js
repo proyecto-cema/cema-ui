@@ -1,4 +1,4 @@
-import EstablishmentService from '../../services/Administration/establishment.service';
+import EstablishmentService from '../../services/administration/establishment.service';
 import UsersService from '../../services/users/user.service';
 import {getHttpError} from "../../services/http-common";
 import {ADMINISTRATION_ERRORS} from "../../constants";

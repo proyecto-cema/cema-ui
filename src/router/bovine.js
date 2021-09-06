@@ -1,5 +1,5 @@
-import AddBovine from '../views/Bovine/AddBovine.vue'
-import ListBovine from '../views/Bovine/ListBovine.vue'
+import AddBovine from '../views/bovine/AddBovine.vue'
+import ListBovine from '../views/bovine/ListBovine.vue'
 
 const routes = [
   {

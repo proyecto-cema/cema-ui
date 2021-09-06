@@ -104,7 +104,7 @@ import {mapActions} from "vuex";
 import {Modal} from "bootstrap";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import CemaInput from "../../components/CemaInput";
-import BovineModal from "../../components/Bovine/BovineModal";
+import BovineModal from "../../components/bovine/BovineModal";
 
 export default {
   name: "ListBovine",

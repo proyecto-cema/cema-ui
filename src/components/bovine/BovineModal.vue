@@ -11,7 +11,7 @@
             <div class="row">
               <div class="col-lg-4 col-12">
                 <div class="position-relative text-center">
-                  <img alt="Identificador" class="imageIdBovine" src="../../assets/images/Bovine/tag_bovino.png"/>
+                  <img alt="Identificador" class="imageIdBovine" src="../../assets/images/bovine/tag_bovino.png"/>
                   <div class="TextCenterImage"><h4>{{ bovine.establishmentCuig }}<br>{{ bovine.tag }}</h4></div>
                 </div>
               </div>
