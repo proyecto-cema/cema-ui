@@ -1,37 +1,6 @@
 {
     "name": "cema-ui",
-    "version":     {
-        "valueCount": 4,
-        "strings":         [
-            "",
-            ".",
-            ".",
-            "-",
-            ""
-        ],
-        "bytes":         [
-            49,
-            46,
-            51,
-            46,
-            48,
-            45,
-            83,
-            78,
-            65,
-            80,
-            83,
-            72,
-            79,
-            84
-        ],
-        "values":         [
-            "1",
-            3,
-            "0",
-            "SNAPSHOT"
-        ]
-    },
+    "version": "1.2.0-SNAPSHOT",
     "private": true,
     "scripts":     {
         "serve": "vue-cli-service serve",
