@@ -12,8 +12,8 @@
       :class="[errorData.required && errorData.errorStatus ? 'is-invalid' : '']"
       class="form-select" v-bind="$attrs">
     <option selected value="">Seleccionar</option>
-    <option v-for="option in options" :value="option[optionKey]" :key="option[optionKey]">
-      <slot :option="option"></slot>
+    <option v-for="option in options" :value="optionKey ? option[optionKey]:option" :key="optionKey ? option[optionKey]:option">
+      <slot :option="option">{{option}}</slot>
     </option>
   </select>
   <div v-if="errorData.required && errorData.errorStatus" class="textError">
@@ -49,6 +49,7 @@ export default {
     },
     optionKey: {
       type: String,
+      default: null
     },
     options: {},
     modelValue: {},

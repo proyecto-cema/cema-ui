@@ -97,7 +97,6 @@
 import {mapActions, mapState} from "vuex";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { Modal } from 'bootstrap'
-import moment from "moment";
 import CemaInput from "../../components/CemaInput";
 
 
@@ -134,7 +133,7 @@ export default {
   computed: {
     ...mapState("bovine", ["bovine", "error"]),
     getToday(){
-      return moment().format("YYYY-MM-DD")
+      return this.getMomentToday()
     }
   },
   methods: {
