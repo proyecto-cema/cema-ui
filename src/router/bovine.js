@@ -5,13 +5,13 @@ const routes = [
   {
     path: '/bovinos/formulario',
     name: 'AddBovine',
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, requiredRoleLevel: 0 },
     component: AddBovine
   },
   {
     path: '/bovinos/listado',
     name: 'ListBovine',
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, requiredRoleLevel: 0 },
     component: ListBovine
   }
 ]

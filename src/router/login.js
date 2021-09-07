@@ -6,7 +6,8 @@ const routes = [
     name: 'Login',
     meta: {
       requiresAuth: false,
-      plainLayout: true
+      plainLayout: true,
+      requiredRoleLevel: null
     },
     component: Login
   }
