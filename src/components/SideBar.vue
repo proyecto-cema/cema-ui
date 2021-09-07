@@ -95,12 +95,12 @@ a:focus {
 
 #sidebar .sidebar-header {
   padding: 20px;
-  background: #22282c;
+  background: #212529;
 }
 
 #sidebar ul.components {
   padding: 20px 0;
-  border-bottom: 1px solid #22282c;
+  border-bottom: 1px solid #212529;
 }
 
 #sidebar ul p {
