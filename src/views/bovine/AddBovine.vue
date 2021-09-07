@@ -1,74 +1,51 @@
 <template>
-  <div class="row text-center d-flex align-items-center full-width">
+  <div class="row d-flex align-items-center">
     <div class="offset-lg-2 col-12 col-lg-8">
       <div class="card">
-        <div class="card-header bg-dark text-white">
-          <h3>{{ edit ? "Editar Bovino" : "Registrar Bovino" }}</h3>
+        <div class="card-header bg-dark text-white text-center">
+          <h3>{{ this.edit ? "Editar Bovino" : "Registrar Bovino" }}</h3>
         </div>
         <div class="card-body">
           <form @submit.prevent="">
             <div class="row">
-              <div class="col-lg-4 col-sm-12">
-                <div class="contenedor">
-                  <img alt="Identificador" class="imageIdBovine" src="../../assets/images/Bovine/tag_bovino.png"/>
+              <div class="col-lg-4 col-12">
+                <div class="position-relative text-center">
+                  <img alt="Identificador" class="imageIdBovine" src="../../assets/images/bovine/tag_bovino.png"/>
                   <div class="TextCenterImage"><h4>{{ bovine.establishmentCuig }}<br>{{ bovine.tag }}</h4></div>
                 </div>
               </div>
-              <div class="col-lg-7 col-sm-12">
+              <div class="col-lg-7 col-12">
                 <div class="row">
-                  <div class="col-lg-6 offset-lg-0 col-sm-10 offset-sm-1 col-10 offset-1 marginSeccion">
-                    <div class="textLeft"><label>Caravana<small style="color: red">*</small></label></div>
-                    <input
-                        v-model.trim="bovine.tag"
-                        :class="[errorSave.tag ? 'is-invalid' : '']"
-                        :readonly="edit"
-                        class="form-control marginButton"
-                        maxlength="10" placeholder="Caravana" required
-                        type="text"
-                    >
-                    <div v-if="errorSave.tag" class="textError">
-                      <span :class="is-invalid"></span> Ingrese el número de caravana del bovino
-                    </div>
+                  <div class="col-lg-6 col-12 mb-3">
+                    <cema-input v-model.trim="bovine.tag" maxlength="10" required
+                                    :error-data="{required: true, errorStatus: errorSave.tag,
+                                    errorMessage: 'Ingrese el número de caravana del bovino'}"
+                                    input-title="Caravana" input-id="bovineTag" type="text"></cema-input>
                   </div>
-                  <div class="col-lg-6 offset-lg-0 col-sm-10 offset-sm-1 col-10 offset-1 marginSeccion">
-                    <div class="textLeft"><label>Fecha de caravaneo<small style="color: red">*</small></label></div>
-                    <input
-                        v-model.trim="bovine.taggingDate"
-                        :class="[errorSave.taggingDate  ? 'is-invalid' : '']"
-                        class="form-control marginButton"
-                        placeholder="Fecha" required
-                        type="date" :max="getToday"
-                    >
-                    <div v-if="errorSave.taggingDate" class="textError">
-                      <span class="is-invalid"></span> Ingrese la fecha del caravaneo
-                    </div>
+                  <div class="col-lg-6 col-12 mb-3">
+                    <cema-input v-model="bovine.taggingDate" :max="getToday" required
+                                    :error-data="{required: true, errorStatus: errorSave.taggingDate,
+                                    errorMessage: 'Ingrese la fecha del caravaneo'}"
+                                    input-title="Fecha de caravaneo" input-id="bovineDate" type="date"></cema-input>
                   </div>
-                  <div class="col-lg-6 offset-lg-0 col-sm-10 offset-sm-1 col-10 offset-1 marginSeccion">
-                    <div class="textLeft"><label>Sexo<small style="color: red">*</small></label></div>
-                    <select id="sexo" v-model="bovine.genre" :class="[errorSave.genre ? 'is-invalid' : '']"
-                            class="form-control invalid-arrow marginButton" required>
-                      <option selected="selected" value="">Seleccionar</option>
-                      <option selected value="Macho">Macho</option>
-                      <option selected value="Hembra">Hembra</option>
-                    </select>
-                    <div v-if="errorSave.genre" class="textError">
-                      <span class="is-invalid"></span> Seleccione el sexo del bovino
-                    </div>
+                  <div class="col-lg-6 col-12 mb-3">
+                    <cema-input v-model="bovine.genre" component-type="select" required
+                                    :error-data="{required: true, errorStatus: errorSave.genre,
+                                    errorMessage: 'Seleccione el sexo del bovino'}"
+                                    input-title="Sexo" input-id="bovineGenre"
+                                    :options="['Macho', 'Hembra']"></cema-input>
                   </div>
-                  <div class="col-lg-12 offset-lg-0 col-sm-10 offset-sm-1 col-10 offset-1 marginSeccion">
-                    <div class="textLeft"><label>Descripción</label></div>
+                  <div class="col-lg-6 col-12 mb-3">
+                    <label class="form-label" for="bovineDescription">Descripción</label>
                     <textarea
-                        v-model.trim="bovine.description"
-                        class="form-control marginButton"
-                        maxlength="300"
-                        placeholder="Descripción"
-                        required rows="4" type="text"
+                        id="bovineDescription" v-model.trim="bovine.description"
+                        class="form-control" maxlength="300"
+                        placeholder="Descripción" rows="4" type="text"
                     ></textarea>
                   </div>
                 </div>
               </div>
-              <div class="col-12">
-                <div class="col-lg-10 offset-lg-1 col-sm-10 offset-sm-1 col-10 offset-1 marginSeccion">
+                <div class="col-lg-6 col-12">
                   <div v-if="error.type !== null" class="alert alert-danger alert-dismissible">
                     {{ error.message }}
                   </div>
@@ -91,7 +68,6 @@
                   </button>
                 </div>
               </div>
-            </div>
           </form>
         </div>
       </div>
@@ -121,7 +97,7 @@
 import {mapActions, mapState} from "vuex";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { Modal } from 'bootstrap'
-import moment from "moment";
+import CemaInput from "../../components/CemaInput";
 
 
 export default {
@@ -138,8 +114,9 @@ export default {
 
     };
   },
-  components:{
-    ConfirmationModal
+  components: {
+    ConfirmationModal,
+    CemaInput
   },
   mounted() {
     this.tag = this.$route.query.tag;
@@ -156,7 +133,7 @@ export default {
   computed: {
     ...mapState("bovine", ["bovine", "error"]),
     getToday(){
-      return moment().format("YYYY-MM-DD")
+      return this.getMomentToday()
     }
   },
   methods: {
@@ -235,25 +212,5 @@ export default {
 
 .imageIdBovine {
   width: 60% !important;
-}
-
-.textLeft {
-  text-align: left !important;
-}
-
-.marginSeccion {
-  margin-bottom: 8px;
-}
-
-.contenedor {
-  position: relative;
-  display: inline-block;
-  text-align: center;
-}
-
-.textError {
-  text-align: left !important;
-  color: red;
-  font-size: 14px;
 }
 </style>

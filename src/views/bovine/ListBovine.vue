@@ -1,41 +1,30 @@
 <template>
-  <div class="full-width text-center">
+  <div class="text-center">
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
       <button class="btn btn-info text-white" type="button"
-              v-on:click="this.$router.push({name: 'AddBovine'})">
+              v-on:click="openAddBovineModal(null)">
         + Nuevo Bovino
       </button>
     </div>
     <form @submit.prevent="">
       <div class="row">
         <div class="col-12 col-md-6 col-lg-4">
-          <input
-              v-model.trim="search.tag"
-              class="form-control"
-              maxlength="10"
-              placeholder="Caravana"
-              type="text"
-          >
+          <cema-input v-model.trim="search.tag" component-type="input" required maxlength="10"
+                      input-title="Caravana" input-id="bovineTag" :label="false" type="text"></cema-input>
         </div>
         <div class="col-12 col-md-6 col-lg-4">
-          <select id="sexo" v-model="search.genre" class="form-select invalid-arrow">
-            <option selected value="">Sexo</option>
-            <option value="Macho">Macho</option>
-            <option value="Hembra">Hembra</option>
-          </select>
+          <cema-input v-model="search.genre" component-type="select" required
+                      input-title="Sexo" input-id="bovineGenre" :label="false"
+                      :options="['Macho', 'Hembra']"></cema-input>
         </div>
         <div class="col-12 col-md-6 col-lg-4">
-          <input
-              v-model.trim="search.description"
-              class="form-control"
-              placeholder="Descripcion"
-              type="text"
-          >
+          <cema-input v-model.trim="search.description" component-type="input" required
+                      input-title="Descripcion" input-id="bovineDescription" :label="false" type="text"></cema-input>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-2">
           <button class="btn btn-dark text-white"
                   type="button"
-                  v-on:click="this.clearBovineData()">
+                  v-on:click="this.clearSearchBovineData()">
             Reestablecer
           </button>
           <button class="btn btn-info text-white"
@@ -65,15 +54,15 @@
         </thead>
         <tbody>
         <tr v-for="(bovine, index) in bovines" :key="bovine.tag">
-          <td>{{ bovine.tag }}</td>
-          <td>{{ moment(bovine.taggingDate).format('DD/MM/YYYY') }}</td>
+          <td>{{ bovine.establishmentCuig }}-{{ bovine.tag }}</td>
+          <td>{{ this.javaDateToMomentDate(bovine.taggingDate) }}</td>
           <td v-if="!this.isMobile">{{ bovine.genre }}</td>
           <td v-if="!this.isMobile">{{ bovine.description }}</td>
           <td class="text-end">
             <font-awesome-icon
                 class="me-2"
                 icon="edit"
-                v-on:click="this.$router.push('/bovinos/formulario/?tag='+bovine.tag)">
+                v-on:click="openAddBovineModal(bovine)">
             </font-awesome-icon>
             <font-awesome-icon
                 icon="trash"
@@ -107,13 +96,15 @@
   <confirmation-modal
       :confirmation-message="'¿Confirma que desea eliminar al bovino con caravana ' + this.deleted['tag'] + '?'"
       modal-id="DeleteModal" title="Eliminar"
-      @acceptModal="modalDelete()" @rejectModal="this.modal.hide(); this.deleted = {}"></confirmation-modal>
+      @acceptModal="modalDelete(); this.deleteModal.hide()" @rejectModal="this.deleteModal.hide(); this.deleted = {}"></confirmation-modal>
+  <bovine-modal modalId="addBovineModal" @deleteModal="deleteBovineForm"></bovine-modal>
 </template>
 <script>
 import {mapActions} from "vuex";
-import moment from 'moment'
 import {Modal} from "bootstrap";
 import ConfirmationModal from "../../components/ConfirmationModal";
+import CemaInput from "../../components/CemaInput";
+import BovineModal from "../../components/bovine/BovineModal";
 
 export default {
   name: "ListBovine",
@@ -125,13 +116,16 @@ export default {
       headers: {totalPages: 0, currentPage: 0, totalElements: 0},
       isMobile: false,
       deleted: {},
-      modal: null,
+      deleteModal: null,
+      addBovineModal: null,
       timeout: false,
       delay: 250,
     };
   },
   components: {
-    ConfirmationModal
+    BovineModal,
+    ConfirmationModal,
+    CemaInput
   },
   beforeDestroy() {
     if (typeof window !== 'undefined') {
@@ -139,13 +133,14 @@ export default {
     }
   },
   mounted() {
-    this.modal = new Modal(document.getElementById('DeleteModal'));
+    this.addBovineModal = new Modal(document.getElementById('addBovineModal'));
+    this.deleteModal = new Modal(document.getElementById('DeleteModal'));
     this.isMobile = screen.width <= 760;
     this.searchBovinePage(this.headers.currentPage);
     window.addEventListener('resize', this.resizeTimeOut);
   },
   methods: {
-    ...mapActions("bovine", ["listBovines", "deleteBovine", "clearBovineData"]),
+    ...mapActions("bovine", ["listBovines", "deleteBovine", "clearBovineData", "setupEditBovine"]),
     resizeTimeOut(){
       clearTimeout(this.timeout);
       this.timeout = setTimeout(this.onResize, this.delay);
@@ -172,26 +167,50 @@ export default {
         }
       }
     },
-    moment() {
-      return moment();
+    clearSearchBovineData() {
+      this.bovines = [];
+      this.search = {tag: null, genre: "", description: null};
+    },
+    setIndexForTag(tag, index){
+      this.deleted = {
+        tag: tag,
+        index: index
+      };
+    },
+    deleteBovineForm(tag){
+      let index = null;
+      for (let i=0; i < this.bovines.length; i++) {
+        console.log(typeof this.bovines[i].tag, "=", typeof tag)
+        if (this.bovines[i].tag === tag) {
+          index = i;
+          console.log(`Searched tag: ${tag}, found at ${index}`);
+          break;
+        }
+      }
+      if (index === null){
+        console.error(`Searched tag: ${tag}, was not found`)
+        return
+      }
+      this.setIndexForTag(tag, index);
+      this.modalDelete();
+    },
+    formDeleteBovine(tag, index) {
+      this.setIndexForTag(tag, index);
+      this.deleteModal.show()
+    },
+    openAddBovineModal(bovine){
+      this.clearBovineData()
+      if (bovine){
+        bovine.taggingDate = this.javaDateToMomentDate(bovine.taggingDate, 'YYYY-MM-DD');
+        this.setupEditBovine(bovine)
+      }
+      this.addBovineModal.show()
     },
     async searchBovinePage(page) {
       console.log(`You are in page ${this.headers.currentPage}, and requesting ${page} page`);
       await this.searchBovines(page, this.isMobile ? 5 : 10)
     },
-    async clearBovineData() {
-      this.bovines = [];
-      this.search = {tag: null, genre: "", description: null};
-    },
-    async formDeleteBovine(tag, index) {
-      this.deleted = {
-        tag: tag,
-        index: index
-      };
-      this.modal.show()
-    },
     async modalDelete() {
-      this.modal.hide()
       this.deleteBovine(this.deleted["tag"]).then(
           () => {
             this.bovines.splice(this.deleted["index"], 1);
@@ -201,14 +220,14 @@ export default {
     async searchBovines(page = 0, size = 10) {
       this.bovines = null;
       this.listBovines({page: page, size: size, search: this.search}).then(
-          (response) => {
-            this.bovines = response.data;
-            console.log(response);
-            this.headers.totalPages = parseInt(response.headers["total-pages"]);
-            this.headers.currentPage = parseInt(response.headers["current-page"]);
-            this.headers.totalElements = parseInt(response.headers["total-elements"]);
-            this.bovineLength = this.bovines != null ? this.bovines.length:0
-          }
+        (response) => {
+          this.bovines = response.data;
+          console.log(response);
+          this.headers.totalPages = parseInt(response.headers["total-pages"]);
+          this.headers.currentPage = parseInt(response.headers["current-page"]);
+          this.headers.totalElements = parseInt(response.headers["total-elements"]);
+          this.bovineLength = this.bovines != null ? this.bovines.length:0
+        }
       )
     }
   },

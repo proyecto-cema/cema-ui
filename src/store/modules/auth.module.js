@@ -1,4 +1,6 @@
 import AuthService from '../../services/auth/auth.service';
+import {getHttpError} from "../../services/http-common";
+import {ADMINISTRATION_ERRORS} from "../../constants";
 
 const user = JSON.parse(localStorage.getItem('user'));
 const initialState = user
@@ -24,20 +26,8 @@ const mutations = {
         state.status.loggedIn = false;
         state.user = null;
     },
-    setError(state, payload){
-        if(payload === null) {
-            return state.error = {type: null, message: null}
-        }
-        if(payload === "Unauthorized"){
-            return state.error = {type: 'password', message: 'Contraseña incorrecta'}
-        }
-        if(payload === "Not Found"){
-            return state.error = {type: 'UserPass', message: 'Usuario o Contraseña incorrectos'}
-        }
-        if(payload === "Server"){
-            return state.error = {type: 'Server', message: 'ERROR en el servidor, intente nuevamente mas tarde.'}
-        }
-        return state.error = {type: 'Undefained', message: 'ERROR indefinido, intente nuevamente mas tarde.'}
+    setError(state, error) {
+        return state.error = getHttpError(ADMINISTRATION_ERRORS, error.response.status);
     }
 }
 
@@ -49,12 +39,9 @@ const actions = {
                 return Promise.resolve(user);
             },
             error => {
-                if(error.response.status === 404 || error.response.status === 401){
-                    console.log(error.response.statusText);
-                    commit('setError', error.response.statusText);
-                }
-                commit('loginFailure');
                 console.log(error);
+                commit('setError', error);
+                commit('loginFailure');
                 return Promise.reject(error);
             }
         );

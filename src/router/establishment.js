@@ -1,4 +1,4 @@
-import AddEstablishment from '../views/Administration/AddEstablishment.vue'
+import AddEstablishment from '../views/administration/AddEstablishment.vue'
 
 const routes = [
   {
