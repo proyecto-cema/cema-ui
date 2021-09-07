@@ -1,6 +1,6 @@
 import AuthService from '../../services/auth/auth.service';
 import {getHttpError} from "../../services/http-common";
-import {ADMINISTRATION_ERRORS} from "../../constants";
+import {LOGIN_ERRORS} from "../../constants";
 
 const user = JSON.parse(localStorage.getItem('user'));
 const initialState = user
@@ -27,7 +27,7 @@ const mutations = {
         state.user = null;
     },
     setError(state, error) {
-        return state.error = getHttpError(ADMINISTRATION_ERRORS, error.response.status);
+        return state.error = getHttpError(LOGIN_ERRORS, error.response.status);
     }
 }
 
