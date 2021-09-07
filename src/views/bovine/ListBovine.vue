@@ -54,7 +54,7 @@
         </thead>
         <tbody>
         <tr v-for="(bovine, index) in bovines" :key="bovine.tag">
-          <td>{{ bovine.tag }}</td>
+          <td>{{ bovine.establishmentCuig }}-{{ bovine.tag }}</td>
           <td>{{ this.javaDateToMomentDate(bovine.taggingDate) }}</td>
           <td v-if="!this.isMobile">{{ bovine.genre }}</td>
           <td v-if="!this.isMobile">{{ bovine.description }}</td>

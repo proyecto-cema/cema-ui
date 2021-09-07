@@ -12,7 +12,13 @@ const state = {
 
 const mutations = {
     setBovine(state, payload) {
-        state.bovine = payload === null ? {tag: null, genre: "", description: null, taggingDate: null, establishmentCuig: null} : payload
+        state.bovine = payload === null ? {
+            tag: null,
+            genre: "",
+            description: null,
+            taggingDate: null,
+            establishmentCuig: null
+        } : payload
     },
     setError(state, error) {
         return state.error = getHttpError(BOVINE_ERRORS, error.response.status);
@@ -26,8 +32,15 @@ const mutations = {
 }
 
 const actions = {
-    clearBovineData({commit}) {
-        commit('setBovine', null);
+    clearBovineData({commit, rootState}) {
+        let blankBovine = {
+            tag: null,
+                genre: "",
+            description: null,
+            taggingDate: null,
+            establishmentCuig: rootState.auth.user.user.establishmentCuig
+        }
+        commit('setBovine', blankBovine);
         commit('setEdit', false);
     },
     dismissError({commit}){
@@ -65,11 +78,11 @@ const actions = {
             }
         );
     },
-    async deleteBovine({commit}, tag) {
+    async deleteBovine({commit, rootState}, tag) {
         return BovineService.deleteBovine(tag).then(
             response => {
                 console.log("Delete bovine with tag:", tag)
-                commit('setBovine', null);
+                this.clearBovineData({commit, rootState});
                 return Promise.resolve(response);
             },
             error => {

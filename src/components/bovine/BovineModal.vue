@@ -74,6 +74,7 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -139,7 +140,7 @@ export default {
       };
       this.saveBovine(data).then(
           (bovine) => {
-            this.successCall("El Bovino se guardó correctamente");
+            this.successCall(`El bovino con caravana ${bovine.tag} se guardó correctamente.`);
             this.setupEditBovine(bovine);
           }
       );
