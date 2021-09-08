@@ -20,7 +20,7 @@ export const LOGIN_ERRORS = {
 export const BOVINE_ERRORS = {
     ...COMMON_ERRORS,
     404: {type: "Server", message: "Bovino no encontrado"},
-    409: {type: "Server", message: "El bovino que esta intentando registrar ya existe"}
+    409: {type: "Server", message: "Esta caravana ya se encuentra en uso. Por favor, revise e intente de nuevo."}
 }
 export const ADMINISTRATION_ERRORS = {
     ...COMMON_ERRORS,

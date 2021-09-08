@@ -25,7 +25,7 @@
           <button class="btn btn-dark text-white"
                   type="button"
                   v-on:click="this.clearSearchBovineData()">
-            Reestablecer
+            Restablecer
           </button>
           <button class="btn btn-info text-white"
                   type="button"
