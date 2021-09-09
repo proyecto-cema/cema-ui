@@ -10,16 +10,16 @@
       <div class="row">
         <div class="col-12 col-md-6 col-lg-4">
           <cema-input v-model.trim="search.tag" component-type="input" required maxlength="10"
-                      input-title="Caravana" input-id="bovineTag" :label="false" type="text" :marginListBovine="true"></cema-input>
+                      input-title="Caravana" input-id="bovineTag" :label="false" type="text" class="mb-2" ></cema-input>
         </div>
         <div class="col-12 col-md-6 col-lg-4">
           <cema-input v-model="search.genre" component-type="select" required
                       input-title="Sexo" input-id="bovineGenre" :label="false"
-                      :options="['Macho', 'Hembra']" :marginListBovine="true"></cema-input>
+                      :options="['Macho', 'Hembra']" class="mb-2"></cema-input>
         </div>
         <div class="col-12 col-md-6 col-lg-4">
           <cema-input v-model.trim="search.description" component-type="input" required
-                      input-title="Descripcion" input-id="bovineDescription" :label="false" type="text" :marginListBovine="true"></cema-input>
+                      input-title="Descripcion" input-id="bovineDescription" :label="false" type="text" class="mb-2"></cema-input>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-2">
           <button class="btn btn-dark text-white"

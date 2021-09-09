@@ -3,14 +3,13 @@
   <input
       v-if="componentType === 'input'"
       :id="inputId" v-model="value"
-      :class="[errorData.required && errorData.errorStatus ? 'is-invalid' : '' , marginListBovine ?'marginInputList':'123' ]"
-      
-      class="form-control margin" v-bind="$attrs"
+      :class="[errorData.required && errorData.errorStatus ? 'is-invalid' : '']"
+      class="form-control" v-bind="$attrs"
       :placeholder="inputTitle">
   <select
       v-if="componentType === 'select'"
       :id="inputId" v-model="value"
-      :class="[errorData.required && errorData.errorStatus ? 'is-invalid' : '' , marginListBovine ?'marginInputList':'']"
+      :class="[errorData.required && errorData.errorStatus ? 'is-invalid' : '']"
       class="form-select" v-bind="$attrs">
     <option selected value="">{{ inputTitle }}</option>
     <option v-for="option in options" :value="optionKey ? option[optionKey]:option" :key="optionKey ? option[optionKey]:option">
@@ -52,10 +51,6 @@ export default {
       type: String,
       default: null
     },
-    marginListBovine: {
-      type: Boolean,
-      default: false
-    },
     options: {},
     modelValue: {},
   },
@@ -77,8 +72,5 @@ export default {
     text-align: left !important;
     color: red;
     font-size: 14px;
-  }
-  .marginInputList{
-    margin-bottom: 15px;
   }
 </style>
