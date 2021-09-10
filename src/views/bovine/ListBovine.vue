@@ -10,22 +10,22 @@
       <div class="row">
         <div class="col-12 col-md-6 col-lg-4">
           <cema-input v-model.trim="search.tag" component-type="input" required maxlength="10"
-                      input-title="Caravana" input-id="bovineTag" :label="false" type="text"></cema-input>
+                      input-title="Caravana" input-id="bovineTag" :label="false" type="text" class="mb-2" ></cema-input>
         </div>
         <div class="col-12 col-md-6 col-lg-4">
           <cema-input v-model="search.genre" component-type="select" required
                       input-title="Sexo" input-id="bovineGenre" :label="false"
-                      :options="['Macho', 'Hembra']"></cema-input>
+                      :options="['Macho', 'Hembra']" class="mb-2"></cema-input>
         </div>
         <div class="col-12 col-md-6 col-lg-4">
           <cema-input v-model.trim="search.description" component-type="input" required
-                      input-title="Descripcion" input-id="bovineDescription" :label="false" type="text"></cema-input>
+                      input-title="Descripción" input-id="bovineDescription" :label="false" type="text" class="mb-2"></cema-input>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-2">
           <button class="btn btn-dark text-white"
                   type="button"
                   v-on:click="this.clearSearchBovineData()">
-            Reestablecer
+            Restablecer
           </button>
           <button class="btn btn-info text-white"
                   type="button"
@@ -66,7 +66,7 @@
             </font-awesome-icon>
             <font-awesome-icon
                 icon="trash"
-                v-on:click="formDeleteBovine(bovine.tag, index)">
+                v-on:click="formDeleteBovine(bovine.tag, index, bovine.establishmentCuig)">
             </font-awesome-icon>
           </td>
         </tr>
@@ -94,7 +94,8 @@
     </div>
   </div>
   <confirmation-modal
-      :confirmation-message="'¿Confirma que desea eliminar al bovino con caravana ' + this.deleted['tag'] + '?'"
+      :confirmation-message="'¿Confirma que desea eliminar al bovino con caravana '
+      + this.deleted['cuig'] + '-' + this.deleted['tag'] + '?'"
       modal-id="DeleteModal" title="Eliminar"
       @acceptModal="modalDelete(); this.deleteModal.hide()" @rejectModal="this.deleteModal.hide(); this.deleted = {}"></confirmation-modal>
   <bovine-modal modalId="addBovineModal" @deleteModal="deleteBovineForm"></bovine-modal>
@@ -168,21 +169,24 @@ export default {
       }
     },
     clearSearchBovineData() {
-      this.bovines = [];
       this.search = {tag: null, genre: "", description: null};
+      this.searchBovinePage(0);
     },
-    setIndexForTag(tag, index){
+    setIndexForTag(tag, index, cuig){
       this.deleted = {
+        cuig: cuig,
         tag: tag,
         index: index
       };
     },
     deleteBovineForm(tag){
       let index = null;
+      let cuig = null;
       for (let i=0; i < this.bovines.length; i++) {
         console.log(typeof this.bovines[i].tag, "=", typeof tag)
         if (this.bovines[i].tag === tag) {
           index = i;
+          cuig = this.bovines[i].establishmentCuig
           console.log(`Searched tag: ${tag}, found at ${index}`);
           break;
         }
@@ -191,11 +195,11 @@ export default {
         console.error(`Searched tag: ${tag}, was not found`)
         return
       }
-      this.setIndexForTag(tag, index);
+      this.setIndexForTag(tag, index, cuig);
       this.modalDelete();
     },
-    formDeleteBovine(tag, index) {
-      this.setIndexForTag(tag, index);
+    formDeleteBovine(tag, index, cuig) {
+      this.setIndexForTag(tag, index, cuig);
       this.deleteModal.show()
     },
     openAddBovineModal(bovine){
@@ -211,7 +215,8 @@ export default {
       await this.searchBovines(page, this.isMobile ? 5 : 10)
     },
     async modalDelete() {
-      this.deleteBovine(this.deleted["tag"]).then(
+      console.log(`Deleting bovine ${this.deleted["cuig"]}-${this.deleted["tag"]}`)
+      this.deleteBovine(this.deleted).then(
           () => {
             this.bovines.splice(this.deleted["index"], 1);
           }
