@@ -20,7 +20,7 @@
                   <div class="col-lg-6 col-12 mb-3">
                     <cema-input v-model.trim="bovine.tag" maxlength="10" required
                                 :error-data="{required: true, errorStatus: errorSave.tag,
-                                    errorMessage: 'Ingrese el número de caravana del bovino'}"
+                                    errorMessage: getTagError()['message']}"
                                 input-title="Caravana" input-id="bovineTag" type="text" :disabled="edit"></cema-input>
                   </div>
                   <div class="col-lg-6 col-12 mb-3">
@@ -62,6 +62,10 @@
                   type="button" v-on:click="clean()">
             Cancelar
           </button>
+          <button v-if=edit class="btn btn-dark text-white"
+                  type="button" v-on:click="clean()">
+            Crear Nuevo
+          </button>
           <button v-if=edit class="btn btn-dark text-white" data-bs-dismiss="modal"
                   type="button" v-on:click="deleteModal()">
             Eliminar
@@ -80,6 +84,7 @@
 <script>
 import CemaInput from "../CemaInput";
 import {mapActions, mapState} from "vuex";
+import {REGEX_LETTERS_NUMBERS} from "../../constants";
 
 export default {
   name: "BovineModal",
@@ -104,14 +109,32 @@ export default {
     ...mapState("bovine", ["bovine", "error", "edit"]),
     getToday(){
       return this.getMomentToday()
+    },
+    errorSaveHelper(){
+      return {
+        tag: !this.getTagError()["isValid"],
+        taggingDate: !this.bovine.taggingDate,
+        genre: !this.bovine.genre
+      }
     }
   },
   methods: {
-    ...mapActions("bovine", ["getBovine", "saveBovine", "dismissError", "setupEditBovine"]),
+    ...mapActions("bovine", ["getBovine", "saveBovine", "dismissError", "setupEditBovine", "clearBovineData"]),
+    getTagError(){
+      let message = 'Ingrese el número de caravana del bovino.';
+      let isValid = !!this.bovine.tag;
+      let testRegex = REGEX_LETTERS_NUMBERS.test(this.bovine.tag);
+      if (isValid && !testRegex){
+        message = 'La caravana ingresada no es valida. Solo se permiten numeros y letras.'
+        isValid = false;
+      }
+      return {isValid: isValid, message: message}
+    },
     clean(){
       this.errorSave = {};
       this.success = null;
       this.dismissError();
+      this.clearBovineData()
     },
     successCall(message) {
       this.success = message;
@@ -122,11 +145,7 @@ export default {
       this.clean();
     },
     saveModal() {
-      this.errorSave = {
-        tag: (!this.bovine.tag),
-        taggingDate: (!this.bovine.taggingDate),
-        genre: (!this.bovine.genre)
-      }
+      this.errorSave = this.errorSaveHelper;
       if (this.errorSave.taggingDate || this.errorSave.tag || this.errorSave.genre) {
         console.error(this.errorSave)
         return

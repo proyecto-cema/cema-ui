@@ -8,14 +8,14 @@ class BovineService {
 
   setBovine (bovine, edit) {
     if (edit) {
-      return httpBovines.put('bovines/' + bovine.tag, bovine, { headers: authHeader() })
+      return httpBovines.put('bovines/' + bovine.tag, bovine, {params:{cuig: bovine.establishmentCuig}, headers: authHeader() })
     } else {
       return httpBovines.post('bovines/', bovine, { headers: authHeader() })
     }
   }
 
-  deleteBovine (tag) {
-    return httpBovines.delete('bovines/' + tag, { headers: authHeader() })
+  deleteBovine (tag, cuig) {
+    return httpBovines.delete('bovines/' + tag, { params:{cuig: cuig}, headers: authHeader() })
   }
 
   getBovineList (page=0, size=10, searchParams={tag:null, genre:null, taggingDate:null}) {

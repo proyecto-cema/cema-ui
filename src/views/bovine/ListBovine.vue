@@ -66,7 +66,7 @@
             </font-awesome-icon>
             <font-awesome-icon
                 icon="trash"
-                v-on:click="formDeleteBovine(bovine.tag, index)">
+                v-on:click="formDeleteBovine(bovine.tag, index, bovine.establishmentCuig)">
             </font-awesome-icon>
           </td>
         </tr>
@@ -94,7 +94,8 @@
     </div>
   </div>
   <confirmation-modal
-      :confirmation-message="'¿Confirma que desea eliminar al bovino con caravana ' + this.deleted['tag'] + '?'"
+      :confirmation-message="'¿Confirma que desea eliminar al bovino con caravana '
+      + this.deleted['cuig'] + '-' + this.deleted['tag'] + '?'"
       modal-id="DeleteModal" title="Eliminar"
       @acceptModal="modalDelete(); this.deleteModal.hide()" @rejectModal="this.deleteModal.hide(); this.deleted = {}"></confirmation-modal>
   <bovine-modal modalId="addBovineModal" @deleteModal="deleteBovineForm"></bovine-modal>
@@ -168,21 +169,24 @@ export default {
       }
     },
     clearSearchBovineData() {
-      this.bovines = [];
       this.search = {tag: null, genre: "", description: null};
+      this.searchBovinePage(0);
     },
-    setIndexForTag(tag, index){
+    setIndexForTag(tag, index, cuig){
       this.deleted = {
+        cuig: cuig,
         tag: tag,
         index: index
       };
     },
     deleteBovineForm(tag){
       let index = null;
+      let cuig = null;
       for (let i=0; i < this.bovines.length; i++) {
         console.log(typeof this.bovines[i].tag, "=", typeof tag)
         if (this.bovines[i].tag === tag) {
           index = i;
+          cuig = this.bovines[i].establishmentCuig
           console.log(`Searched tag: ${tag}, found at ${index}`);
           break;
         }
@@ -191,11 +195,11 @@ export default {
         console.error(`Searched tag: ${tag}, was not found`)
         return
       }
-      this.setIndexForTag(tag, index);
+      this.setIndexForTag(tag, index, cuig);
       this.modalDelete();
     },
-    formDeleteBovine(tag, index) {
-      this.setIndexForTag(tag, index);
+    formDeleteBovine(tag, index, cuig) {
+      this.setIndexForTag(tag, index, cuig);
       this.deleteModal.show()
     },
     openAddBovineModal(bovine){
@@ -211,7 +215,8 @@ export default {
       await this.searchBovines(page, this.isMobile ? 5 : 10)
     },
     async modalDelete() {
-      this.deleteBovine(this.deleted["tag"]).then(
+      console.log(`Deleting bovine ${this.deleted["cuig"]}-${this.deleted["tag"]}`)
+      this.deleteBovine(this.deleted).then(
           () => {
             this.bovines.splice(this.deleted["index"], 1);
           }
