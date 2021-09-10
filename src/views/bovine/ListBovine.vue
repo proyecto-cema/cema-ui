@@ -169,8 +169,8 @@ export default {
       }
     },
     clearSearchBovineData() {
-      this.bovines = [];
       this.search = {tag: null, genre: "", description: null};
+      this.searchBovinePage(0);
     },
     setIndexForTag(tag, index, cuig){
       this.deleted = {
