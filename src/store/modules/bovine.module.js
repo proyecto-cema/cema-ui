@@ -78,11 +78,11 @@ const actions = {
             }
         );
     },
-    async deleteBovine({commit, rootState}, tag) {
-        return BovineService.deleteBovine(tag).then(
+    async deleteBovine({commit, rootState, dispatch}, {tag, cuig}) {
+        return BovineService.deleteBovine(tag, cuig).then(
             response => {
-                console.log("Delete bovine with tag:", tag)
-                this.clearBovineData({commit, rootState});
+                console.log("Delete bovine with cuig-tag:", cuig, '-',tag)
+                dispatch("clearBovineData");
                 return Promise.resolve(response);
             },
             error => {
