@@ -4,19 +4,20 @@ import About from '../views/About.vue'
 import bovine from './bovine'
 import establishment from './establishment'
 import login from './login'
+import {ROLE_REPRESENTATION} from "../constants";
 
 let routes = []
 const localRoutes = [
   {
     path: '/',
     name: 'Home',
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, requiredRoleLevel: null },
     redirect: { name: 'ListBovine' }
   },
   {
     path: '/about',
     name: 'About',
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, requiredRoleLevel: null },
     component: About
   }
 ]
@@ -28,11 +29,14 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  const { requiresAuth, requiredRoleLevel } = to.meta;
   const isAuth = store.state.auth.user
   if (requiresAuth && !isAuth) {
-    next('/login')
-  } else {
+    next({
+      path: '/login',
+      query: { redirect: to.path }
+    })
+  } else if(!requiresAuth || requiredRoleLevel === null || requiredRoleLevel <= ROLE_REPRESENTATION[isAuth.user.role.toUpperCase()]){
     next()
   }
 })

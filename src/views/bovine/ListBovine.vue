@@ -19,7 +19,7 @@
         </div>
         <div class="col-12 col-md-6 col-lg-4">
           <cema-input v-model.trim="search.description" component-type="input" required
-                      input-title="Descripcion" input-id="bovineDescription" :label="false" type="text" class="mb-2"></cema-input>
+                      input-title="Descripción" input-id="bovineDescription" :label="false" type="text" class="mb-2"></cema-input>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-2">
           <button class="btn btn-dark text-white"

@@ -6,7 +6,7 @@
 
     <ul class="list-unstyled components" v-if="currentUser">
       <li v-for="(navItem, i) in sidenavItems" class="nav-item">
-        <router-link v-if="!navItem.isCollapsible" class="nav-link"
+        <router-link v-if="!navItem.isCollapsible && navItem.roleRequirement <= currentRole" class="nav-link"
                      @click.native="navItemCollapse(i)"
                      active-class="activeSideBar" :to="{name: navItem.route}" exact>
           <font-awesome-icon style="width: 40px; padding-right: 10px" v-if="navItem.icon" :icon="navItem.icon"/>
@@ -32,14 +32,15 @@
 
 <script>
 import {mapState} from "vuex";
+import {ROLE_REPRESENTATION} from "../constants";
 
 export default {
   name: 'SideBar',
   data(){
     return {
       sidenavItems: [
-        {name: 'Bovinos', isCollapsible: false, icon:'hat-cowboy', route: 'ListBovine'},
-        {name: 'Administración', isCollapsible: false, icon:'building', route: 'AddEstablishment'},
+        {name: 'Bovinos', isCollapsible: false, icon:'hat-cowboy', route: 'ListBovine', roleRequirement: 0},
+        {name: 'Administración', isCollapsible: false, icon:'building', route: 'AddEstablishment', roleRequirement: 2},
         {name: 'Actividades', isCollapsible: true, expanded: false, icon:'lightbulb', items: []},
         {name: 'Salud', isCollapsible: true, expanded: false, icon:'heartbeat', items: []},
       ]
@@ -50,6 +51,11 @@ export default {
     currentUser() {
       return this.$store.state.auth.user;
     },
+    currentRole(){
+      if(this.currentUser){
+        return ROLE_REPRESENTATION[this.currentUser.user.role.toUpperCase()]
+      }
+    }
   },
   methods: {
     logOut() {

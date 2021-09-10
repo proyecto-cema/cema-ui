@@ -4,7 +4,7 @@ const routes = [
   {
     path: '/bovinos/listado',
     name: 'ListBovine',
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, requiredRoleLevel: 0 },
     component: ListBovine
   }
 ]

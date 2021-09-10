@@ -69,6 +69,7 @@ export default {
       username: "",
       pass: "",
       loading: false,
+      redirect: "",
     };
   },
   computed: {
@@ -84,6 +85,8 @@ export default {
     if (this.loggedIn) {
       this.$router.push("/");
     }
+    this.redirect = this.$route.query.redirect || '/';
+    console.log(this.redirect)
   },
   methods: {
     ...mapActions("auth", ["login"]),
@@ -104,7 +107,7 @@ export default {
         this.login(user).then(
             () => {
               console.log("Logged in as", user.username)
-              this.$router.push("/");
+              this.$router.push(this.redirect);
             },
             (error) => {
               this.loading = false;
