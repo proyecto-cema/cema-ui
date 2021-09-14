@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar navbar-expand-lg navbar-dark bg-dark d-flex">
+  <nav class="navbar navbar navbar-expand-lg navbar-dark bg-primary d-flex">
     <div class="container-fluid">
       <button aria-controls="navbarSupportedContent"
               aria-expanded="false" aria-label="Toggle navigation" class="btn btn-dark d-inline-block ml-auto"

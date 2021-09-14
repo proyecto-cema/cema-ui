@@ -2,7 +2,7 @@
   <div class="row d-flex align-items-center">
     <div class="offset-lg-2 col-12 col-lg-8">
       <div class="card">
-        <div class="card-header bg-dark text-white text-center" >
+        <div class="card-header bg-primary text-white text-center" >
           <h3>{{ edit ? "Editar Establecimiento" : "Registrar Establecimiento" }}</h3>
         </div>
         <div class="card-body">
@@ -52,7 +52,7 @@
                 </div>
               </div>
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button class="btn btn-dark text-white" data-bs-target="#CancelModal" data-bs-toggle="modal"
+                <button class="btn btn-primary text-white" data-bs-target="#CancelModal" data-bs-toggle="modal"
                         type="button">
                   Cancelar
                 </button>
@@ -60,7 +60,7 @@
                         type="button">
                   Eliminar
                 </button>
-                <button class="btn btn-primary text-white"
+                <button class="btn btn-secondary text-white"
                         type="button" v-on:click="preSave()">
                   Guardar
                 </button>
