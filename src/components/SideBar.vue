@@ -1,11 +1,11 @@
 <template>
   <nav id="sidebar" :class="sidenav ? '':'active'">
     <router-link to="/" class="sidebar-header">
-      <img src="../assets/images/cema_logo.png" alt="" width="200" class="d-inline-block align-text-top"/>
+      <img src="../assets/images/cema_logo.png" alt="" height="200" class="d-inline-block align-text-top"/>
     </router-link>
 
-    <ul class="list-unstyled components" v-if="currentUser">
-      <li v-for="(navItem, i) in sidenavItems" class="nav-item">
+    <ul class="list-unstyled components d-flex flex-column" v-if="currentUser" style="height: calc(100vh - 200px);">
+      <li v-for="(navItem, i) in sidenavItems" class="nav-item" :class="navItem.specialClass">
         <router-link v-if="!navItem.isCollapsible && navItem.roleRequirement <= currentRole" class="nav-link"
                      @click.native="navItemCollapse(i)"
                      active-class="activeSideBar" :to="{name: navItem.route}" exact>
@@ -21,7 +21,11 @@
         <div v-if="navItem.isCollapsible" class="collapse" :class="navItem.expanded ? 'show' : ''">
           <ul class="nav nav-sm flex-column">
             <li v-for="subItem in navItem.items" class="nav-item">
-              <router-link class="nav-link" :to="{name: subItem.route}">{{ subItem.name }}</router-link>
+              <router-link v-if="!subItem.clickable" class="nav-link" :to="{name: subItem.route}">{{ subItem.name }}</router-link>
+              <a v-else class="nav-link" @click.prevent="subItem.clickAction">
+                <font-awesome-icon style="width: 40px; padding-right: 10px" v-if="subItem.icon" :icon="subItem.icon"/>
+                {{ subItem.name }}
+              </a>
             </li>
           </ul>
         </div>
@@ -45,6 +49,14 @@ export default {
         {name: 'Salud', isCollapsible: true, expanded: false, icon:'heartbeat', items: []},
       ]
     }
+  },
+  mounted() {
+    this.sidenavItems.push({
+      name: `${this.currentUser["user"]["userName"]}`, specialClass: "mt-auto d-lg-none",
+      isCollapsible: true, expanded: false, icon:'user', items: [
+        {name: "Cerrar Sesión", clickable: true, clickAction: this.logOut, icon: "sign-out-alt"}
+      ]
+    });
   },
   computed: {
     ...mapState(['sidenav']),
