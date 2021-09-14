@@ -6,6 +6,8 @@ import utils from "../../utils"
 
 const state = {
     bovine: {tag: null, genre: "", description: null, taggingDate: null, establishmentCuig: null},
+    listBovinesSelected:[],
+    cantSelect:null,
     error: {type: null, message: null},
     edit: false
 }
@@ -20,6 +22,12 @@ const mutations = {
             establishmentCuig: null
         } : payload
     },
+    setBovineSelected(state,payload){
+        state.listBovinesSelected=payload === null? null : payload ; 
+    },
+    // setSelected(state,payload){
+    //     state.cantSelect = payload === null? null : payload ; 
+    // },
     setError(state, error) {
         return state.error = getHttpError(BOVINE_ERRORS, error.response.status);
     },
@@ -35,9 +43,10 @@ const actions = {
     clearBovineData({commit, rootState}) {
         let blankBovine = {
             tag: null,
-                genre: "",
+            genre: "",
             description: null,
             taggingDate: null,
+            lot:null,
             establishmentCuig: rootState.auth.user.user.establishmentCuig
         }
         commit('setBovine', blankBovine);
@@ -48,8 +57,16 @@ const actions = {
     },
     setupEditBovine({commit}, proxyBovine){
         commit('setBovine', proxyBovine);
+        //commit('setSelected', proxyBovine.length);
         commit('setEdit', true);
     },
+    setupEdit({commit},edit){
+        commit('setEdit', edit);
+
+    },
+    setupListBovineSelected({commit},proxyListTag){
+        commit('setBovineSelected', proxyListTag);
+   },
     async getBovine({commit}, tag) {
         return BovineService.getBovineByTag(tag).then(
             response => {
@@ -93,6 +110,54 @@ const actions = {
     },
     async listBovines({commit}, data) {
         return BovineService.getBovineList(data.page, data.size, data.search).then(
+            response => {
+                console.log(response.data);
+                return Promise.resolve(response);
+            },
+            error => {
+                commit('setError', error);
+                return Promise.reject(error);
+            }
+        );
+    },
+    async listBatches({commit}) {
+        return BovineService.getBatchesList().then(
+            response => {
+                console.log(response.data);
+                return Promise.resolve(response);
+            },
+            error => {
+                commit('setError', error);
+                return Promise.reject(error);
+            }
+        );
+    },
+    async addBatchBovines({commit},data) {
+        return BovineService.addBovineToBatch(data.batch,data.listBovinesSelected).then(
+            response => {
+                console.log(response.data);
+                return Promise.resolve(response);
+            },
+            error => {
+                commit('setError', error);
+                return Promise.reject(error);
+            }
+        );
+    },
+    async deleteBatchBovines({commit},data) {
+        return BovineService.deleteBovineToBatches(data.batch,data.listBovinesSelected).then(
+            response => {
+                console.log(response.data);
+                return Promise.resolve(response);
+            },
+            error => {
+                commit('setError', error);
+                return Promise.reject(error);
+            }
+        );
+    },
+    async saveBatch({commit},data) {
+        return BovineService.sabeBatch(data.batch.name,data.listBovinesSelected,data.batch.description,rootState.auth.user.user.establishmentCuig).then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);

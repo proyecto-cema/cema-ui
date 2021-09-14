@@ -2,6 +2,10 @@
   <div class="text-center">
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
       <button class="btn btn-info text-white" type="button"
+              v-on:click="openBatchModal(null)">
+        Administrar Lotes
+      </button>
+      <button class="btn btn-info text-white" type="button"
               v-on:click="openAddBovineModal(null)">
         + Nuevo Bovino
       </button>
@@ -46,6 +50,8 @@
           <th scope="col">Fecha de caravaneo</th>
           <th v-if="!this.isMobile" scope="col">Sexo</th>
           <th v-if="!this.isMobile" scope="col">Descripción</th>
+          <!-- <th v-if="!this.isMobile" scope="col">Lote</th> -->
+          <th v-if="!this.isMobile" scope="col"></th>
           <th class="text-end" scope="col">Acciones</th>
         </tr>
         <tr v-else>
@@ -58,6 +64,8 @@
           <td>{{ this.javaDateToMomentDate(bovine.taggingDate) }}</td>
           <td v-if="!this.isMobile">{{ bovine.genre }}</td>
           <td v-if="!this.isMobile">{{ bovine.description }}</td>
+          <!-- <td v-if="!this.isMobile">{{ bovine.lot }}</td> -->
+          <td><input type="checkbox" id="checkbox" :value="bovine.tag" v-model="tagBovinesSelected"></td>
           <td class="text-end">
             <font-awesome-icon
                 class="me-2"
@@ -99,6 +107,7 @@
       modal-id="DeleteModal" title="Eliminar"
       @acceptModal="modalDelete(); this.deleteModal.hide()" @rejectModal="this.deleteModal.hide(); this.deleted = {}"></confirmation-modal>
   <bovine-modal modalId="addBovineModal" @deleteModal="deleteBovineForm"></bovine-modal>
+  <batch-modal modalId="addBatchModal"></batch-modal>
 </template>
 <script>
 import {mapActions} from "vuex";
@@ -106,6 +115,7 @@ import {Modal} from "bootstrap";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import CemaInput from "../../components/CemaInput";
 import BovineModal from "../../components/bovine/BovineModal";
+import BatchModal from "../../components/bovine/BatchModal";
 
 export default {
   name: "ListBovine",
@@ -113,18 +123,21 @@ export default {
     return {
       search: {tag: null, genre: "", description: null},
       bovines: [],
+      tagBovinesSelected: [],
       bovineLength: 0,
       headers: {totalPages: 0, currentPage: 0, totalElements: 0},
       isMobile: false,
       deleted: {},
       deleteModal: null,
       addBovineModal: null,
+      batchModal:null,
       timeout: false,
       delay: 250,
     };
   },
   components: {
     BovineModal,
+    BatchModal,
     ConfirmationModal,
     CemaInput
   },
@@ -135,13 +148,14 @@ export default {
   },
   mounted() {
     this.addBovineModal = new Modal(document.getElementById('addBovineModal'));
+    this.batchModal = new Modal(document.getElementById('addBatchModal'));
     this.deleteModal = new Modal(document.getElementById('DeleteModal'));
     this.isMobile = screen.width <= 760;
     this.searchBovinePage(this.headers.currentPage);
     window.addEventListener('resize', this.resizeTimeOut);
   },
   methods: {
-    ...mapActions("bovine", ["listBovines", "deleteBovine", "clearBovineData", "setupEditBovine"]),
+    ...mapActions("bovine", ["listBovines", "deleteBovine", "clearBovineData", "setupEditBovine", "setupListBovineSelected"]),
     resizeTimeOut(){
       clearTimeout(this.timeout);
       this.timeout = setTimeout(this.onResize, this.delay);
@@ -209,6 +223,14 @@ export default {
         this.setupEditBovine(bovine)
       }
       this.addBovineModal.show()
+    },
+    openBatchModal(bovine){
+      console.log(this.tagBovinesSelected+" Cant Selec "+ this.tagBovinesSelected.length )
+      this.clearBovineData()
+      if (this.tagBovinesSelected.length!=0){
+        this.setupListBovineSelected(this.tagBovinesSelected)
+      }
+      this.batchModal.show()
     },
     async searchBovinePage(page) {
       console.log(`You are in page ${this.headers.currentPage}, and requesting ${page} page`);

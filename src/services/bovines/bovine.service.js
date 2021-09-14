@@ -21,6 +21,21 @@ class BovineService {
   getBovineList (page=0, size=10, searchParams={tag:null, genre:null, taggingDate:null}) {
     return httpBovines.get('bovines/search', { params:{page:page, size:size, ...searchParams}, headers: authHeader() })
   }
+
+  getBatchesList () {
+    return httpBovines.get('batches/list', { headers: authHeader() })
+  }
+
+  addBovineToBatch (batch,ListBovine) {
+    return httpBovines.get('batches/'+batch+'/add', {params:ListBovine, headers: authHeader() })
+  }
+
+  deleteBovineToBatches (batch,ListBovine) {
+    return httpBovines.get('batches/'+batch+'/remove', {params:ListBovine, headers: authHeader() })
+  }
+  sabeBatch (batchName,ListBovine,batchDescrip,establishmentCuig) {
+    return httpBovines.get('batches', {params:{batchName: batchName , bovineTags: ListBovine,description:batchDescrip, establishmentCuig:establishmentCuig }, headers: authHeader() })
+  }
 }
 
 export default new BovineService()
