@@ -132,8 +132,8 @@ const actions = {
             }
         );
     },
-    async addBatchBovines({commit},data) {
-        return BovineService.addBovineToBatch(data.batch,data.listBovinesSelected).then(
+    async addBatchBovines({commit, rootState},data) {
+        return BovineService.addBovineToBatch(data.batch , data.listBovinesSelected , rootState.auth.user.user.establishmentCuig).then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);
@@ -144,8 +144,8 @@ const actions = {
             }
         );
     },
-    async deleteBatchBovines({commit},data) {
-        return BovineService.deleteBovineToBatches(data.batch,data.listBovinesSelected).then(
+    async deleteBatchBovines({commit , rootState},data) {
+        return BovineService.deleteBovineToBatches(data.batch , data.listBovinesSelected, rootState.auth.user.user.establishmentCuig).then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);

@@ -16,25 +16,30 @@
                 <div class="row">
                   <div class=" col-12 mb-3 ">
                     <cema-input v-model="batchSelected" component-type="select" required
-                                :error-data="{required: true, errorStatus: errorSave.genre,
-                                    errorMessage: 'Seleccione el lote a asignar'}"
+                                :error-data="{required: true, errorStatus: errorSave.batchSelect,
+                                errorMessage: 'Seleccione el lote a asignar'}"
                                 input-title="Lote" input-id="bacthSelect" 
                                 :options="[batches.batchName,'Eliminar asignacion Lote','+ Nuevo Lote']" @change="onChange($event)"></cema-input>
+                   
                   </div>
                   <div v-if="newLot">
                     <div class=" col-12 mb-3">
                       <cema-input v-model.trim="batch.name" maxlength="10" required
-                                :error-data="{required: true, errorStatus: errorSave.tag,
-                                    errorMessage: getTagError()['message']}"
+                                :error-data="{required: true, errorStatus: errorSave.name,
+                                errorMessage: getBatchNameError()['message']}"
                                 input-title="Nombre" input-id="batchName" type="text"></cema-input>
                     </div>
                     <div class=" col-12 mb-3">
                       <label class="form-label" for="batchDescription">Descripción<small style="color: red">*</small></label>
                       <textarea
-                        id="bovineDescription" v-model.trim="batch.description"
+                        id="bovineDescription" v-model.trim="batch.description" 
+                        :error-data="{required: true, errorStatus: errorSave.description,errorMessage: 'Ingrese la Descripcion del lote'}"
                         class="form-control" maxlength="300"
                         placeholder="Descripción" rows="4" type="text" required
                       ></textarea>
+                      <div v-if="errorSave.description" class="textError">
+                          <span class="is-invalid"></span>Ingrese la Descripcion del lote
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -59,7 +64,7 @@
                   type="button" v-on:click="deleteModal()">
             Eliminar
           </button>
-          <button class="btn btn-primary text-white" 
+          <button class="btn btn-primary text-white" :disabled="!batchSelected"
                   type="button" v-on:click="saveModal()">
             {{ "Guardar" }}
           </button>
@@ -73,15 +78,15 @@
 <script>
 import CemaInput from "../CemaInput";
 import {mapActions, mapState} from "vuex";
-import {REGEX_LETTERS_NUMBERS} from "../../constants";
+import {REGEX_SPACES} from "../../constants";
 
 export default {
   name: "BatchModal",
   data(){
     return {
       ListTagBovines:[],
-      batchSelected:null,
-      batches:[],
+      batchSelected:{},
+      batches:{},
       batch:{
         name:null,
         description:null
@@ -89,6 +94,7 @@ export default {
       newLot:false,
       success: null,
       errorSave: {
+        batchSelect:false,
         name: false,
         description: false
       },
@@ -109,18 +115,38 @@ export default {
     ...mapState("bovine",["error","listBovinesSelected"]),
     errorSaveHelper(){
       return {
-        
+        batchSelect:!this.batchSelected,
+        name: !this.getBatchNameError()["isValid"],
+        description: !this.batch.description
       }
     }
   },
   methods: {
-    ...mapActions("bovine", ["saveBatch", "dismissError", "setupEdit","listBatches","addBatchBovines","deleteBatchBovines"]),
+    ...mapActions("bovine", ["saveBatch", "dismissError","listBatches","addBatchBovines","deleteBatchBovines"]),
+    getBatchNameError(){
+      let message = 'Ingrese el nombre del lote.';
+      let isValid = !!this.batch.name;
+      let testRegex = REGEX_SPACES.test(this.batch.name);
+      if (isValid && !testRegex){
+        message = 'El nombre de lote ingresado no es valido. El nombre no puede contener espacios en blanco.'
+        isValid = false;
+      }
+      return {isValid: isValid, message: message}
+    },
     onChange(event){
-      console.log(this.listBovinesSelected)
+      // console.log(this.listBovinesSelected)
+      console.log(this.batchSelected)
       this.newLot=false;
       if(event.target.value=='+ Nuevo Lote'){
         this.newLot=true
       }
+      // else if (event.target.value!='Lote'){
+      //   for(var i=0;batches.length;i++){
+      //     if(batches[i].batchName==batchSelected){
+      //         this.batchSelected=this.batches[i]
+      //     }
+      //   }
+      // }
     },
     clean(){
       this.errorSave = {};
@@ -130,6 +156,14 @@ export default {
     successCall(message) {
       this.success = message;
       this.dismissError();
+    },
+    saveModal() {
+      this.errorSave = this.errorSaveHelper;
+      if (this.errorSave.name || this.errorSave.description || this.errorSave.batchSelect) {
+        console.error(this.errorSave)
+        return
+      }
+      this.formSaveBatch()
     },
     async formSaveBatch() {
       
@@ -148,16 +182,16 @@ export default {
         );
       }else if(this.batchSelected=='Eliminar asignacion Lote')
       {
-        this.deleteBatchBovines({batch:data.batch.name,listBovinesSelected:data.listBovinesSelected}).then(
+        this.deleteBatchBovines({batch: this.batchSelected , listBovinesSelected: this.listBovinesSelected}).then(
             (batch) => {
               this.successCall(`El bovinos fueron eliminados del lote ${batch.name} correctamente.`);
             }
         );
       }
       else{
-        this.addBatchBovines({batch:data.batch.name,listBovinesSelected:data.listBovinesSelected}).then(
+        this.addBatchBovines({batch: this.batchSelected , listBovinesSelected: this.listBovinesSelected}).then(
             (batch) => {
-              this.successCall(`El bovinos fueron asiganados al lote ${batch.name} correctamente.`);
+              this.successCall(`Los bovinos fueron asiganados al lote ${batch.name} correctamente.`);
             }
         );
       }
@@ -165,7 +199,11 @@ export default {
     async searchBatches() {
       this.listBatches().then(
         (response) => {
-            this.batches = response.data[0];
+          console.log(response.data)
+            this.batches = response.data;
+            console.log(this.batches)
+            // this.batches.batchName="'123','123asd'"
+            // this.batches[1] = response.data[1];
           
           console.log("Respuesta: "+response.data);
           

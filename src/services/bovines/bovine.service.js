@@ -26,12 +26,12 @@ class BovineService {
     return httpBovines.get('batches/list', { headers: authHeader() })
   }
 
-  addBovineToBatch (batch,ListBovine) {
-    return httpBovines.get('batches/'+batch+'/add', {params:ListBovine, headers: authHeader() })
+  addBovineToBatch (batch,ListBovine,cuig) {
+    return httpBovines.get('batches/'+batch+'/add?cuig='+cuig, {params:ListBovine, headers: authHeader() })
   }
 
-  deleteBovineToBatches (batch,ListBovine) {
-    return httpBovines.get('batches/'+batch+'/remove', {params:ListBovine, headers: authHeader() })
+  deleteBovineToBatches (batch,ListBovine,cuig) {
+    return httpBovines.get('batches/'+batch+'/remove?cuig='+cuig, {params:ListBovine, headers: authHeader() })
   }
   sabeBatch (batchName,ListBovine,batchDescrip,establishmentCuig) {
     return httpBovines.get('batches', {params:{batchName: batchName , bovineTags: ListBovine,description:batchDescrip, establishmentCuig:establishmentCuig }, headers: authHeader() })
