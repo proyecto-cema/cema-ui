@@ -112,7 +112,7 @@ export default {
 
     };
   },
-  components:{
+  components: {
     ConfirmationModal,
     CemaInput
   },
@@ -204,10 +204,3 @@ export default {
 };
 
 </script>
-<style>
-.textError {
-  text-align: left !important;
-  color: red;
-  font-size: 14px;
-}
-</style>
