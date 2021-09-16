@@ -133,7 +133,6 @@ const actions = {
         );
     },
     async addBatchBovines({commit, rootState},data) {
-        
         return BovineService.addBovineToBatch(data.batch , data.listBovinesSelected , rootState.auth.user.user.establishmentCuig).then(
             response => {
                 console.log(response.data);

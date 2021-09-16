@@ -31,7 +31,7 @@ class BovineService {
   }
 
   deleteBovineToBatches (batchName,ListBovine,cuig) {
-    return httpBovines.post('batches/'+batchName+'/remove/',ListBovine, {params:{cuig:cuig}, headers: authHeader() })
+    return httpBovines.post('batches/'+batchName+'/remove',ListBovine, {params:{cuig:cuig}, headers: authHeader() })
   }
   setBatch (data) {
     return httpBovines.post('batches/',data, { headers: authHeader() })
