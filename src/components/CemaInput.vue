@@ -16,6 +16,13 @@
       <slot :option="option">{{option}}</slot>
     </option>
   </select>
+  <textarea
+      v-if="componentType === 'textarea'"
+      :id="inputId" v-model="value"
+      :class="[errorData.required && errorData.errorStatus ? 'is-invalid' : '']"
+      class="form-control" v-bind="$attrs"
+      :placeholder="inputTitle">
+  </textarea>
   <div v-if="errorData.required && errorData.errorStatus" class="textError">
     <span class="is-invalid"></span> {{ errorData.errorMessage }}
   </div>

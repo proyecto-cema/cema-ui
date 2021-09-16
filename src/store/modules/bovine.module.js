@@ -25,9 +25,6 @@ const mutations = {
     setBovineSelected(state,payload){
         state.listBovinesSelected=payload === null? null : payload ; 
     },
-    // setSelected(state,payload){
-    //     state.cantSelect = payload === null? null : payload ; 
-    // },
     setError(state, error) {
         return state.error = getHttpError(BOVINE_ERRORS, error.response.status);
     },

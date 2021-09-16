@@ -50,7 +50,6 @@
           <th scope="col">Fecha de caravaneo</th>
           <th v-if="!this.isMobile" scope="col">Sexo</th>
           <th v-if="!this.isMobile" scope="col">Descripción</th>
-          <!-- <th v-if="!this.isMobile" scope="col">Lote</th> -->
           <th v-if="!this.isMobile" scope="col"></th>
           <th class="text-end" scope="col">Acciones</th>
         </tr>
@@ -64,7 +63,6 @@
           <td>{{ this.javaDateToMomentDate(bovine.taggingDate) }}</td>
           <td v-if="!this.isMobile">{{ bovine.genre }}</td>
           <td v-if="!this.isMobile">{{ bovine.description }}</td>
-          <!-- <td v-if="!this.isMobile">{{ bovine.lot }}</td> -->
           <td><input type="checkbox" id="checkbox" :value="bovine.tag" v-model="tagBovinesSelected"></td>
           <td class="text-end">
             <font-awesome-icon
