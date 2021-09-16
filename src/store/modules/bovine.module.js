@@ -133,6 +133,7 @@ const actions = {
         );
     },
     async addBatchBovines({commit, rootState},data) {
+        
         return BovineService.addBovineToBatch(data.batch , data.listBovinesSelected , rootState.auth.user.user.establishmentCuig).then(
             response => {
                 console.log(response.data);
@@ -156,8 +157,14 @@ const actions = {
             }
         );
     },
-    async saveBatch({commit},data) {
-        return BovineService.sabeBatch(data.batch.name,data.listBovinesSelected,data.batch.description,rootState.auth.user.user.establishmentCuig).then(
+    async saveBatch({commit , rootState},batch) {
+        let data={
+            batchName : batch.name,
+            bovineTags : batch.listBovinesSelected,
+            description : batch.description,
+            establishmentCuig : rootState.auth.user.user.establishmentCuig
+        }
+        return BovineService.setBatch(data).then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);
