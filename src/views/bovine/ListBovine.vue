@@ -1,7 +1,7 @@
 <template>
   <div class="text-center">
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
-      <button class="btn btn-info text-white" type="button"
+      <button class="btn btn-secondary text-white" type="button"
               v-on:click="openAddBovineModal(null)">
         + Nuevo Bovino
       </button>
@@ -22,12 +22,12 @@
                       input-title="Descripción" input-id="bovineDescription" :label="false" type="text" class="mb-2"></cema-input>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-2">
-          <button class="btn btn-dark text-white"
+          <button class="btn btn-primary text-white"
                   type="button"
                   v-on:click="this.clearSearchBovineData()">
             Restablecer
           </button>
-          <button class="btn btn-info text-white"
+          <button class="btn btn-secondary text-white"
                   type="button"
                   v-on:click="this.searchBovines()">
             Buscar
@@ -75,17 +75,17 @@
     </div>
     <div v-if="headers.totalPages > 1" class="d-flex justify-content-center">
       <div aria-label="Large button group" class="btn-group" role="group">
-        <button :class="headers.currentPage <= 0? 'disabled':''" class="btn btn-outline-dark" type="button"
+        <button :class="headers.currentPage <= 0? 'disabled':''" class="btn btn-outline-primary" type="button"
                 v-on:click="this.searchBovinePage(this.headers.currentPage-1)">
           Anterior
         </button>
         <button v-for="i in headers.totalPages" :key="i"
-                :class="headers.currentPage === i-1? 'btn-dark':'btn-outline-dark'" class="btn"
+                :class="headers.currentPage === i-1? 'btn-primary':'btn-outline-primary'" class="btn"
                 type="button"
                 v-on:click="this.searchBovinePage(i-1)">
           {{ i }}
         </button>
-        <button :class="headers.currentPage >= headers.totalPages-1? 'disabled':''" class="btn btn-outline-dark"
+        <button :class="headers.currentPage >= headers.totalPages-1? 'disabled':''" class="btn btn-outline-primary"
                 type="button"
                 v-on:click="this.searchBovinePage(this.headers.currentPage+1)">
           Siguiente

@@ -6,7 +6,7 @@ import bovine from './modules/bovine.module'
 import establishment from './modules/establishment.module'
 
 export default createStore({
-  state: {sidenav: true},
+  state: {sidenav: true, establishmentName: "Nombre Establecimiento"},
   mutations: mutations,
   actions: actions,
   modules: {

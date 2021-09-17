@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar navbar-expand-lg navbar-dark bg-dark d-flex">
+  <nav class="navbar navbar navbar-expand-lg navbar-dark bg-primary d-flex">
     <div class="container-fluid">
       <button aria-controls="navbarSupportedContent"
               aria-expanded="false" aria-label="Toggle navigation" class="btn btn-dark d-inline-block ml-auto"
@@ -8,7 +8,7 @@
               type="button" v-on:click="toggleSideNav()">
         <font-awesome-icon icon="align-justify"/>
       </button>
-      <a class="navbar-brand" :class="this.sidenav ? '': 'd-none d-md-block'">Nombre Establecimiento</a>
+      <a class="navbar-brand" :class="this.sidenav ? '': 'd-none d-md-block'">{{establishmentName}}</a>
       <div class="navbar-nav flex-grow-1"></div>
       <div class="d-none d-sm-block mb-2 mb-lg-0">
         <ul v-if="!currentUser" class="navbar-nav">
@@ -26,9 +26,9 @@
               <font-awesome-icon icon="user"/>
               {{ currentUser["user"]["name"] + ' ' + currentUser["user"]["lastName"] }}
             </a>
-            <div aria-labelledby="dropdownUser" class="dropdown-menu dropdown-menu-dark dropdown-menu-right">
+            <div aria-labelledby="dropdownUser" class="dropdown-menu dropdown-menu-dark bg-primary dropdown-menu-end">
               <a class="nav-link dropdown-item" @click.prevent="logOut">
-                <font-awesome-icon icon="sign-out-alt"/>
+                <font-awesome-icon class="ms-2" icon="sign-out-alt"/>
                 Cerrar Sesión
               </a>
             </div>
@@ -44,14 +44,17 @@ import {mapActions, mapState} from "vuex";
 
 export default {
   name: 'NavBar',
+  mounted() {
+    this.setEstablishmentName(this.currentUser.user.establishmentCuig);
+  },
   computed: {
-    ...mapState(['sidenav']),
+    ...mapState(['sidenav', 'establishmentName']),
     currentUser() {
       return this.$store.state.auth.user;
     },
   },
   methods: {
-    ...mapActions(['setSideNav']),
+    ...mapActions(['setSideNav', 'setEstablishmentName']),
     toggleSideNav() {
       this.setSideNav();
     },

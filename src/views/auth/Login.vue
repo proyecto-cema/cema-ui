@@ -28,12 +28,12 @@
                   <input type="checkbox" id="cbox2" value="remember" checked> <label style="color:white" for="cbox2">Recuerdame</label>
                 </div>
                 <div class="col-lg-7 col-md-12 negrita in-line">
-                  <a class="nav-link text-info in-line negrita" >¿Olvidaste tu contraseña?</a>
+                  <a class="nav-link text-secondary in-line negrita" >¿Olvidaste tu contraseña?</a>
                 </div>
               </div>
               <button
                   type="submit"
-                  class="btn btn-dark text-white button-margin"
+                  class="btn btn-primary text-white button-margin"
                   :disabled="loading"
               >
                 <span
@@ -47,7 +47,7 @@
                   <label style="color:white">¿Por primera vez en <b>CEMA</b>?</label>
                 </div>
                 <div class="col-md-5 in-line negrita">
-                  <a class="nav-link text-info" href="mailto:proyecto-cema.outlook.com">Contáctanos</a>
+                  <a class="nav-link text-secondary" href="mailto:proyecto-cema.outlook.com">Contáctanos</a>
                 </div>
               </div>
             </div>
