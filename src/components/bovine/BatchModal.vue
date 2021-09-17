@@ -38,18 +38,7 @@
                                 input-title="Descripción" input-id="batchDescription" type="text" 
                                 rows="4"
                                 ></cema-input>
-                   
-                      <!-- <label class="form-label" for="batchDescription">Descripción<small style="color: red">*</small></label>
-                      <textarea
-                        id="bovineDescription" v-model.trim="batch.description" 
-                        :error-data="{required: true, errorStatus: errorSave.description,errorMessage: 'Ingrese la Descripcion del lote'}"
-                        class="form-control" maxlength="300" :class="[errorSave.description ? 'is-invalid' : '']"
-                        placeholder="Descripción" rows="4" type="text" required
-                      ></textarea>
-                      <div v-if="errorSave.description" class="textError">
-                          <span class="is-invalid"></span>Ingrese la Descripcion del lote
-                      </div> -->
-                    </div>
+                   </div>
                   </div>
                 </div>
               </div>
