@@ -1,20 +1,35 @@
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import {
-    faAlignJustify,
-    faEdit,
-    faHatCowboy,
-    faHeartbeat,
     faHome,
-    faLightbulb,
+    faUser,
+    faUserPlus,
     faSignInAlt,
     faSignOutAlt,
+    faHatCowboy,
+    faLightbulb,
+    faHeartbeat,
+    faEdit,
     faTrash,
-    faUser,
     faBuilding,
-    faUserPlus
+    faAlignJustify,
+    faTimes
 } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt, faHatCowboy, faLightbulb, faHeartbeat, faEdit, faTrash, faBuilding, faAlignJustify)
+library.add(
+    faHome,
+    faUser,
+    faUserPlus,
+    faSignInAlt,
+    faSignOutAlt,
+    faHatCowboy,
+    faLightbulb,
+    faHeartbeat,
+    faEdit,
+    faTrash,
+    faBuilding,
+    faAlignJustify,
+    faTimes
+)
 
 export {FontAwesomeIcon}

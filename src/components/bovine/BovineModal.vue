@@ -56,19 +56,19 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-dark text-white" data-bs-dismiss="modal"
+          <button class="btn btn-primary text-white" data-bs-dismiss="modal"
                   type="button" v-on:click="clean()">
             Cancelar
           </button>
-          <button v-if=edit class="btn btn-dark text-white"
+          <button v-if=edit class="btn btn-primary text-white"
                   type="button" v-on:click="clean()">
             Crear Nuevo
           </button>
-          <button v-if=edit class="btn btn-dark text-white" data-bs-dismiss="modal"
+          <button v-if=edit class="btn btn-danger text-white" data-bs-dismiss="modal"
                   type="button" v-on:click="deleteModal()">
             Eliminar
           </button>
-          <button class="btn btn-primary text-white" :disabled="!bovine.tag"
+          <button class="btn btn-secondary text-white" :disabled="!bovine.tag"
                   type="button" v-on:click="saveModal()">
             {{ edit ? "Modificar":"Guardar" }}
           </button>
