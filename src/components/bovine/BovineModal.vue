@@ -37,12 +37,10 @@
                                 :options="['Macho', 'Hembra']"></cema-input>
                   </div>
                   <div class="col-lg-6 col-12 mb-3">
-                    <label class="form-label" for="bovineDescription">Descripción</label>
-                    <textarea
-                        id="bovineDescription" v-model.trim="bovine.description"
-                        class="form-control" maxlength="300"
-                        placeholder="Descripción" rows="4" type="text"
-                    ></textarea>
+                    <cema-input v-model.trim="bovine.description" maxlength="300" component-type="textarea"
+                                input-title="Descripción" input-id="bovineDescription" type="text" 
+                                rows="4"
+                    ></cema-input>
                   </div>
                 </div>
               </div>
