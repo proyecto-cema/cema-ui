@@ -45,7 +45,9 @@ import {mapActions, mapState} from "vuex";
 export default {
   name: 'NavBar',
   mounted() {
-    this.setEstablishmentName(this.currentUser.user.establishmentCuig);
+    if (this.currentUser) {
+      this.setEstablishmentName(this.currentUser.user.establishmentCuig);
+    }
   },
   computed: {
     ...mapState(['sidenav', 'establishmentName']),

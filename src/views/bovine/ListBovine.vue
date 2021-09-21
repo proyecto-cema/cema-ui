@@ -2,8 +2,8 @@
   <div class="text-center">
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
       <button class="btn btn-secondary text-white" type="button"
-              v-on:click="openBatchModal(null)">
-        Administrar Lotes
+              v-on:click="openBatchModal()" :disabled="tagBovinesSelected.size <= 0">
+        Agregar Lote
       </button>
       <button class="btn btn-secondary text-white" type="button"
               v-on:click="openAddBovineModal(null)">
@@ -50,7 +50,7 @@
           <th scope="col">Fecha de caravaneo</th>
           <th v-if="!this.isMobile" scope="col">Sexo</th>
           <th v-if="!this.isMobile" scope="col">Descripción</th>
-          <th v-if="!this.isMobile" scope="col"></th>
+          <th v-if="!this.isMobile" scope="col">Lotes</th>
           <th class="text-end" scope="col">Acciones</th>
         </tr>
         <tr v-else>
@@ -58,21 +58,28 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(bovine, index) in bovines" :key="bovine.tag">
+        <tr v-for="(bovine, index) in bovines" :key="bovine.tag"
+            :class="this.tagBovinesSelected.has(bovine.tag) ? 'table-active':''"
+            :style="this.bovineCuigSelected && this.bovineCuigSelected!==bovine.establishmentCuig ? 'color: grey': ''"
+            @click="toggleBovineSelected(bovine.tag, bovine.establishmentCuig)">
           <td>{{ bovine.establishmentCuig }}-{{ bovine.tag }}</td>
           <td>{{ this.javaDateToMomentDate(bovine.taggingDate) }}</td>
           <td v-if="!this.isMobile">{{ bovine.genre }}</td>
           <td v-if="!this.isMobile">{{ bovine.description }}</td>
-          <td><input type="checkbox" id="checkbox" :value="bovine.tag" v-model="tagBovinesSelected"></td>
+          <td v-if="!this.isMobile">
+            <batch-badge v-for="batch in bovine.batchNames.slice(0,1)" :badge-content="batch"
+                         @click.stop="removeBovineFromBatch(bovine, batch)"></batch-badge>
+            <batch-badge v-if="bovine.batchNames.length > 1"  badge-content="..." :badge-type="0" @click.stop=""></batch-badge>
+          </td>
           <td class="text-end">
             <font-awesome-icon
                 class="me-2"
                 icon="edit"
-                v-on:click="openAddBovineModal(bovine)">
+                @click.stop="openAddBovineModal(bovine)">
             </font-awesome-icon>
             <font-awesome-icon
                 icon="trash"
-                v-on:click="formDeleteBovine(bovine.tag, index, bovine.establishmentCuig)">
+                @click.stop="formDeleteBovine(bovine.tag, index, bovine.establishmentCuig)">
             </font-awesome-icon>
           </td>
         </tr>
@@ -114,6 +121,7 @@ import ConfirmationModal from "../../components/ConfirmationModal";
 import CemaInput from "../../components/CemaInput";
 import BovineModal from "../../components/bovine/BovineModal";
 import BatchModal from "../../components/bovine/BatchModal";
+import BatchBadge from "../../components/bovine/BatchBadge";
 
 export default {
   name: "ListBovine",
@@ -121,7 +129,8 @@ export default {
     return {
       search: {tag: null, genre: "", description: null},
       bovines: [],
-      tagBovinesSelected: [],
+      tagBovinesSelected: new Set(),
+      bovineCuigSelected: null,
       bovineLength: 0,
       headers: {totalPages: 0, currentPage: 0, totalElements: 0},
       isMobile: false,
@@ -134,6 +143,7 @@ export default {
     };
   },
   components: {
+    BatchBadge,
     BovineModal,
     BatchModal,
     ConfirmationModal,
@@ -153,7 +163,22 @@ export default {
     window.addEventListener('resize', this.resizeTimeOut);
   },
   methods: {
-    ...mapActions("bovine", ["listBovines", "deleteBovine", "clearBovineData", "setupEditBovine", "setupListBovineSelected"]),
+    ...mapActions("bovine", ["listBovines", "deleteBovine", "clearBovineData", "setupEditBovine", "setupListBovineSelected", "removeBovinesFromBatch"]),
+    toggleBovineSelected(tag, cuig){
+      if (!this.bovineCuigSelected){
+        this.bovineCuigSelected = cuig;
+      }
+      if (this.bovineCuigSelected === cuig){
+        if (this.tagBovinesSelected.has(tag)) {
+          this.tagBovinesSelected.delete(tag);
+          if (this.tagBovinesSelected.size === 0) {
+            this.bovineCuigSelected = null;
+          }
+        } else {
+          this.tagBovinesSelected.add(tag);
+        }
+      }
+    },
     resizeTimeOut(){
       clearTimeout(this.timeout);
       this.timeout = setTimeout(this.onResize, this.delay);
@@ -222,13 +247,12 @@ export default {
       }
       this.addBovineModal.show()
     },
-    openBatchModal(bovine){
-      console.log(this.tagBovinesSelected+" Cant Selec "+ this.tagBovinesSelected.length )
-      this.clearBovineData()
-      if (this.tagBovinesSelected.length!=0){
-        this.setupListBovineSelected(this.tagBovinesSelected)
+    openBatchModal(){
+      console.log(this.tagBovinesSelected, "size: "+ this.tagBovinesSelected.size, "cuig: "+ this.bovineCuigSelected)
+      if (this.tagBovinesSelected.size !== 0){
+        this.setupListBovineSelected({proxyListTag: this.tagBovinesSelected, cuig: this.bovineCuigSelected})
+        this.batchModal.show()
       }
-      this.batchModal.show()
     },
     async searchBovinePage(page) {
       console.log(`You are in page ${this.headers.currentPage}, and requesting ${page} page`);
@@ -254,6 +278,20 @@ export default {
           this.bovineLength = this.bovines != null ? this.bovines.length:0
         }
       )
+    },
+    async removeBovineFromBatch(bovine, batch){
+      let tag = bovine.tag;
+      let cuig = bovine.establishmentCuig;
+      if(this.tagBovinesSelected.size !== 0){
+        this.toggleBovineSelected(tag, cuig);
+      }else {
+        this.removeBovinesFromBatch({batch: batch, listBovinesSelected: [tag], cuig: cuig}).then(
+            (response) => {
+              console.log(`El bovino ${tag} fue eliminado del lote ${response.data.batchName} correctamente.`);
+              bovine.batchNames.splice(bovine.batchNames.indexOf(batch), 1);
+            }
+        );
+      }
     }
   },
 };

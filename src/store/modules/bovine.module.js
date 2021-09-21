@@ -5,9 +5,10 @@ import utils from "../../utils"
 
 
 const state = {
-    bovine: {tag: null, genre: "", description: null, taggingDate: null, establishmentCuig: null},
+    bovine: {tag: null, genre: "", description: null, taggingDate: null, establishmentCuig: null, batchNames: []},
     listBovinesSelected:[],
-    cantSelect:null,
+    selectedCuig: null,
+    cantSelect: null,
     error: {type: null, message: null},
     edit: false
 }
@@ -19,11 +20,13 @@ const mutations = {
             genre: "",
             description: null,
             taggingDate: null,
-            establishmentCuig: null
+            establishmentCuig: null,
+            batchNames: []
         } : payload
     },
-    setBovineSelected(state,payload){
-        state.listBovinesSelected=payload === null? null : payload ; 
+    setBovineSelected(state, payload){
+        state.listBovinesSelected = payload === null? null : payload.list ;
+        state.selectedCuig = payload === null? null : payload.cuig;
     },
     setError(state, error) {
         return state.error = getHttpError(BOVINE_ERRORS, error.response.status);
@@ -44,7 +47,8 @@ const actions = {
             description: null,
             taggingDate: null,
             lot:null,
-            establishmentCuig: rootState.auth.user.user.establishmentCuig
+            establishmentCuig: rootState.auth.user.user.establishmentCuig,
+            batchNames: []
         }
         commit('setBovine', blankBovine);
         commit('setEdit', false);
@@ -61,8 +65,9 @@ const actions = {
         commit('setEdit', edit);
 
     },
-    setupListBovineSelected({commit},proxyListTag){
-        commit('setBovineSelected', proxyListTag);
+    setupListBovineSelected({commit}, {proxyListTag, cuig}){
+        console.log("selected: ", cuig);
+        commit('setBovineSelected', {list: proxyListTag, cuig: cuig});
    },
     async getBovine({commit}, tag) {
         return BovineService.getBovineByTag(tag).then(
@@ -118,7 +123,8 @@ const actions = {
         );
     },
     async listBatches({commit}) {
-        return BovineService.getBatchesList().then(
+        console.log("retrieving batches for cuig:", state.selectedCuig)
+        return BovineService.getBatchesList(state.selectedCuig).then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);
@@ -129,8 +135,8 @@ const actions = {
             }
         );
     },
-    async addBatchBovines({commit, rootState},data) {
-        return BovineService.addBovineToBatch(data.batch , data.listBovinesSelected , rootState.auth.user.user.establishmentCuig).then(
+    async addBatchBovines({commit, rootState}, data) {
+        return BovineService.addBovinesToBatch(data.batch, data.listBovinesSelected, state.selectedCuig).then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);
@@ -141,8 +147,9 @@ const actions = {
             }
         );
     },
-    async deleteBatchBovines({commit , rootState},data) {
-        return BovineService.deleteBovineToBatches(data.batch , data.listBovinesSelected, rootState.auth.user.user.establishmentCuig).then(
+    async removeBovinesFromBatch({commit , rootState}, data) {
+        console.log(data);
+        return BovineService.removeBovinesFromBatch(data.batch, data.listBovinesSelected, data.cuig).then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);
@@ -153,12 +160,12 @@ const actions = {
             }
         );
     },
-    async saveBatch({commit , rootState},batch) {
+    async saveBatch({commit, rootState}, batch) {
         let data={
-            batchName : batch.name,
-            bovineTags : batch.listBovinesSelected,
-            description : batch.description,
-            establishmentCuig : rootState.auth.user.user.establishmentCuig
+            batchName: batch.name,
+            bovineTags: batch.listBovinesSelected,
+            description: batch.description,
+            establishmentCuig: state.selectedCuig
         }
         return BovineService.setBatch(data).then(
             response => {

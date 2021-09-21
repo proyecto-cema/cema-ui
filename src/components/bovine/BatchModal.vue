@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header text-center">
-          <h5 :id="modalId+'Label'" class="modal-title">Administrar Lotes </h5>
+          <h5 :id="modalId+'Label'" class="modal-title">Asignar Lote </h5>
           <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" v-on:click="clean()" type="button"></button>
         </div>
         <div class="modal-body">
@@ -11,7 +11,10 @@
             <div class="row">
               <div class="col-12">
                 <div class=" col-12 mb-3" >
-                  <div v-if="listBovinesSelected.length!=0"><label>Bovinos Seleccionados: </label> {{listBovinesSelected}}</div>
+                  <div v-if="listBovinesSelected.size !== 0"><label class="me-1">Bovinos Seleccionados: </label>
+                    <batch-badge v-for="bovineTag in listBovinesSelected" @click="listBovinesSelected.delete(bovineTag)"
+                                 :badge-content="`${selectedCuig}-${bovineTag}`" :badge-type="1"></batch-badge>
+                  </div>
                   <div v-else> No se selecciono ningún bovino </div>
                 </div>
                 <div class="row">
@@ -19,11 +22,19 @@
                     <cema-input v-model="batchSelected" component-type="select" required
                                 :error-data="{required: true, errorStatus: errorSave.batchSelected,
                                 errorMessage: 'Seleccione el lote a asignar'}"
-                                input-title="Lote" input-id="bacthSelect" 
-                                :options="batches" @change="onChange($event)"></cema-input>
-                   
+                                input-title="Lote" input-id="bacthSelect"
+                                :options="batches.filter(o => o.establishmentCuig === selectedCuig)" optionKey="batchName" @change="onChange($event)">
+                      <template v-slot:default="{ option }">
+                        {{ option.batchName }}
+                      </template>
+                      <template v-slot:extraOptions>
+                        <option :value="newBatchSelect">
+                          + Nuevo Lote
+                        </option>
+                      </template>
+                    </cema-input>
                   </div>
-                  <div v-if="newLot">
+                  <div v-if="newBatch">
                     <div class=" col-12 mb-3">
                       <cema-input v-model.trim="batch.name" maxlength="10" required
                                 :error-data="{required: true, errorStatus: errorSave.name,
@@ -73,18 +84,21 @@
 import CemaInput from "../CemaInput";
 import {mapActions, mapState} from "vuex";
 import {REGEX_SPACES} from "../../constants";
+import BatchBadge from "./BatchBadge";
+import ComboSearch from "../ComboSearch";
 
 export default {
   name: "BatchModal",
   data(){
     return {
-      batchSelected:{},
-      batches:[],
+      batchSelected: "",
+      batches: [],
       batch:{
-        name:null,
-        description:null
+        name: null,
+        description: null
       },
-      newLot:false,
+      newBatch: false,
+      newBatchSelect: 'new batch',
       success: null,
       errorSave: {
         batchSelected:false,
@@ -93,7 +107,7 @@ export default {
       },
     };
   },
-  components: { CemaInput },
+  components: { CemaInput, BatchBadge, ComboSearch },
   props: {
     modalId: {
       type: String,
@@ -101,21 +115,21 @@ export default {
     }
   },
   mounted(){
-    this.newLot=false;
+    this.newBatch = false;
     this.searchBatches();
   },
   computed: {
-    ...mapState("bovine",["error","listBovinesSelected"]),
+    ...mapState("bovine", ["error", "listBovinesSelected", "selectedCuig"]),
     errorSaveHelper(){
       return {
-        batchSelected:!this.batchSelected,
+        batchSelected: !this.batchSelected,
         name: !this.getBatchNameError()["isValid"],
         description: !this.batch.description
       }
     }
   },
   methods: {
-    ...mapActions("bovine", ["saveBatch", "dismissError","listBatches","addBatchBovines","deleteBatchBovines"]),
+    ...mapActions("bovine", ["saveBatch", "dismissError", "listBatches", "addBatchBovines", "removeBovinesFromBatch"]),
     getBatchNameError(){
       let message = 'Ingrese el nombre del lote.';
       let isValid = !!this.batch.name;
@@ -127,11 +141,9 @@ export default {
       return {isValid: isValid, message: message}
     },
     onChange(event){
-      console.log(this.batchSelected)
-      this.newLot=false;
-      if(event.target.value=='+ Nuevo Lote'){
-        this.newLot=true
-      }
+      console.log(this.batchSelected);
+      console.log(event.target)
+      this.newBatch = event.target.value === this.newBatchSelect;
     },
     clean(){
       this.errorSave = {};
@@ -144,42 +156,30 @@ export default {
     },
     saveModal() {
       this.errorSave = this.errorSaveHelper;
-      if(this.newLot==true){
+      if (this.newBatch === true) {
         if (this.errorSave.name || this.errorSave.description || this.errorSave.batchSelected) {
-        console.error(this.errorSave)
-        return
+          console.error(this.errorSave)
+          return
         }
       }
       this.formSaveBatch()
     },
     async formSaveBatch() {
-      
-      if(this.batchSelected=='+ Nuevo Lote'){
+      let bovineList = [...this.listBovinesSelected];
+      if(this.batchSelected === this.newBatchSelect){
         let data = {
-            name:this.batch.name,
-            description:this.batch.description,
-            listBovinesSelected:this.listBovinesSelected
+            name: this.batch.name,
+            description: this.batch.description,
+            listBovinesSelected: bovineList
         };
         this.saveBatch(data).then(
             (batch) => {
+              console.log("Created", batch);
               this.successCall(` El lote ${batch.data.batchName} se creo correctamente.`);
             }
         );
-      }else if(this.batchSelected=='- Eliminar asignacion Lote')
-      {
-        if(this.listBovinesSelected.length==0){
-          message = 'El nombre de lote ingresado no es valido. El nombre no puede contener espacios en blanco.'
-          isValid = false;
-          return
-        }
-        this.deleteBatchBovines({batch: this.batchSelected , listBovinesSelected: this.listBovinesSelected}).then(
-            (batch) => {
-              this.successCall(`El bovinos fueron eliminados del lote ${batch.data.batchName} correctamente.`);
-            }
-        );
-      }
-      else{
-        this.addBatchBovines({batch: this.batchSelected , listBovinesSelected: this.listBovinesSelected}).then(
+      } else {
+        this.addBatchBovines({batch: this.batchSelected , listBovinesSelected: bovineList}).then(
             (batch) => {
               this.successCall(`Los bovinos fueron asiganados al lote ${batch.data.batchName} correctamente.`);
             }
@@ -190,12 +190,7 @@ export default {
       this.listBatches().then(
         (response) => {
           console.log(response.data)
-          
-          for(var i = 0;response.data.length>i;i++){
-             this.batches[i]= response.data[i].batchName
-           }
-            this.batches[this.batches.length]='- Eliminar asignacion Lote';
-            this.batches[this.batches.length]='+ Nuevo Lote';
+          this.batches = response.data;
         }
       )
     }

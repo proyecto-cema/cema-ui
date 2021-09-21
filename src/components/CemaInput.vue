@@ -11,10 +11,11 @@
       :id="inputId" v-model="value"
       :class="[errorData.required && errorData.errorStatus ? 'is-invalid' : '']"
       class="form-select" v-bind="$attrs">
-    <option selected value="">{{ inputTitle }}</option>
+    <option selected value="" hidden>{{ inputTitle }}</option>
     <option v-for="option in options" :value="optionKey ? option[optionKey]:option" :key="optionKey ? option[optionKey]:option">
       <slot :option="option">{{option}}</slot>
     </option>
+    <slot name="extraOptions"></slot>
   </select>
   <textarea
       v-if="componentType === 'textarea'"
