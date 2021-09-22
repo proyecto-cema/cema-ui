@@ -46,7 +46,13 @@ export default {
   name: 'NavBar',
   mounted() {
     if (this.currentUser) {
-      this.setEstablishmentName(this.currentUser.user.establishmentCuig);
+      this.setEstablishmentName(this.currentUser.user.establishmentCuig).then(
+          () => {},
+          (error) => {
+            console.log("Logging Out cause Error");
+            this.logOut();
+          }
+      );
     }
   },
   computed: {
