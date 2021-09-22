@@ -7,7 +7,7 @@
   <span v-else class="btn badge me-1 rounded-pill border border-primary text-black"
         @mouseover="mouseOver = true" @mouseleave="mouseOver = false">
     {{badgeContent}}
-    <font-awesome-icon v-show="mouseOver" :class="badgeContent.length>0 ? 'ms-1': ''" icon="times"></font-awesome-icon>
+    <font-awesome-icon v-show="!condition && mouseOver" :class="badgeContent.length>0 ? 'ms-1': ''" icon="times"></font-awesome-icon>
   </span>
 
 </template>
@@ -26,6 +26,9 @@ export default {
     badgeType: {
       type: Number,
       default: 1
+    },
+    condition: {
+      required: false
     }
   }
 }

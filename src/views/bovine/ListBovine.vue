@@ -2,7 +2,7 @@
   <div class="text-center">
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
       <button class="btn btn-secondary text-white" type="button"
-              v-on:click="openBatchModal()" :disabled="tagBovinesSelected.size <= 0">
+              v-on:click="openBatchModal()" :disabled="!hasBovinesSelected">
         Agregar Lote
       </button>
       <button class="btn btn-secondary text-white" type="button"
@@ -67,7 +67,7 @@
           <td v-if="!this.isMobile">{{ bovine.genre }}</td>
           <td v-if="!this.isMobile">{{ bovine.description }}</td>
           <td v-if="!this.isMobile">
-            <batch-badge v-for="batch in bovine.batchNames.slice(0,1)" :badge-content="batch"
+            <batch-badge v-for="batch in bovine.batchNames.slice(0,1)" :badge-content="batch" :condition="hasBovinesSelected"
                          @click.stop="removeBovineFromBatch(bovine, batch)"></batch-badge>
             <batch-badge v-if="bovine.batchNames.length > 1"  badge-content="..." :badge-type="0" @click.stop=""></batch-badge>
           </td>
@@ -122,6 +122,7 @@ import CemaInput from "../../components/CemaInput";
 import BovineModal from "../../components/bovine/BovineModal";
 import BatchModal from "../../components/bovine/BatchModal";
 import BatchBadge from "../../components/bovine/BatchBadge";
+import {computed} from "vue";
 
 export default {
   name: "ListBovine",
@@ -162,6 +163,11 @@ export default {
     this.searchBovinePage(this.headers.currentPage);
     window.addEventListener('resize', this.resizeTimeOut);
   },
+  computed: {
+    hasBovinesSelected(){
+      return this.tagBovinesSelected.size !== 0
+    }
+  },
   methods: {
     ...mapActions("bovine", ["listBovines", "deleteBovine", "clearBovineData", "setupEditBovine", "setupListBovineSelected", "removeBovinesFromBatch"]),
     toggleBovineSelected(tag, cuig){
@@ -171,7 +177,7 @@ export default {
       if (this.bovineCuigSelected === cuig){
         if (this.tagBovinesSelected.has(tag)) {
           this.tagBovinesSelected.delete(tag);
-          if (this.tagBovinesSelected.size === 0) {
+          if (!this.hasBovinesSelected) {
             this.bovineCuigSelected = null;
           }
         } else {
@@ -249,7 +255,7 @@ export default {
     },
     openBatchModal(){
       console.log(this.tagBovinesSelected, "size: "+ this.tagBovinesSelected.size, "cuig: "+ this.bovineCuigSelected)
-      if (this.tagBovinesSelected.size !== 0){
+      if (!this.hasBovinesSelected){
         this.setupListBovineSelected({proxyListTag: this.tagBovinesSelected, cuig: this.bovineCuigSelected})
         this.batchModal.show()
       }
@@ -282,7 +288,7 @@ export default {
     async removeBovineFromBatch(bovine, batch){
       let tag = bovine.tag;
       let cuig = bovine.establishmentCuig;
-      if(this.tagBovinesSelected.size !== 0){
+      if(this.hasBovinesSelected){
         this.toggleBovineSelected(tag, cuig);
       }else {
         this.removeBovinesFromBatch({batch: batch, listBovinesSelected: [tag], cuig: cuig}).then(
