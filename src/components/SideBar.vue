@@ -44,7 +44,7 @@ export default {
     return {
       sidenavItems: [
         {name: 'Bovinos', isCollapsible: false, icon:'hat-cowboy', route: 'ListBovine', roleRequirement: 0},
-        {name: 'Administración', isCollapsible: false, icon:'building', route: 'AddEstablishment', roleRequirement: 2},
+        {name: 'Administración', isCollapsible: false, icon:'building', route: 'ListBatch', roleRequirement: 0},
         {name: 'Actividades', isCollapsible: true, expanded: false, icon:'lightbulb', items: []},
         {name: 'Salud', isCollapsible: true, expanded: false, icon:'heartbeat', items: []},
       ]
