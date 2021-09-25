@@ -67,9 +67,12 @@
           <td v-if="!this.isMobile">{{ bovine.genre }}</td>
           <td v-if="!this.isMobile">{{ bovine.description }}</td>
           <td v-if="!this.isMobile">
-            <batch-badge v-for="batch in bovine.batchNames.slice(0,1)" :badge-content="batch" :condition="hasBovinesSelected"
+            <batch-badge v-for="batch in bovine.batchNames.slice(0,1)" :badge-content="batch" :condition="!hasBovinesSelected"
                          @click.stop="removeBovineFromBatch(bovine, batch)"></batch-badge>
-            <batch-badge v-if="bovine.batchNames.length > 1"  badge-content="..." :badge-type="0" @click.stop=""></batch-badge>
+            <batch-badge v-if="showingExtraData === bovine.tag" v-for="batch in bovine.batchNames.slice(1)" :badge-content="batch" :condition="!hasBovinesSelected"
+                         @click.stop="removeBovineFromBatch(bovine, batch)"></batch-badge>
+            <batch-badge v-if="bovine.batchNames.length > 1 & showingExtraData !== bovine.tag"  badge-content="..." :badge-type="0"
+                         @click.stop="showingExtraData=bovine.tag"></batch-badge>
           </td>
           <td class="text-end">
             <font-awesome-icon
@@ -138,6 +141,7 @@ export default {
       deleted: {},
       deleteModal: null,
       addBovineModal: null,
+      showingExtraData: null,
       batchModal:null,
       timeout: false,
       delay: 250,
@@ -255,7 +259,7 @@ export default {
     },
     openBatchModal(){
       console.log(this.tagBovinesSelected, "size: "+ this.tagBovinesSelected.size, "cuig: "+ this.bovineCuigSelected)
-      if (!this.hasBovinesSelected){
+      if (this.hasBovinesSelected){
         this.setupListBovineSelected({proxyListTag: this.tagBovinesSelected, cuig: this.bovineCuigSelected})
         this.batchModal.show()
       }
