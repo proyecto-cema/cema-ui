@@ -43,8 +43,8 @@
       :confirmation-message="'¿Confirma que desea eliminar el lote '
       + this.deleted['name'] + '?'"
       modal-id="DeleteModal" title="Eliminar"
-      @acceptModal="modalDelete(); this.deleteModal.hide()" @rejectModal="this.deleteModal.hide(); this.deleted = {}"></confirmation-modal>
-  <editBatch-modal modalId="editBatchModal" @deleteModal="deleteBovineForm"></editBatch-modal>
+      @acceptModal="modalDelete()" @rejectModal="this.deleteModal.hide(); this.deleted = {}"></confirmation-modal>
+  <edit-batch-modal modalId="editBatchModal"></edit-batch-modal>
 </template>
 <script>
 import {mapActions} from "vuex";
@@ -71,11 +71,6 @@ export default {
     ConfirmationModal,
     CemaInput
   },
-  beforeDestroy() {
-    if (typeof window !== 'undefined') {
-      window.removeEventListener('resize', this.resizeTimeOut);
-    }
-  },
   mounted() {
     this.editBatchModal = new Modal(document.getElementById('editBatchModal'));
     this.deleteModal = new Modal(document.getElementById('DeleteModal'));
@@ -83,14 +78,14 @@ export default {
   },
   methods: {
     ...mapActions("bovine", ["listBatches", "deleteBatch", "setupBatch"]),
-    setIndexForTag(name, index){
+    setIndexForBatch(name, index){
       this.deleted = {
         name:name,
         index: index
       };
     },
     formDeleteBatch(name, index) {
-      this.setIndexForTag(name, index);
+      this.setIndexForBatch(name, index);
       this.deleteModal.show()
     },
     openDeleteBatchModal(batch){
@@ -104,6 +99,7 @@ export default {
       this.deleteBatch(this.deleted).then(
           () => {
             this.batches.splice(this.deleted["index"], 1);
+            this.deleted={};
           }
       );
     },
