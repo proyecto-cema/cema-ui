@@ -7,7 +7,8 @@ import utils from "../../utils"
 const state = {
     bovine: {tag: null, genre: "", description: null, taggingDate: null, establishmentCuig: null},
     error: {type: null, message: null},
-    edit: false
+    edit: false,
+    batch: {batchName: null, description: null, bovineTags: [], establishmentCuig: null}
 }
 
 const mutations = {
@@ -28,6 +29,15 @@ const mutations = {
     },
     setEdit(state, value){
         state.edit = value;
+    },
+    setBatch(state, payload){
+        state.batch = payload === null ? {
+            batchName: null,
+            description: null,
+            bovineTags: [],
+            establishmentCuig: null
+        } : payload
+
     }
 }
 
@@ -101,6 +111,76 @@ const actions = {
                 commit('setError', error);
                 return Promise.reject(error);
             }
+        );
+    },
+    setupBatch({commit}, proxyBatch){
+        commit('setBatch', proxyBatch);
+    },
+    async listBatches({commit}) {
+        return BovineService.getBatchesList().then(
+            response => {
+                console.log(response.data);
+                return Promise.resolve(response);
+            },
+            error => {
+                commit('setError', error);
+                return Promise.reject(error);
+            }
+        );
+    },
+    async deleteBatch({commit, rootState, dispatch}, {name}) {
+        return BovineService.deleteBatch(name , rootState.auth.user.user.establishmentCuig).then(
+            response => {
+                console.log("Delete batch with name:", name)
+                return Promise.resolve(response);
+            },
+            error => {
+                commit('setError', error);
+                return Promise.reject(error);
+            }
+        );
+    },
+    async addBatchBovines({commit, rootState},data) {
+        return BovineService.addBovineToBatch(data.batch , data.listBovinesSelected , rootState.auth.user.user.establishmentCuig).then(
+            response => {
+                console.log(response.data);
+                return Promise.resolve(response);
+            },
+            error => {
+                commit('setError', error);
+                return Promise.reject(error);
+            }
+        );
+    },
+    async deleteBatchBovines({commit , rootState},data) {
+        return BovineService.deleteBovineToBatches(data.batchName , data.bovineTag, rootState.auth.user.user.establishmentCuig).then(
+            response => {
+                console.log(response.data);
+                return Promise.resolve(response);
+            },
+            error => {
+                commit('setError', error);
+                return Promise.reject(error);
+            }
+        );
+    },
+    async saveBatch({commit , rootState},batch) {
+        let data={
+            batchName : batch.name,
+            bovineTags : batch.listBovinesSelected,
+            description : batch.description,
+            establishmentCuig : rootState.auth.user.user.establishmentCuig
+        }
+        return BovineService.setBatch(data).then(
+            response => {
+                console.log(response.data);
+                return Promise.resolve(response);
+            },
+            error => {
+                commit('setError', error);
+                return Promise.reject(error);
+            }
+            
         );
     },
 }
