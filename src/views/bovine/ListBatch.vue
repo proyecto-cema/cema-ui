@@ -1,11 +1,11 @@
 <template>
   <div class="text-center">
     <div class="col-12 table-responsive">
-      <div style="margin-top:25px;">
+      <div class="mt-2">
         <h3>Listado Lotes</h3>
       </div>
       <table class="table">
-
+        
         <thead>
         <tr v-if="batches.length !== 0">
           <th scope="col">Nombre</th>
@@ -13,7 +13,7 @@
           <th class="text-end" scope="col">Acciones</th>
         </tr>
         <tr v-else>
-          <th scope="col">No se encontraron resultados para las condiciones de búsquedas ingresadas.</th>
+          <th scope="col">No se encontraron lotes creados para este establecimiento.</th>
         </tr>
         </thead>
         <tbody>
@@ -74,7 +74,7 @@ export default {
   mounted() {
     this.editBatchModal = new Modal(document.getElementById('editBatchModal'));
     this.deleteModal = new Modal(document.getElementById('DeleteModal'));
-    this.searchBatches();
+    this.retrieveBatches();
   },
   methods: {
     ...mapActions("bovine", ["listBatches", "deleteBatch", "setupBatch"]),
@@ -103,7 +103,7 @@ export default {
           }
       );
     },
-    async searchBatches() {
+    async retrieveBatches() {
       this.batches = null;
       this.listBatches().then(
         (response) => {
