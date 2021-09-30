@@ -10,7 +10,8 @@ const state = {
     selectedCuig: null,
     cantSelect: null,
     error: {type: null, message: null},
-    edit: false
+    edit: false,
+    batch: {batchName: null, description: null, bovineTags: [], establishmentCuig: null}
 }
 
 const mutations = {
@@ -36,6 +37,15 @@ const mutations = {
     },
     setEdit(state, value){
         state.edit = value;
+    },
+    setBatch(state, payload){
+        state.batch = payload === null ? {
+            batchName: null,
+            description: null,
+            bovineTags: [],
+            establishmentCuig: null
+        } : payload
+
     }
 }
 
@@ -58,12 +68,14 @@ const actions = {
     },
     setupEditBovine({commit}, proxyBovine){
         commit('setBovine', proxyBovine);
-        //commit('setSelected', proxyBovine.length);
         commit('setEdit', true);
     },
     setupEdit({commit},edit){
         commit('setEdit', edit);
 
+    },
+    setupBatch({commit}, proxyBatch){
+        commit('setBatch', proxyBatch);
     },
     setupListBovineSelected({commit}, {proxyListTag, cuig}){
         console.log("selected: ", cuig);
@@ -122,11 +134,36 @@ const actions = {
             }
         );
     },
+    async removeBovinesFromBatch({commit , rootState}, data) {
+        console.log(data);
+        return BovineService.removeBovinesFromBatch(data.batch, data.listBovinesSelected, data.cuig).then(
+            response => {
+                console.log(response.data);
+                return Promise.resolve(response);
+            },
+            error => {
+                commit('setError', error);
+                return Promise.reject(error);
+            }
+        );
+    },
     async listBatches({commit}) {
         console.log("retrieving batches for cuig:", state.selectedCuig)
         return BovineService.getBatchesList(state.selectedCuig).then(
             response => {
                 console.log(response.data);
+                return Promise.resolve(response);
+            },
+            error => {
+                commit('setError', error);
+                return Promise.reject(error);
+            }
+        );
+    },
+    async deleteBatch({commit, rootState, dispatch}, {name}) {
+        return BovineService.deleteBatch(name , state.selectedCuig).then(
+            response => {
+                console.log("Delete batch with name:", name)
                 return Promise.resolve(response);
             },
             error => {
@@ -147,9 +184,8 @@ const actions = {
             }
         );
     },
-    async removeBovinesFromBatch({commit , rootState}, data) {
-        console.log(data);
-        return BovineService.removeBovinesFromBatch(data.batch, data.listBovinesSelected, data.cuig).then(
+    async deleteBatchBovines({commit , rootState},data) {
+        return BovineService.deleteBovineToBatches(data.batchName , data.bovineTag, rootState.auth.user.user.establishmentCuig).then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);
