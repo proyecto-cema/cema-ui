@@ -4,7 +4,7 @@
       <div class="modal-content">
         <div class="modal-header text-center">
           <h5 :id="modalId+'Label'" class="modal-title">Asignar Lote </h5>
-          <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" v-on:click="clean()" type="button"></button>
+          <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" v-on:click="dismissModal()" type="button"></button>
         </div>
         <div class="modal-body">
           <form @submit.prevent="">
@@ -45,7 +45,7 @@
                        <cema-input v-model.trim="batch.description" maxlength="300" required
                                 component-type="textarea"
                                 :error-data="{required: true, errorStatus: errorSave.description,
-                                errorMessage: 'Ingrese la Descripcion del lote'}"
+                                errorMessage: 'Ingrese la descripción del lote'}"
                                 input-title="Descripción" input-id="batchDescription" type="text" 
                                 rows="4"
                                 ></cema-input>
@@ -67,9 +67,9 @@
         <div class="modal-footer">
           <button class="btn btn-dark text-white" data-bs-dismiss="modal"
                   type="button" v-on:click="clean()">
-            Cancelar
+            Cambiar selección
           </button>
-          <button class="btn btn-primary text-white" :disabled="!batchSelected"
+          <button class="btn btn-secondary text-white" :disabled="!batchSelected"
                   type="button" v-on:click="saveModal()">
             {{ "Guardar" }}
           </button>
@@ -93,7 +93,7 @@ export default {
     return {
       batchSelected: "",
       batches: [],
-      batch:{
+      batch: {
         name: null,
         description: null
       },
@@ -101,7 +101,7 @@ export default {
       newBatchSelect: 'new batch',
       success: null,
       errorSave: {
-        batchSelected:false,
+        batchSelected: false,
         name: false,
         description: false
       },
@@ -115,7 +115,6 @@ export default {
     }
   },
   mounted(){
-    this.newBatch = false;
     this.searchBatches();
   },
   computed: {
@@ -131,7 +130,7 @@ export default {
   methods: {
     ...mapActions("bovine", ["saveBatch", "dismissError", "listBatches", "addBatchBovines", "removeBovinesFromBatch"]),
     getBatchNameError(){
-      let message = 'Ingrese el nombre del lote.';
+      let message = 'Ingrese el nombre del lote';
       let isValid = !!this.batch.name;
       let testRegex = REGEX_SPACES.test(this.batch.name);
       if (isValid && !testRegex){
@@ -145,7 +144,13 @@ export default {
       console.log(event.target)
       this.newBatch = event.target.value === this.newBatchSelect;
     },
+    dismissModal(){
+      this.$emit('cleanSelectedBovines');
+      this.clean();
+    },
     clean(){
+      this.batchSelected = "";
+      this.newBatch = false;
       this.errorSave = {};
       this.success = null;
       this.dismissError();
@@ -176,12 +181,14 @@ export default {
             (batch) => {
               console.log("Created", batch);
               this.successCall(` El lote ${batch.data.batchName} se creo correctamente.`);
+              this.searchBatches();
             }
         );
       } else {
         this.addBatchBovines({batch: this.batchSelected , listBovinesSelected: bovineList}).then(
             (batch) => {
               this.successCall(`Los bovinos fueron asiganados al lote ${batch.data.batchName} correctamente.`);
+              this.$emit('addBovinesToBatch', batch.data.batchName);
             }
         );
       }

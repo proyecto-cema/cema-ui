@@ -1,6 +1,6 @@
 <template>
   <span v-if="badgeType === 0" class="btn badge me-1 rounded-pill"
-        :class="mouseOver ? 'bg-secondary': 'bg-primary'"
+        :class="condition && mouseOver ? 'bg-secondary': 'bg-primary'"
         @mouseover="mouseOver = true" @mouseleave="mouseOver = false">
     {{badgeContent}}
   </span>

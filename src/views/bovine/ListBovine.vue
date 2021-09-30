@@ -66,13 +66,13 @@
           <td>{{ this.javaDateToMomentDate(bovine.taggingDate) }}</td>
           <td v-if="!this.isMobile">{{ bovine.genre }}</td>
           <td v-if="!this.isMobile">{{ bovine.description }}</td>
-          <td v-if="!this.isMobile">
+          <td v-if="!this.isMobile" class="overflow-auto w-25">
             <batch-badge v-for="batch in bovine.batchNames.slice(0,1)" :badge-content="batch" :condition="!hasBovinesSelected"
                          @click.stop="removeBovineFromBatch(bovine, batch)"></batch-badge>
-            <batch-badge v-if="showingExtraData === bovine.tag" v-for="batch in bovine.batchNames.slice(1)" :badge-content="batch" :condition="!hasBovinesSelected"
+            <batch-badge v-if="showingExtraData === bovine.tag" v-for="batch in bovine.batchNames.slice(1)" :badge-content="batch" :condition="true"
                          @click.stop="removeBovineFromBatch(bovine, batch)"></batch-badge>
             <batch-badge v-if="bovine.batchNames.length > 1 & showingExtraData !== bovine.tag"  badge-content="..." :badge-type="0"
-                         @click.stop="showingExtraData=bovine.tag"></batch-badge>
+                         @click.stop="showMoreBatches(bovine)" :condition="!hasBovinesSelected"></batch-badge>
           </td>
           <td class="text-end">
             <font-awesome-icon
@@ -115,7 +115,8 @@
       modal-id="DeleteModal" title="Eliminar"
       @acceptModal="modalDelete(); this.deleteModal.hide()" @rejectModal="this.deleteModal.hide(); this.deleted = {}"></confirmation-modal>
   <bovine-modal modalId="addBovineModal" @deleteModal="deleteBovineForm"></bovine-modal>
-  <batch-modal modalId="addBatchModal"></batch-modal>
+  <batch-modal modalId="addBatchModal" @addBovinesToBatch="addBovinesToBatch"
+               @cleanSelectedBovines="tagBovinesSelected=new Set();bovineCuigSelected=null"></batch-modal>
 </template>
 <script>
 import {mapActions} from "vuex";
@@ -175,6 +176,7 @@ export default {
   methods: {
     ...mapActions("bovine", ["listBovines", "deleteBovine", "clearBovineData", "setupEditBovine", "setupListBovineSelected", "removeBovinesFromBatch"]),
     toggleBovineSelected(tag, cuig){
+      this.showingExtraData = null;
       if (!this.bovineCuigSelected){
         this.bovineCuigSelected = cuig;
       }
@@ -264,6 +266,16 @@ export default {
         this.batchModal.show()
       }
     },
+    addBovinesToBatch(batchName){
+      console.log("Adding", batchName, "to bovine:");
+      for (let i=0; i < this.bovines.length; i++) {
+        console.log(this.bovines[i]);
+        if (this.tagBovinesSelected.has(this.bovines[i].tag)){
+          console.log("added");
+          this.bovines[i].batchNames.push(batchName);
+        }
+      }
+    },
     async searchBovinePage(page) {
       console.log(`You are in page ${this.headers.currentPage}, and requesting ${page} page`);
       await this.searchBovines(page, this.isMobile ? 5 : 10)
@@ -301,6 +313,15 @@ export default {
               bovine.batchNames.splice(bovine.batchNames.indexOf(batch), 1);
             }
         );
+      }
+    },
+    showMoreBatches(bovine){
+      let tag = bovine.tag;
+      let cuig = bovine.establishmentCuig;
+      if(this.hasBovinesSelected){
+        this.toggleBovineSelected(tag, cuig);
+      }else {
+        this.showingExtraData = tag;
       }
     }
   },
