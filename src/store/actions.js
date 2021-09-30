@@ -11,6 +11,11 @@ export default {
                 console.log(establishment)
                 commit('setEstablishmentName', establishment);
                 return Promise.resolve(establishment);
+            },
+            error => {
+                console.log("Error, please contact the devs if you consider this a mistake")
+                console.error(error)
+                return Promise.reject(error);
             }
         );
     }

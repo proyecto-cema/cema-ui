@@ -13,7 +13,13 @@ import {
     faTrash,
     faBuilding,
     faAlignJustify,
-    faTimes
+    faTimes,
+    faPlus,
+    faAngleRight,
+    faTag,
+    faCalendar,
+    faCommentAlt,
+    faVenusMars
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -29,7 +35,13 @@ library.add(
     faTrash,
     faBuilding,
     faAlignJustify,
-    faTimes
+    faTimes,
+    faPlus,
+    faAngleRight,
+    faTag,
+    faCalendar,
+    faCommentAlt,
+    faVenusMars
 )
 
 export {FontAwesomeIcon}

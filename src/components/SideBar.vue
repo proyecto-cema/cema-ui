@@ -54,12 +54,14 @@ export default {
     }
   },
   mounted() {
-    this.sidenavItems.push({
-      name: `${this.currentUser["user"]["userName"]}`, specialClass: "mt-auto d-lg-none",
-      isCollapsible: true, expanded: false, icon:'user', items: [
-        {name: "Cerrar Sesión", clickable: true, clickAction: this.logOut, icon: "sign-out-alt"}
-      ]
-    });
+    if(this.currentUser) {
+      this.sidenavItems.push({
+        name: `${this.currentUser["user"]["userName"]}`, specialClass: "mt-auto d-lg-none",
+        isCollapsible: true, expanded: false, icon: 'user', items: [
+          {name: "Cerrar Sesión", clickable: true, clickAction: this.logOut, icon: "sign-out-alt"}
+        ]
+      });
+    }
   },
   computed: {
     ...mapState(['sidenav']),

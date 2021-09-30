@@ -12,9 +12,15 @@
       </li>
       <template v-for="option in options">
         <li v-if="isSimilar(option)">
-          <button class="dropdown-item" type="button" v-on:click="selected(option)">{{ option[optionName] }}</button>
+          <button class="dropdown-item" type="button" v-on:click="selected(option[this.optionName])">{{ option[optionName] }}</button>
         </li>
       </template>
+      <li v-if="extraOption">
+        <button class="dropdown-item" type="button" v-on:click="selected(extraOption['key'])">
+          {{ extraOption['value'] }}
+          <font-awesome-icon v-if="extraOption['icon']" class="ms-1" :icon="extraOption['icon']"></font-awesome-icon>
+        </button>
+      </li>
     </ul>
   </div>
 </template>
@@ -37,6 +43,10 @@ export default {
     optionName: {
       type: String,
       required: true
+    },
+    extraOption: {
+      type: Object,
+      default: {}
     },
     optionCaller: {
       type: Function,
@@ -65,7 +75,7 @@ export default {
   },
   methods: {
     selected(option){
-      this.optionSelected = option[this.optionName];
+      this.optionSelected = option;
     },
     retrieveOptions(){
       this.optionCaller(this.callerParams).then(

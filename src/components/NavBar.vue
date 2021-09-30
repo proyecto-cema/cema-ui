@@ -45,7 +45,19 @@ import {mapActions, mapState} from "vuex";
 export default {
   name: 'NavBar',
   mounted() {
-    this.setEstablishmentName(this.currentUser.user.establishmentCuig);
+    if (this.currentUser) {
+      this.setEstablishmentName(this.currentUser.user.establishmentCuig).then(
+          () => {},
+          (error) => {
+            console.log("Logging Out because Error", error.response.status);
+            if(error.response.status === 503){
+              console.log("Not able to reach server, not logging out");
+              return
+            }
+            this.logOut();
+          }
+      );
+    }
   },
   computed: {
     ...mapState(['sidenav', 'establishmentName']),
