@@ -5,7 +5,9 @@ import {
   BOVINE_CONTEXT,
   BOVINE_VERSION,
   LOGIN_CONTEXT,
-  LOGIN_VERSION
+  LOGIN_VERSION,
+  ACTIVITY_CONTEXT,
+  ACTIVITY_VERSION
 } from '../constants'
 
 const headers = { 'Content-type': 'application/json' }
@@ -22,6 +24,11 @@ export const httpBovines = axios.create({
 
 export const httpAdministration = axios.create({
   baseURL: BASE_URL + ADMINISTRATION_CONTEXT + ADMINISTRATION_VERSION,
+  headers: headers
+})
+
+export const httpActivity = axios.create({
+  baseURL: BASE_URL + ACTIVITY_CONTEXT + ACTIVITY_VERSION,
   headers: headers
 })
 
