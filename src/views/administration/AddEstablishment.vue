@@ -43,14 +43,6 @@
               </div>
             </div>
             <div class="col-12">
-              <div v-if="error.type !== null" class="ms-3 me-3">
-                <div class="alert alert-danger alert-dismissible">
-                  {{ error.message }}
-                </div>
-                <div v-if="success !== null" class="alert alert-success alert-dismissible">
-                  {{ success }}
-                </div>
-              </div>
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <button class="btn btn-primary text-white" data-bs-target="#CancelModal" data-bs-toggle="modal"
                         type="button">
@@ -93,7 +85,7 @@
 <script>
 import {mapActions, mapState} from "vuex";
 import ConfirmationModal from "../../components/ConfirmationModal";
-import { Modal } from 'bootstrap';
+import { Modal, Toast } from 'bootstrap';
 import CemaInput from "../../components/CemaInput";
 
 
@@ -109,7 +101,6 @@ export default {
         cuig: false,
         owner: false
       },
-
     };
   },
   components: {
@@ -130,10 +121,10 @@ export default {
   },
   computed: {
     ...mapState("establishment", ["establishment", "error"]),
-    
   },
   methods: {
-    ...mapActions("establishment", ["getEstablishment", "saveEstablishment", "deleteEstablishment", "clearEstablishmentData","listOwners"]),
+    ...mapActions("establishment", ["getEstablishment", "saveEstablishment", "deleteEstablishment", "clearEstablishmentData", "listOwners"]),
+    ...mapActions(["setMessageData"]),
 
     startNewWithCuig(){
       this.clearEstablishmentData();
@@ -168,6 +159,10 @@ export default {
       this.saveEstablishment(data).then(
         () => {
           this.successCall("El Establecimiento se guardó correctamente");
+        },
+        (error) => {
+          console.log(error);
+          Toast.getInstance(document.getElementById('errorToast')).show();
         }
       );
     },
@@ -178,7 +173,7 @@ export default {
         () => {},
         (error) => {
           let modal = new Modal(document.getElementById('SearchModal'));
-          modal.show()
+          modal.show();
           this.edit = false;
         }
       )

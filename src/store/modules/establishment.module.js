@@ -12,9 +12,6 @@ const mutations = {
     setEstablishment(state, payload) {
         state.establishment = payload === null ? { name: null, cuig: null, location: null, phone: null, email: null, ownerUserName: "" } : payload
         state.error = {type: null, message: null};
-    },
-    setError(state, error) {
-        return state.error = getHttpError(ADMINISTRATION_ERRORS, error.response.status);
     }
 }
 
@@ -28,7 +25,7 @@ const actions = {
                 return Promise.resolve(establishment);
             },
             error => {
-                commit('setError', error);
+                commit('setErrorData', getHttpError(ADMINISTRATION_ERRORS, error.response.status), { root: true });
                 return Promise.reject(error);
             }
         );
@@ -43,7 +40,7 @@ const actions = {
                 return Promise.resolve(establishment);
             },
             error => {
-                commit('setError', error);
+                commit('setErrorData', getHttpError(ADMINISTRATION_ERRORS, error.response.status), { root: true });
                 return Promise.reject(error);
             }
         );
@@ -56,7 +53,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                commit('setError', error);
+                commit('setErrorData', getHttpError(ADMINISTRATION_ERRORS, error.response.status), { root: true });
                 return Promise.reject(error);
             }
         );
@@ -68,7 +65,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                commit('setError', error);
+                commit('setErrorData', getHttpError(ADMINISTRATION_ERRORS, error.response.status), { root: true });
                 return Promise.reject(error);
             }
         );

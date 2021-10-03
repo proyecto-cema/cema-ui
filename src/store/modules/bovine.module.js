@@ -1,7 +1,8 @@
 import BovineService from '../../services/bovines/bovine.service';
-import {BOVINE_ERRORS} from "../../constants";
+import {BOVINE_ERRORS, LOGIN_ERRORS} from "../../constants";
 import {getHttpError} from "../../services/http-common";
 import utils from "../../utils"
+import {Toast} from "bootstrap";
 
 
 const state = {
@@ -28,12 +29,6 @@ const mutations = {
     setBovineSelected(state, payload){
         state.listBovinesSelected = payload === null? null : payload.list ;
         state.selectedCuig = payload === null? null : payload.cuig;
-    },
-    setError(state, error) {
-        return state.error = getHttpError(BOVINE_ERRORS, error.response.status);
-    },
-    setErrorNull(state){
-        state.error = {type: null, message: null};
     },
     setEdit(state, value){
         state.edit = value;
@@ -63,16 +58,12 @@ const actions = {
         commit('setBovine', blankBovine);
         commit('setEdit', false);
     },
-    dismissError({commit}){
-        commit('setErrorNull');
-    },
     setupEditBovine({commit}, proxyBovine){
         commit('setBovine', proxyBovine);
         commit('setEdit', true);
     },
     setupEdit({commit},edit){
         commit('setEdit', edit);
-
     },
     setupBatch({commit}, proxyBatch){
         commit('setBatch', proxyBatch);
@@ -90,7 +81,7 @@ const actions = {
                 return Promise.resolve(bovine);
             },
             error => {
-                commit('setError', error);
+                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
                 return Promise.reject(error);
             }
         );
@@ -104,7 +95,9 @@ const actions = {
                 return Promise.resolve(bovine);
             },
             error => {
-                commit('setError', error);
+                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
+                console.log(error);
+                Toast.getInstance(document.getElementById('errorToast')).show();
                 return Promise.reject(error);
             }
         );
@@ -117,7 +110,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                commit('setError', error);
+                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
                 return Promise.reject(error);
             }
         );
@@ -129,7 +122,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                commit('setError', error);
+                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
                 return Promise.reject(error);
             }
         );
@@ -142,7 +135,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                commit('setError', error);
+                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
                 return Promise.reject(error);
             }
         );
@@ -155,7 +148,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                commit('setError', error);
+                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
                 return Promise.reject(error);
             }
         );
@@ -167,7 +160,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                commit('setError', error);
+                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
                 return Promise.reject(error);
             }
         );
@@ -179,7 +172,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                commit('setError', error);
+                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
                 return Promise.reject(error);
             }
         );
@@ -191,7 +184,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                commit('setError', error);
+                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
                 return Promise.reject(error);
             }
         );
@@ -209,7 +202,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                commit('setError', error);
+                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
                 return Promise.reject(error);
             }
         );

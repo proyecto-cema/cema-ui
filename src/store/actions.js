@@ -18,5 +18,12 @@ export default {
                 return Promise.reject(error);
             }
         );
-    }
+    },
+    setMessageData({ commit }, data, isError) {
+        if(isError){
+            commit('setErrorData', data);
+        } else {
+            commit('setSuccessData', data);
+        }
+    },
 }

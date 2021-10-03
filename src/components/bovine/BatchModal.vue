@@ -128,7 +128,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions("bovine", ["saveBatch", "dismissError", "listBatches", "addBatchBovines", "removeBovinesFromBatch"]),
+    ...mapActions("bovine", ["saveBatch", "listBatches", "addBatchBovines", "removeBovinesFromBatch"]),
     getBatchNameError(){
       let message = 'Ingrese el nombre del lote';
       let isValid = !!this.batch.name;
@@ -153,11 +153,9 @@ export default {
       this.newBatch = false;
       this.errorSave = {};
       this.success = null;
-      this.dismissError();
     },
     successCall(message) {
       this.success = message;
-      this.dismissError();
     },
     saveModal() {
       this.errorSave = this.errorSaveHelper;

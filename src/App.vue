@@ -6,6 +6,10 @@
       <div class="container">
         <router-view/>
       </div>
+      <div class="toast-container position-absolute bottom-0 end-0 p-3">
+        <toast-message :message="errorData.message" color="bg-danger" toastId="errorToast"></toast-message>
+        <toast-message :message="successData.message" color="bg-success" toastId="successToast"></toast-message>
+      </div>
     </div>
   </div>
   <div v-if="$route.meta.plainLayout">
@@ -16,15 +20,19 @@
 <script>
 import SideBar from "./components/SideBar.vue";
 import NavBar from "./components/NavBar";
+import ToastMessage from "./components/ToastMessage";
+import {mapState} from "vuex";
 
 
 export default {
   name: 'App',
   components: {
+    ToastMessage,
     NavBar,
     SideBar
   },
   computed: {
+    ...mapState(["successData", "errorData"]),
     sideNav() {
       return this.$store.state.sidenav;
     }

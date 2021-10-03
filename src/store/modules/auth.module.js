@@ -1,6 +1,6 @@
 import AuthService from '../../services/auth/auth.service';
 import {getHttpError} from "../../services/http-common";
-import {LOGIN_ERRORS} from "../../constants";
+import {ADMINISTRATION_ERRORS, LOGIN_ERRORS} from "../../constants";
 
 const user = JSON.parse(localStorage.getItem('user'));
 const initialState = user
@@ -25,9 +25,6 @@ const mutations = {
     logout(state) {
         state.status.loggedIn = false;
         state.user = null;
-    },
-    setError(state, error) {
-        return state.error = getHttpError(LOGIN_ERRORS, error.response.status);
     }
 }
 
@@ -40,7 +37,7 @@ const actions = {
             },
             error => {
                 console.log(error);
-                commit('setError', error);
+                commit('setErrorData', getHttpError(LOGIN_ERRORS, error.response.status), { root: true });
                 commit('loginFailure');
                 return Promise.reject(error);
             }

@@ -126,7 +126,6 @@ import CemaInput from "../../components/CemaInput";
 import BovineModal from "../../components/bovine/BovineModal";
 import BatchModal from "../../components/bovine/BatchModal";
 import BatchBadge from "../../components/bovine/BatchBadge";
-import {computed} from "vue";
 
 export default {
   name: "ListBovine",
