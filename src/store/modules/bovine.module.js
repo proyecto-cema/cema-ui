@@ -10,7 +10,6 @@ const state = {
     listBovinesSelected:[],
     selectedCuig: null,
     cantSelect: null,
-    error: {type: null, message: null},
     edit: false,
     batch: {batchName: null, description: null, bovineTags: [], establishmentCuig: null}
 }
@@ -45,6 +44,11 @@ const mutations = {
 }
 
 const actions = {
+    showError({commit}, error){
+        commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
+        console.log(error);
+        Toast.getInstance(document.getElementById('errorToast')).show();
+    },
     clearBovineData({commit, rootState}) {
         let blankBovine = {
             tag: null,
@@ -72,7 +76,7 @@ const actions = {
         console.log("selected: ", cuig);
         commit('setBovineSelected', {list: proxyListTag, cuig: cuig});
    },
-    async getBovine({commit}, tag) {
+    async getBovine({commit, dispatch}, tag) {
         return BovineService.getBovineByTag(tag).then(
             response => {
                 let bovine = response.data;
@@ -81,12 +85,12 @@ const actions = {
                 return Promise.resolve(bovine);
             },
             error => {
-                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
+                dispatch("showError", error);
                 return Promise.reject(error);
             }
         );
     },
-    async saveBovine({commit}, {edit, bovine}) {
+    async saveBovine({dispatch}, {edit, bovine}) {
         let saveBovine = Object.assign({}, bovine);
         saveBovine.taggingDate = utils.methods.momentDateToJavaDate(bovine.taggingDate);
         return BovineService.setBovine(saveBovine, edit).then(
@@ -95,14 +99,12 @@ const actions = {
                 return Promise.resolve(bovine);
             },
             error => {
-                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
-                console.log(error);
-                Toast.getInstance(document.getElementById('errorToast')).show();
+                dispatch("showError", error);
                 return Promise.reject(error);
             }
         );
     },
-    async deleteBovine({commit, rootState, dispatch}, {tag, cuig}) {
+    async deleteBovine({dispatch}, {tag, cuig}) {
         return BovineService.deleteBovine(tag, cuig).then(
             response => {
                 console.log("Delete bovine with cuig-tag:", cuig, '-',tag)
@@ -110,24 +112,24 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
+                dispatch("showError", error);
                 return Promise.reject(error);
             }
         );
     },
-    async listBovines({commit}, data) {
+    async listBovines({dispatch}, data) {
         return BovineService.getBovineList(data.page, data.size, data.search).then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);
             },
             error => {
-                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
+                dispatch("showError", error);
                 return Promise.reject(error);
             }
         );
     },
-    async removeBovinesFromBatch({commit , rootState}, data) {
+    async removeBovinesFromBatch({dispatch}, data) {
         console.log(data);
         return BovineService.removeBovinesFromBatch(data.batch, data.listBovinesSelected, data.cuig).then(
             response => {
@@ -135,12 +137,12 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
+                dispatch("showError", error);
                 return Promise.reject(error);
             }
         );
     },
-    async listBatches({commit}) {
+    async listBatches({dispatch}) {
         console.log("retrieving batches for cuig:", state.selectedCuig)
         return BovineService.getBatchesList(state.selectedCuig).then(
             response => {
@@ -148,49 +150,49 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
+                dispatch("showError", error);
                 return Promise.reject(error);
             }
         );
     },
-    async deleteBatch({commit, rootState, dispatch}, {name}) {
+    async deleteBatch({dispatch}, {name}) {
         return BovineService.deleteBatch(name , state.selectedCuig).then(
             response => {
                 console.log("Delete batch with name:", name)
                 return Promise.resolve(response);
             },
             error => {
-                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
+                dispatch("showError", error);
                 return Promise.reject(error);
             }
         );
     },
-    async addBatchBovines({commit, rootState}, data) {
+    async addBatchBovines({dispatch}, data) {
         return BovineService.addBovinesToBatch(data.batch, data.listBovinesSelected, state.selectedCuig).then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);
             },
             error => {
-                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
+                dispatch("showError", error);
                 return Promise.reject(error);
             }
         );
     },
-    async deleteBatchBovines({commit , rootState},data) {
-        return BovineService.deleteBovineToBatches(data.batchName , data.bovineTag, rootState.auth.user.user.establishmentCuig).then(
+    async deleteBatchBovines({dispatch, rootState}, data) {
+        return BovineService.deleteBovineToBatches(data.batchName, data.bovineTag, rootState.auth.user.user.establishmentCuig).then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);
             },
             error => {
-                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
+                dispatch("showError", error);
                 return Promise.reject(error);
             }
         );
     },
-    async saveBatch({commit, rootState}, batch) {
-        let data={
+    async saveBatch({dispatch}, batch) {
+        let data = {
             batchName: batch.name,
             bovineTags: batch.listBovinesSelected,
             description: batch.description,
@@ -202,7 +204,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
+                dispatch("showError", error);
                 return Promise.reject(error);
             }
         );

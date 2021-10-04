@@ -44,14 +44,6 @@
                   </div>
                 </div>
               </div>
-              <div class="col-12 text-center">
-                <div v-if="error.type !== null" class="alert alert-danger alert-dismissible">
-                  {{ error.message }}
-                </div>
-                <div v-if="success !== null" class="alert alert-success alert-dismissible">
-                  {{ success }}
-                </div>
-              </div>
             </div>
           </form>
         </div>
@@ -104,7 +96,7 @@ export default {
     }
   },
   computed: {
-    ...mapState("bovine", ["bovine", "error", "edit"]),
+    ...mapState("bovine", ["bovine", "edit"]),
     getToday(){
       return this.getMomentToday()
     },

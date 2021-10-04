@@ -159,10 +159,6 @@ export default {
       this.saveEstablishment(data).then(
         () => {
           this.successCall("El Establecimiento se guardó correctamente");
-        },
-        (error) => {
-          console.log(error);
-          Toast.getInstance(document.getElementById('errorToast')).show();
         }
       );
     },
