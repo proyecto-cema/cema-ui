@@ -5,13 +5,15 @@
       <div class="toast-body">
         {{ message }}
       </div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" ref="removeButton"
+              @click="removeIndexItemFromToasts(toastId)"></button>
     </div>
   </div>
 </template>
 
 <script>
 import {Toast} from "bootstrap";
+import {mapActions} from "vuex";
 
 export default {
   name: "ToastMessage",
@@ -25,12 +27,18 @@ export default {
       default: 'bg-primary'
     },
     toastId: {
-      type: String,
+      type: Number,
       required: true
     }
   },
+  methods:{
+    ...mapActions(["removeIndexItemFromToasts"])
+  },
   mounted() {
-    new Toast(document.getElementById(this.toastId));
+    console.log(this.$refs);
+    let toast = document.getElementById(`${this.toastId}`);
+    new Toast(toast).show();
+    setTimeout(() => this.$refs.removeButton.click(), 5000);
   }
 }
 </script>

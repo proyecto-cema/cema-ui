@@ -19,11 +19,8 @@ export default {
             }
         );
     },
-    setMessageData({ commit }, data, isError) {
-        if(isError){
-            commit('setErrorData', data);
-        } else {
-            commit('setSuccessData', data);
-        }
-    },
+    removeIndexItemFromToasts({ commit }, index){
+        console.log("Removing toast number", index);
+        commit("removeFromDataToastsArray", index);
+    }
 }

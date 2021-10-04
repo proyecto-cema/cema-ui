@@ -2,7 +2,6 @@ import EstablishmentService from '../../services/administration/establishment.se
 import UsersService from '../../services/users/user.service';
 import {getHttpError} from "../../services/http-common";
 import {ADMINISTRATION_ERRORS} from "../../constants";
-import {Toast} from "bootstrap";
 
 const state = {
     establishment: {name: null, cuig: null, location: null, phone: null, email: null, ownerUserName: "" },
@@ -16,9 +15,8 @@ const mutations = {
 
 const actions = {
     showError({commit}, error){
-        commit('setErrorData', getHttpError(ADMINISTRATION_ERRORS, error.response.status), { root: true });
+        commit('appendToDataToastsArray', getHttpError(ADMINISTRATION_ERRORS, error.response.status), { root: true });
         console.log(error);
-        Toast.getInstance(document.getElementById('errorToast')).show();
     },
     async getEstablishment({commit, dispatch}, cuig) {
         return EstablishmentService.getEstablishmentByCuig(cuig).then(

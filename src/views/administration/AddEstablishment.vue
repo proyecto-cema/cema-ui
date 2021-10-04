@@ -110,7 +110,6 @@ export default {
   mounted() {
     this.searchOwners()
     this.cuig = this.$route.query.cuig;
-    console.log("Owners:"+ this.owners);
     this.edit = !!this.cuig;
     
     if (this.edit){
@@ -124,8 +123,6 @@ export default {
   },
   methods: {
     ...mapActions("establishment", ["getEstablishment", "saveEstablishment", "deleteEstablishment", "clearEstablishmentData", "listOwners"]),
-    ...mapActions(["setMessageData"]),
-
     startNewWithCuig(){
       this.clearEstablishmentData();
       this.edit = false;
@@ -188,6 +185,7 @@ export default {
           (response) => {
             this.owners = response.data;
             console.log(response);
+            console.log("Owners:", this.owners);
           }
       )
     }

@@ -6,7 +6,11 @@ import bovine from './modules/bovine.module'
 import establishment from './modules/establishment.module'
 
 export default createStore({
-  state: {sidenav: true, establishmentName: "Nombre Establecimiento", errorData: {message: "", type: ""}, successData: {message: "", type: null}},
+  state: {
+    sidenav: true,
+    establishmentName: "Nombre Establecimiento",
+    dataToasts: []
+  },
   mutations: mutations,
   actions: actions,
   modules: {

@@ -1,3 +1,5 @@
+import {MAXIMUM_TOASTS} from "../constants";
+
 export default {
     toggleSideNav(state) {
         state.sidenav = !state.sidenav;
@@ -5,10 +7,14 @@ export default {
     setEstablishmentName(state, payload) {
         state.establishmentName = payload.name;
     },
-    setSuccessData(state, payload){
-        state.successData = payload;
+    appendToDataToastsArray(state, payload){
+        let arrLength = state.dataToasts.length;
+        if(arrLength > MAXIMUM_TOASTS){
+            state.dataToasts.splice( 0, arrLength - MAXIMUM_TOASTS);
+        }
+        state.dataToasts.push(payload);
     },
-    setErrorData(state, payload){
-        state.errorData = payload;
+    removeFromDataToastsArray(state, payload){
+        state.dataToasts.splice( payload, 1);
     }
 }

@@ -2,7 +2,6 @@ import BovineService from '../../services/bovines/bovine.service';
 import {BOVINE_ERRORS, LOGIN_ERRORS} from "../../constants";
 import {getHttpError} from "../../services/http-common";
 import utils from "../../utils"
-import {Toast} from "bootstrap";
 
 
 const state = {
@@ -45,9 +44,8 @@ const mutations = {
 
 const actions = {
     showError({commit}, error){
-        commit('setErrorData', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
+        commit('appendToDataToastsArray', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
         console.log(error);
-        Toast.getInstance(document.getElementById('errorToast')).show();
     },
     clearBovineData({commit, rootState}) {
         let blankBovine = {

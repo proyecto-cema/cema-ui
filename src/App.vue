@@ -7,8 +7,8 @@
         <router-view/>
       </div>
       <div class="toast-container position-absolute bottom-0 end-0 p-3">
-        <toast-message :message="errorData.message" color="bg-danger" toastId="errorToast"></toast-message>
-        <toast-message :message="successData.message" color="bg-success" toastId="successToast"></toast-message>
+        <toast-message v-for="(toastData, index) in dataToasts"
+                       :message="toastData.message" :color="toastData.color" :toastId="index"></toast-message>
       </div>
     </div>
   </div>
@@ -32,7 +32,7 @@ export default {
     SideBar
   },
   computed: {
-    ...mapState(["successData", "errorData"]),
+    ...mapState(["dataToasts"]),
     sideNav() {
       return this.$store.state.sidenav;
     }
