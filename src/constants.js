@@ -32,3 +32,8 @@ export const ADMINISTRATION_ERRORS = {
     404: {type: "Server", message: "Establecimiento no encontrado"},
     409: {type: "Server", message: "El establecimiento que esta intentando registrar ya existe"}
 }
+export const ACTIVITY_ERRORS = {
+    ...COMMON_ERRORS,
+    404: {type: "Server", message: "Actividad no encontrada"},
+    
+}

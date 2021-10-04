@@ -4,6 +4,7 @@ import mutations from './mutations'
 import actions from './actions'
 import bovine from './modules/bovine.module'
 import establishment from './modules/establishment.module'
+import vaccine from './modules/vaccination.module'
 
 export default createStore({
   state: {sidenav: true, establishmentName: "Nombre Establecimiento"},
@@ -12,7 +13,8 @@ export default createStore({
   modules: {
     auth,
     bovine,
-    establishment
+    establishment,
+    vaccine
   },
   getters:{
     isMobile(){
