@@ -6,7 +6,7 @@
         {{ message }}
       </div>
       <button type="button" class="btn-close btn-close-white me-2 m-auto" ref="removeButton"
-              @click="removeIndexItemFromToasts(toastId)"></button>
+              @click="removeToast()"></button>
     </div>
   </div>
 </template>
@@ -32,13 +32,17 @@ export default {
     }
   },
   methods:{
-    ...mapActions(["removeIndexItemFromToasts"])
+    ...mapActions(["removeIndexItemFromToasts"]),
+    removeToast(){
+      clearTimeout(this.timeout);
+      this.removeIndexItemFromToasts(this.toastId);
+    }
   },
   mounted() {
     console.log(this.$refs);
     let toast = document.getElementById(`${this.toastId}`);
     new Toast(toast).show();
-    setTimeout(() => this.$refs.removeButton.click(), 5000);
+    this.timeout = setTimeout(() => this.removeToast(), 5000);
   }
 }
 </script>

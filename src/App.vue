@@ -7,8 +7,8 @@
         <router-view/>
       </div>
       <div class="toast-container position-absolute bottom-0 end-0 p-3">
-        <toast-message v-for="(toastData, index) in dataToasts"
-                       :message="toastData.message" :color="toastData.color" :toastId="index"></toast-message>
+        <toast-message v-for="toastData in dataToasts" :key="toastData.id"
+                       :message="toastData.message" :color="toastData.color" :toastId="toastData.id"></toast-message>
       </div>
     </div>
   </div>

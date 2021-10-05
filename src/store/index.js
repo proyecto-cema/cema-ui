@@ -9,7 +9,8 @@ export default createStore({
   state: {
     sidenav: true,
     establishmentName: "Nombre Establecimiento",
-    dataToasts: []
+    dataToasts: [],
+    idToastHelper: {}
   },
   mutations: mutations,
   actions: actions,
