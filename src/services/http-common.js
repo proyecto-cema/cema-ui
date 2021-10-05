@@ -37,3 +37,7 @@ export const getHttpError = function (object, key) {
   let result = {...object[key], color: 'bg-danger'};
   return (typeof result !== "undefined") ? result : defaultError;
 }
+
+export const getSuccessStructure = function (message) {
+  return {type: 'OK', message: message != null ? message: 'Acción realizada correctamente', color: 'bg-success'};
+}

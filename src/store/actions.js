@@ -1,4 +1,5 @@
 import EstablishmentService from "../services/administration/establishment.service";
+import {getSuccessStructure} from "../services/http-common";
 
 export default {
     setSideNav({ commit }) {
@@ -22,5 +23,8 @@ export default {
     removeIndexItemFromToasts({ commit }, index){
         console.log("Removing toast number", index);
         commit("removeFromDataToastsArray", index);
+    },
+    showSuccess({commit}, message){
+        commit('appendToDataToastsArray', getSuccessStructure(message), { root: true });
     }
 }

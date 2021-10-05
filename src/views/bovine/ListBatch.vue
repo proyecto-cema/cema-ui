@@ -7,7 +7,7 @@
       <table class="table">
         
         <thead>
-        <tr v-if="batches.length !== 0">
+        <tr v-if="batches && batches.length !== 0">
           <th scope="col">Nombre</th>
           <th scope="col">Descripcion</th>
           <th class="text-end" scope="col">Acciones</th>

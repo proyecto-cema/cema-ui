@@ -93,7 +93,6 @@ export default {
   name: "AddEstablishment",
   data() {
     return {
-      success: null,
       edit: false,
       owners:[],
       errorSave: {
@@ -123,19 +122,19 @@ export default {
   },
   methods: {
     ...mapActions("establishment", ["getEstablishment", "saveEstablishment", "deleteEstablishment", "clearEstablishmentData", "listOwners"]),
+    ...mapActions(["showSuccess"]),
     startNewWithCuig(){
       this.clearEstablishmentData();
       this.edit = false;
       this.establishment.cuig = this.cuig;
     },
     successCall(message) {
-      this.success = message;
+      this.showSuccess(message);
       this.edit = false;
       this.clearEstablishmentData();
     },
     async preSave(){
       this.errorSave = {};
-      this.success = null;
       this.errorSave = {
         name: (!this.establishment.name),
         cuig: (!this.establishment.cuig),
@@ -161,7 +160,6 @@ export default {
     },
     async formRetrieveEstablishment() {
       this.errorSave = {};
-      this.success = null;
       this.getEstablishment(this.cuig).then(
         () => {},
         (error) => {
@@ -173,7 +171,6 @@ export default {
     },
     async formDeleteEstablishment() {
       this.errorSave = {};
-      this.success = null;
       this.deleteEstablishment(this.cuig).then(
         () => {
           this.successCall("El Establecimiento se elimino correctamente");

@@ -57,7 +57,6 @@ export default {
   name: "EditBatchModal",
   data(){
     return {
-      success: null,
       deleteModal: null,
       deleted: {}
     };

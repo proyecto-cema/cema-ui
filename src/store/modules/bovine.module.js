@@ -1,6 +1,6 @@
 import BovineService from '../../services/bovines/bovine.service';
 import {BOVINE_ERRORS} from "../../constants";
-import {getHttpError} from "../../services/http-common";
+import {getHttpError, getSuccessStructure} from "../../services/http-common";
 import utils from "../../utils"
 
 

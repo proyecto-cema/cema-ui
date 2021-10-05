@@ -91,7 +91,6 @@ export default {
       },
       newBatch: false,
       newBatchSelect: 'new batch',
-      success: null,
       errorSave: {
         batchSelected: false,
         name: false,
@@ -121,6 +120,7 @@ export default {
   },
   methods: {
     ...mapActions("bovine", ["saveBatch", "listBatches", "addBatchBovines", "removeBovinesFromBatch"]),
+    ...mapActions(["showSuccess"]),
     getBatchNameError(){
       let message = 'Ingrese el nombre del lote';
       let isValid = !!this.batch.name;
@@ -144,10 +144,9 @@ export default {
       this.batchSelected = "";
       this.newBatch = false;
       this.errorSave = {};
-      this.success = null;
     },
     successCall(message) {
-      this.success = message;
+      this.showSuccess(message);
     },
     saveModal() {
       this.errorSave = this.errorSaveHelper;
@@ -170,7 +169,7 @@ export default {
         this.saveBatch(data).then(
             (batch) => {
               console.log("Created", batch);
-              this.successCall(` El lote ${batch.data.batchName} se creo correctamente.`);
+              this.successCall(`El lote ${batch.data.batchName} se creo correctamente.`);
               this.searchBatches();
             }
         );

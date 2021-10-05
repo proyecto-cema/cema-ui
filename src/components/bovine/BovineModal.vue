@@ -80,7 +80,6 @@ export default {
   name: "BovineModal",
   data(){
     return {
-      success: null,
       errorSave: {
         tag: false,
         taggingDate: false,
@@ -110,6 +109,7 @@ export default {
   },
   methods: {
     ...mapActions("bovine", ["getBovine", "saveBovine", "setupEditBovine", "clearBovineData"]),
+    ...mapActions(["showSuccess"]),
     getTagError(){
       let message = 'Ingrese el número de caravana del bovino.';
       let isValid = !!this.bovine.tag;
@@ -122,11 +122,10 @@ export default {
     },
     clean(){
       this.errorSave = {};
-      this.success = null;
       this.clearBovineData()
     },
     successCall(message) {
-      this.success = message;
+      this.showSuccess(message);
     },
     deleteModal() {
       this.$emit('deleteModal', this.bovine.tag);
