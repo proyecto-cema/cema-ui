@@ -69,10 +69,10 @@
        Se cerrará la ventana y se perderán todos los cambios."
       modal-id="CancelModal" title="Cancelar" @acceptModal="this.$router.back()"></confirmation-modal>
   <confirmation-modal
-      confirmation-message="¿Confirma que desea guardar los datos del establecimineto?"
+      confirmation-message="¿Confirma que desea guardar los datos del establecimiento?"
       modal-id="SaveModal" title="Guardar" @acceptModal="formSaveEstablishment()"></confirmation-modal>
   <confirmation-modal
-      confirmation-message="¿Confirma que desea eliminar Establecimiento?"
+      confirmation-message="¿Confirma que desea eliminar establecimiento?"
       modal-id="DeleteModal" title="Eliminar" @acceptModal="formDeleteEstablishment()"></confirmation-modal>
   <confirmation-modal
       confirmation-message="El establecimiento buscado no se encuentra, ¿desea crear uno nuevo o volver al inicio?"
@@ -118,7 +118,7 @@ export default {
     }
   },
   computed: {
-    ...mapState("establishment", ["establishment", "error"]),
+    ...mapState("establishment", ["establishment"]),
   },
   methods: {
     ...mapActions("establishment", ["getEstablishment", "saveEstablishment", "deleteEstablishment", "clearEstablishmentData", "listOwners"]),
@@ -154,7 +154,7 @@ export default {
       };
       this.saveEstablishment(data).then(
         () => {
-          this.successCall("El Establecimiento se guardó correctamente");
+          this.successCall("El establecimiento se guardó correctamente");
         }
       );
     },
@@ -173,7 +173,7 @@ export default {
       this.errorSave = {};
       this.deleteEstablishment(this.cuig).then(
         () => {
-          this.successCall("El Establecimiento se elimino correctamente");
+          this.successCall("El establecimiento se elimino correctamente");
         }
       );
     },

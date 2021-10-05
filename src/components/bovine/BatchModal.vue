@@ -174,7 +174,7 @@ export default {
             }
         );
       } else {
-        this.addBatchBovines({batch: this.batchSelected , listBovinesSelected: bovineList}).then(
+        this.addBatchBovines({batch: this.batchSelected, listBovinesSelected: bovineList}).then(
             (batch) => {
               this.successCall(`Los bovinos fueron asiganados al lote ${batch.data.batchName} correctamente.`);
               this.$emit('addBovinesToBatch', batch.data.batchName);

@@ -1,5 +1,6 @@
 import EstablishmentService from "../services/administration/establishment.service";
-import {getSuccessStructure} from "../services/http-common";
+import {getHttpError, getSuccessStructure} from "../services/http-common";
+import {BOVINE_ERRORS} from "../constants";
 
 export default {
     setSideNav({ commit }) {
@@ -26,5 +27,9 @@ export default {
     },
     showSuccess({commit}, message){
         commit('appendToDataToastsArray', getSuccessStructure(message), { root: true });
-    }
+    },
+    showError({commit}, {errors, error}){
+        commit('appendToDataToastsArray', getHttpError(errors, error.response.status), { root: true });
+        console.log(error);
+    },
 }

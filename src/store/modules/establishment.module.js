@@ -1,6 +1,5 @@
 import EstablishmentService from '../../services/administration/establishment.service';
 import UsersService from '../../services/users/user.service';
-import {getHttpError} from "../../services/http-common";
 import {ADMINISTRATION_ERRORS} from "../../constants";
 
 const state = {
@@ -14,10 +13,6 @@ const mutations = {
 }
 
 const actions = {
-    showError({commit}, error){
-        commit('appendToDataToastsArray', getHttpError(ADMINISTRATION_ERRORS, error.response.status), { root: true });
-        console.log(error);
-    },
     async getEstablishment({commit, dispatch}, cuig) {
         return EstablishmentService.getEstablishmentByCuig(cuig).then(
             response => {
@@ -27,7 +22,7 @@ const actions = {
                 return Promise.resolve(establishment);
             },
             error => {
-                dispatch("showError", error);
+                dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
         );
@@ -42,7 +37,7 @@ const actions = {
                 return Promise.resolve(establishment);
             },
             error => {
-                dispatch("showError", error);
+                dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
         );
@@ -55,7 +50,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", error);
+                dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
         );
@@ -67,7 +62,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", error);
+                dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
         );

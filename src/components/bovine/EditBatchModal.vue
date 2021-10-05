@@ -28,7 +28,7 @@
                           icon="trash"
                           style="cursor:pointer;font-size:20px;"
                           title="Eliminar bovino del lote"
-                          v-on:click="formDeleteBatch(batch.batchName, tagBovine, index)">
+                          v-on:click="formDeleteBatch(batch.batchName, tagBovine, index, batch.establishmentCuig)">
                       </font-awesome-icon>
                     </td>
                   </tr>
@@ -75,15 +75,16 @@ export default {
   },
   methods: {
     ...mapActions("bovine", ["deleteBatchBovines"]),
-    setIndexForTag(batchName, bovineTag ,index){
+    setIndexForTag(batchName, bovineTag, index, cuig){
       this.deleted = {
         batchName: batchName,
         bovineTag: [bovineTag],
-        index: index
+        index: index,
+        cuig: cuig,
       };
     },
-    formDeleteBatch(name, tagBovine, index) {
-      this.setIndexForTag(name, tagBovine, index);
+    formDeleteBatch(name, tagBovine, index, cuig) {
+      this.setIndexForTag(name, tagBovine, index, cuig);
       this.modalDelete();
     },
     async modalDelete() {

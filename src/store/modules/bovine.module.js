@@ -1,6 +1,5 @@
 import BovineService from '../../services/bovines/bovine.service';
-import {BOVINE_ERRORS} from "../../constants";
-import {getHttpError, getSuccessStructure} from "../../services/http-common";
+import {BATCH_ERRORS, BOVINE_ERRORS} from "../../constants";
 import utils from "../../utils"
 
 
@@ -43,10 +42,6 @@ const mutations = {
 }
 
 const actions = {
-    showError({commit}, error){
-        commit('appendToDataToastsArray', getHttpError(BOVINE_ERRORS, error.response.status), { root: true });
-        console.log(error);
-    },
     clearBovineData({commit, rootState}) {
         let blankBovine = {
             tag: null,
@@ -64,9 +59,6 @@ const actions = {
         commit('setBovine', proxyBovine);
         commit('setEdit', true);
     },
-    setupEdit({commit},edit){
-        commit('setEdit', edit);
-    },
     setupBatch({commit}, proxyBatch){
         commit('setBatch', proxyBatch);
     },
@@ -83,7 +75,7 @@ const actions = {
                 return Promise.resolve(bovine);
             },
             error => {
-                dispatch("showError", error);
+                dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
         );
@@ -97,7 +89,7 @@ const actions = {
                 return Promise.resolve(bovine);
             },
             error => {
-                dispatch("showError", error);
+                dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
         );
@@ -110,7 +102,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", error);
+                dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
         );
@@ -122,7 +114,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", error);
+                dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
         );
@@ -135,7 +127,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", error);
+                dispatch("showError", {error: error, errors: BATCH_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
         );
@@ -148,19 +140,19 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", error);
+                dispatch("showError", {error: error, errors: BATCH_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
         );
     },
-    async deleteBatch({dispatch}, {name}) {
-        return BovineService.deleteBatch(name , state.selectedCuig).then(
+    async deleteBatch({dispatch}, {name, cuig}) {
+        return BovineService.deleteBatch(name, cuig).then(
             response => {
                 console.log("Delete batch with name:", name)
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", error);
+                dispatch("showError", {error: error, errors: BATCH_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
         );
@@ -172,19 +164,19 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", error);
+                dispatch("showError", {error: error, errors: BATCH_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
         );
     },
     async deleteBatchBovines({dispatch, rootState}, data) {
-        return BovineService.deleteBovineToBatches(data.batchName, data.bovineTag, rootState.auth.user.user.establishmentCuig).then(
+        return BovineService.deleteBovineToBatches(data.batchName, data.bovineTag, data.cuig).then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", error);
+                dispatch("showError", {error: error, errors: BATCH_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
         );
@@ -202,7 +194,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", error);
+                dispatch("showError", {error: error, errors: BATCH_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
         );

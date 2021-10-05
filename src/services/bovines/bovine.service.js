@@ -19,27 +19,27 @@ class BovineService {
   }
 
   getBovineList (page=0, size=10, searchParams={tag:null, genre:null, taggingDate:null}) {
-    return httpBovines.get('bovines/search', { params:{page:page, size:size, ...searchParams}, headers: authHeader() })
+    return httpBovines.get('bovines/search', { params:{page: page, size: size, ...searchParams}, headers: authHeader() })
   }
 
-  deleteBovineToBatches (batchName,ListBovine,cuig) {
-    return httpBovines.post('batches/'+batchName+'/remove',ListBovine, {params:{cuig:cuig}, headers: authHeader() })
+  deleteBovineToBatches (batchName, ListBovine, cuig) {
+    return httpBovines.post('batches/'+batchName+'/remove',ListBovine, {params:{cuig: cuig}, headers: authHeader() })
   }
 
-  deleteBatch (name,cuig) {
-    return httpBovines.delete('batches/' + name, {params:{cuig:cuig}, headers: authHeader() })
+  deleteBatch(name, cuig) {
+    return httpBovines.delete('batches/' + name, {params:{cuig: cuig}, headers: authHeader() })
   }
 
   getBatchesList (cuig) {
-    return httpBovines.get('batches/list', {params:{cuig:cuig}, headers: authHeader() })
+    return httpBovines.get('batches/list', {params:{cuig: cuig}, headers: authHeader() })
   }
 
   addBovinesToBatch (batchName, bovineList, cuig) {
-    return httpBovines.post('batches/'+batchName+'/add', bovineList, {params:{cuig:cuig}, headers: authHeader() })
+    return httpBovines.post('batches/'+batchName+'/add', bovineList, {params:{cuig: cuig}, headers: authHeader() })
   }
 
   removeBovinesFromBatch (batchName, bovineList, cuig) {
-    return httpBovines.post('batches/'+batchName+'/remove', bovineList, {params:{cuig:cuig}, headers: authHeader() })
+    return httpBovines.post('batches/'+batchName+'/remove', bovineList, {params:{cuig: cuig}, headers: authHeader() })
   }
 
   setBatch (data) {
