@@ -7,7 +7,7 @@
       <table class="table">
         
         <thead>
-        <tr v-if="batches.length !== 0">
+        <tr v-if="batches && batches.length !== 0">
           <th scope="col">Nombre</th>
           <th scope="col">Descripcion</th>
           <th class="text-end" scope="col">Acciones</th>
@@ -31,7 +31,7 @@
                 icon="trash"
                 style="cursor:pointer;font-size:20px;"
                 title="Eliminar lote"
-                v-on:click="formDeleteBatch(batch.batchName,index)">
+                v-on:click="formDeleteBatch(batch.batchName, index, batch.establishmentCuig)">
             </font-awesome-icon>
           </td>
         </tr>
@@ -78,14 +78,15 @@ export default {
   },
   methods: {
     ...mapActions("bovine", ["listBatches", "deleteBatch", "setupBatch"]),
-    setIndexForBatch(name, index){
+    setIndexForBatch(name, index, cuig){
       this.deleted = {
-        name:name,
-        index: index
+        name: name,
+        index: index,
+        cuig: cuig
       };
     },
-    formDeleteBatch(name, index) {
-      this.setIndexForBatch(name, index);
+    formDeleteBatch(name, index, cuig) {
+      this.setIndexForBatch(name, index, cuig);
       this.deleteModal.show()
     },
     openDeleteBatchModal(batch){
@@ -99,7 +100,7 @@ export default {
       this.deleteBatch(this.deleted).then(
           () => {
             this.batches.splice(this.deleted["index"], 1);
-            this.deleted={};
+            this.deleted = {};
           }
       );
     },

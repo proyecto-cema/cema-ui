@@ -21,27 +21,19 @@
                     </tr>
                   </thead>
                   <tbody>
-                  <tr v-for=" (tagBovine, index) in batch.bovineTags" :key="tagBovine">
+                  <tr v-for="(tagBovine, index) in batch.bovineTags" :key="tagBovine">
                     <td class="text-center">{{ tagBovine }}</td>
                     <td class="text-center">
                       <font-awesome-icon
                           icon="trash"
                           style="cursor:pointer;font-size:20px;"
                           title="Eliminar bovino del lote"
-                          v-on:click="formDeleteBatch(batch.batchName,tagBovine, index)">
+                          v-on:click="formDeleteBatch(batch.batchName, tagBovine, index, batch.establishmentCuig)">
                       </font-awesome-icon>
                     </td>
                   </tr>
                   </tbody>
                 </table>
-              </div>
-              <div class="col-12 text-center">
-                <div v-if="error.type !== null" class="alert alert-danger alert-dismissible">
-                  {{ error.message }}
-                </div>
-                <div v-if="success !== null" class="alert alert-success alert-dismissible">
-                  {{ success }}
-                </div>
               </div>
             </div>
           </form>
@@ -65,7 +57,6 @@ export default {
   name: "EditBatchModal",
   data(){
     return {
-      success: null,
       deleteModal: null,
       deleted: {}
     };
@@ -84,15 +75,16 @@ export default {
   },
   methods: {
     ...mapActions("bovine", ["deleteBatchBovines"]),
-    setIndexForTag(batchName,bovineTag ,index){
+    setIndexForTag(batchName, bovineTag, index, cuig){
       this.deleted = {
-        batchName:batchName,
-        bovineTag:[bovineTag],
-        index: index
+        batchName: batchName,
+        bovineTag: [bovineTag],
+        index: index,
+        cuig: cuig,
       };
     },
-    formDeleteBatch(name,tagBovine, index) {
-      this.setIndexForTag(name,tagBovine, index);
+    formDeleteBatch(name, tagBovine, index, cuig) {
+      this.setIndexForTag(name, tagBovine, index, cuig);
       this.modalDelete();
     },
     async modalDelete() {

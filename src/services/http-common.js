@@ -33,7 +33,11 @@ export const httpActivity = axios.create({
 })
 
 export const getHttpError = function (object, key) {
-  let defaultError = {type: 'Undefined', message: 'ERROR indefinido, intente nuevamente mas tarde.'};
-  let result = object[key];
+  let defaultError = {type: 'Undefined', message: 'ERROR indefinido, intente nuevamente mas tarde.', color: 'bg-danger'};
+  let result = {...object[key], color: 'bg-danger'};
   return (typeof result !== "undefined") ? result : defaultError;
+}
+
+export const getSuccessStructure = function (message) {
+  return {type: 'OK', message: message != null ? message: 'Acción realizada correctamente', color: 'bg-success'};
 }

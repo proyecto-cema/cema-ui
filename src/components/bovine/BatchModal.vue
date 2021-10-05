@@ -53,14 +53,6 @@
                   </div>
                 </div>
               </div>
-              <div class="col-12 text-center">
-                <div v-if="error.type !== null" class="alert alert-danger alert-dismissible">
-                  {{ error.message }}
-                </div>
-                <div v-if="success !== null" class="alert alert-success alert-dismissible">
-                  {{ success }}
-                </div>
-              </div>
             </div>
           </form>
         </div>
@@ -99,7 +91,6 @@ export default {
       },
       newBatch: false,
       newBatchSelect: 'new batch',
-      success: null,
       errorSave: {
         batchSelected: false,
         name: false,
@@ -128,7 +119,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions("bovine", ["saveBatch", "dismissError", "listBatches", "addBatchBovines", "removeBovinesFromBatch"]),
+    ...mapActions("bovine", ["saveBatch", "listBatches", "addBatchBovines", "removeBovinesFromBatch"]),
+    ...mapActions(["showSuccess"]),
     getBatchNameError(){
       let message = 'Ingrese el nombre del lote';
       let isValid = !!this.batch.name;
@@ -152,12 +144,9 @@ export default {
       this.batchSelected = "";
       this.newBatch = false;
       this.errorSave = {};
-      this.success = null;
-      this.dismissError();
     },
     successCall(message) {
-      this.success = message;
-      this.dismissError();
+      this.showSuccess(message);
     },
     saveModal() {
       this.errorSave = this.errorSaveHelper;
@@ -180,12 +169,12 @@ export default {
         this.saveBatch(data).then(
             (batch) => {
               console.log("Created", batch);
-              this.successCall(` El lote ${batch.data.batchName} se creo correctamente.`);
+              this.successCall(`El lote ${batch.data.batchName} se creo correctamente.`);
               this.searchBatches();
             }
         );
       } else {
-        this.addBatchBovines({batch: this.batchSelected , listBovinesSelected: bovineList}).then(
+        this.addBatchBovines({batch: this.batchSelected, listBovinesSelected: bovineList}).then(
             (batch) => {
               this.successCall(`Los bovinos fueron asiganados al lote ${batch.data.batchName} correctamente.`);
               this.$emit('addBovinesToBatch', batch.data.batchName);

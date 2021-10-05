@@ -10,7 +10,7 @@ const initialState = user
 
 const state = {
     ...initialState,
-    error: {type: null, message: null}
+    error: {type: '', message: ''}
 }
 
 const mutations = {

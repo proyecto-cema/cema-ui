@@ -6,7 +6,7 @@
           <form @submit.prevent="processForm" style="border-radius: 10px; background: rgba(0, 0, 0, 0.5);">
             <div class="col-md-10 offset-md-1">
               <img src="../../assets/images/cema_logo.png" style="width: 75%;" alt="Logo CEMA"/>
-              <div class="alert alert-danger" v-if="error.type !== null">
+              <div class="alert alert-danger" v-if="error.type !== ''">
                 {{error.message}}
               </div>
               <input

@@ -1,4 +1,6 @@
 import EstablishmentService from "../services/administration/establishment.service";
+import {getHttpError, getSuccessStructure} from "../services/http-common";
+import {BOVINE_ERRORS} from "../constants";
 
 export default {
     setSideNav({ commit }) {
@@ -18,5 +20,16 @@ export default {
                 return Promise.reject(error);
             }
         );
-    }
+    },
+    removeIndexItemFromToasts({ commit }, index){
+        console.log("Removing toast number", index);
+        commit("removeFromDataToastsArray", index);
+    },
+    showSuccess({commit}, message){
+        commit('appendToDataToastsArray', getSuccessStructure(message), { root: true });
+    },
+    showError({commit}, {errors, error}){
+        commit('appendToDataToastsArray', getHttpError(errors, error.response.status), { root: true });
+        console.log(error);
+    },
 }

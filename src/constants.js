@@ -3,6 +3,7 @@ export const JAVA_DATE_FORMAT = "YYYY-MM-DDTHH:mm:ssZ";
 export const ROLE_REPRESENTATION = {"ADMIN": 2, "PATRON": 1, "PEON": 0}
 export const REGEX_LETTERS_NUMBERS = /^([a-zA-Z0-9]+)$/;
 export const REGEX_SPACES = /^\S+$/;
+export const MAXIMUM_TOASTS = 4;
 
 export const LOGIN_CONTEXT = process.env.VUE_APP_LOGIN_CONTEXT
 export const BOVINE_CONTEXT = process.env.VUE_APP_BOVINE_CONTEXT
@@ -26,6 +27,11 @@ export const BOVINE_ERRORS = {
     ...COMMON_ERRORS,
     404: {type: "Server", message: "Bovino no encontrado"},
     409: {type: "Server", message: "Esta caravana ya se encuentra en uso. Por favor, revise e intente de nuevo."}
+}
+export const BATCH_ERRORS = {
+    ...COMMON_ERRORS,
+    404: {type: "Server", message: "Lote no encontrado"},
+    409: {type: "Server", message: "Este nombre de lote ya se encuentra en uso. Por favor, revise e intente de nuevo."}
 }
 export const ADMINISTRATION_ERRORS = {
     ...COMMON_ERRORS,

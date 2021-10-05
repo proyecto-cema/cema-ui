@@ -43,14 +43,6 @@
               </div>
             </div>
             <div class="col-12">
-              <div v-if="error.type !== null" class="ms-3 me-3">
-                <div class="alert alert-danger alert-dismissible">
-                  {{ error.message }}
-                </div>
-                <div v-if="success !== null" class="alert alert-success alert-dismissible">
-                  {{ success }}
-                </div>
-              </div>
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <button class="btn btn-primary text-white" data-bs-target="#CancelModal" data-bs-toggle="modal"
                         type="button">
@@ -77,10 +69,10 @@
        Se cerrará la ventana y se perderán todos los cambios."
       modal-id="CancelModal" title="Cancelar" @acceptModal="this.$router.back()"></confirmation-modal>
   <confirmation-modal
-      confirmation-message="¿Confirma que desea guardar los datos del establecimineto?"
+      confirmation-message="¿Confirma que desea guardar los datos del establecimiento?"
       modal-id="SaveModal" title="Guardar" @acceptModal="formSaveEstablishment()"></confirmation-modal>
   <confirmation-modal
-      confirmation-message="¿Confirma que desea eliminar Establecimiento?"
+      confirmation-message="¿Confirma que desea eliminar establecimiento?"
       modal-id="DeleteModal" title="Eliminar" @acceptModal="formDeleteEstablishment()"></confirmation-modal>
   <confirmation-modal
       confirmation-message="El establecimiento buscado no se encuentra, ¿desea crear uno nuevo o volver al inicio?"
@@ -93,7 +85,7 @@
 <script>
 import {mapActions, mapState} from "vuex";
 import ConfirmationModal from "../../components/ConfirmationModal";
-import { Modal } from 'bootstrap';
+import { Modal, Toast } from 'bootstrap';
 import CemaInput from "../../components/CemaInput";
 
 
@@ -101,7 +93,6 @@ export default {
   name: "AddEstablishment",
   data() {
     return {
-      success: null,
       edit: false,
       owners:[],
       errorSave: {
@@ -109,7 +100,6 @@ export default {
         cuig: false,
         owner: false
       },
-
     };
   },
   components: {
@@ -119,7 +109,6 @@ export default {
   mounted() {
     this.searchOwners()
     this.cuig = this.$route.query.cuig;
-    console.log("Owners:"+ this.owners);
     this.edit = !!this.cuig;
     
     if (this.edit){
@@ -129,25 +118,23 @@ export default {
     }
   },
   computed: {
-    ...mapState("establishment", ["establishment", "error"]),
-    
+    ...mapState("establishment", ["establishment"]),
   },
   methods: {
-    ...mapActions("establishment", ["getEstablishment", "saveEstablishment", "deleteEstablishment", "clearEstablishmentData","listOwners"]),
-
+    ...mapActions("establishment", ["getEstablishment", "saveEstablishment", "deleteEstablishment", "clearEstablishmentData", "listOwners"]),
+    ...mapActions(["showSuccess"]),
     startNewWithCuig(){
       this.clearEstablishmentData();
       this.edit = false;
       this.establishment.cuig = this.cuig;
     },
     successCall(message) {
-      this.success = message;
+      this.showSuccess(message);
       this.edit = false;
       this.clearEstablishmentData();
     },
     async preSave(){
       this.errorSave = {};
-      this.success = null;
       this.errorSave = {
         name: (!this.establishment.name),
         cuig: (!this.establishment.cuig),
@@ -167,28 +154,26 @@ export default {
       };
       this.saveEstablishment(data).then(
         () => {
-          this.successCall("El Establecimiento se guardó correctamente");
+          this.successCall("El establecimiento se guardó correctamente");
         }
       );
     },
     async formRetrieveEstablishment() {
       this.errorSave = {};
-      this.success = null;
       this.getEstablishment(this.cuig).then(
         () => {},
         (error) => {
           let modal = new Modal(document.getElementById('SearchModal'));
-          modal.show()
+          modal.show();
           this.edit = false;
         }
       )
     },
     async formDeleteEstablishment() {
       this.errorSave = {};
-      this.success = null;
       this.deleteEstablishment(this.cuig).then(
         () => {
-          this.successCall("El Establecimiento se elimino correctamente");
+          this.successCall("El establecimiento se elimino correctamente");
         }
       );
     },
@@ -197,6 +182,7 @@ export default {
           (response) => {
             this.owners = response.data;
             console.log(response);
+            console.log("Owners:", this.owners);
           }
       )
     }

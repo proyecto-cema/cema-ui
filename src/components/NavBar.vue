@@ -49,10 +49,14 @@ export default {
       this.setEstablishmentName(this.currentUser.user.establishmentCuig).then(
           () => {},
           (error) => {
-            console.log("Logging Out because Error", error.response.status);
-            if(error.response.status === 503){
-              console.log("Not able to reach server, not logging out");
-              return
+            let jsonError = error.toJSON();
+            console.log(jsonError);
+            if(jsonError.message !== "Network Error") {
+              console.log("Logging Out because Error", error.response.status);
+              if (error.response.status === 503) {
+                console.log("Not able to reach server, not logging out");
+                return
+              }
             }
             this.logOut();
           }

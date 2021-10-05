@@ -44,14 +44,6 @@
                   </div>
                 </div>
               </div>
-              <div class="col-12 text-center">
-                <div v-if="error.type !== null" class="alert alert-danger alert-dismissible">
-                  {{ error.message }}
-                </div>
-                <div v-if="success !== null" class="alert alert-success alert-dismissible">
-                  {{ success }}
-                </div>
-              </div>
             </div>
           </form>
         </div>
@@ -88,7 +80,6 @@ export default {
   name: "BovineModal",
   data(){
     return {
-      success: null,
       errorSave: {
         tag: false,
         taggingDate: false,
@@ -104,7 +95,7 @@ export default {
     }
   },
   computed: {
-    ...mapState("bovine", ["bovine", "error", "edit"]),
+    ...mapState("bovine", ["bovine", "edit"]),
     getToday(){
       return this.getMomentToday()
     },
@@ -117,7 +108,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions("bovine", ["getBovine", "saveBovine", "dismissError", "setupEditBovine", "clearBovineData"]),
+    ...mapActions("bovine", ["getBovine", "saveBovine", "setupEditBovine", "clearBovineData"]),
+    ...mapActions(["showSuccess"]),
     getTagError(){
       let message = 'Ingrese el número de caravana del bovino.';
       let isValid = !!this.bovine.tag;
@@ -130,13 +122,10 @@ export default {
     },
     clean(){
       this.errorSave = {};
-      this.success = null;
-      this.dismissError();
       this.clearBovineData()
     },
     successCall(message) {
-      this.success = message;
-      this.dismissError();
+      this.showSuccess(message);
     },
     deleteModal() {
       this.$emit('deleteModal', this.bovine.tag);
