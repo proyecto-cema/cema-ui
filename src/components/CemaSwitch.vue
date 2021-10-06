@@ -3,7 +3,7 @@
     <div class="col-3 col-lg-2 ">Lote</div>  
     <div class="col-4 col-lg-3 ">
       <label class="switch">
-        <input type="checkbox" id="togBtn" v-model="value" />
+        <input type="checkbox" id="togBtn" v-model="value" v-bind="$attrs" />
         <div class="slider round"></div>
       </label>
     </div>
@@ -14,6 +14,7 @@
 <script>
 
 export default {
+  inheritAttrs: false,
   name: "Switch",
   emits: ['update:modelValue'],
   props: {
@@ -29,7 +30,7 @@ export default {
         this.$emit('update:modelValue', value)
       }
     }
-  },
+  }
 };
 </script>
 

@@ -5,7 +5,7 @@ import utils from "../../utils"
 
 
 const state = {
-    vaccine: { id: null, batchName:null ,bovineTag:null , brand: null , dose: null , drug: null ,name: null ,executionDate:null, product:null , description: null , type: null, establishmentCuig: null},
+    vaccine: { id: null, batchName:null, bovineTag:null, brand:null, dose:null, drug:null ,name:null, executionDate:null, product:null, description:null, type:null, establishmentCuig:null},
     vaccineBovine: false,
     error: {type: null, message: null},
     edit: false
@@ -40,6 +40,7 @@ const mutations = {
     setVaccineBovine(state, value){
         state.vaccineBovine = value;
     }
+    
 }
 
 const actions = {
@@ -68,6 +69,9 @@ const actions = {
     setupEditVaccine({commit}, proxyVaccine){
         commit('setVaccine', proxyVaccine);
         commit('setEdit', true);
+    },
+    changeVaccineBovine({commit},bool){
+        commit('setVaccineBovine',bool);
     },
     async getVaccine({commit}, tag) {
         return VaccineService.getVaccination(tag).then(

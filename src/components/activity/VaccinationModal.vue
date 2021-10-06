@@ -11,12 +11,10 @@
             <div class="row">
               <div class="col-lg-6 col-12">
                 <div class=" col-12 mb-3">
-                  <cema-switch v-model="vaccineBovine"></cema-switch>
+                  <cema-switch v-model="vaccineBovine" @click="changeSwitch(!vaccineBovine)"></cema-switch>
                 </div>
                 <div class=" col-12 mb-3">
-                  <cema-input v-model.trim="vaccine.dose" maxlength="10" required
-                    :error-data="{required: true, errorStatus: errorSave.dose,
-                    errorMessage: 'Ingrese la dosis de la vacunacion'}"
+                  <cema-input v-model.trim="vaccine.dose" maxlength="20" 
                     input-title="Dosis" input-id="Dose" type="text" ></cema-input>
                 </div>
                 <div class=" col-12 mb-3">
@@ -25,10 +23,9 @@
                   </cema-input>
                 </div>
                  <div class=" col-12 mb-3">
-                  <cema-input v-model="vaccine.drug"  required
-                    :error-data="{required: true, errorStatus: errorSave.drug,
-                    errorMessage: 'Ingrese la droga de la vacuna'}"
-                    input-title="Droga" input-id="drug" type="text"></cema-input>
+                  <cema-input v-model="vaccine.drug"
+                    input-title="Droga" input-id="drug" type="text">
+                  </cema-input>
                 </div>
                  <div class=" col-12 mb-3">
                   <cema-input v-model="vaccine.brand" 
@@ -59,9 +56,10 @@
                   </div>
                   <div class="col-12 mb-3">
                     <cema-input v-model="vaccine.name" required
-                                :error-data="{required: true, errorStatus: errorSave.name,
-                                    errorMessage: 'Ingrese el nombre de la vacunacion'}"
-                                input-title="Nombre" input-id="name" type="text"></cema-input>
+                      :error-data="{required: true, errorStatus: errorSave.name,
+                      errorMessage: 'Ingrese el Nombre de la actividad'}"
+                      input-title="Nombre" input-id="name" type="text">
+                    </cema-input>
                   </div>
                   <div class="col-12 mb-3">
                     <cema-input v-model.trim="vaccine.description" maxlength="300" 
@@ -120,8 +118,6 @@ export default {
       errorSave: {
         bovineTag: false,
         batchName:false,
-        dose: false,
-        drug: false,
         name: false
       },
     };
@@ -141,14 +137,16 @@ export default {
     errorSaveHelper(){
       return {
         bovineBatch: this.validate(),
-        dose: !this.vaccine.dose,
         drug: !this.vaccine.drug,
         name: !this.vaccine.name
       }
     }
   },
   methods: {
-    ...mapActions("vaccine", ["getVaccine", "saveVaccine", "dismissError", "setupEditVaccine", "clearVaccineData"]),
+    ...mapActions("vaccine", ["getVaccine", "saveVaccine", "dismissError", "setupEditVaccine", "clearVaccineData","changeVaccineBovine"]),
+    changeSwitch(bolSwitch){
+      this.changeVaccineBovine(bolSwitch)
+    },
     validate(){
       if(this.vaccineBovine){
         return !this.vaccine.bovineTag
@@ -172,7 +170,7 @@ export default {
     },
     saveModal() {
       this.errorSave = this.errorSaveHelper;
-      if (this.errorSave.bovineBatch ||this.errorSave.executionDate ||  this.errorSave.dose ||  this.errorSave.drug ||  this.errorSave.name ) {
+      if (this.errorSave.bovineBatch ||this.errorSave.executionDate || this.errorSave.name ) {
         console.error(this.errorSave)
         return
       }
