@@ -9,6 +9,10 @@
               v-on:click="openAddBovineModal(null)">
         + Nuevo Bovino
       </button>
+      <button class="btn btn-secondary text-white" type="button"
+              v-on:click="openVacunacion()">
+        vacunacion
+      </button>
     </div>
     <form @submit.prevent="">
       <div class="row">
@@ -115,6 +119,7 @@
       modal-id="DeleteModal" title="Eliminar"
       @acceptModal="modalDelete(); this.deleteModal.hide()" @rejectModal="this.deleteModal.hide(); this.deleted = {}"></confirmation-modal>
   <bovine-modal modalId="addBovineModal" @deleteModal="deleteBovineForm"></bovine-modal>
+  <vaccination-modal modalId="vaccineModal" ></vaccination-modal>
   <batch-modal modalId="addBatchModal" @addBovinesToBatch="addBovinesToBatch"
                @cleanSelectedBovines="tagBovinesSelected=new Set();bovineCuigSelected=null"></batch-modal>
 </template>
@@ -124,6 +129,7 @@ import {Modal} from "bootstrap";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import CemaInput from "../../components/CemaInput";
 import BovineModal from "../../components/bovine/BovineModal";
+import VaccinationModal from "../../components/activity/VaccinationModal";
 import BatchModal from "../../components/bovine/BatchModal";
 import BatchBadge from "../../components/bovine/BatchBadge";
 
@@ -143,6 +149,7 @@ export default {
       addBovineModal: null,
       showingExtraData: null,
       batchModal:null,
+      vaccineModal:null,
       timeout: false,
       delay: 250,
     };
@@ -150,6 +157,7 @@ export default {
   components: {
     BatchBadge,
     BovineModal,
+    VaccinationModal,
     BatchModal,
     ConfirmationModal,
     CemaInput
@@ -163,6 +171,7 @@ export default {
     this.addBovineModal = new Modal(document.getElementById('addBovineModal'));
     this.batchModal = new Modal(document.getElementById('addBatchModal'));
     this.deleteModal = new Modal(document.getElementById('DeleteModal'));
+    this.vaccineModal = new Modal(document.getElementById('vaccineModal'));
     this.isMobile = screen.width <= 760;
     this.searchBovinePage(this.headers.currentPage);
     window.addEventListener('resize', this.resizeTimeOut);
@@ -256,7 +265,10 @@ export default {
         bovine.taggingDate = this.javaDateToMomentDate(bovine.taggingDate, 'YYYY-MM-DD');
         this.setupEditBovine(bovine)
       }
-      this.addBovineModal.show()
+       this.addBovineModal.show()
+    },
+    openVacunacion(){
+      this.vaccineModal.show()
     },
     openBatchModal(){
       console.log(this.tagBovinesSelected, "size: "+ this.tagBovinesSelected.size, "cuig: "+ this.bovineCuigSelected)
