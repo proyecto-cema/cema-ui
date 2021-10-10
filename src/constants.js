@@ -4,6 +4,11 @@ export const ROLE_REPRESENTATION = {"ADMIN": 2, "PATRON": 1, "PEON": 0}
 export const REGEX_LETTERS_NUMBERS = /^([a-zA-Z0-9]+)$/;
 export const REGEX_SPACES = /^\S+$/;
 export const MAXIMUM_TOASTS = 4;
+export const ACTIVITIES_OPTIONS = [
+    {displayName: "Vacunación", backendName: "Inoculation"},
+    {displayName: "Alimentación", backendName: "Feeding"},
+    {displayName: "Pesaje", backendName: "Weighing"},
+];
 
 export const LOGIN_CONTEXT = process.env.VUE_APP_LOGIN_CONTEXT
 export const BOVINE_CONTEXT = process.env.VUE_APP_BOVINE_CONTEXT
@@ -41,5 +46,4 @@ export const ADMINISTRATION_ERRORS = {
 export const ACTIVITY_ERRORS = {
     ...COMMON_ERRORS,
     404: {type: "Server", message: "Actividad no encontrada"},
-    
 }

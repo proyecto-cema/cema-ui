@@ -1,11 +1,24 @@
-import VaccineService from '../../services/health/vaccine.service';
+import ActivityService from '../../services/activity/activity.service';
 import {ACTIVITY_ERRORS} from "../../constants";
 import {getHttpError} from "../../services/http-common";
 import utils from "../../utils"
 
 
 const state = {
-    vaccine: { id: null, batchName:null, bovineTag:null, brand:null, dose:null, drug:null ,name:null, executionDate:null, product:null, description:null, type:null, establishmentCuig:null},
+    vaccine: {
+        id: null,
+        batchName:null,
+        bovineTag:null,
+        brand:null,
+        dose:null,
+        drug:null,
+        name:null,
+        executionDate:null,
+        product:null,
+        description:null,
+        type:null,
+        establishmentCuig:null
+    },
     vaccineBovine: false,
     error: {type: null, message: null},
     edit: false
@@ -46,22 +59,21 @@ const mutations = {
 const actions = {
     clearVaccineData({commit}) {
         let blankVaccine = {
-            id:null,
+            id:  null,
             bovineTag: null,
-            batchName:null,
-            brand:null,
+            batchName: null,
+            brand: null,
             dose: null, 
-            drug:null,
-            name:null,
-            executionDate:null, 
+            drug: null,
+            name: null,
+            executionDate: null,
             product: null, 
             description: null, 
-            type:null
+            type: null
         }
         commit('setVaccine', blankVaccine);
         commit('setEdit', false);
         commit('setVaccineBovine', false);
-
     },
     dismissError({commit}){
         commit('setErrorNull');
@@ -74,7 +86,7 @@ const actions = {
         commit('setVaccineBovine',bool);
     },
     async getVaccine({commit}, tag) {
-        return VaccineService.getVaccination(tag).then(
+        return ActivityService.getVaccination(tag).then(
             response => {
                 let vaccine = response.data;
                 vaccine.executionDate = utils.methods.javaDateToMomentDate(vaccine.executionDate, 'YYYY-MM-DD');
@@ -98,7 +110,7 @@ const actions = {
         vaccine.type='Inoculation';
         let saveVaccine = Object.assign({}, vaccine);
         saveVaccine.executionDate = utils.methods.momentDateToJavaDate(vaccine.executionDate);
-        return VaccineService.setVaccination(saveVaccine, edit).then(
+        return ActivityService.setVaccination(saveVaccine, edit).then(
             () => {
                 console.log(edit ? "Edited": "Created", "Vaccine:", vaccine)
                 return Promise.resolve(vaccine);
@@ -110,7 +122,7 @@ const actions = {
         );
     },
     async deleteVaccine({commit, rootState, dispatch}, {tag, cuig}) {
-        return VaccineService.deleteVaccination(tag, cuig).then(
+        return ActivityService.deleteVaccination(tag, cuig).then(
             response => {
                 console.log("Delete vaccine")
                 dispatch("clearVaccineData");

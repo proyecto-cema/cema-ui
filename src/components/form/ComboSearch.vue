@@ -1,4 +1,5 @@
 <template>
+  <label v-if="label" :for="finalDropdownId" class="form-label">{{ inputTitle }}<small v-if="errorData.required" style="color: red">*</small></label>
   <div class="dropdown">
     <button class="form-select text-start" type="button" :id=finalDropdownId
             data-bs-toggle="dropdown" data-bs-auto-close="outside" v-on:click="focusSearch()"
@@ -7,15 +8,20 @@
     </button>
     <ul class="dropdown-menu w-100" :aria-labelledby=finalDropdownId>
       <li class="input-group">
-        <input class="form-control" :id=searchId type="text" autocomplete="off" v-model="search">
-        <button class="btn" type="button" @click.prevent="search=''"><font-awesome-icon icon="times"></font-awesome-icon></button>
+        <input class="form-control" :id=searchId type="text" autocomplete="off" v-model="searchValue">
+        <button class="btn" type="button" @click.prevent="searchValue='';reCall()"><font-awesome-icon icon="times"></font-awesome-icon></button>
       </li>
-      <template v-for="option in options">
-        <li v-if="isSimilar(option)">
+      <template v-for="option in filteredOptions">
+        <li>
           <button class="dropdown-item" type="button" v-on:click="selected(option[this.optionName])">{{ option[optionName] }}</button>
         </li>
       </template>
-      <li v-if="extraOption">
+      <template v-if="filteredOptions.length <= 3 && maintain !== searchValue">
+        <li>
+          <button class="dropdown-item" type="button" v-on:click="reCall()"><b>Buscar mas para {{ searchValue }}</b></button>
+        </li>
+      </template>
+      <li v-if="extraOption.length > 0">
         <button class="dropdown-item" type="button" v-on:click="selected(extraOption['key'])">
           {{ extraOption['value'] }}
           <font-awesome-icon v-if="extraOption['icon']" class="ms-1" :icon="extraOption['icon']"></font-awesome-icon>
@@ -23,18 +29,22 @@
       </li>
     </ul>
   </div>
+  <div v-if="errorData.required && errorData.errorStatus" class="textError">
+    <span class="is-invalid"></span> {{ errorData.errorMessage }}
+  </div>
 </template>
 
 <script>
 export default {
   data(){
     return {
-      search: "",
-      options: [],
+      searchValue: "",
+      maintain: null,
       optionSelected: "Default dropdown"
     };
   },
   name: "ComboSearch",
+  emits: ["reCall"],
   props: {
     dropdownId:{
       type: String,
@@ -44,13 +54,28 @@ export default {
       type: String,
       required: true
     },
+    errorData: {
+      type: Object,
+      default: {required: false}
+    },
+    inputTitle: {
+      type: String,
+      required: true
+    },
+    label: {
+      type: Boolean,
+      default: true
+    },
     extraOption: {
       type: Object,
       default: {}
     },
+    withCaller:{
+      type: Boolean,
+      default: false
+    },
     optionCaller: {
-      type: Function,
-      required: true
+      type: Function
     },
     callerParams: {
       type: Object,
@@ -59,13 +84,24 @@ export default {
     defaultName: {
       type: String,
       default: "Seleccione o Busque"
+    },
+    options: {
+      type: Array,
+      default: []
     }
   },
   mounted() {
     this.optionSelected = this.defaultName;
-    this.retrieveOptions();
+    console.log("Opciones: ", this.options)
+    if(this.withCaller) {
+      console.log("Retrieving options");
+      this.retrieveOptions();
+    }
   },
   computed:{
+    filteredOptions(){
+      return this.options.filter(o => this.isSimilar(o))
+    },
     searchId(){
       return `search-${this.dropdownId}`
     },
@@ -74,6 +110,10 @@ export default {
     }
   },
   methods: {
+    reCall(){
+      this.maintain = this.searchValue;
+      this.$emit('reCall', this.searchValue);
+    },
     selected(option){
       this.optionSelected = option;
     },
@@ -86,7 +126,7 @@ export default {
       );
     },
     isSimilar(option){
-      return option[this.optionName].toLowerCase().includes(this.search.toLowerCase());
+      return option[this.optionName].toLowerCase().includes(this.searchValue.toLowerCase());
     },
     focusSearch(){
       document.getElementById(this.searchId).focus();

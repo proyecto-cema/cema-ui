@@ -4,7 +4,7 @@ import mutations from './mutations'
 import actions from './actions'
 import bovine from './modules/bovine.module'
 import establishment from './modules/establishment.module'
-import vaccine from './modules/vaccination.module'
+import activity from './modules/activity.module'
 
 export default createStore({
   state: {
@@ -19,7 +19,7 @@ export default createStore({
     auth,
     bovine,
     establishment,
-    vaccine
+    activity
   },
   getters:{
     isMobile(){

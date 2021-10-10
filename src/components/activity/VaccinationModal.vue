@@ -106,8 +106,8 @@
 </template>
 
 <script>
-import CemaInput from "../CemaInput";
-import CemaSwitch from "../CemaSwitch";
+import CemaInput from "../form/CemaInput";
+import CemaSwitch from "../form/CemaSwitch";
 import {mapActions, mapState} from "vuex";
 
 export default {

@@ -10,7 +10,7 @@
         + Nuevo Bovino
       </button>
       <button class="btn btn-secondary text-white" type="button"
-              v-on:click="openVacunacion()">
+              v-on:click="openActivityModal()">
         vacunacion
       </button>
     </div>
@@ -119,7 +119,7 @@
       modal-id="DeleteModal" title="Eliminar"
       @acceptModal="modalDelete(); this.deleteModal.hide()" @rejectModal="this.deleteModal.hide(); this.deleted = {}"></confirmation-modal>
   <bovine-modal modalId="addBovineModal" @deleteModal="deleteBovineForm"></bovine-modal>
-  <vaccination-modal modalId="vaccineModal" ></vaccination-modal>
+  <activity-modal modalId="activityModal"></activity-modal>
   <batch-modal modalId="addBatchModal" @addBovinesToBatch="addBovinesToBatch"
                @cleanSelectedBovines="tagBovinesSelected=new Set();bovineCuigSelected=null"></batch-modal>
 </template>
@@ -127,9 +127,9 @@
 import {mapActions} from "vuex";
 import {Modal} from "bootstrap";
 import ConfirmationModal from "../../components/ConfirmationModal";
-import CemaInput from "../../components/CemaInput";
+import CemaInput from "../../components/form/CemaInput";
 import BovineModal from "../../components/bovine/BovineModal";
-import VaccinationModal from "../../components/activity/VaccinationModal";
+import ActivityModal from "../../components/activity/ActivityModal";
 import BatchModal from "../../components/bovine/BatchModal";
 import BatchBadge from "../../components/bovine/BatchBadge";
 
@@ -149,7 +149,7 @@ export default {
       addBovineModal: null,
       showingExtraData: null,
       batchModal:null,
-      vaccineModal:null,
+      activityModal: null,
       timeout: false,
       delay: 250,
     };
@@ -157,7 +157,7 @@ export default {
   components: {
     BatchBadge,
     BovineModal,
-    VaccinationModal,
+    ActivityModal,
     BatchModal,
     ConfirmationModal,
     CemaInput
@@ -171,7 +171,7 @@ export default {
     this.addBovineModal = new Modal(document.getElementById('addBovineModal'));
     this.batchModal = new Modal(document.getElementById('addBatchModal'));
     this.deleteModal = new Modal(document.getElementById('DeleteModal'));
-    this.vaccineModal = new Modal(document.getElementById('vaccineModal'));
+    this.activityModal = new Modal(document.getElementById('activityModal'));
     this.isMobile = screen.width <= 760;
     this.searchBovinePage(this.headers.currentPage);
     window.addEventListener('resize', this.resizeTimeOut);
@@ -267,8 +267,8 @@ export default {
       }
        this.addBovineModal.show()
     },
-    openVacunacion(){
-      this.vaccineModal.show()
+    openActivityModal(){
+      this.activityModal.show()
     },
     openBatchModal(){
       console.log(this.tagBovinesSelected, "size: "+ this.tagBovinesSelected.size, "cuig: "+ this.bovineCuigSelected)
