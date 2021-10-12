@@ -138,11 +138,15 @@ export default {
     },
     dismissModal(){
       this.$emit('cleanSelectedBovines');
+      this.batchSelected = "";
+      this.newBatch = false;
+      this.batch = {
+        name: null,
+        description: null
+      }
       this.clean();
     },
     clean(){
-      this.batchSelected = "";
-      this.newBatch = false;
       this.errorSave = {};
     },
     successCall(message) {
@@ -167,10 +171,10 @@ export default {
             listBovinesSelected: bovineList
         };
         this.saveBatch(data).then(
-            (batch) => {
-              console.log("Created", batch);
-              this.successCall(`El lote ${batch.data.batchName} se creo correctamente.`);
-              this.searchBatches();
+            () => {
+              console.log("Created", data.name);
+              this.successCall(`El lote ${data.name} se creo correctamente.`);
+              this.$emit('addBovinesToBatch', data.name);
             }
         );
       } else {
