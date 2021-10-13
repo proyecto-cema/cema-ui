@@ -2,10 +2,6 @@ import { httpActivity } from '../http-common'
 import authHeader from '../auth/auth-header'
 
 class ActivityService {
-    getActivity(id, activity_url) {
-        return httpActivity.get(activity_url + '/' + id, { headers: authHeader() })
-    }
-
     setActivity(activity, edit, activity_url) {
         if (edit) {
             return httpActivity.put(activity_url + '/' + activity.id, activity,{params:{cuig: activity.establishmentCuig}, headers: authHeader() })
@@ -14,8 +10,8 @@ class ActivityService {
         }
     }
 
-    deleteActivity(id, activity_url) {
-        return httpActivity.delete(activity_url + '/' + id, { headers: authHeader() })
+    deleteActivity(id, cuig, activity_url) {
+        return httpActivity.delete(activity_url + '/' + id, {params:{cuig: cuig}, headers: authHeader() })
     }
 
 }

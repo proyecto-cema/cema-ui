@@ -1,16 +1,17 @@
 <template>
-  <div class="col-6 mb-2 offset-3 mt-3">
-    <cema-switch v-model="isBatch"></cema-switch>
+  <div class="col-12 col-lg-4 mb-2 mt-4 d-flex justify-content-center">
+    <cema-switch v-model="activityData.extraData.isBatch"></cema-switch>
   </div>
-  <div class="col-12 mb-3" v-if="!isBatch">
+  <div class="col-12 col-lg-8 mb-3" v-if="!activityData.extraData.isBatch">
     <combo-search dropdown-id="tags" input-title="Caravana" @reCall="searchBovines"
-                  :error-data="{required: true, errorStatus: errorSave.bovineTag, errorMessage: 'Seleccione la caravana'}"
-                  option-name="tag" v-model="data.bovineTag" :options="bovines"
+                  :error-data="{required: true, errorStatus: errorSave.bovineTag,
+                  errorMessage: 'Seleccione la caravana'}"
+                  option-name="tag" v-model="activityData.extraData.bovineTag" :options="bovines"
                   defaultName="Seleccione la caravana">
     </combo-search>
   </div>
-  <div class="col-12 mb-3" v-else>
-    <cema-input v-model="data.batchName" component-type="select" required
+  <div class="col-12 col-lg-8 mb-3" v-else>
+    <cema-input v-model="activityData.extraData.batchName" component-type="select" required
                 :error-data="{required: true, errorStatus: errorSave.bovineBatch,
                               errorMessage: 'Seleccione un lote'}"
                 input-title="Lote" input-id="batchName"
@@ -32,16 +33,15 @@ export default {
   name: "BatchTagSwitch",
   data(){
     return {
-      data: {},
-      extraData: {},
-      errorSave: {
-        bovineTag: false,
-        batchName: false,
-      },
-      isBatch: false,
       batches: [],
       bovines: []
     };
+  },
+  props: {
+    errorSave: {
+      required: true,
+      type: Object
+    }
   },
   components: {CemaInput, CemaSwitch, ComboSearch},
   mounted() {
@@ -50,6 +50,7 @@ export default {
   },
   computed: {
     ...mapState("bovine", ["selectedCuig"]),
+    ...mapState("activity", ["activityData"]),
   },
   methods: {
     ...mapActions("bovine", ["listBovines", "listBatches"]),
@@ -63,8 +64,9 @@ export default {
     },
     async searchBovines(searchingFor="") {
       let searchLength = searchingFor.length;
-      let defaultSearch = {page: 0, size: 10, search: {tag: searchLength !== 0 ? searchingFor: null}};
-      if (searchLength === 0 || searchLength >= 2) {
+      console.log(searchingFor);
+      let defaultSearch = {page: 0, size: 10, search: {tag: searchLength !== 0 ? searchingFor: null, cuig: this.selectedCuig}};
+      if (searchLength === 0 || searchLength >= 1) {
         this.listBovines(defaultSearch).then(
             (response) => {
               this.bovines = response.data;

@@ -1,13 +1,13 @@
 <template>
   <div class="row">
-    <div class="col-auto mt-1"><label>Lote</label></div>
+    <div class="col-auto mt-1"><label>Caravana</label></div>
     <div class="col-auto">
       <div class="switch" @click="changeSwitch()">
         <input type="checkbox" id="togBtn" v-model="value"/>
         <div class="slider round"></div>
       </div>
     </div>
-    <div class="col-auto mt-1"><label>Caravana</label></div>
+    <div class="col-auto mt-1"><label>Lote</label></div>
   </div> 
 </template>
 

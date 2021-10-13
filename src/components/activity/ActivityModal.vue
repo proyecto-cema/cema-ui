@@ -11,13 +11,13 @@
             <div class="row">
               <div class="col-lg-6 col-12">
                 <div class="col-12 mb-3">
-                  <cema-input v-model="activity.name" required input-title="Nombre" :options="bovines"
+                  <cema-input v-model="activityData.name" required input-title="Nombre"
                               input-id="name" type="text"  :error-data="{required: true,
                               errorStatus: errorSave.activityName, errorMessage: 'Ingrese el nombre de la actividad'}">
                   </cema-input>
                 </div>
                 <div class="col-12 mb-3">
-                  <cema-input v-model="activity.type" component-type="select" required
+                  <cema-input v-model="activityData.type" component-type="select" required
                               :error-data="{required: true, errorStatus: errorSave.activityType,
                                 errorMessage: 'Seleccione el tipo de actividad'}"
                               input-title="Tipo de Actividad" input-id="activityType"
@@ -28,24 +28,23 @@
                   </cema-input>
                 </div>
                 <div class="col-12 mb-3">
-                  <cema-input v-model="activity.executionDate" :max="getToday"
+                  <cema-input v-model="activityData.executionDate" :max="getToday"
                               input-title="Fecha de la Actividad" input-id="executionDate" type="date">
                   </cema-input>
                 </div>
               </div>
               <div class="col-lg-6 col-12">
                 <div class="col-12 mb-3">
-                  <cema-input v-model.trim="activity.description" maxlength="300"
+                  <cema-input v-model.trim="activityData.description" maxlength="300"
                               component-type="textarea"
                               input-title="Observaciones" input-id="vaccineDescription" type="text"
                               rows="8">
                   </cema-input>
                 </div>
               </div>
-              <div class="col-12" v-if="activity.type">
-                <hr>
-                <slot></slot>
-              </div>
+              <template v-if="activityData.type">
+                <slot name="extraData" :errorData="errorSave"></slot>
+              </template>
             </div>
           </form>
         </div>
@@ -81,10 +80,7 @@ export default {
   name: "ActivityModal",
   data(){
     return {
-      errorSave: {
-        activityType: false,
-        activityName: false
-      },
+      errorSave: {},
       activitiesOptions: ACTIVITIES_OPTIONS,
     };
   },
@@ -97,53 +93,56 @@ export default {
   },
   mounted() {
     this.setCuigToDefault();
+    this.activityData.executionDate = this.getToday;
   },
   computed: {
-    ...mapState("activity", ["edit", "activity"]),
+    ...mapState("activity", ["edit", "activityData"]),
     modalTitle(){
-      let name = this.activity.type ? this.activity.type : 'Actividad';
+      let name = this.activityData.type ? this.activityData.type : 'Actividad';
       return this.edit ? `Editar ${name}` : `Registrar ${name}`
     },
     getToday(){
       return this.getMomentToday()
-    },
-    errorSaveHelper(){
-      return {
-        activityName: !this.activity.name,
-        activityType: !this.activity.type
-      }
     }
   },
   methods: {
     ...mapActions("activity", ["saveActivity", "deleteActivity", "clearActivityData"]),
     ...mapActions("bovine", ["setCuigToDefault"]),
     ...mapActions(["showSuccess"]),
+    hasErrors(){
+      for(let errorKey in this.errorSave){
+        if(this.errorSave[errorKey]){
+          return true;
+        }
+      }
+      return false;
+    },
     clean(){
-      this.errorSave ={
-        activityType: false,
-        activityName: false
-      };
+      this.errorSave = {};
       this.clearActivityData()
     },
     successCall(message) {
       this.showSuccess(message);
     },
     deleteModal() {
-      this.deleteActivity({uuid: this.activity.uuid}).then(
+      this.deleteActivity({id: this.activityData.id, url: ACTIVITIES_OPTIONS[this.activityData.type].url}).then(
           () => {
-            this.successCall(`La actividad de ${this.activity.type} fue eliminada correctamente`);
+            this.successCall(`La actividad de ${this.activityData.type} fue eliminada correctamente`);
           }
       );
     },
     saveModal() {
-      if (this.errorSaveHelper.activityType || this.errorSaveHelper.activityType) {
+      this.errorSave["activityName"] = !this.activityData.name;
+      this.errorSave["activityType"] = !this.activityData.type;
+      console.log(this.errorSave);
+      if (this.hasErrors()) {
         console.error(this.errorSave)
         return
       }
       this.formSaveActivity()
     },
     async formSaveActivity() {
-      this.saveActivity().then(
+      this.saveActivity(ACTIVITIES_OPTIONS[this.activityData.type].url).then(
           (activity) => {
             this.successCall(`Se guardó la actividad de ${activity.type} con nombre ${activity.name}`);
           }

@@ -119,7 +119,11 @@
       modal-id="DeleteModal" title="Eliminar"
       @acceptModal="modalDelete(); this.deleteModal.hide()" @rejectModal="this.deleteModal.hide(); this.deleted = {}"></confirmation-modal>
   <bovine-modal modalId="addBovineModal" @deleteModal="deleteBovineForm"></bovine-modal>
-  <activity-modal modalId="activityModal"></activity-modal>
+  <activity-modal modalId="activityModal">
+    <template v-slot:extraData="{ errorData }">
+      <vaccination-form :error-save="errorData"></vaccination-form>
+    </template>
+  </activity-modal>
   <batch-modal modalId="addBatchModal" @addBovinesToBatch="addBovinesToBatch"
                @cleanSelectedBovines="tagBovinesSelected=new Set();bovineCuigSelected=null"></batch-modal>
 </template>
@@ -132,6 +136,7 @@ import BovineModal from "../../components/bovine/BovineModal";
 import ActivityModal from "../../components/activity/ActivityModal";
 import BatchModal from "../../components/bovine/BatchModal";
 import BatchBadge from "../../components/bovine/BatchBadge";
+import VaccinationForm from "../../components/activity/VaccinationForm";
 
 export default {
   name: "ListBovine",
@@ -158,6 +163,7 @@ export default {
     BatchBadge,
     BovineModal,
     ActivityModal,
+    VaccinationForm,
     BatchModal,
     ConfirmationModal,
     CemaInput

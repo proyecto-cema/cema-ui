@@ -44,8 +44,8 @@ const mutations = {
 }
 
 const actions = {
-    setCuigToDefault({commit, rootState}){
-        if(!this.selectedCuig){
+    setCuigToDefault({state, commit, rootState}){
+        if(!state.selectedCuig){
             commit('setSelectedCuig', rootState.auth.user.user.establishmentCuig);
         }
     },

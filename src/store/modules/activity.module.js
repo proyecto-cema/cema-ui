@@ -3,28 +3,30 @@ import {ACTIVITY_ERRORS} from "../../constants";
 import utils from "../../utils"
 
 const state = {
-    activity: {
+    activityData: {
         id: null,
         name: null,
         description: null,
         executionDate: null,
         type: null,
-        establishmentCuig: null,
-        extraData: {}
+        extraData: {
+            isBatch: false
+        }
     },
     edit: false
 }
 
 const mutations = {
     setActivity(state, payload) {
-        state.activity = payload === null ? {
+        state.activityData = payload === null ? {
             id: null,
             name: null,
             description: null,
             executionDate: null,
-            type: null,
-            establishmentCuig: null,
-            extraData: {}
+            type: "",
+            extraData: {
+                isBatch: false
+            }
         } : payload
     },
     setEdit(state, value){
@@ -41,10 +43,17 @@ const actions = {
         commit('setActivity', proxyActivity);
         commit('setEdit', true);
     },
-    async saveActivity({commit, dispatch}) {
-        let saveActivity = Object.assign({}, this.activity);
-        saveActivity.executionDate = utils.methods.momentDateToJavaDate(this.activity.executionDate);
-        return ActivityService.setActivity(saveActivity, this.edit).then(
+    async saveActivity({state, dispatch, rootState}, url) {
+        console.log(state.activityData, "Editing: ", state.edit);
+        let saveActivity = {
+            establishmentCuig: rootState.bovine.selectedCuig,
+            ...state.activityData,
+            ...state.activityData.extraData,
+        };
+        delete saveActivity.extraData;
+        delete saveActivity.isBatch;
+        saveActivity.executionDate = utils.methods.momentDateToJavaDate(state.activityData.executionDate);
+        return ActivityService.setActivity(saveActivity, state.edit, url).then(
             response => {
                 console.log(response);
                 return Promise.resolve(response.data);
@@ -55,8 +64,8 @@ const actions = {
             }
         );
     },
-    async deleteActivity({commit, dispatch, rootState}, {uuid}) {
-        return ActivityService.deleteActivity(uuid, rootState.bovine.selectedCuig).then(
+    async deleteActivity({dispatch, rootState}, {id, url}) {
+        return ActivityService.deleteActivity(id, rootState.bovine.selectedCuig, url).then(
             response => {
                 console.log("Deleted activity")
                 dispatch("clearActivityData");

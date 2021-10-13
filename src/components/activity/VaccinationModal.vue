@@ -13,8 +13,8 @@
                 <div class=" col-12 mb-3">
                   <cema-switch v-model="vaccineBovine" @click="changeSwitch(!vaccineBovine)"></cema-switch>
                 </div>
-                <div class=" col-12 mb-3">
-                  <cema-input v-model.trim="vaccine.dose" maxlength="20" 
+                <div class="col-12 mb-3">
+                  <cema-input v-model.trim="vaccine.dose" maxlength="20"
                     input-title="Dosis" input-id="Dose" type="text" ></cema-input>
                 </div>
                 <div class=" col-12 mb-3">

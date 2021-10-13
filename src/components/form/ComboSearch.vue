@@ -16,7 +16,7 @@
           <button class="dropdown-item" type="button" v-on:click="selected(option[this.optionName])">{{ option[optionName] }}</button>
         </li>
       </template>
-      <template v-if="filteredOptions.length <= 3 && maintain !== searchValue">
+      <template v-if="0 < searchValue.length && filteredOptions.length <= 3 && maintain !== searchValue">
         <li>
           <button class="dropdown-item" type="button" v-on:click="reCall()"><b>Buscar mas para {{ searchValue }}</b></button>
         </li>
