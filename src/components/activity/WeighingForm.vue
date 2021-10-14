@@ -39,8 +39,9 @@ export default {
     ...mapState("activity", ["activityData"]),
   },
   mounted() {
-    this.activityData.extraData = {};
-    this.activityData.extraData.isBatch = false;
+    this.activityData.extraData = {
+      isBatch: false
+    };
   }
 }
 </script>

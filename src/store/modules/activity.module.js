@@ -77,6 +77,26 @@ const actions = {
             }
         );
     },
+    async getActivity({dispatch, rootState}, {id, url}) {
+        return ActivityService.getActivity(id, rootState.bovine.selectedCuig, url).then(
+            response => {
+                console.log("Got activity", response.data)
+                for (const key in response.data) {
+                    if (state.activityData.hasOwnProperty(key)){
+                        state.activityData[key] = response.data[key];
+                    }else{
+                        state.activityData.extraData[key] = response.data[key];
+                    }
+                }
+                state.saveActivity["isBatch"] = state.activityData.hasOwnProperty("batch_name");
+                return Promise.resolve(state.activityData);
+            },
+            error => {
+                dispatch("showError", {error: error, errors: ACTIVITY_ERRORS}, {root:true});
+                return Promise.reject(error);
+            }
+        );
+    },
 }
 
 

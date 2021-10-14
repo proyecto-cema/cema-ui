@@ -1,15 +1,16 @@
 <template>
   <combo-search dropdown-id="tags" input-title="Caravana" @reCall="searchBovines"
                 :error-data="{required: true, errorStatus: errorSave.bovineTag,
-                  errorMessage: 'Seleccione la caravana'}"
+                  errorMessage: default_search}"
                 v-model="activityData.extraData.bovineTag"
                 option-name="tag" :options="bovines"
-                defaultName="Seleccione la caravana">
+                :defaultName="default_search">
   </combo-search>
 </template>
 <script>
 import ComboSearch from "../form/ComboSearch"
 import {mapActions, mapState} from "vuex";
+import {SEARCH_DEFAULT_TAG} from "../../constants";
 
 export default {
   name: 'tag-search',
@@ -19,6 +20,7 @@ export default {
     };
   },
   mounted() {
+    this.activityData.extraData.bovineTag = this.default_search;
     this.searchBovines();
   },
   components: {ComboSearch},
@@ -28,6 +30,9 @@ export default {
   computed: {
     ...mapState("activity", ["activityData"]),
     ...mapState("bovine", ["selectedCuig"]),
+    default_search(){
+      return SEARCH_DEFAULT_TAG;
+    }
   },
   methods: {
     ...mapActions("bovine", ["listBovines"]),

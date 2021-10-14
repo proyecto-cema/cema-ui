@@ -4,7 +4,7 @@
     <button class="form-select text-start" type="button" :id=finalDropdownId
             data-bs-toggle="dropdown" data-bs-auto-close="outside" v-on:click="focusSearch()"
             aria-expanded="false">
-      {{ value }}
+      {{ value ? value:defaultName }}
     </button>
     <ul class="dropdown-menu w-100" :aria-labelledby=finalDropdownId>
       <li class="input-group">
@@ -91,8 +91,7 @@ export default {
     modelValue: {},
   },
   mounted() {
-    this.value = this.defaultName;
-    console.log("Opciones: ", this.options)
+    console.log(this.value);
     if(this.withCaller) {
       console.log("Retrieving options");
       this.retrieveOptions();

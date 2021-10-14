@@ -20,6 +20,7 @@ export const ACTIVITIES_EXTRA_DATA = {
         validations: { "weight": "weight" }
     },
 };
+export const SEARCH_DEFAULT_TAG = "Seleccione la caravana";
 
 export const LOGIN_CONTEXT = process.env.VUE_APP_LOGIN_CONTEXT
 export const BOVINE_CONTEXT = process.env.VUE_APP_BOVINE_CONTEXT

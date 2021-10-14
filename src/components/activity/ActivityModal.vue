@@ -76,7 +76,7 @@ import CemaInput from "../form/CemaInput";
 import VaccinationForm from "../../components/activity/VaccinationForm";
 import WeighingForm from "../../components/activity/WeighingForm";
 import {mapActions, mapState} from "vuex";
-import {ACTIVITIES_EXTRA_DATA, ACTIVITIES_OPTIONS} from "../../constants";
+import {ACTIVITIES_EXTRA_DATA, ACTIVITIES_OPTIONS, SEARCH_DEFAULT_TAG} from "../../constants";
 
 export default {
   name: "ActivityModal",
@@ -123,7 +123,7 @@ export default {
       if (this.activityData.extraData.isBatch){
         this.errorSave["bovineBatch"] = !this.activityData.extraData.batchName;
       }else {
-        this.errorSave["bovineTag"] = !this.activityData.extraData.bovineTag;
+        this.errorSave["bovineTag"] = this.activityData.extraData.bovineTag === SEARCH_DEFAULT_TAG || !this.activityData.extraData.bovineTag;
       }
       let validations = this.activityMap.validations;
       for (const key in validations){
