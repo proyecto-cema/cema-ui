@@ -8,7 +8,7 @@
   <div class="mb-2" :class="activityData.extraData.isBatch ? 'col-lg-6 col-12':'col-lg-4 col-6'">
     <cema-input v-model="activityData.extraData.drug"
                 :error-data="{required: true, errorStatus: errorSave.drug,
-                              errorMessage: 'Ingrese una droga'}"
+                              errorMessage: 'Ingrese un producto'}"
                 input-title="Producto" input-id="drug" type="text">
     </cema-input>
   </div>
@@ -34,16 +34,6 @@ export default {
   },
   computed: {
     ...mapState("activity", ["activityData"]),
-  },
-  methods: {
-    validation() {
-      this.errorSave["drug"] = !this.activityData.extraData.drug;
-      if (this.activityData.extraData.isBatch){
-        this.errorSave["bovineBatch"] = !this.activityData.extraData.batchName;
-      }else {
-        this.errorSave["bovineTag"] = !this.activityData.extraData.bovineTag;
-      }
-    }
   }
 }
 </script>

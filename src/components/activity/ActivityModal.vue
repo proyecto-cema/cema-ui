@@ -75,7 +75,7 @@
 import CemaInput from "../form/CemaInput";
 import VaccinationForm from "../../components/activity/VaccinationForm";
 import {mapActions, mapState} from "vuex";
-import {ACTIVITIES_OPTIONS} from "../../constants";
+import {ACTIVITIES_EXTRA_DATA, ACTIVITIES_OPTIONS} from "../../constants";
 
 export default {
   name: "ActivityModal",
@@ -98,24 +98,37 @@ export default {
   },
   computed: {
     ...mapState("activity", ["edit", "activityData"]),
-    modalTitle(){
-      let name = this.activityData.type ? this.activityData.type : 'Actividad';
-      return this.edit ? `Editar ${name}` : `Registrar ${name}`
-    },
     getToday(){
       return this.getMomentToday()
     },
     activityMap(){
-      return ACTIVITIES_OPTIONS[this.activityData.type];
+      return ACTIVITIES_EXTRA_DATA[this.activityData.type];
     },
     selectedActivityComponent(){
       return this.activityMap.componentName;
+    },
+    modalTitle(){
+      let name = this.activityData.type ? this.activityMap["displayName"] : 'Actividad';
+      return this.edit ? `Editar ${name}` : `Registrar ${name}`
     }
   },
   methods: {
     ...mapActions("activity", ["saveActivity", "deleteActivity", "clearActivityData"]),
     ...mapActions("bovine", ["setCuigToDefault"]),
     ...mapActions(["showSuccess"]),
+    validate(){
+      this.errorSave["activityName"] = !this.activityData.name;
+      this.errorSave["activityType"] = !this.activityData.type;
+      if (this.activityData.extraData.isBatch){
+        this.errorSave["bovineBatch"] = !this.activityData.extraData.batchName;
+      }else {
+        this.errorSave["bovineTag"] = !this.activityData.extraData.bovineTag;
+      }
+      let validations = this.activityMap.validations;
+      for (const key in validations){
+        this.errorSave[key] = !this.activityData.extraData[validations[key]];
+      }
+    },
     hasErrors(){
       for(let errorKey in this.errorSave){
         if(this.errorSave[errorKey]){
@@ -139,9 +152,7 @@ export default {
       );
     },
     saveModal() {
-      this.errorSave["activityName"] = !this.activityData.name;
-      this.errorSave["activityType"] = !this.activityData.type;
-      console.log(this.errorSave);
+      this.validate()
       if (this.hasErrors()) {
         console.error(this.errorSave)
         return

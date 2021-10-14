@@ -5,8 +5,20 @@ export const REGEX_LETTERS_NUMBERS = /^([a-zA-Z0-9]+)$/;
 export const REGEX_SPACES = /^\S+$/;
 export const MAXIMUM_TOASTS = 4;
 export const ACTIVITIES_OPTIONS = {
-    "Inoculation": {displayName: "Vacunación", backendName: "Inoculation", url: "inoculations", componentName: "VaccinationForm"},
-    "Weighing": {displayName: "Pesaje", backendName: "Weighing", url: "weightings", componentName: "WeighingForm"},
+    "Inoculation": {displayName: "Vacunación", backendName: "Inoculation"},
+    "Weighing": {displayName: "Pesaje", backendName: "Weighing"},
+};
+export const ACTIVITIES_EXTRA_DATA = {
+    "Inoculation": {
+        displayName: "Vacunación", backendName: "Inoculation",
+        url: "inoculations", componentName: "VaccinationForm",
+        validations: { "drug": "drug" }
+    },
+    "Weighing": {
+        displayName: "Pesaje", backendName: "Weighing",
+        url: "weightings", componentName: "WeighingForm",
+        validations: { "weight": "weight" }
+    },
 };
 
 export const LOGIN_CONTEXT = process.env.VUE_APP_LOGIN_CONTEXT
