@@ -34,6 +34,9 @@ export default {
   },
   computed: {
     ...mapState("activity", ["activityData"]),
+  },
+  mounted() {
+    this.activityData.extraData = {};
   }
 }
 </script>

@@ -74,6 +74,7 @@
 <script>
 import CemaInput from "../form/CemaInput";
 import VaccinationForm from "../../components/activity/VaccinationForm";
+import WeighingForm from "../../components/activity/WeighingForm";
 import {mapActions, mapState} from "vuex";
 import {ACTIVITIES_EXTRA_DATA, ACTIVITIES_OPTIONS} from "../../constants";
 
@@ -85,7 +86,7 @@ export default {
       activitiesOptions: ACTIVITIES_OPTIONS,
     };
   },
-  components: { CemaInput, VaccinationForm },
+  components: { CemaInput, VaccinationForm, WeighingForm },
   props: {
     modalId: {
       type: String,

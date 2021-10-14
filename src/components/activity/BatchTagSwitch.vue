@@ -3,12 +3,7 @@
     <cema-switch v-model="activityData.extraData.isBatch"></cema-switch>
   </div>
   <div class="col-12 col-lg-8 mb-3" v-if="!activityData.extraData.isBatch">
-    <combo-search dropdown-id="tags" input-title="Caravana" @reCall="searchBovines"
-                  :error-data="{required: true, errorStatus: errorSave.bovineTag,
-                  errorMessage: 'Seleccione la caravana'}"
-                  option-name="tag" v-model="activityData.extraData.bovineTag" :options="bovines"
-                  defaultName="Seleccione la caravana">
-    </combo-search>
+    <tag-search :error-save="errorSave"/>
   </div>
   <div class="col-12 col-lg-8 mb-3" v-else>
     <cema-input v-model="activityData.extraData.batchName" component-type="select" required
@@ -25,16 +20,15 @@
 
 <script>
 import CemaSwitch from "../form/CemaSwitch";
-import ComboSearch from "../form/ComboSearch";
 import CemaInput from "../form/CemaInput";
 import {mapActions, mapState} from "vuex";
+import TagSearch from "./TagSearch";
 
 export default {
   name: "BatchTagSwitch",
   data(){
     return {
-      batches: [],
-      bovines: []
+      batches: []
     };
   },
   props: {
@@ -43,17 +37,16 @@ export default {
       type: Object
     }
   },
-  components: {CemaInput, CemaSwitch, ComboSearch},
+  components: {TagSearch, CemaInput, CemaSwitch},
   mounted() {
-    this.searchBovines();
     this.searchBatches();
   },
   computed: {
-    ...mapState("bovine", ["selectedCuig"]),
     ...mapState("activity", ["activityData"]),
+    ...mapState("bovine", ["selectedCuig"]),
   },
   methods: {
-    ...mapActions("bovine", ["listBovines", "listBatches"]),
+    ...mapActions("bovine", ["listBatches"]),
     async searchBatches() {
       this.listBatches().then(
           (response) => {
@@ -61,24 +54,8 @@ export default {
             this.batches = response.data;
           }
       )
-    },
-    async searchBovines(searchingFor="") {
-      let searchLength = searchingFor.length;
-      console.log(searchingFor);
-      let defaultSearch = {page: 0, size: 10, search: {tag: searchLength !== 0 ? searchingFor: null, cuig: this.selectedCuig}};
-      if (searchLength === 0 || searchLength >= 1) {
-        this.listBovines(defaultSearch).then(
-            (response) => {
-              this.bovines = response.data;
-              console.log(response);
-            }
-        )
-      }
     }
   }
 }
 </script>
 
-<style scoped>
-
-</style>

@@ -4,7 +4,7 @@
     <button class="form-select text-start" type="button" :id=finalDropdownId
             data-bs-toggle="dropdown" data-bs-auto-close="outside" v-on:click="focusSearch()"
             aria-expanded="false">
-      {{ optionSelected }}
+      {{ value }}
     </button>
     <ul class="dropdown-menu w-100" :aria-labelledby=finalDropdownId>
       <li class="input-group">
@@ -13,7 +13,7 @@
       </li>
       <template v-for="option in filteredOptions">
         <li>
-          <button class="dropdown-item" type="button" v-on:click="selected(option[this.optionName])">{{ option[optionName] }}</button>
+          <button class="dropdown-item" type="button" v-on:click="selected(option[optionName])">{{ option[optionName] }}</button>
         </li>
       </template>
       <template v-if="0 < searchValue.length && filteredOptions.length <= 3 && maintain !== searchValue">
@@ -39,12 +39,11 @@ export default {
   data(){
     return {
       searchValue: "",
-      maintain: null,
-      optionSelected: "Default dropdown"
+      maintain: null
     };
   },
   name: "ComboSearch",
-  emits: ["reCall"],
+  emits: ["reCall", 'update:modelValue'],
   props: {
     dropdownId:{
       type: String,
@@ -88,10 +87,11 @@ export default {
     options: {
       type: Array,
       default: []
-    }
+    },
+    modelValue: {},
   },
   mounted() {
-    this.optionSelected = this.defaultName;
+    this.value = this.defaultName;
     console.log("Opciones: ", this.options)
     if(this.withCaller) {
       console.log("Retrieving options");
@@ -107,6 +107,14 @@ export default {
     },
     finalDropdownId(){
       return `dropdown-${this.dropdownId}`
+    },
+    value: {
+      get() {
+        return this.modelValue
+      },
+      set(value) {
+        this.$emit('update:modelValue', value)
+      }
     }
   },
   methods: {
@@ -115,7 +123,8 @@ export default {
       this.$emit('reCall', this.searchValue);
     },
     selected(option){
-      this.optionSelected = option;
+      this.value = option;
+      console.log("Selected", option)
     },
     retrieveOptions(){
       this.optionCaller(this.callerParams).then(
@@ -134,3 +143,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .textError {
+    text-align: left !important;
+    color: red;
+    font-size: 14px;
+  }
+</style>
