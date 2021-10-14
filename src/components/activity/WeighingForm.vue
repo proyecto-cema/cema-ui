@@ -6,7 +6,7 @@
     <cema-input v-model="activityData.extraData.weight"
                 :error-data="{required: true, errorStatus: errorSave.weight,
                               errorMessage: 'Ingrese el peso del animal'}"
-                input-title="Peso" input-id="weight" type="text">
+                input-title="Peso" input-id="weight" type="number">
     </cema-input>
   </div>
   <div class="col-lg-6 col-12 mb-2">
