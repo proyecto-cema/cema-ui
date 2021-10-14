@@ -48,10 +48,7 @@ export default {
            {name: 'Lotes', isCollapsible: false, route: 'ListBatch', roleRequirement: 0},
            {name: 'Establecimientos', isCollapsible: false, route: 'AddEstablishment', roleRequirement: 2}
         ]},
-        {name: 'Actividades', isCollapsible: true, expanded: false, icon:'lightbulb', items: [
-          {name: 'Vacunacion', isCollapsible: false, route: 'VaccinationModal', roleRequirement: 0}
-        ]},
-        {name: 'Salud', isCollapsible: true, expanded: false, icon:'heartbeat', items: []},
+        {name: 'Actividades', isCollapsible: false, icon:'lightbulb', route: 'ActivitySelector', roleRequirement: 0},
       ]
     }
   },

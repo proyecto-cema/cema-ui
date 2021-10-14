@@ -43,7 +43,7 @@
                 </div>
               </div>
               <template v-if="activityData.type">
-                <slot name="extraData" :errorData="errorSave"></slot>
+                <component v-bind:is="selectedActivityComponent" :error-save="errorSave"></component>
               </template>
             </div>
           </form>
@@ -73,6 +73,7 @@
 
 <script>
 import CemaInput from "../form/CemaInput";
+import VaccinationForm from "../../components/activity/VaccinationForm";
 import {mapActions, mapState} from "vuex";
 import {ACTIVITIES_OPTIONS} from "../../constants";
 
@@ -84,7 +85,7 @@ export default {
       activitiesOptions: ACTIVITIES_OPTIONS,
     };
   },
-  components: {CemaInput},
+  components: { CemaInput, VaccinationForm },
   props: {
     modalId: {
       type: String,
@@ -103,6 +104,12 @@ export default {
     },
     getToday(){
       return this.getMomentToday()
+    },
+    activityMap(){
+      return ACTIVITIES_OPTIONS[this.activityData.type];
+    },
+    selectedActivityComponent(){
+      return this.activityMap.componentName;
     }
   },
   methods: {
@@ -125,7 +132,7 @@ export default {
       this.showSuccess(message);
     },
     deleteModal() {
-      this.deleteActivity({id: this.activityData.id, url: ACTIVITIES_OPTIONS[this.activityData.type].url}).then(
+      this.deleteActivity({id: this.activityData.id, url: this.activityMap.url}).then(
           () => {
             this.successCall(`La actividad de ${this.activityData.type} fue eliminada correctamente`);
           }
@@ -142,7 +149,7 @@ export default {
       this.formSaveActivity()
     },
     async formSaveActivity() {
-      this.saveActivity(ACTIVITIES_OPTIONS[this.activityData.type].url).then(
+      this.saveActivity(this.activityMap.url).then(
           (activity) => {
             this.successCall(`Se guardó la actividad de ${activity.type} con nombre ${activity.name}`);
           }

@@ -9,10 +9,6 @@
               v-on:click="openAddBovineModal(null)">
         + Nuevo Bovino
       </button>
-      <button class="btn btn-secondary text-white" type="button"
-              v-on:click="openActivityModal()">
-        vacunacion
-      </button>
     </div>
     <form @submit.prevent="">
       <div class="row">
@@ -119,11 +115,6 @@
       modal-id="DeleteModal" title="Eliminar"
       @acceptModal="modalDelete(); this.deleteModal.hide()" @rejectModal="this.deleteModal.hide(); this.deleted = {}"></confirmation-modal>
   <bovine-modal modalId="addBovineModal" @deleteModal="deleteBovineForm"></bovine-modal>
-  <activity-modal modalId="activityModal">
-    <template v-slot:extraData="{ errorData }">
-      <vaccination-form :error-save="errorData"></vaccination-form>
-    </template>
-  </activity-modal>
   <batch-modal modalId="addBatchModal" @addBovinesToBatch="addBovinesToBatch"
                @cleanSelectedBovines="tagBovinesSelected=new Set();bovineCuigSelected=null"></batch-modal>
 </template>
@@ -133,10 +124,8 @@ import {Modal} from "bootstrap";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import CemaInput from "../../components/form/CemaInput";
 import BovineModal from "../../components/bovine/BovineModal";
-import ActivityModal from "../../components/activity/ActivityModal";
 import BatchModal from "../../components/bovine/BatchModal";
 import BatchBadge from "../../components/bovine/BatchBadge";
-import VaccinationForm from "../../components/activity/VaccinationForm";
 
 export default {
   name: "ListBovine",
@@ -154,7 +143,6 @@ export default {
       addBovineModal: null,
       showingExtraData: null,
       batchModal:null,
-      activityModal: null,
       timeout: false,
       delay: 250,
     };
@@ -162,8 +150,6 @@ export default {
   components: {
     BatchBadge,
     BovineModal,
-    ActivityModal,
-    VaccinationForm,
     BatchModal,
     ConfirmationModal,
     CemaInput
@@ -177,7 +163,6 @@ export default {
     this.addBovineModal = new Modal(document.getElementById('addBovineModal'));
     this.batchModal = new Modal(document.getElementById('addBatchModal'));
     this.deleteModal = new Modal(document.getElementById('DeleteModal'));
-    this.activityModal = new Modal(document.getElementById('activityModal'));
     this.isMobile = screen.width <= 760;
     this.searchBovinePage(this.headers.currentPage);
     window.addEventListener('resize', this.resizeTimeOut);
@@ -272,9 +257,6 @@ export default {
         this.setupEditBovine(bovine)
       }
        this.addBovineModal.show()
-    },
-    openActivityModal(){
-      this.activityModal.show()
     },
     openBatchModal(){
       console.log(this.tagBovinesSelected, "size: "+ this.tagBovinesSelected.size, "cuig: "+ this.bovineCuigSelected)
