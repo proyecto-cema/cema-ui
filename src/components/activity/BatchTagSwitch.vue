@@ -1,6 +1,6 @@
 <template>
   <div class="col-12 col-lg-4 mb-2 mt-4 d-flex justify-content-center">
-    <cema-switch v-model="activityData.extraData.isBatch"></cema-switch>
+    <cema-switch v-model="activityData.extraData.isBatch" @trigger-switch="prepareSelection"></cema-switch>
   </div>
   <div class="col-12 col-lg-8 mb-3" v-if="!activityData.extraData.isBatch">
     <tag-search :error-save="errorSave"/>
@@ -54,6 +54,14 @@ export default {
             this.batches = response.data;
           }
       )
+    },
+    prepareSelection(){
+      console.log("here");
+      if(this.activityData.extraData.isBatch){
+        delete this.activityData.extraData.bovineTag;
+      } else {
+        delete this.activityData.extraData.batchName;
+      }
     }
   }
 }

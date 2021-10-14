@@ -39,7 +39,7 @@ export default {
     async searchBovines(searchingFor="") {
       let searchLength = searchingFor.length;
       console.log(searchingFor);
-      let defaultSearch = {page: 0, size: 10, search: {tag: searchLength !== 0 ? searchingFor: null, cuig: this.selectedCuig}};
+      let defaultSearch = {page: 0, size: 5, search: {tag: searchLength !== 0 ? searchingFor: null, cuig: this.selectedCuig}};
       if (searchLength === 0 || searchLength >= 1) {
         this.listBovines(defaultSearch).then(
             (response) => {

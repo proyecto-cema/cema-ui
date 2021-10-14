@@ -15,7 +15,7 @@
 
 export default {
   name: "Switch",
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'triggerSwitch'],
   props: {
     options: {},
     modelValue: {},
@@ -33,6 +33,7 @@ export default {
   methods:{
     changeSwitch(){
       this.value = !this.value;
+      this.$emit('triggerSwitch');
     }
   }
 };

@@ -28,7 +28,9 @@
                   </cema-input>
                 </div>
                 <div class="col-12 mb-3">
-                  <cema-input v-model="activityData.executionDate" :max="getToday"
+                  <cema-input v-model="activityData.executionDate" :max="getToday" required
+                              :error-data="{required: true, errorStatus: errorSave.executionDate,
+                                errorMessage: 'Seleccione la fecha de la actividad'}"
                               input-title="Fecha de la Actividad" input-id="executionDate" type="date">
                   </cema-input>
                 </div>
@@ -120,11 +122,11 @@ export default {
     validate(){
       this.errorSave["activityName"] = !this.activityData.name;
       this.errorSave["activityType"] = !this.activityData.type;
-      if (this.activityData.extraData.isBatch){
-        this.errorSave["bovineBatch"] = !this.activityData.extraData.batchName;
-      }else {
-        this.errorSave["bovineTag"] = this.activityData.extraData.bovineTag === SEARCH_DEFAULT_TAG || !this.activityData.extraData.bovineTag;
-      }
+      this.errorSave["executionDate"] = !this.activityData.executionDate;
+      this.errorSave["bovineBatch"] = this.activityData.extraData.isBatch && !this.activityData.extraData.batchName;
+      this.errorSave["bovineTag"] = !this.activityData.extraData.isBatch &&
+          (this.activityData.extraData.bovineTag === SEARCH_DEFAULT_TAG ||
+          !this.activityData.extraData.bovineTag);
       let validations = this.activityMap.validations;
       for (const key in validations){
         this.errorSave[key] = !this.activityData.extraData[validations[key]];
@@ -148,7 +150,7 @@ export default {
     deleteModal() {
       this.deleteActivity({id: this.activityData.id, url: this.activityMap.url}).then(
           () => {
-            this.successCall(`La actividad de ${this.activityData.type} fue eliminada correctamente`);
+            this.successCall(`La actividad de ${ACTIVITIES_EXTRA_DATA[activity.type].displayName.toLowerCase()} fue eliminada correctamente`);
           }
       );
     },
@@ -163,7 +165,7 @@ export default {
     async formSaveActivity() {
       this.saveActivity(this.activityMap.url).then(
           (activity) => {
-            this.successCall(`Se guardó la actividad de ${activity.type} con nombre ${activity.name}`);
+            this.successCall(`Se guardó la actividad de ${ACTIVITIES_EXTRA_DATA[activity.type].displayName.toLowerCase()} con nombre ${activity.name}`);
           }
       );
     },
