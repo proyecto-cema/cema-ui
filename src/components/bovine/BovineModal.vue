@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import CemaInput from "../CemaInput";
+import CemaInput from "../form/CemaInput";
 import {mapActions, mapState} from "vuex";
 import {REGEX_LETTERS_NUMBERS} from "../../constants";
 

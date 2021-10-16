@@ -37,11 +37,18 @@ const mutations = {
             bovineTags: [],
             establishmentCuig: null
         } : payload
-
+    },
+    setSelectedCuig(state, payload){
+        state.selectedCuig = payload;
     }
 }
 
 const actions = {
+    setCuigToDefault({state, commit, rootState}){
+        if(!state.selectedCuig){
+            commit('setSelectedCuig', rootState.auth.user.user.establishmentCuig);
+        }
+    },
     clearBovineData({commit, rootState}) {
         let blankBovine = {
             tag: null,

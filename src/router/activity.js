@@ -1,12 +1,12 @@
-import VaccinationModal from '../components/activity/VaccinationModal.vue'
+import ActivitySelector from "../views/activities/ActivitySelector";
 
 
 const routes = [
   {
-    path: '/vacunacion',
-    name: 'VaccinationModal',
+    path: '/actividades',
+    name: 'ActivitySelector',
     meta: { requiresAuth: true, requiredRoleLevel: 0 },
-    component: VaccinationModal
+    component: ActivitySelector
   }
 ]
 

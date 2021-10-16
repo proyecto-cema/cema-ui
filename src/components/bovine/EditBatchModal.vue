@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import CemaInput from "../CemaInput";
+import CemaInput from "../form/CemaInput";
 import {mapActions, mapState} from "vuex";
 
 export default {

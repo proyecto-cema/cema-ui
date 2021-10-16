@@ -73,11 +73,11 @@
 </template>
 
 <script>
-import CemaInput from "../CemaInput";
+import CemaInput from "../form/CemaInput";
 import {mapActions, mapState} from "vuex";
 import {REGEX_SPACES} from "../../constants";
 import BatchBadge from "./BatchBadge";
-import ComboSearch from "../ComboSearch";
+import ComboSearch from "../form/ComboSearch";
 
 export default {
   name: "BatchModal",
