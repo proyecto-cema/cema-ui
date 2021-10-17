@@ -7,6 +7,7 @@ export const MAXIMUM_TOASTS = 4;
 export const ACTIVITIES_OPTIONS = {
     "Inoculation": {displayName: "Vacunación", backendName: "Inoculation"},
     "Weighing": {displayName: "Pesaje", backendName: "Weighing"},
+    "Ultrasound": {displayName: "Tacto", backendName: "Ultrasound"},
 };
 export const ACTIVITIES_EXTRA_DATA = {
     "Inoculation": {
@@ -17,7 +18,12 @@ export const ACTIVITIES_EXTRA_DATA = {
     "Weighing": {
         displayName: "Pesaje", backendName: "Weighing",
         url: "weightings", componentName: "WeighingForm",
-        validations: { "weight": "weight" }
+        validations: {}
+    },
+    "Ultrasound": {
+        displayName: "Tacto", backendName: "Ultrasound",
+        url: "ultrasounds", componentName: "UltrasoundForm",
+        validations: {}
     },
 };
 export const SEARCH_DEFAULT_TAG = "Seleccione la caravana";
