@@ -28,7 +28,7 @@
                   </cema-input>
                 </div>
                 <div class="col-12 mb-3">
-                  <cema-input v-model="activityData.executionDate" required
+                  <cema-input v-model="activityData.executionDate" :max="getToday" required
                               :error-data="{required: true, errorStatus: errorSave.executionDate,
                                 errorMessage: 'Seleccione la fecha de la actividad'}"
                               input-title="Fecha de la Actividad" input-id="executionDate" type="date">
