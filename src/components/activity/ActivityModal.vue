@@ -75,6 +75,7 @@
 
 <script>
 import CemaInput from "../form/CemaInput";
+import UltrasoundForm from "../../components/activity/UltrasoundForm";
 import VaccinationForm from "../../components/activity/VaccinationForm";
 import WeighingForm from "../../components/activity/WeighingForm";
 import {mapActions, mapState} from "vuex";
@@ -88,7 +89,7 @@ export default {
       activitiesOptions: ACTIVITIES_OPTIONS,
     };
   },
-  components: { CemaInput, VaccinationForm, WeighingForm },
+  components: { CemaInput, VaccinationForm, WeighingForm, UltrasoundForm },
   props: {
     modalId: {
       type: String,
@@ -120,6 +121,7 @@ export default {
     ...mapActions("bovine", ["setCuigToDefault"]),
     ...mapActions(["showSuccess"]),
     validate(){
+      this.errorSave = {};
       this.errorSave["activityName"] = !this.activityData.name;
       this.errorSave["activityType"] = !this.activityData.type;
       this.errorSave["executionDate"] = !this.activityData.executionDate;
@@ -150,7 +152,7 @@ export default {
     deleteModal() {
       this.deleteActivity({id: this.activityData.id, url: this.activityMap.url}).then(
           () => {
-            this.successCall(`La actividad de ${ACTIVITIES_EXTRA_DATA[activity.type].displayName.toLowerCase()} fue eliminada correctamente`);
+            this.successCall(`La actividad de ${ACTIVITIES_EXTRA_DATA[this.activityData.type].displayName.toLowerCase()} fue eliminada correctamente`);
           }
       );
     },
