@@ -97,8 +97,8 @@ const actions = {
             }
         );
     },
-    async listActivitys({dispatch}) {
-        return ActivityService.getActivitysList().then(
+    async listActivities({dispatch}) {
+        return ActivityService.getActivitiesList().then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);

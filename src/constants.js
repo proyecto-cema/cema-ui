@@ -4,6 +4,23 @@ export const ROLE_REPRESENTATION = {"ADMIN": 2, "PATRON": 1, "PEON": 0}
 export const REGEX_LETTERS_NUMBERS = /^([a-zA-Z0-9]+)$/;
 export const REGEX_SPACES = /^\S+$/;
 export const MAXIMUM_TOASTS = 4;
+export const ACTIVITIES_OPTIONS = {
+    "Inoculation": {displayName: "Vacunación", backendName: "Inoculation"},
+    "Weighing": {displayName: "Pesaje", backendName: "Weighing"},
+};
+export const ACTIVITIES_EXTRA_DATA = {
+    "Inoculation": {
+        displayName: "Vacunación", backendName: "Inoculation",
+        url: "inoculations", componentName: "VaccinationForm",
+        validations: { "drug": "drug" }
+    },
+    "Weighing": {
+        displayName: "Pesaje", backendName: "Weighing",
+        url: "weightings", componentName: "WeighingForm",
+        validations: { "weight": "weight" }
+    },
+};
+export const SEARCH_DEFAULT_TAG = "Seleccione la caravana";
 
 export const LOGIN_CONTEXT = process.env.VUE_APP_LOGIN_CONTEXT
 export const BOVINE_CONTEXT = process.env.VUE_APP_BOVINE_CONTEXT
@@ -16,6 +33,7 @@ export const ADMINISTRATION_VERSION = process.env.VUE_APP_ADMINISTRATION_VERSION
 export const ACTIVITY_VERSION = process.env.VUE_APP_ACTIVITY_VERSION
 
 const COMMON_ERRORS = {
+    400: {type: "Server", message:"Error del servidor, contacte a los desarrolladores"},
     401: {type: "Authentication", message:"Usuario no autenticado"},
     403: {type: "Not-Allowed", message:"Su usuario no tiene permisos"}
 }
@@ -41,5 +59,4 @@ export const ADMINISTRATION_ERRORS = {
 export const ACTIVITY_ERRORS = {
     ...COMMON_ERRORS,
     404: {type: "Server", message: "Actividad no encontrada"},
-    
 }

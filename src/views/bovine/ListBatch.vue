@@ -50,7 +50,7 @@
 import {mapActions} from "vuex";
 import {Modal} from "bootstrap";
 import ConfirmationModal from "../../components/ConfirmationModal";
-import CemaInput from "../../components/CemaInput";
+import CemaInput from "../../components/form/CemaInput";
 import EditBatchModal from "../../components/bovine/EditBatchModal";
 
 

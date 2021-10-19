@@ -62,6 +62,11 @@ export default {
     options: {},
     modelValue: {},
   },
+  mounted() {
+    if (this.componentType === 'select' && !this.value){
+      this.value = "";
+    }
+  },
   computed:{
     value: {
       get() {

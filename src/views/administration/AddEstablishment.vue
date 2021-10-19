@@ -86,7 +86,7 @@
 import {mapActions, mapState} from "vuex";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { Modal, Toast } from 'bootstrap';
-import CemaInput from "../../components/CemaInput";
+import CemaInput from "../../components/form/CemaInput";
 
 
 export default {

@@ -20,7 +20,7 @@ class ActivityService {
         return httpActivity.get(activity_url + '/' + id, { params:{cuig: cuig},  headers: authHeader() })
     }
 
-    getActivitysList () {
+    getActivitiesList () {
       return httpActivity.get('activities/search', {headers: authHeader() })
     }
 }

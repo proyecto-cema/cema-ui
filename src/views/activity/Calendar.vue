@@ -148,10 +148,10 @@ export default {
     ActivityModal,
   },
   methods:{
-    ...mapActions("activity", ["listActivitys"]),
+    ...mapActions("activity", ["listActivities"]),
     async searchActivitys() {
       this.activitys = null;
-      this.listActivitys().then(
+      this.listActivities().then(
         (response) => {
           for(var i = 0; response.data.length()>i ; i++)
           {

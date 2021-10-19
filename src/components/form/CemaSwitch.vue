@@ -1,22 +1,21 @@
 <template>
-  <div class="row marginTop">
-    <div class="col-3 col-lg-2 ">Lote</div>  
-    <div class="col-4 col-lg-3 ">
-      <label class="switch">
-        <input type="checkbox" id="togBtn" v-model="value" v-bind="$attrs" />
+  <div class="row">
+    <div class="col-auto mt-1"><label>Caravana</label></div>
+    <div class="col-auto">
+      <div class="switch" @click="changeSwitch()">
+        <input type="checkbox" id="togBtn" v-model="value"/>
         <div class="slider round"></div>
-      </label>
+      </div>
     </div>
-    <div class="col-3 col-lg-2"><label>Caravana</label></div>  
+    <div class="col-auto mt-1"><label>Lote</label></div>
   </div> 
 </template>
 
 <script>
 
 export default {
-  inheritAttrs: false,
   name: "Switch",
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'triggerSwitch'],
   props: {
     options: {},
     modelValue: {},
@@ -30,23 +29,28 @@ export default {
         this.$emit('update:modelValue', value)
       }
     }
+  },
+  methods:{
+    changeSwitch(){
+      this.value = !this.value;
+      this.$emit('triggerSwitch');
+    }
   }
 };
 </script>
 
-<style>
-.marginTop{
-  margin-top: 30px;
-}
-.switch {
+<style scoped>
+  .switch {
     position: relative;
     display: inline-block;
     width: 80px;
     height: 34px;
   }
-  
-  .switch input {display:none;}
-  
+
+  .switch input {
+    display:none;
+  }
+
   .slider {
     position: absolute;
     cursor: pointer;
@@ -72,13 +76,9 @@ export default {
     transition: .4s;
     border-radius: 50%;
   }
-  
+
   input:checked + .slider {
-    background-color: #027DB4;
-  }
-  
-  input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    background-color: var(--bs-secondary);
   }
   
   input:checked + .slider:before {
@@ -87,8 +87,7 @@ export default {
     transform: translateX(45px);
   }
   
-  .slider:after
-  {
+  .slider:after {
    color: white;
    display: block;
    position: absolute;
@@ -99,4 +98,4 @@ export default {
    font-family: Verdana, sans-serif;
   }
 
-  </style>
+</style>
