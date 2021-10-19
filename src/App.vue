@@ -71,5 +71,6 @@ export default {
 </style>
 <style lang="scss">
 @import './assets/styles/custom.scss';
+@import './assets/styles/calendar.scss';
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
 </style>
