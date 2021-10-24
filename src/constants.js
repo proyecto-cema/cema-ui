@@ -26,11 +26,13 @@ export const LOGIN_CONTEXT = process.env.VUE_APP_LOGIN_CONTEXT
 export const BOVINE_CONTEXT = process.env.VUE_APP_BOVINE_CONTEXT
 export const ADMINISTRATION_CONTEXT = process.env.VUE_APP_ADMINISTRATION_CONTEXT
 export const ACTIVITY_CONTEXT = process.env.VUE_APP_ACTIVITY_CONTEXT
+export const REPORTING_CONTEXT = process.env.VUE_APP_REPORTING_CONTEXT
 
 export const LOGIN_VERSION = process.env.VUE_APP_LOGIN_VERSION
 export const BOVINE_VERSION = process.env.VUE_APP_BOVINE_VERSION
 export const ADMINISTRATION_VERSION = process.env.VUE_APP_ADMINISTRATION_VERSION
 export const ACTIVITY_VERSION = process.env.VUE_APP_ACTIVITY_VERSION
+export const REPORTING_VERSION = process.env.VUE_APP_REPORTING_VERSION
 
 const COMMON_ERRORS = {
     400: {type: "Server", message:"Error del servidor, contacte a los desarrolladores"},
