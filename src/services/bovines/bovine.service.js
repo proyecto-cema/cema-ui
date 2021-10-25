@@ -43,7 +43,7 @@ class BovineService {
   }
 
   setBatch (data) {
-    return httpBovines.post('batches/',data, { headers: authHeader() })
+    return httpBovines.post('batches/', data, { headers: authHeader() })
   }
 }
 

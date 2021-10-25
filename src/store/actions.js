@@ -1,6 +1,5 @@
 import EstablishmentService from "../services/administration/establishment.service";
 import {getHttpError, getSuccessStructure} from "../services/http-common";
-import {BOVINE_ERRORS} from "../constants";
 
 export default {
     setSideNav({ commit }) {

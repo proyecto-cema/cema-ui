@@ -8,16 +8,20 @@
         </div>
         <div class="modal-body">
           <form @submit.prevent="">
-            <div class="row">
-              <div class="col-8 offset-2">
+            <cema-input v-model.trim="batch.description" maxlength="300" required
+                        component-type="textarea"
+                        :error-data="{required: true, errorStatus: nullDescription,
+                                errorMessage: 'Ingrese la descripción del lote'}"
+                        input-title="Descripción" input-id="batchDescription" type="text"
+                        rows="4"
+            ></cema-input>
+            <div class="row" v-if="batch.bovineTags.length !== 0">
+              <div class="col-10 offset-1">
                 <table class="table">
                   <thead>
-                    <tr v-if="batch.bovineTags !== []">
+                    <tr>
                       <th scope="col" class="text-center">Bovinos Asignados</th>
                       <th class="text-center" scope="col">Eliminar</th>
-                    </tr>
-                    <tr v-else>
-                      <th scope="col">El lote seleccionado no posee bovinos asiganados</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -28,7 +32,7 @@
                           icon="trash"
                           style="cursor:pointer;font-size:20px;"
                           title="Eliminar bovino del lote"
-                          v-on:click="formDeleteBatch(batch.batchName, tagBovine, index, batch.establishmentCuig)">
+                          v-on:click="removeFromList(index)">
                       </font-awesome-icon>
                     </td>
                   </tr>
@@ -36,12 +40,17 @@
                 </table>
               </div>
             </div>
+            <label v-else>El lote seleccionado no posee bovinos asiganados, para asignarlos dirijase a el listado de bovinos</label>
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary text-white" data-bs-dismiss="modal"
-                  type="button" v-on:click="mostrar()">
+          <button class="btn btn-dark text-white" data-bs-dismiss="modal"
+                  type="button">
             Cancelar
+          </button>
+          <button class="btn btn-secondary text-white" data-bs-dismiss="modal"
+                  type="button" v-on:click="saveModifications()">
+            Modificar
           </button>
         </div>
       </div>
@@ -58,7 +67,7 @@ export default {
   data(){
     return {
       deleteModal: null,
-      deleted: {}
+      name: "",
     };
   },
   components: { 
@@ -72,29 +81,40 @@ export default {
   },
   computed: {
     ...mapState("bovine", ["batch", "error"]),
+    nullDescription(){
+      return !this.batch.description
+    }
   },
   methods: {
-    ...mapActions("bovine", ["deleteBatchBovines"]),
-    setIndexForTag(batchName, bovineTag, index, cuig){
-      this.deleted = {
-        batchName: batchName,
-        bovineTag: [bovineTag],
-        index: index,
-        cuig: cuig,
+    ...mapActions("bovine", ["deleteBatch", "saveBatch", "setCuig"]),
+    ...mapActions(["showSuccess"]),
+    successCall(message) {
+      this.showSuccess(message);
+    },
+    removeFromList(index) {
+      this.batch.bovineTags.splice(index, 1);
+    },
+    saveModifications(){
+      this.setCuig(this.batch.establishmentCuig);
+      let data = {
+        name: this.batch.batchName,
+        description: this.batch.description,
+        listBovinesSelected: this.batch.bovineTags,
       };
-    },
-    formDeleteBatch(name, tagBovine, index, cuig) {
-      this.setIndexForTag(name, tagBovine, index, cuig);
-      this.modalDelete();
-    },
-    async modalDelete() {
-      console.log(`Deleting batch ${this.deleted["batchName"]}`)
-      this.deleteBatchBovines(this.deleted).then(
+      this.deleteBatch({name: this.batch.batchName, cuig: this.batch.establishmentCuig}).then(
           () => {
-            this.batch.bovineTags.splice(this.deleted["index"], 1);
+            console.log("Continue with creation");
+            this.saveBatch(data).then(
+                () => {
+                  this.successCall(`El lote ${data.name} se modificó correctamente.`);
+                }
+            );
+          },
+          (error) => {
+            console.log(error);
           }
       );
-    },
+    }
   }
 }
 </script>
