@@ -1,5 +1,24 @@
 <template>
-  <div class="toast align-items-center text-white border-0" :class="color"
+  <div v-if="dateData" class="toast"  aria-atomic="true"
+       role="alert" aria-live="assertive" :id="toastId"  data-bs-autohide="false">
+    <div class="toast-header">
+      <strong class="me-auto">{{ message }}</strong>
+      <small class="text-muted">
+        {{javaDateToMomentDate(dateData)}}
+      </small>
+      <button type="button" class="btn-close" ref="removeButton"
+              @click="removeToast()" ></button>
+    </div>
+    <div class="toast-body">
+      {{ description }}
+      <div class="text-end">
+        <router-link class="nav-link" to="/actividades" @click="removeToast()">
+          Ver mas
+        </router-link>
+      </div>
+    </div>
+  </div>
+  <div v-else class="toast align-items-center text-white border-0" :class="color"
        role="alert" aria-live="assertive" aria-atomic="true" :id="toastId"  data-bs-autohide="false">
     <div class="d-flex">
       <div class="toast-body">
@@ -29,20 +48,38 @@ export default {
     toastId: {
       type: Number,
       required: true
+    },
+    autoRemove: {
+      type: Boolean,
+      default: true
+    },
+    dateData: {
+      type: String,
+      default: null
+    },
+    description: {
+      type: String,
+      default: null
     }
   },
   methods:{
-    ...mapActions(["removeIndexItemFromToasts"]),
+    ...mapActions(["removeIndexItemFromToasts", "removeIndexItemFromNotifications"]),
     removeToast(){
-      clearTimeout(this.timeout);
-      this.removeIndexItemFromToasts(this.toastId);
+      if(this.autoRemove) {
+        clearTimeout(this.timeout);
+        this.removeIndexItemFromToasts(this.toastId);
+      }else{
+        this.removeIndexItemFromNotifications(this.toastId);
+      }
     }
   },
   mounted() {
     console.log(this.$refs);
     let toast = document.getElementById(`${this.toastId}`);
     new Toast(toast).show();
-    this.timeout = setTimeout(() => this.removeToast(), 5000);
+    if(this.autoRemove) {
+      this.timeout = setTimeout(() => this.removeToast(), 5000);
+    }
   }
 }
 </script>

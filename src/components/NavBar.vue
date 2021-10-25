@@ -61,6 +61,7 @@ export default {
             this.logOut();
           }
       );
+      this.getNotifications(this.currentUser.user.establishmentCuig);
     }
   },
   computed: {
@@ -70,7 +71,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['setSideNav', 'setEstablishmentName']),
+    ...mapActions(['setSideNav', 'setEstablishmentName', 'getNotifications']),
     toggleSideNav() {
       this.setSideNav();
     },

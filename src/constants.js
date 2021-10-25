@@ -4,6 +4,7 @@ export const ROLE_REPRESENTATION = {"ADMIN": 2, "PATRON": 1, "PEON": 0}
 export const REGEX_LETTERS_NUMBERS = /^([a-zA-Z0-9]+)$/;
 export const REGEX_SPACES = /^\S+$/;
 export const MAXIMUM_TOASTS = 4;
+export const MAXIMUM_NOTIFICATIONS_TOASTS = 4;
 export const ACTIVITIES_OPTIONS = {
     "Inoculation": {displayName: "Vacunación", backendName: "Inoculation"},
     "Weighing": {displayName: "Pesaje", backendName: "Weighing"},

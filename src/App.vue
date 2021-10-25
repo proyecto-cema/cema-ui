@@ -9,6 +9,9 @@
       <div class="toast-container position-absolute bottom-0 end-0 p-3">
         <toast-message v-for="toastData in dataToasts" :key="toastData.id"
                        :message="toastData.message" :color="toastData.color" :toastId="toastData.id"></toast-message>
+        <toast-message v-for="toastData in notificationsToasts" :key="toastData.id" :auto-remove="false" :date-data="toastData.date"
+                       :message="toastData.message" :color="toastData.color"
+                       :toastId="toastData.id" :description="toastData.description"></toast-message>
       </div>
     </div>
   </div>
@@ -32,7 +35,7 @@ export default {
     SideBar
   },
   computed: {
-    ...mapState(["dataToasts"]),
+    ...mapState(["dataToasts", "notificationsToasts"]),
     sideNav() {
       return this.$store.state.sidenav;
     }
