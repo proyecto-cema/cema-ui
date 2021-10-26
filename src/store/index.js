@@ -5,6 +5,7 @@ import actions from './actions'
 import bovine from './modules/bovine.module'
 import establishment from './modules/establishment.module'
 import activity from './modules/activity.module'
+import reporting from './modules/reporting.module'
 
 export default createStore({
   state: {
@@ -19,7 +20,8 @@ export default createStore({
     auth,
     bovine,
     establishment,
-    activity
+    activity,
+    reporting
   },
   getters:{
     isMobile(){

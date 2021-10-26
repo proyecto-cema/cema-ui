@@ -7,6 +7,9 @@ import 'bootstrap'
 import { FontAwesomeIcon } from './plugins/font-awesome'
 import utils from "./utils";
 
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
+
 createApp(App)
     .use(store)
     .use(router)

@@ -1,26 +1,45 @@
 <template>
-  <DoughnutChart :chartData="testData" />
+  <div class="row">
+    <active-bovines-card v-for="chartHelper in activeBovines" :active-quantity="chartHelper.activeQuantity"
+                         :alt-display="chartHelper.altDisplay" :image-display="chartHelper.imageDisplay"></active-bovines-card>
+  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { DoughnutChart } from 'vue-chart-3';
+<script>
+import { mapActions } from "vuex";
+import ActiveBovinesCard from "../components/reporting/ActiveBovinesCard";
 
-export default defineComponent({
+export default {
   name: 'Dashboard',
-  components: { DoughnutChart },
-  setup() {
-    const testData = {
-      labels: ['Paris', 'Nîmes', 'Toulon', 'Perpignan', 'Autre'],
-      datasets: [
+  components: { ActiveBovinesCard },
+  data(){
+    return {
+      activeBovines: [
         {
-          data: [30, 40, 60, 70, 5],
-          backgroundColor: ['#77CEFF', '#0079AF', '#123E6B', '#97B0C4', '#A5C8ED'],
+          imageDisplay: require("@/assets/images/reporting/bulls.png"),
+          altDisplay: "Toros Activos",
+          activeQuantity: 0
         },
-      ],
-    };
-
-    return { testData };
+        {
+          imageDisplay: require("@/assets/images/reporting/cows.png"),
+          altDisplay: "Vacas Activas",
+          activeQuantity: 0
+        },
+        {
+          imageDisplay: require("@/assets/images/reporting/calves.png"),
+          altDisplay: "Terneros Activos",
+          activeQuantity: 0
+        },
+        {
+          imageDisplay: require("@/assets/images/reporting/bovines.png"),
+          altDisplay: "Activos Totales",
+          activeQuantity: 0
+        }
+      ]
+    }
   },
-});
+  methods: {
+    ...mapActions("reporting", ["retrieveReportData"]),
+  }
+};
 </script>
