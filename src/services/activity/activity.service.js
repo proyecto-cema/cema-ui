@@ -21,7 +21,7 @@ class ActivityService {
     }
 
     getActivitiesList () {
-      return httpActivity.get('activities/search', {headers: authHeader() })
+      return httpActivity.post('activities/search', { params:{},  headers: authHeader() })
     }
 }
 

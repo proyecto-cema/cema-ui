@@ -1,5 +1,5 @@
  $vaccination: #db810c31;
-
+//// Caledar Big
  ::-webkit-scrollbar {
     width: 0px;
   }
@@ -30,6 +30,7 @@
       padding: 5px 0;
     }
     & .vc-day {
+      overflow: scroll;
       padding: 0 5px 3px 5px;
       text-align: left;
       height: var(--day-height);
@@ -52,4 +53,55 @@
     & .vc-day-dots {
       margin-bottom: 5px;
     }
+  }
+
+////CAlendar Pop
+  .popover-header {
+    text-align: center;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #dadada;
+    margin: 0 0 3px 0;
+    opacity: 0.7;
+  }
+  
+  .todo-row {
+    display: flex;
+    flex-wrap: none;
+    width: 100%;
+  }
+  
+  .todo-content {
+    flex-grow: 1;
+    flex-basis: 0;
+    margin-right: 10px;
+    min-width: 80px;
+  }
+  
+  .todo-input {
+    width: 100%;
+    min-width: 200px;
+  }
+  
+  .todo-description {
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    margin-left: 3px;
+  }
+  
+  .todo-description:hover {
+    opacity: 0.5;
+  }
+  
+  .todo-description.complete {
+    text-decoration: line-through;
+  }
+  
+  .add-todo {
+    font-size: 0.8rem;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .delete-todo {
+    margin-left: 3px;
   }

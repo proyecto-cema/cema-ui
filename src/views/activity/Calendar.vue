@@ -1,14 +1,41 @@
 <template>
   <div class="text-center section">
-    <div class="row m-3 d-flex justify-content-end">
-      <button class="btn btn-secondary text-white col-lg-2 col-10" type="button"
+    <h2 class="h2 mt-3">Calendario de actividades</h2>
+    <form @submit.prevent="">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-6">
+          <cema-input v-model.trim="search.name" component-type="input" required maxlength="20"
+                      input-title="Nombre actividad" input-id="nameActivity" :label="false" type="text" class="mb-2" ></cema-input>
+        </div>
+        <div class="col-12 col-md-6 col-lg-6">
+          <cema-input v-model="search.type" component-type="select" required
+                              input-title="Tipo Actividad" input-id="Type" :label="false"
+                              :options="activitiesOptions" optionKey="backendName">
+                    <template v-slot:default="{ option }">
+                      {{ option.displayName }}
+                    </template>
+                  </cema-input>
+        </div>
+        
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-2">
+          <button class="btn btn-secondary text-white" type="button"
             v-on:click="openActivityModal()">
-        Crear actividad
-      </button>
-    </div>
-    <h2 class="h2">Calendario de actividades</h2>
-    
-    <div>
+              Crear actividad
+          </button>
+          <button class="btn btn-primary text-white"
+                  type="button"
+                  v-on:click="this.clearSearchActivityData()">
+            Restablecer
+          </button>
+          <button class="btn btn-secondary text-white"
+                  type="button"
+                  v-on:click="this.searchActivitys(this.search.name,this.search.type)">
+            Buscar
+          </button>
+        </div>
+      </div>
+    </form>
+    <div v-if="!isMobile">
       <v-calendar
         class="custom-calendar max-w-full"
         :masks="masks"
@@ -26,14 +53,18 @@
                 :key="attr.key"
                 class="text-xs leading-tight rounded-sm p-1 mt-0 mb-1 " style=" border-radius: 5px;"
                 :class="attr.customData.class"
-                v-on:click="this.openActivityModal()"
+                v-on:click="this.openActivityModal(attr.customData.id)"
               >
                 {{ attr.customData.title }}
               </p>
             </div>
           </div>
+          
         </template>
       </v-calendar>
+    </div>
+    <div v-else>
+          
     </div>
   </div>
        
@@ -43,166 +74,90 @@
 import {mapActions} from "vuex";
 import ActivityModal from "../../components/activity/ActivityModal";
 import {Modal} from "bootstrap";
+import CemaInput from "../../components/form/CemaInput";
+import {ACTIVITIES_OPTIONS} from "../../constants";
 
-const todos = [
-  {
-    description: 'Take Noah to basketball practice.',
-    isComplete: false,
-    dates: { weekdays: 6 }, // Every Friday
-    color: '#ff8080',       // Red
-  },
-];
 export default {
   name:"Calendar",
   data() {
-    const month = new Date().getMonth();
-    const year = new Date().getFullYear();
     return {
+      activitiesOptions: ACTIVITIES_OPTIONS,
+      search: {name: null, type: ""},
+      isMobile: false,
       activity:{},
       activityModal: null,
-      incId: todos.length,
-      // meetings,
-      todos,
+      
       masks: {
         weekdays: 'WWW',
       },
       attributes: [
-        {
-          key: 1,
-          customData: {
-            id:"7049f123-3d85-4ed3-86ee-87e7a4ecbecb",
-            title: 'Vacunacion 2021',
-            class: 'bg-info text-white',
-          },
-          dates: new Date(2021,9, 18),
-        },
-        {
-          key: 18,
-          customData: {
-            id:"bc928a3f-9b24-4da4-97e4-901514fd6c57",
-            title: 'vacuna de la vaca loca',
-            class: 'bg-info text-white',
-          },
-          dates: new Date(2021, 9, 9),
-        },
-        {
-          key: 2,
-          customData: {
-            id:"2dcd1ebe-99cf-4e1a-a155-bbc9537e6f00",
-            title: 'Vacunación 65465',
-            class: 'bg-info text-white' ,
-          },
-          dates: new Date(2021, 9, 26),
-        },
-        {
-          key: 3,
-          customData: {
-            id:"900d9708-4b26-4bf8-952c-fe598201e30c",
-            title: "Vacunación 65465",
-            class: 'bg-info text-white',
-          },
-          dates: new Date(2021, 10, 5),
-        },
-        {
-          key: 4,
-          customData: {
-            id:"d7120233-3862-4353-8de6-59b8bfcf8e3d",
-            title: 'Pesaje',
-            class: 'bg-success text-white',
-          },
-          dates: new Date(2021, 10 , 13),
-        },
-        {
-          key: 4,
-          customData: {
-            id:"771ddb96-4f6d-4ca7-8de0-b761a14eeab9",
-            title: 'Pesaje 1',
-            class: 'bg-success text-white',
-          },
-          dates: new Date(2021, 9, 14),
-        },
-        {
-          key: 5,
-          customData: {
-            title: "Ultrasonido 9/25",
-            class: 'bg-warning text-white',
-          },
-          dates: new Date(2021, 9, 25),
-        },
-        {
-          key: 6,
-          customData: {
-            title: 'Ultrasonido vaca 5',
-            class: 'bg-warning text-white',
-          },
-          dates: new Date(2021, 10, 20),
-        }
+        
       ],
     };
   },
   mounted() {
+    this.isMobile = screen.width <= 760;
     this.searchActivitys();
     this.activityModal = new Modal(document.getElementById('activityModal'));
   },
   components: {
     ActivityModal,
+    CemaInput
   },
   methods:{
     ...mapActions("activity", ["listActivities"]),
-    async searchActivitys() {
-      this.activitys = null;
+    clearSearchActivityData(){
+      this.search.type="";
+      this.search.name="";
+      
+    },
+    async searchActivitys(name, type) {
+      this.attributes=[]
+      if(type==null||type==""){
+        type="activities"
+      }
       this.listActivities().then(
         (response) => {
-          for(var i = 0; response.data.length()>i ; i++)
+          console.log(response);
+          for(var i = 0;response.data.length>i ; i++)
           {
-            activity={
+            var style = null;
+            this.activity = null;
+            if(response.data[i].type=="Ultrasound"){
+              style="bg-info text-white"
+            }
+            if (response.data[i].type=="Inoculation") {
+              style="bg-success text-white"
+            }
+            if (response.data[i].type=="Weighing") {
+              style="bg-warning text-white"
+            }
+            if (response.data[i].type=="Feeding") {
+              style="bg-danger text-white"
+            }
+            this.activity={
               key: i,
               customData: {
-                id:"2dcd1ebe-99cf-4e1a-a155-bbc9537e6f00",
-                title: 'Vacunación 65465',
-                class: 'bg-info text-white' ,
+                id: response.data[i].id,
+                title: response.data[i].name,
+                class: style ,
               },
-              dates: new Date(2021, 9, 26),
+              dates: new Date(response.data[i].executionDate),
             }
+            this.attributes.push(this.activity)
+            
           }
-          this.activitys = response.data;
-          console.log(response);
         }
       )
     },
-    openActivityModal(){
-      this.activityModal.show()
+    openActivityModal(id){
+      this.activityModal.show(id)
     }
   },
-  computed: {
-    attributesMobile() {
-      return [
-        
-        {
-          contentStyle: {
-            fontWeight: '700',
-            fontSize: '.9rem',
-          },
-          dates: new Date(),
-        },
-        // Attributes for todos
-        ...this.todos.map(todo => ({
-          dates: todo.dates,
-          dot: {
-            backgroundColor: todo.color,
-            opacity: todo.isComplete ? 0.3 : 1,
-          },
-          popover: {
-            label: todo.description,
-            visibility: 'focus'
-          },
-        })),
-      ];
-    },
-  },
+  
 }
 
 </script>
 <style lang="scss">
-
+ 
 </style>
