@@ -8524,7 +8524,7 @@ uuid@^3.3.2, uuid@^3.4.0:
 
 v-calendar@^3.0.0-alpha.6:
   version "3.0.0-alpha.6"
-  resolved "https://registry.npmjs.org/v-calendar/-/v-calendar-3.0.0-alpha.6.tgz"
+  resolved "https://registry.yarnpkg.com/v-calendar/-/v-calendar-3.0.0-alpha.6.tgz#cd9b0e419f198a3e04bd8ac0d61a73a1cb971b3b"
   integrity sha512-5z9EEXE0Cmu0UWV4Kju1CNwbYqRZBgR8WAK+0NeXRppfmm28TOcVv6QmC9WG6aM0PKcCt3lo/SHboN08ViQ6/A==
   dependencies:
     "@types/lodash" "^4.14.165"

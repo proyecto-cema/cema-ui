@@ -20,8 +20,8 @@ class ActivityService {
         return httpActivity.get(activity_url + '/' + id, { params:{cuig: cuig},  headers: authHeader() })
     }
 
-    getActivitiesList () {
-      return httpActivity.post('activities/search', { params:{},  headers: authHeader() })
+    getActivitiesList (cuig) {
+      return httpActivity.post('activities/search', {cuig: cuig},{ params:{},  headers: authHeader() })
     }
 }
 

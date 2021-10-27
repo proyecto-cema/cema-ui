@@ -7,17 +7,29 @@ export const MAXIMUM_TOASTS = 4;
 export const ACTIVITIES_OPTIONS = {
     "Inoculation": {displayName: "Vacunación", backendName: "Inoculation"},
     "Weighing": {displayName: "Pesaje", backendName: "Weighing"},
+    "Ultrasound": {displayName: "Tacto", backendName: "Ultrasound"},
+    "Feeding": {displayName: "Alimentacion", backendName: "Feeding"},
 };
 export const ACTIVITIES_EXTRA_DATA = {
     "Inoculation": {
         displayName: "Vacunación", backendName: "Inoculation",
         url: "inoculations", componentName: "VaccinationForm",
-        validations: { "drug": "drug" }
+        validations: { "drug": "drug" }, style: "bg-success text-white"
     },
     "Weighing": {
         displayName: "Pesaje", backendName: "Weighing",
         url: "weightings", componentName: "WeighingForm",
-        validations: { "weight": "weight" }
+        validations: { "weight": "weight" }, style: "bg-warning text-white"
+    },
+    "Ultrasound": {
+        displayName: "Tacto", backendName: "Weighing",
+        url: "weightings", componentName: "WeighingForm",
+        validations: { "weight": "weight" }, style: "bg-info text-white"
+    },
+    "Feeding": {
+        displayName: "Alimentacion", backendName: "Weighing",
+        url: "weightings", componentName: "WeighingForm",
+        validations: { "weight": "weight" }, style: "bg-danger text-white"
     },
 };
 export const SEARCH_DEFAULT_TAG = "Seleccione la caravana";

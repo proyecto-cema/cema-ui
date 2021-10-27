@@ -97,9 +97,8 @@ const actions = {
             }
         );
     },
-    async listActivities({dispatch}) {
-        
-        return ActivityService.getActivitiesList().then(
+    async listActivities({dispatch, rootState}) {
+        return ActivityService.getActivitiesList(rootState.bovine.selectedCuig).then(
             response => {
                 console.log("List Activities: " +response.data);
                 return Promise.resolve(response);

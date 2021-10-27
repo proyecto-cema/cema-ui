@@ -75,7 +75,7 @@ import {mapActions} from "vuex";
 import ActivityModal from "../../components/activity/ActivityModal";
 import {Modal} from "bootstrap";
 import CemaInput from "../../components/form/CemaInput";
-import {ACTIVITIES_OPTIONS} from "../../constants";
+import {ACTIVITIES_EXTRA_DATA, ACTIVITIES_OPTIONS} from "../../constants";
 
 export default {
   name:"Calendar",
@@ -96,6 +96,7 @@ export default {
     };
   },
   mounted() {
+    this.setCuigToDefault();
     this.isMobile = screen.width <= 760;
     this.searchActivitys();
     this.activityModal = new Modal(document.getElementById('activityModal'));
@@ -106,6 +107,7 @@ export default {
   },
   methods:{
     ...mapActions("activity", ["listActivities"]),
+    ...mapActions("bovine", ["setCuigToDefault"]),
     clearSearchActivityData(){
       this.search.type="";
       this.search.name="";
@@ -121,20 +123,7 @@ export default {
           console.log(response);
           for(var i = 0;response.data.length>i ; i++)
           {
-            var style = null;
-            this.activity = null;
-            if(response.data[i].type=="Ultrasound"){
-              style="bg-info text-white"
-            }
-            if (response.data[i].type=="Inoculation") {
-              style="bg-success text-white"
-            }
-            if (response.data[i].type=="Weighing") {
-              style="bg-warning text-white"
-            }
-            if (response.data[i].type=="Feeding") {
-              style="bg-danger text-white"
-            }
+            let style = ACTIVITIES_EXTRA_DATA[response.data[i].type].style;
             this.activity={
               key: i,
               customData: {
