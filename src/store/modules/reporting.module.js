@@ -8,8 +8,8 @@ const mutations = {
 }
 
 const actions = {
-    async retrieveReportData({dispatch}) {
-        return ReportingService.getReport("batch").then(
+    async retrieveReportData({dispatch}, name, years) {
+        return ReportingService.getReport(name, years).then(
             response => {
                 console.log(response);
                 return Promise.resolve(response);
