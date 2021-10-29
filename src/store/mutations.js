@@ -1,4 +1,5 @@
-import {MAXIMUM_TOASTS} from "../constants";
+import {MAXIMUM_NOTIFICATIONS_TOASTS, MAXIMUM_TOASTS} from "../constants";
+import {getInfoStructure} from "../services/http-common";
 
 export default {
     toggleSideNav(state) {
@@ -6,6 +7,13 @@ export default {
     },
     setEstablishmentName(state, payload) {
         state.establishmentName = payload.name;
+    },
+    appendToNotificationToasts(state, payload){
+        state.notificationsToasts = [];
+        let maxLength = payload.length > MAXIMUM_NOTIFICATIONS_TOASTS ? MAXIMUM_NOTIFICATIONS_TOASTS: payload.length;
+        for (let i = 0; i < maxLength; i++) {
+            state.notificationsToasts.push({id: i, ...getInfoStructure(payload[i])});
+        }
     },
     appendToDataToastsArray(state, payload){
         let arrLength = state.dataToasts.length;
@@ -39,5 +47,13 @@ export default {
             }
         }
         state.idToastHelper[payload] = false;
+    },
+    removeFromNotificationsArray(state, payload){
+        for (let i = 0; i < state.notificationsToasts.length; i++) {
+            if (state.notificationsToasts[i].id === payload){
+                state.notificationsToasts.splice( i, 1);
+                break;
+            }
+        }
     }
 }

@@ -41,3 +41,11 @@ export const getHttpError = function (object, key) {
 export const getSuccessStructure = function (message) {
   return {type: 'OK', message: message != null ? message: 'Acción realizada correctamente', color: 'bg-success'};
 }
+
+export const getInfoStructure = function (notificationData) {
+  return {id: notificationData.id, type: 'Info',
+    date: notificationData.executionDate,
+    description: notificationData.description,
+    message: notificationData.name != null ? notificationData.name: 'Nota importante',
+    color: 'bg-info'};
+}
