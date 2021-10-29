@@ -40,7 +40,7 @@
                 </table>
               </div>
             </div>
-            <label v-else>El lote seleccionado no posee bovinos asiganados, para asignarlos dirijase a el listado de bovinos</label>
+            <label v-else>El lote seleccionado no posee bovinos asignados, para asignarlos diríjase al listado de bovinos.</label>
           </form>
         </div>
         <div class="modal-footer">
@@ -106,7 +106,7 @@ export default {
             console.log("Continue with creation");
             this.saveBatch(data).then(
                 () => {
-                  this.successCall(`El lote ${data.name} se modificó correctamente.`);
+                  this.successCall(`El lote ${data.name} se guardó correctamente.`);
                 }
             );
           },
