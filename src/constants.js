@@ -14,22 +14,22 @@ export const ACTIVITIES_EXTRA_DATA = {
     "Inoculation": {
         displayName: "Vacunación", backendName: "Inoculation",
         url: "inoculations", componentName: "VaccinationForm",
-        validations: { "drug": "drug" }, style: "bg-success text-white"
+        validations: { "drug": "drug" }, style: "bg-success text-white", color:"green"
     },
     "Weighing": {
         displayName: "Pesaje", backendName: "Weighing",
         url: "weightings", componentName: "WeighingForm",
-        validations: { "weight": "weight" }, style: "bg-warning text-white"
+        validations: { "weight": "weight" }, style: "bg-warning text-white", color:"yellow"
     },
     "Ultrasound": {
-        displayName: "Tacto", backendName: "Weighing",
-        url: "weightings", componentName: "WeighingForm",
-        validations: { "weight": "weight" }, style: "bg-info text-white"
+        displayName: "Tacto", backendName: "Ultrasound",
+        url: "ultrasounds", componentName: "WeighingForm",
+        validations: { "weight": "weight" }, style: "bg-info text-white", color:"blue"
     },
     "Feeding": {
         displayName: "Alimentacion", backendName: "Weighing",
         url: "weightings", componentName: "WeighingForm",
-        validations: { "weight": "weight" }, style: "bg-danger text-white"
+        validations: { "weight": "weight" }, style: "bg-danger text-white", color:"red"
     },
 };
 export const SEARCH_DEFAULT_TAG = "Seleccione la caravana";
