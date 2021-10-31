@@ -91,9 +91,9 @@ export default {
     },
     openDeleteBatchModal(batch){
       if (batch){
-        this.setupBatch(batch)
+        this.setupBatch(Object.assign({}, batch))
       }
-      this.editBatchModal.show()
+      this.editBatchModal.show();
     },
     async modalDelete() {
       console.log(`Deleting batch ${this.deleted["name"]}`)
