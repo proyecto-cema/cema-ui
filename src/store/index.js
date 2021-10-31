@@ -11,6 +11,7 @@ export default createStore({
     sidenav: true,
     establishmentName: "Nombre Establecimiento",
     dataToasts: [],
+    notificationsToasts: [],
     idToastHelper: {}
   },
   mutations: mutations,

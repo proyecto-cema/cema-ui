@@ -1,6 +1,6 @@
 import EstablishmentService from "../services/administration/establishment.service";
+import ActivityService from "../services/activity/activity.service";
 import {getHttpError, getSuccessStructure} from "../services/http-common";
-import {BOVINE_ERRORS} from "../constants";
 
 export default {
     setSideNav({ commit }) {
@@ -25,6 +25,10 @@ export default {
         console.log("Removing toast number", index);
         commit("removeFromDataToastsArray", index);
     },
+    removeIndexItemFromNotifications({ commit }, index){
+        console.log("Removing toast number", index);
+        commit("removeFromNotificationsArray", index);
+    },
     showSuccess({commit}, message){
         commit('appendToDataToastsArray', getSuccessStructure(message), { root: true });
     },
@@ -32,4 +36,18 @@ export default {
         commit('appendToDataToastsArray', getHttpError(errors, error.response.status), { root: true });
         console.log(error);
     },
+    getNotifications({ commit }, cuig){
+        return ActivityService.getActivityNotifications(cuig).then(
+            response => {
+                let data = response.data;
+                console.log(data)
+                commit('appendToNotificationToasts', data, { root: true });
+                return Promise.resolve(data);
+            },
+            error => {
+                console.error(error)
+                return Promise.reject(error);
+            }
+        );
+    }
 }

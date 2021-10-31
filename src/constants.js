@@ -4,11 +4,11 @@ export const ROLE_REPRESENTATION = {"ADMIN": 2, "PATRON": 1, "PEON": 0}
 export const REGEX_LETTERS_NUMBERS = /^([a-zA-Z0-9]+)$/;
 export const REGEX_SPACES = /^\S+$/;
 export const MAXIMUM_TOASTS = 4;
+export const MAXIMUM_NOTIFICATIONS_TOASTS = 4;
 export const ACTIVITIES_OPTIONS = {
     "Inoculation": {displayName: "Vacunación", backendName: "Inoculation"},
     "Weighing": {displayName: "Pesaje", backendName: "Weighing"},
-    "Ultrasound": {displayName: "Tacto", backendName: "Ultrasound"},
-    "Feeding": {displayName: "Alimentacion", backendName: "Feeding"},
+    "Ultrasound": {displayName: "Tacto", backendName: "Ultrasound"}
 };
 export const ACTIVITIES_EXTRA_DATA = {
     "Inoculation": {
@@ -19,17 +19,12 @@ export const ACTIVITIES_EXTRA_DATA = {
     "Weighing": {
         displayName: "Pesaje", backendName: "Weighing",
         url: "weightings", componentName: "WeighingForm",
-        validations: { "weight": "weight" }, style: "bg-warning text-white", color:"yellow"
+        validations: {}, style: "bg-warning text-white", color:"yellow"
     },
     "Ultrasound": {
         displayName: "Tacto", backendName: "Ultrasound",
-        url: "ultrasounds", componentName: "WeighingForm",
-        validations: { "weight": "weight" }, style: "bg-info text-white", color:"blue"
-    },
-    "Feeding": {
-        displayName: "Alimentacion", backendName: "Weighing",
-        url: "weightings", componentName: "WeighingForm",
-        validations: { "weight": "weight" }, style: "bg-danger text-white", color:"red"
+        url: "ultrasounds", componentName: "UltrasoundForm",
+        validations: {}, style: "bg-info text-white", color:"blue"
     },
 };
 export const SEARCH_DEFAULT_TAG = "Seleccione la caravana";

@@ -51,9 +51,9 @@ export default {
           (error) => {
             let jsonError = error.toJSON();
             console.log(jsonError);
-            if(jsonError.message !== "Network Error") {
-              console.log("Logging Out because Error", error.response.status);
-              if (error.response.status === 503) {
+            console.log("Logging Out because Error", error.response.status);
+            if(jsonError.message === "Network Error") {
+              if (error.response.status === 503 || error.response.status === undefined) {
                 console.log("Not able to reach server, not logging out");
                 return
               }
@@ -61,6 +61,7 @@ export default {
             this.logOut();
           }
       );
+      this.getNotifications(this.currentUser.user.establishmentCuig);
     }
   },
   computed: {
@@ -70,7 +71,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['setSideNav', 'setEstablishmentName']),
+    ...mapActions(['setSideNav', 'setEstablishmentName', 'getNotifications']),
     toggleSideNav() {
       this.setSideNav();
     },

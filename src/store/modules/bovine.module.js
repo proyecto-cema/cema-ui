@@ -72,7 +72,10 @@ const actions = {
     setupListBovineSelected({commit}, {proxyListTag, cuig}){
         console.log("selected: ", cuig);
         commit('setBovineSelected', {list: proxyListTag, cuig: cuig});
-   },
+    },
+    setCuig({commit}, payload){
+        commit('setSelectedCuig', payload);
+    },
     async getBovine({commit, dispatch}, tag) {
         return BovineService.getBovineByTag(tag).then(
             response => {

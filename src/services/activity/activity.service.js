@@ -16,12 +16,15 @@ class ActivityService {
         return httpActivity.delete(activity_url + '/' + id, { params:{cuig: cuig}, headers: authHeader() })
     }
 
-    getActivity (id, cuig, activity_url) {
+    getActivity(id, cuig, activity_url) {
         return httpActivity.get(activity_url + '/' + id, { params:{cuig: cuig},  headers: authHeader() })
     }
-
     getActivitiesList (name, activity_url, cuig ) {
       return httpActivity.post(activity_url +'/search', {cuig: cuig,name:name},{ params:{},  headers: authHeader() })
+    }
+    getActivityNotifications(cuig) {
+        return httpActivity.post( 'activities/search', { establishmentCuig: cuig },
+            { params:{pastLimit: 0, futureLimit: 7},  headers: authHeader() })
     }
 }
 
