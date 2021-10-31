@@ -1,47 +1,81 @@
 <template>
-  <BarChart :chartData="dataSource" />
+  <div>
+    <canvas id="batches-chart"></canvas>
+  </div>
 </template>
 
 <script>
+
+import {exampleChart} from "../../dataSources";
+import {Chart} from "chart.js";
 import {mapActions} from "vuex";
-import { BarChart } from 'vue-chart-3';
 
 export default {
   name: "AvgWeightPerCategory",
-  components: { BarChart },
   data(){
     return {
-      dataSource: {
-        labels: [],
-        datasets: [
-          {
-            data: [],
-            backgroundColor: [],
-          },
-        ],
+      batchChartData: {
+        type: 'bar',
+        data: {
+          labels: [],
+          datasets: []
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
       }
     }
   },
   methods: {
     ...mapActions("reporting", ["retrieveReportData"]),
-  }
-  beforeCreate() {
-    this.retrieveReportData().then(
-        response => {
+    randomMax(max){
+      return Math.floor(Math.random() * max);
+    },
+    generateRandomColor(){
+      return `rgba(${this.randomMax(255)}, ${this.randomMax(255)}, ${this.randomMax(255)},`
+    },
+    updateChart(batchList){
+      let datasets = {};
+      let labels = new Set();
+      let color;
+      for (let i = 0; i < batchList.length; i++) {
+        const batch = batchList[i];
+        labels.add(batch.year);
+        if(!(batch.batchName in datasets)){
+          color = this.generateRandomColor()
+          datasets[batch.batchName] = {
+            label: `Peso x categoría(${batch.batchName})`,
+            borderWidth: 1,
+            data: [],
+            backgroundColor: color+"0.2)",
+            borderColor: color+"1)"
+          };
+        }
+        datasets[batch.batchName].data.push(batch.value);
+      }
+      this.batchChartData.data.labels = [...labels];
+      console.log(datasets);
+      for (const dataset in datasets) {
+        this.batchChartData.data.datasets.push(datasets[dataset])
+      }
+      this.batchesChart.update();
+    }
+  },
+  mounted() {
+    const ctx = document.getElementById('batches-chart').getContext('2d');
+    this.batchesChart = new Chart(ctx, this.batchChartData);
+    this.retrieveReportData("batch", 5).then(
+        (response) => {
+          console.log(response);
           let batchList = response.data.batchList;
-          console.log(batchList);
-          for (const key in batchList) {
-            let batchData = batchList[key];
-            console.log(batchData);
-            this.dataSource.labels.push(batchData["batchName"]);
-            console.log(this.dataSource.labels);
-            console.log(this.dataSource.datasets[0]["data"]);
-            this.dataSource.datasets[0]["data"].push(batchData["value"]);
-            this.dataSource.datasets[0]["backgroundColor"].push("#A5C8ED");
-          }
+          this.updateChart(batchList);
         }
     );
-  },
+  }
 }
 </script>
 

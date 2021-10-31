@@ -3,15 +3,17 @@
     <active-bovines-card v-for="chartHelper in activeBovines" :active-quantity="chartHelper.activeQuantity"
                          :alt-display="chartHelper.altDisplay" :image-display="chartHelper.imageDisplay"></active-bovines-card>
   </div>
+  <avg-weight-per-category></avg-weight-per-category>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 import ActiveBovinesCard from "../components/reporting/ActiveBovinesCard";
+import AvgWeightPerCategory from "../components/reporting/AvgWeightPerCategory";
 
 export default {
   name: 'Dashboard',
-  components: { ActiveBovinesCard },
+  components: { ActiveBovinesCard, AvgWeightPerCategory },
   data(){
     return {
       activeBovines: {
