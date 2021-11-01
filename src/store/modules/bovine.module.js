@@ -4,7 +4,7 @@ import utils from "../../utils"
 
 
 const state = {
-    bovine: {tag: null, genre: "", description: null, taggingDate: null, establishmentCuig: null, batchNames: []},
+    bovine: {tag: null, genre: "", description: null, taggingDate: null, establishmentCuig: null, batchNames: [], birthDate: null},
     listBovinesSelected:[],
     selectedCuig: null,
     cantSelect: null,
@@ -20,7 +20,8 @@ const mutations = {
             description: null,
             taggingDate: null,
             establishmentCuig: null,
-            batchNames: []
+            batchNames: [],
+            birthDate: null
         } : payload
     },
     setBovineSelected(state, payload){
@@ -57,7 +58,8 @@ const actions = {
             taggingDate: null,
             lot:null,
             establishmentCuig: rootState.auth.user.user.establishmentCuig,
-            batchNames: []
+            batchNames: [],
+            birthDate: null
         }
         commit('setBovine', blankBovine);
         commit('setEdit', false);
@@ -81,6 +83,7 @@ const actions = {
             response => {
                 let bovine = response.data;
                 bovine.taggingDate = utils.methods.javaDateToMomentDate(bovine.taggingDate, 'YYYY-MM-DD');
+                bovine.birthDate = utils.methods.javaDateToMomentDate(bovine.birthDate, 'YYYY-MM-DD');
                 commit('setBovine', bovine);
                 return Promise.resolve(bovine);
             },
@@ -93,6 +96,7 @@ const actions = {
     async saveBovine({dispatch}, {edit, bovine}) {
         let saveBovine = Object.assign({}, bovine);
         saveBovine.taggingDate = utils.methods.momentDateToJavaDate(bovine.taggingDate);
+        saveBovine.birthDate = utils.methods.momentDateToJavaDate(bovine.birthDate);
         return BovineService.setBovine(saveBovine, edit).then(
             () => {
                 console.log(edit ? "Edited": "Created", "bovine:", bovine)

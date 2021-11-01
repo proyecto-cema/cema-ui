@@ -37,6 +37,10 @@
                                 :options="['Macho', 'Hembra']"></cema-input>
                   </div>
                   <div class="col-lg-6 col-12 mb-3">
+                    <cema-input v-model="bovine.birthDate" :max="getToday" required
+                                input-title="Fecha de Nacimiento" input-id="birthDate" type="date"></cema-input>
+                  </div>
+                  <div class="col-lg-6 col-12 mb-3">
                     <cema-input v-model.trim="bovine.description" maxlength="300" component-type="textarea"
                                 input-title="Descripción" input-id="bovineDescription" type="text" 
                                 rows="4"
