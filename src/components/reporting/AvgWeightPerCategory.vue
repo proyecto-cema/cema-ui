@@ -55,7 +55,7 @@ export default {
             borderColor: color+"1)"
           };
         }
-        datasets[batch.batchName].data.push(batch.value);
+        datasets[batch.batchName].data.push(batch.weight);
       }
       this.batchChartData.data.labels = [...labels];
       console.log(datasets);
@@ -68,11 +68,11 @@ export default {
   mounted() {
     const ctx = document.getElementById('batches-chart').getContext('2d');
     this.batchesChart = new Chart(ctx, this.batchChartData);
-    this.retrieveReportData("batch", 5).then(
-        (response) => {
-          console.log(response);
-          let batchList = response.data.batchList;
-          this.updateChart(batchList);
+    let thisYear = this.getMomentToday('YYYY');
+    this.retrieveReportData({ name: "batch", yearsTo: thisYear, decrement: 5 }).then(
+        (reportedList) => {
+          console.log(reportedList);
+          this.updateChart(reportedList);
         }
     );
   }

@@ -8,11 +8,12 @@ const mutations = {
 }
 
 const actions = {
-    async retrieveReportData({dispatch}, name, years) {
-        return ReportingService.getReport(name, years).then(
+    async retrieveReportData({ dispatch }, { name, yearsTo, decrement }) {
+        let yearsFrom = Number.parseInt(yearsTo) - decrement;
+        return ReportingService.getReport(name, yearsFrom, yearsTo).then(
             response => {
                 console.log(response);
-                return Promise.resolve(response);
+                return Promise.resolve(response.data.reportedList);
             },
             error => {
                 dispatch("showError", {error: error, errors: REPORTING_ERRORS}, {root:true});

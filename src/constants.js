@@ -63,5 +63,6 @@ export const ACTIVITY_ERRORS = {
     404: {type: "Server", message: "Actividad no encontrada"},
 }
 export const REPORTING_ERRORS = {
-    ...COMMON_ERRORS
+    ...COMMON_ERRORS,
+    404: {type: "Server", message: "Reporte no encontrado"},
 }

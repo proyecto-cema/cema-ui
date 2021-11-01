@@ -44,14 +44,13 @@ export default {
     ...mapActions("reporting", ["retrieveReportData"]),
   },
   mounted() {
-    this.retrieveReportData("live", 1).then(
-      response => {
-        let animals = response.data.animalList;
-        let thisYear = this.getMomentToday('YYYY');
-        for (let i = 0; i < animals.length; i++) {
-          if(animals[i].year == thisYear){
-            this.activeBovines[animals[i].category].activeQuantity = animals[i].value;
-            this.activeBovines["Total"].activeQuantity += animals[i].value;
+    let thisYear = this.getMomentToday('YYYY');
+    this.retrieveReportData({ name: "live", yearsTo: thisYear, decrement: 0 }).then(
+      reportedList => {
+        for (let i = 0; i < reportedList.length; i++) {
+          if(reportedList[i].year == thisYear){
+            this.activeBovines[reportedList[i].category].activeQuantity = reportedList[i].value;
+            this.activeBovines["Total"].activeQuantity += reportedList[i].value;
           }
         }
       }
