@@ -15,6 +15,31 @@ function generateRandomColor(){
     return `rgba(${randomMax(255)}, ${randomMax(255)}, ${randomMax(255)},`
 }
 
+function prepareMultipleDataSets(list, values, displayNames) {
+    let datasets = {};
+    let labels = new Set();
+    let color;
+    for (let i = 0; i < list.length; i++) {
+        const element = list[i];
+        labels.add(element.year);
+        for (let j = 0; j < values.length; j++) {
+            if(!(values[j] in datasets)){
+                color = generateRandomColor()
+                datasets[values[j]] = {
+                    label: `${displayNames[j]}`,
+                    borderWidth: 1,
+                    data: [],
+                    backgroundColor: color+"0.2)",
+                    borderColor: color+"1)"
+                };
+            }
+            datasets[values[j]].data.push(element[values[j]]);
+        }
+    }
+    return {labels: labels, datasets: datasets}
+}
+
+
 function prepareDataSets(list, value) {
     let datasets = {
         0: {
@@ -37,9 +62,11 @@ function prepareDataSets(list, value) {
     return {labels: labels, datasets: datasets}
 }
 
-function prepareGroupedDataSets({ list, groupBy, value }){
-    if ( groupBy === null ){
+function prepareGroupedDataSets({ list, value, groupBy, multiple, displayNames }){
+    if ( groupBy === undefined ){
         return prepareDataSets(list, value);
+    } else if(multiple){
+        return prepareMultipleDataSets(list, value, displayNames);
     }
     let datasets = {};
     let labels = new Set();

@@ -26,13 +26,12 @@ export default {
     },
     chartType: {
       required: true,
-      type: String
+      type: Array
     }
   },
   data(){
     return {
       chartData: {
-        type: 'bar',
         data: {
           labels: [],
           datasets: []
@@ -65,15 +64,25 @@ export default {
     this.retrieveReportData({ name: this.endpoint, yearsTo: thisYear, decrement: 5 }).then(
         (data) => {
           console.log(data);
+          let addType = true;
           this.chartData.options.plugins.title.text = this.title;
-          this.chartData.type = this.chartType;
-          this.chartData.data.labels = [...data.labels];
-          for (const dataset in data.datasets) {
-            this.chartData.data.datasets.push(data.datasets[dataset])
+          if (this.chartType.length === 1){
+            this.chartData.type = this.chartType[0];
+            addType = false;
           }
-          if(this.chartData.data.datasets.length === 1){
-            console.log("Prevents legend from beeing shown")
-            this.chartData.options.plugins.legend.display = false;
+          this.chartData.data.labels = [...data.labels];
+          let count = 0;
+          let preGenerated;
+          for (const dataset in data.datasets) {
+            preGenerated = data.datasets[dataset];
+            if (addType){
+              preGenerated = {
+                type: this.chartType[count],
+                ...preGenerated
+              }
+            }
+            this.chartData.data.datasets.push(preGenerated);
+            count++;
           }
           this.batchesChart.update();
         }

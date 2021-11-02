@@ -68,10 +68,10 @@ export const REPORTING_ERRORS = {
 }
 
 export const REPORTING_SELECTOR = {
-    "batch": { groupBy: "batchName", value: "weight" },
-    "weight": { groupBy: "category", value: "weight" },
-    "performance": { groupBy: null, value: "yield" },
-    "pregnancy": { groupBy: null, value: "percentage" },
-    "feed": { groupBy: "category", value: "foodEaten" },
-    "disease": { groupBy: "name", value: "infections" },
+    "batch": { value: "weight", groupBy: "batchName" },
+    "weight": { value: "weight", groupBy: "category" },
+    "performance": { value: ["liveWeight", "spending"], groupBy: null, multiple: true, displayNames: ["Kg vivo", "$"] },
+    "pregnancy": { value: "percentage" },
+    "feed": { value: "foodEaten", groupBy: "category" },
+    "disease": { value: "infections", groupBy: "name" },
 }

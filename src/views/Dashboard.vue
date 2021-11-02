@@ -5,27 +5,27 @@
   </div>
   <div class="row">
     <div class="col-lg-6 col-12">
-      <cema-data-chart chart-type="bar" title="Peso promedio por categoría"
+      <cema-data-chart :chart-type="['bar']" title="Peso promedio por categoría"
                        endpoint="weight" chart-id="categories-chart"></cema-data-chart>
     </div>
     <div class="col-lg-6 col-12">
-      <cema-data-chart chart-type="bar" title="Peso promedio por lote"
+      <cema-data-chart :chart-type="['bar']" title="Peso promedio por lote"
                        endpoint="batch" chart-id="batches-chart"></cema-data-chart>
     </div>
     <div class="col-lg-6 col-12">
-      <cema-data-chart chart-type="bar" title="Rendimiento anual del alimento por kilogramo vivo"
+      <cema-data-chart :chart-type="['line', 'bar']" title="Rendimiento anual del alimento por kilogramo vivo"
                        endpoint="performance" chart-id="performance-chart"></cema-data-chart>
     </div>
     <div class="col-lg-6 col-12">
-      <cema-data-chart chart-type="doughnut" title="Porcentaje de preñez"
+      <cema-data-chart :chart-type="['polarArea']" title="Porcentaje de preñez"
                        endpoint="pregnancy" chart-id="pregnancy-chart"></cema-data-chart>
     </div>
     <div class="col-lg-6 col-12">
-      <cema-data-chart chart-type="bar" title="Cantidad de alimento consumido por categoría"
+      <cema-data-chart :chart-type="['bar']" title="Cantidad de alimento consumido por categoría"
                        endpoint="feed" chart-id="feed-chart"></cema-data-chart>
     </div>
     <div class="col-lg-6 col-12">
-      <cema-data-chart chart-type="bar" title="Cantidad de infecciones anuales por tipo"
+      <cema-data-chart :chart-type="['bar']" title="Cantidad de infecciones anuales por tipo"
                        endpoint="disease" chart-id="disease-chart"></cema-data-chart>
     </div>
   </div>
@@ -76,8 +76,8 @@ export default {
       reportedList => {
         for (let i = 0; i < reportedList.length; i++) {
           if(reportedList[i].year == thisYear){
-            this.activeBovines[reportedList[i].category].activeQuantity = reportedList[i].value;
-            this.activeBovines["Total"].activeQuantity += reportedList[i].value;
+            this.activeBovines[reportedList[i].category].activeQuantity = reportedList[i].count;
+            this.activeBovines["Total"].activeQuantity += reportedList[i].count;
           }
         }
       }
