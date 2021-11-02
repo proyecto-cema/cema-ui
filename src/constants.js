@@ -66,3 +66,12 @@ export const REPORTING_ERRORS = {
     ...COMMON_ERRORS,
     404: {type: "Server", message: "Reporte no encontrado"},
 }
+
+export const REPORTING_SELECTOR = {
+    "batch": { groupBy: "batchName", value: "weight" },
+    "weight": { groupBy: "category", value: "weight" },
+    "performance": { groupBy: null, value: "yield" },
+    "pregnancy": { groupBy: null, value: "percentage" },
+    "feed": { groupBy: "category", value: "foodEaten" },
+    "disease": { groupBy: "name", value: "infections" },
+}
