@@ -1,7 +1,6 @@
  
 
 <template>
-  <div><label>Calendar 2</label>  </div>
   <v-calendar
     :attributes='attributes'
     is-double-paned>
@@ -12,21 +11,10 @@
 import {mapActions} from "vuex";
 import {ACTIVITIES_EXTRA_DATA, ACTIVITIES_OPTIONS} from "../../constants";
 
-const todos = [
-  {
-    key: 2,
-    customData: {
-      id: "asdasd",
-      title: "VAcunacion",
-      class:"bg-danger" 
-    },
-    dates: new Date("2021/09/05"),
-  }
-];
+
 export default {
   data() {
     return {
-      todos,
       activitiesOptions: ACTIVITIES_OPTIONS,
       search: {name: null, type: ""},
       isMobile: true,
@@ -50,7 +38,7 @@ export default {
     ...mapActions("activity", ["listActivities"]),
     
     async searchActivitys() {
-      this.attributes=[]
+      this.attributesMobile=[]
       if(this.search.type==null||this.search.type==""){
         var type="activities"
       }

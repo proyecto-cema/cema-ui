@@ -63,7 +63,7 @@
       </v-calendar>
     </div>
     <div v-else>
-      <calendar-movile></calendar-movile>    
+      <calendar-mobile></calendar-mobile>    
 
     </div>
   </div>
@@ -75,7 +75,7 @@ import ActivityModal from "../../components/activity/ActivityModal";
 import {Modal} from "bootstrap";
 import CemaInput from "../../components/form/CemaInput";
 import {ACTIVITIES_EXTRA_DATA, ACTIVITIES_OPTIONS} from "../../constants";
-import CalendarMovile from "../../components/activity/CalendarMovile"
+import CalendarMobile from "../../components/activity/CalendarMobile"
 export default {
   name:"Calendar",
   data() {
@@ -109,7 +109,7 @@ export default {
   components: {
     ActivityModal,
     CemaInput,
-    CalendarMovile
+    CalendarMobile
   },
   methods:{
     ...mapActions("activity", ["listActivities"]),
