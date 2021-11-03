@@ -7,12 +7,9 @@ const state = {
 const mutations = {
 }
 
-function randomMax(max){
-    return Math.floor(Math.random() * max);
-}
-
-function generateRandomColor(){
-    return `rgba(${randomMax(255)}, ${randomMax(255)}, ${randomMax(255)},`
+function generateRandomColor(number){
+    const hue = number * 137.508;
+    return `hsla(${hue},50%,50%,`;
 }
 
 function prepareMultipleDataSets(list, values, displayNames) {
@@ -24,7 +21,7 @@ function prepareMultipleDataSets(list, values, displayNames) {
         labels.add(element.year);
         for (let j = 0; j < values.length; j++) {
             if(!(values[j] in datasets)){
-                color = generateRandomColor()
+                color = generateRandomColor(j)
                 datasets[values[j]] = {
                     label: `${displayNames[j]}`,
                     borderWidth: 1,
@@ -54,7 +51,7 @@ function prepareDataSets(list, value) {
     for (let i = 0; i < list.length; i++) {
         const element = list[i];
         labels.add(element.year);
-        color = generateRandomColor()
+        color = generateRandomColor(i)
         datasets[0].backgroundColor.push(color+"0.2)");
         datasets[0].borderColor.push(color+"1)");
         datasets[0].data.push(element[value]);
@@ -75,7 +72,7 @@ function prepareGroupedDataSets({ list, value, groupBy, multiple, displayNames }
         const element = list[i];
         labels.add(element.year);
         if( !(element[groupBy] in datasets)){
-            color = generateRandomColor()
+            color = generateRandomColor(i)
             datasets[element[groupBy]] = {
                 label: `${element[groupBy]}`,
                 borderWidth: 1,

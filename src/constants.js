@@ -71,7 +71,7 @@ export const REPORTING_SELECTOR = {
     "batch": { value: "weight", groupBy: "batchName" },
     "weight": { value: "weight", groupBy: "category" },
     "performance": { value: ["liveWeight", "spending"], groupBy: null, multiple: true, displayNames: ["Peso(Kg)", "Costo($)"] },
-    "income": { value: ["earnings", "spending"], groupBy: null, multiple: true, displayNames: ["Ingresos", "Gastos"] },
+    "income": { value: ["spending", "earnings"], groupBy: null, multiple: true, displayNames: ["Gastos", "Ingresos"] },
     "pregnancy": { value: "percentage" },
     "feed": { value: "foodEaten", groupBy: "category" },
     "disease": { value: "infections", groupBy: "name" },

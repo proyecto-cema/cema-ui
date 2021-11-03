@@ -42,12 +42,14 @@ export default {
           plugins: {
             title: {
               display: true,
+              padding: 20,
               text: 'Chart',
               font: {
                 size: 20
               }
             },
             legend: {
+              position: 'bottom',
               display: true
             }
           }
@@ -62,7 +64,7 @@ export default {
     const ctx = document.getElementById(this.chartId).getContext('2d');
     this.batchesChart = new Chart(ctx, this.chartData);
     let thisYear = this.getMomentToday('YYYY');
-    this.retrieveReportData({ name: this.endpoint, yearsTo: thisYear, decrement: 5 }).then(
+    this.retrieveReportData({ name: this.endpoint, yearsTo: thisYear, decrement: 1 }).then(
         (data) => {
           console.log(data);
           let addType = true;
@@ -73,22 +75,33 @@ export default {
           }
           this.chartData.data.labels = [...data.labels];
           let count = 0;
-          let preGenerated;
+          let preGenerated, extra;
           for (const dataset in data.datasets) {
             preGenerated = data.datasets[dataset];
+            extra = { datalabels: {
+              color: data.datasets[dataset].borderColor,
+              align: 'end',
+              anchor: 'end',
+              font: {
+                weight: 'bold'
+              }
+            }};
             if (this.chartType[count] === 'line'){
-              preGenerated = {
+              extra = {
                 type: this.chartType[count],
                 fill: true,
-                ...preGenerated
+                ...extra
               };
             } else if (addType){
-              preGenerated = {
+              extra = {
                 type: this.chartType[count],
-                ...preGenerated
+                ...extra
               }
             }
-            this.chartData.data.datasets.push(preGenerated);
+            this.chartData.data.datasets.push({
+              ...extra,
+              ...data.datasets[dataset]
+            });
             count++;
           }
           this.batchesChart.update();
