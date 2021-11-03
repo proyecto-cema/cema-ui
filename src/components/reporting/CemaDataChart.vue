@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="position: relative">
     <canvas :id="chartId"></canvas>
   </div>
 </template>
@@ -38,6 +38,7 @@ export default {
         },
         options: {
           responsive: true,
+          aspectRatio: 2,
           plugins: {
             title: {
               display: true,
@@ -75,7 +76,13 @@ export default {
           let preGenerated;
           for (const dataset in data.datasets) {
             preGenerated = data.datasets[dataset];
-            if (addType){
+            if (this.chartType[count] === 'line'){
+              preGenerated = {
+                type: this.chartType[count],
+                fill: true,
+                ...preGenerated
+              };
+            } else if (addType){
               preGenerated = {
                 type: this.chartType[count],
                 ...preGenerated

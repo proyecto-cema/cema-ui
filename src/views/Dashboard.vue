@@ -3,31 +3,21 @@
     <active-bovines-card v-for="chartHelper in activeBovines" :active-quantity="chartHelper.activeQuantity"
                          :alt-display="chartHelper.altDisplay" :image-display="chartHelper.imageDisplay"></active-bovines-card>
   </div>
-  <div class="row">
-    <div class="col-lg-6 col-12">
-      <cema-data-chart :chart-type="['bar']" title="Peso promedio por categoría"
-                       endpoint="weight" chart-id="categories-chart"></cema-data-chart>
+  <div id="chartCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
+    <div class="carousel-inner">
+      <div class="carousel-item" :class="chartActive === chartHelper.endpoint? 'active':''" v-for="chartHelper in chartIterator" :key="chartHelper.endpoint">
+        <cema-data-chart class="container" :chart-type="chartHelper.chartTypes" :title="chartHelper.title"
+                         :endpoint="chartHelper.endpoint" :chart-id="chartHelper.endpoint + '-chart'"></cema-data-chart>
+      </div>
     </div>
-    <div class="col-lg-6 col-12">
-      <cema-data-chart :chart-type="['bar']" title="Peso promedio por lote"
-                       endpoint="batch" chart-id="batches-chart"></cema-data-chart>
-    </div>
-    <div class="col-lg-6 col-12">
-      <cema-data-chart :chart-type="['line', 'bar']" title="Rendimiento anual del alimento por kilogramo vivo"
-                       endpoint="performance" chart-id="performance-chart"></cema-data-chart>
-    </div>
-    <div class="col-lg-6 col-12">
-      <cema-data-chart :chart-type="['polarArea']" title="Porcentaje de preñez"
-                       endpoint="pregnancy" chart-id="pregnancy-chart"></cema-data-chart>
-    </div>
-    <div class="col-lg-6 col-12">
-      <cema-data-chart :chart-type="['bar']" title="Cantidad de alimento consumido por categoría"
-                       endpoint="feed" chart-id="feed-chart"></cema-data-chart>
-    </div>
-    <div class="col-lg-6 col-12">
-      <cema-data-chart :chart-type="['bar']" title="Cantidad de infecciones anuales por tipo"
-                       endpoint="disease" chart-id="disease-chart"></cema-data-chart>
-    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#chartCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#chartCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Siguiente</span>
+    </button>
   </div>
 </template>
 
@@ -35,34 +25,16 @@
 import { mapActions } from "vuex";
 import ActiveBovinesCard from "../components/reporting/ActiveBovinesCard";
 import CemaDataChart from "../components/reporting/CemaDataChart";
+import {activeBovines, chartIterator} from "../reportsData";
 
 export default {
   name: 'Dashboard',
   components: { ActiveBovinesCard, CemaDataChart },
   data(){
     return {
-      activeBovines: {
-        "Toro": {
-          imageDisplay: require("@/assets/images/reporting/bulls.png"),
-          altDisplay: "Toros Activos",
-          activeQuantity: 0
-        },
-        "Vaca": {
-          imageDisplay: require("@/assets/images/reporting/cows.png"),
-          altDisplay: "Vacas Activas",
-          activeQuantity: 0
-        },
-        "Ternero": {
-          imageDisplay: require("@/assets/images/reporting/calves.png"),
-          altDisplay: "Terneros Activos",
-          activeQuantity: 0
-        },
-        "Total": {
-          imageDisplay: require("@/assets/images/reporting/bovines.png"),
-          altDisplay: "Activos Totales",
-          activeQuantity: 0
-        }
-      }
+      chartIterator: chartIterator,
+      chartActive: "performance",
+      activeBovines: activeBovines
     }
   },
   methods: {
