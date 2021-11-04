@@ -36,7 +36,11 @@ export default {
   },
   methods:{
     ...mapActions("activity", ["listActivities"]),
-    
+    async clearSearchActivityData(){
+      this.search.type="";
+      this.search.name="";
+      this.searchActivitys();
+    },
     async searchActivitys() {
       this.attributesMobile=[]
       if(this.search.type==null||this.search.type==""){

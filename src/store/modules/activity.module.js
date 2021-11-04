@@ -77,9 +77,10 @@ const actions = {
             }
         );
     },
-    async getActivity({dispatch, rootState}, {id, url}) {
+    async getActivity({commit, dispatch, rootState}, {id, url}) {
         return ActivityService.getActivity(id, rootState.bovine.selectedCuig, url).then(
             response => {
+                //commit('setActivity', response.data);
                 console.log("Got activity", response.data)
                 for (const key in response.data) {
                     if (state.activityData.hasOwnProperty(key)){
@@ -88,7 +89,19 @@ const actions = {
                         state.activityData.extraData[key] = response.data[key];
                     }
                 }
-                state.saveActivity["isBatch"] = state.activityData.hasOwnProperty("batch_name");
+                state.activityData.extraData["isBatch"] = state.activityData.hasOwnProperty("batch_name");
+                return Promise.resolve(state.activityData);
+            },
+            error => {
+                dispatch("showError", {error: error, errors: ACTIVITY_ERRORS}, {root:true});
+                return Promise.reject(error);
+            }
+        );
+    },
+    async getActivity2({commit, dispatch, rootState}, {id, url}) {
+        return ActivityService.getActivity(id, rootState.bovine.selectedCuig, url).then(
+            response => {
+                commit('setActivity', response.data);
                 return Promise.resolve(state.activityData);
             },
             error => {

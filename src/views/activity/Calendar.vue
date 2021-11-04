@@ -47,15 +47,16 @@
           <div class="flex flex-col h-full z-10 overflow-hidden" id="day" >
             <span class="day-label text-sm ">{{ day.day }}</span>
             <div class="flex-grow overflow-y-auto overflow-x-auto">
-              <p
+              <div
                 v-for="attr in attributes"
                 :key="attr.key"
                 class="text-xs leading-tight rounded-sm p-1 mt-0 mb-1 " style=" border-radius: 5px;"
+                v-bind:style="attr.customData.future?{opacity:0.7}:{}"
                 :class="attr.customData.class"
-                v-on:click="this.openActivityModal(attr.customData.id)"
+                v-on:click="this.openActivityModalWithSearch(attr.customData.id, attr.customData.type)"
               >
                 {{ attr.customData.title }}
-              </p>
+              </div>
             </div>
           </div>
           
@@ -112,7 +113,7 @@ export default {
     CalendarMobile
   },
   methods:{
-    ...mapActions("activity", ["listActivities"]),
+    ...mapActions("activity", ["listActivities","getActivity"]),
     ...mapActions("bovine", ["setCuigToDefault"]),
 
     resizeTimeOut(){
@@ -130,6 +131,7 @@ export default {
     clearSearchActivityData(){
       this.search.type="";
       this.search.name="";
+      this.searchActivitys();
       
     },
     async searchActivitys() {
@@ -153,14 +155,22 @@ export default {
 
           for(var i = 0;response.data.length>i ; i++)
           {
-            
+            var future
+            var today=this.getMomentToday()
+            if(response.data[i].executionDate<today){
+              future=true
+            }else{
+              future =false
+            }
             let style = ACTIVITIES_EXTRA_DATA[response.data[i].type].style;
             this.activity={
               key: i,
               customData: {
                 id: response.data[i].id,
                 title: response.data[i].name,
-                class: style ,
+                class: style,
+                future: future,
+                type: ACTIVITIES_EXTRA_DATA[response.data[i].type].url
               },
               dates: new Date(response.data[i].executionDate),
             }
@@ -170,8 +180,17 @@ export default {
         }
       )
     },
-    openActivityModal(id){
-      this.activityModal.show(id)
+    openActivityModalWithSearch(id, type) {
+      var act = {
+        id: id,
+        url: type
+      }
+      console.log(act);
+      this.getActivity(act);
+      this.activityModal.show();
+    },
+    openActivityModal() {
+      this.activityModal.show();
     }
   },
   
@@ -179,5 +198,5 @@ export default {
 
 </script>
 <style lang="scss">
- 
+
 </style>
