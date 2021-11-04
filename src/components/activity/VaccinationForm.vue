@@ -33,10 +33,12 @@ export default {
     }
   },
   computed: {
-    ...mapState("activity", ["activityData"]),
+    ...mapState("activity", ["activityData", "edit"]),
   },
   mounted() {
-    this.activityData.extraData = {};
+    if (!this.edit){
+      this.activityData.extraData = {};
+    }
   }
 }
 </script>

@@ -6,7 +6,7 @@
       <div class="container">
         <router-view/>
       </div>
-      <div class="toast-container position-absolute bottom-0 end-0 p-3">
+      <div class="toast-container position-absolute bottom-0 end-0 p-3" id="all-toasts">
         <toast-message v-for="toastData in dataToasts" :key="toastData.id"
                        :message="toastData.message" :color="toastData.color" :toastId="toastData.id"></toast-message>
         <toast-message v-for="toastData in notificationsToasts" :key="toastData.id" :auto-remove="false" :date-data="toastData.date"
@@ -44,6 +44,9 @@ export default {
 </script>
 
 <style>
+#all-toasts{
+  z-index: 2000;
+}
 .wrapper {
   display: flex;
   width: 100%;

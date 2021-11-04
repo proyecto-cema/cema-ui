@@ -80,17 +80,33 @@ const actions = {
     async getActivity({commit, dispatch, rootState}, {id, url}) {
         return ActivityService.getActivity(id, rootState.bovine.selectedCuig, url).then(
             response => {
-                //commit('setActivity', response.data);
+                let activityData = {
+                    id: null,
+                    name: null,
+                    description: null,
+                    executionDate: null,
+                    type: "",
+                };
+                let extraData = {};
                 console.log("Got activity", response.data)
                 for (const key in response.data) {
-                    if (state.activityData.hasOwnProperty(key)){
-                        state.activityData[key] = response.data[key];
+                    console.log(key);
+                    if (activityData.hasOwnProperty(key)){
+                        activityData[key] = response.data[key];
                     }else{
-                        state.activityData.extraData[key] = response.data[key];
+                        if(response.data[key]){
+                            console.log("logging here", response.data[key]);
+                            extraData[key] = response.data[key];
+                            console.log(extraData);
+                        }
                     }
                 }
-                state.activityData.extraData["isBatch"] = state.activityData.hasOwnProperty("batch_name");
-                return Promise.resolve(state.activityData);
+                activityData.executionDate = utils.methods.javaDateToMomentDate(activityData.executionDate, "YYYY-MM-DD");
+                extraData["isBatch"] = activityData.hasOwnProperty("batch_name");
+                activityData["extraData"] = extraData;
+                dispatch("setupEditActivity", activityData);
+                console.log(activityData);
+                return Promise.resolve(activityData);
             },
             error => {
                 dispatch("showError", {error: error, errors: ACTIVITY_ERRORS}, {root:true});

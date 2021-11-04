@@ -83,9 +83,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-  .toast {
-    z-index: 7000;
-  }
-</style>
