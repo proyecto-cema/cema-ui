@@ -4,7 +4,7 @@
     <div class="toast-header">
       <strong class="me-auto">{{ message }}</strong>
       <small class="text-muted">
-        {{javaDateToMomentDate(dateData)}}
+        {{dateHelper}}
       </small>
       <button type="button" class="btn-close" ref="removeButton"
               @click="removeToast()" ></button>
@@ -12,7 +12,7 @@
     <div class="toast-body">
       {{ description }}
       <div class="text-end">
-        <router-link class="nav-link" to="/actividades" @click="removeToast()">
+        <router-link class="nav-link" :to="{ path: '/calendario', query: { fecha: dateHelper }}" @click="removeToast()">
           Ver mas
         </router-link>
       </div>
@@ -46,7 +46,6 @@ export default {
       default: 'bg-primary'
     },
     toastId: {
-      type: Number,
       required: true
     },
     autoRemove: {
@@ -79,6 +78,11 @@ export default {
     new Toast(toast).show();
     if(this.autoRemove) {
       this.timeout = setTimeout(() => this.removeToast(), 5000);
+    }
+  },
+  computed: {
+    dateHelper(){
+      return this.javaDateToMomentDate(this.dateData)
     }
   }
 }

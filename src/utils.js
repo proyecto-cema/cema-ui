@@ -9,6 +9,9 @@ export default {
         momentDateToJavaDate(date, format = "YYYY-MM-DD") {
             return moment(String(date), format).format(JAVA_DATE_FORMAT);
         },
+        replaceFormat(date, format1 = "DD/MM/YYYY", format2 = "YYYY-MM-DD") {
+            return moment(String(date), format1).format(format2);
+        },
         getMomentToday(format="YYYY-MM-DD"){
             return moment().format(format);
         },

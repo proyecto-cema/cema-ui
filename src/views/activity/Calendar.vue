@@ -36,6 +36,7 @@
     </form>
     <div v-if="!isMobile">
       <v-calendar
+        ref="calendar"
         class="custom-calendar max-w-full"
         :masks="masks"
         :attributes="attributes"
@@ -64,6 +65,7 @@
     </div>
     <div v-else>
       <v-calendar
+          ref="mobileCalendar"
           :attributes='attributes'
           is-double-paned>
       </v-calendar>
@@ -91,6 +93,7 @@ export default {
       },
       activities: [],
       mobileActivities: [],
+      helperDate: null
     };
   },
   beforeDestroy() {
@@ -99,6 +102,7 @@ export default {
     }
   },
   mounted() {
+    this.helperDate = this.replaceFormat(this.$route.query.fecha) || this.getMomentToday();
     this.setCuigToDefault();
     this.isMobile = screen.width <= 760;
     this.searchActivitys();
