@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 import About from '../views/About.vue'
+import Dashboard from '../views/Dashboard.vue'
 import bovine from './bovine'
 import establishment from './establishment'
 import login from './login'
@@ -11,9 +12,9 @@ let routes = []
 const localRoutes = [
   {
     path: '/',
-    name: 'Home',
-    meta: { requiresAuth: true, requiredRoleLevel: null },
-    redirect: { name: 'ListBovine' }
+    name: 'Dashboard',
+    meta: { requiresAuth: true, requiredRoleLevel: 1 },
+    component: Dashboard
   },
   {
     path: '/about',
@@ -39,6 +40,10 @@ router.beforeEach((to, from, next) => {
     })
   } else if(!requiresAuth || requiredRoleLevel === null || requiredRoleLevel <= ROLE_REPRESENTATION[isAuth.user.role.toUpperCase()]){
     next()
+  } else {
+    next({
+      path: '/bovinos/listado',
+    })
   }
 })
 

@@ -2,7 +2,7 @@
     "name": "cema-ui",
     "version": "1.5.0-SNAPSHOT",
     "private": true,
-    "scripts":     {
+    "scripts": {
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
         "build-qa": "vue-cli-service build --mode qa",
@@ -10,20 +10,23 @@
         "prepare": "husky install",
         "lint": "eslint --ext .js,.vue src"
     },
-    "dependencies":     {
+    "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^1.2.36",
         "@fortawesome/free-solid-svg-icons": "^5.15.4",
         "@fortawesome/vue-fontawesome": "^3.0.0-4",
         "@popperjs/core": "^2.9.3",
         "axios": "^0.21.1",
         "bootstrap": "^5.1.0",
+        "chart.js": "^3.6.0",
+        "chartjs-plugin-datalabels": "^2.0.0",
         "core-js": "^3.6.5",
         "moment": "^2.29.1",
-        "vue": "^3.0.0",
+        "v-calendar": "^3.0.0-alpha.6",
+        "vue": "^3.2.20",
         "vue-router": "^4.0.0-0",
         "vuex": "^4.0.0-0"
     },
-    "devDependencies":     {
+    "devDependencies": {
         "@babel/eslint-parser": "^7.15.0",
         "@vue/cli-plugin-babel": "~4.5.0",
         "@vue/cli-plugin-router": "~4.5.0",
@@ -38,9 +41,15 @@
         "sass": "^1.40.1",
         "sass-loader": "^10"
     },
-    "husky": {"hooks": {"pre-commit": "lint-staged"}},
-    "lint-staged": {"src/**/*.{js,vue}":     [
-        "eslint --fix",
-        "git add"
-    ]}
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "src/**/*.{js,vue}": [
+            "eslint --fix",
+            "git add"
+        ]
+    }
 }

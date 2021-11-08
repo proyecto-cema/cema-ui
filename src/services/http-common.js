@@ -7,7 +7,7 @@ import {
   LOGIN_CONTEXT,
   LOGIN_VERSION,
   ACTIVITY_CONTEXT,
-  ACTIVITY_VERSION
+  ACTIVITY_VERSION, REPORTING_CONTEXT, REPORTING_VERSION
 } from '../constants'
 
 const headers = { 'Content-type': 'application/json' }
@@ -29,6 +29,11 @@ export const httpAdministration = axios.create({
 
 export const httpActivity = axios.create({
   baseURL: BASE_URL + ACTIVITY_CONTEXT + ACTIVITY_VERSION,
+  headers: headers
+})
+
+export const httpReporting = axios.create({
+  baseURL: BASE_URL + REPORTING_CONTEXT + REPORTING_VERSION,
   headers: headers
 })
 
