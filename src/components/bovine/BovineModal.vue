@@ -46,6 +46,7 @@
                                 :error-data="{required: true, errorStatus: errorSave.category,
                                      errorMessage: 'Seleccione la categoria del bovino'}"
                                 input-title="Categoria" input-id="bovineCategory"
+                                :disabled="edit && (bovine.category =='Vaca' || bovine.category =='Toro')"
                                 v-on:change="unselectedStatus()"
                                 :options="categories"></cema-input>
                   </div>
