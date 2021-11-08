@@ -8,6 +8,12 @@ class UserService {
   getOwnerList (role) {
     return httpUsers.get('users/list/'+role, { headers: authHeader() })
   }
+  getUserByUserName (userName) {
+    return httpUsers.get('users/'+userName, { params: {username:userName} , headers: authHeader() })
+  }
+  setUser (user,password) {
+    return httpUsers.post('users/register', user, { params: {password:password} , headers: authHeader() })
+  }
 }
 
 export default new UserService()
