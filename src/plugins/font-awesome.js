@@ -19,7 +19,9 @@ import {
     faTag,
     faCalendar,
     faCommentAlt,
-    faVenusMars
+    faVenusMars,
+    faChartLine,
+    faDownload
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -41,7 +43,9 @@ library.add(
     faTag,
     faCalendar,
     faCommentAlt,
-    faVenusMars
+    faVenusMars,
+    faChartLine,
+    faDownload
 )
 
 export {FontAwesomeIcon}

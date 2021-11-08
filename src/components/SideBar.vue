@@ -43,6 +43,7 @@ export default {
   data(){
     return {
       sidenavItems: [
+        {name: 'Tablero', isCollapsible: false, icon:'chart-line', route: 'Dashboard', roleRequirement: 1},
         {name: 'Bovinos', isCollapsible: false, icon:'hat-cowboy', route: 'ListBovine', roleRequirement: 0},
         {name: 'Administración', isCollapsible: true, expanded: false, icon:'building', items: [
            {name: 'Lotes', isCollapsible: false, route: 'ListBatch', roleRequirement: 0},

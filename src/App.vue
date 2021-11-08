@@ -3,7 +3,7 @@
     <SideBar />
     <div id="content" :class="this.sideNav ? '':'active'">
       <NavBar />
-      <div class="container">
+      <div class="container-fluid">
         <router-view/>
       </div>
       <div class="toast-container position-absolute bottom-0 end-0 p-3" id="all-toasts">

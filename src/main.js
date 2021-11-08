@@ -9,6 +9,10 @@ import utils from "./utils";
 import VCalendar from 'v-calendar';
 
 
+import { Chart, registerables } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+Chart.register(...registerables, ChartDataLabels);
+
 createApp(App)
     .use(store)
     .use(router)
