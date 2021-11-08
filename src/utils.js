@@ -3,8 +3,12 @@ import {JAVA_DATE_FORMAT} from "./constants";
 
 export default {
     methods: {
-        javaDateToMomentDate(date, format = "DD/MM/YYYY") {
-            return moment(String(date), JAVA_DATE_FORMAT).format(format);
+        javaDateToMomentDate(date, format = "DD/MM/YYYY", dateOnly=false) {
+            let trueDate = moment(String(date), JAVA_DATE_FORMAT);
+            if(dateOnly){
+                return trueDate.toDate();
+            }
+            return trueDate.format(format);
         },
         momentDateToJavaDate(date, format = "YYYY-MM-DD") {
             return moment(String(date), format).format(JAVA_DATE_FORMAT);

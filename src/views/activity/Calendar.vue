@@ -28,7 +28,7 @@
           </button>
           <button class="btn btn-secondary text-white"
                   type="button"
-                  v-on:click="this.searchActivitys()">
+                  v-on:click="this.searchActivities()">
             Buscar
           </button>
         </div>
@@ -71,7 +71,7 @@
       </v-calendar>
     </div>
   </div>
-  <activity-modal modalId="activityModal"></activity-modal>
+  <activity-modal modalId="activityModal" @saved-activity="savedActivity()" @deleted-activity="deletedActivity()"></activity-modal>
 </template>
 <script>
 import {mapActions} from "vuex";
@@ -105,7 +105,7 @@ export default {
     this.helperDate = this.replaceFormat(this.$route.query.fecha) || this.getMomentToday();
     this.setCuigToDefault();
     this.isMobile = screen.width <= 760;
-    this.searchActivitys();
+    this.searchActivities();
     this.activityModal = new Modal(document.getElementById('activityModal'));
     window.addEventListener('resize', this.resizeTimeOut);
   },
@@ -129,9 +129,9 @@ export default {
     clearSearchActivityData(){
       this.search.type = "";
       this.search.name = "";
-      this.searchActivitys();
+      this.searchActivities();
     },
-    async searchActivitys() {
+    async searchActivities() {
       this.activities = [];
       this.mobileActivities = [];
       let type = this.search.type ? ACTIVITIES_EXTRA_DATA[this.search.type].url: "activities";
@@ -150,7 +150,7 @@ export default {
             future = response.data[i].executionDate < today;
             style = ACTIVITIES_EXTRA_DATA[response.data[i].type].style;
             color = ACTIVITIES_EXTRA_DATA[response.data[i].type].color;
-            date = new Date(response.data[i].executionDate);
+            date = this.javaDateToMomentDate(response.data[i].executionDate, "", true);
             activity = {
               key: i,
               customData: {
@@ -192,6 +192,16 @@ export default {
     },
     openActivityModal() {
       this.activityModal.show();
+    },
+    savedActivity(){
+      this.activityModal.hide();
+      //TODO: replace for partial update
+      this.searchActivities();
+    },
+    deletedActivity(){
+      this.activityModal.hide();
+      //TODO: replace for partial update
+      this.searchActivities();
     }
   },
   computed: {
