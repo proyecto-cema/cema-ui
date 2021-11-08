@@ -21,6 +21,7 @@
         "chartjs-plugin-datalabels": "^2.0.0",
         "core-js": "^3.6.5",
         "moment": "^2.29.1",
+        "v-calendar": "^3.0.0-alpha.6",
         "vue": "^3.2.20",
         "vue-router": "^4.0.0-0",
         "vuex": "^4.0.0-0"

@@ -27,6 +27,10 @@ export default {
     chartType: {
       required: true,
       type: Array
+    },
+    dates: {
+      required: true,
+      type: Object
     }
   },
   data(){
@@ -58,55 +62,59 @@ export default {
     }
   },
   methods: {
-    ...mapActions("reporting", ["retrieveReportData"])
+    ...mapActions("reporting", ["retrieveReportData"]),
+    redrawChart(dates){
+      console.log(dates);
+      this.retrieveReportData({ name: this.endpoint, ...dates }).then(
+          (data) => {
+            console.log(data);
+            let addType = true;
+            this.chartData.options.plugins.title.text = this.title;
+            if (this.chartType.length === 1){
+              this.chartData.type = this.chartType[0];
+              addType = false;
+            }
+            this.chartData.data.labels = [...data.labels];
+            let count = 0;
+            let preGenerated, extra;
+            this.chartData.data.datasets = [];
+            for (const dataset in data.datasets) {
+              preGenerated = data.datasets[dataset];
+              extra = { datalabels: {
+                  color: data.datasets[dataset].borderColor,
+                  align: 'start',
+                  anchor: 'end',
+                  font: {
+                    weight: 'bold'
+                  }
+                }};
+              if (this.chartType[count] === 'line'){
+                extra = {
+                  type: this.chartType[count],
+                  fill: true,
+                  ...extra
+                };
+              } else if (addType){
+                extra = {
+                  type: this.chartType[count],
+                  ...extra
+                }
+              }
+              this.chartData.data.datasets.push({
+                ...extra,
+                ...data.datasets[dataset]
+              });
+              count++;
+            }
+            this.batchesChart.update();
+          }
+      );
+    }
   },
   mounted() {
     const ctx = document.getElementById(this.chartId).getContext('2d');
     this.batchesChart = new Chart(ctx, this.chartData);
-    let thisYear = this.getMomentToday('YYYY');
-    this.retrieveReportData({ name: this.endpoint, yearsTo: thisYear, decrement: 1 }).then(
-        (data) => {
-          console.log(data);
-          let addType = true;
-          this.chartData.options.plugins.title.text = this.title;
-          if (this.chartType.length === 1){
-            this.chartData.type = this.chartType[0];
-            addType = false;
-          }
-          this.chartData.data.labels = [...data.labels];
-          let count = 0;
-          let preGenerated, extra;
-          for (const dataset in data.datasets) {
-            preGenerated = data.datasets[dataset];
-            extra = { datalabels: {
-              color: data.datasets[dataset].borderColor,
-              align: 'end',
-              anchor: 'end',
-              font: {
-                weight: 'bold'
-              }
-            }};
-            if (this.chartType[count] === 'line'){
-              extra = {
-                type: this.chartType[count],
-                fill: true,
-                ...extra
-              };
-            } else if (addType){
-              extra = {
-                type: this.chartType[count],
-                ...extra
-              }
-            }
-            this.chartData.data.datasets.push({
-              ...extra,
-              ...data.datasets[dataset]
-            });
-            count++;
-          }
-          this.batchesChart.update();
-        }
-    );
+    this.redrawChart(this.dates);
   }
 }
 </script>

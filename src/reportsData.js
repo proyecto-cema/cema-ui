@@ -1,45 +1,55 @@
+import utils from "./utils";
+
+const yearNow = utils.methods.getMomentToday('YYYY');
 export const chartIterator = [
     {
         classes: "col-12",
         endpoint: "performance",
         chartTypes: ['line', 'bar'],
-        title: "Rendimiento anual del alimento por kilogramo vivo"
+        title: "Rendimiento anual del alimento por kilogramo vivo",
+        dates: {decrement: 5, yearsTo: yearNow}
     },
     {
         classes: "col-12",
         endpoint: "pregnancy",
         chartTypes: ['pie'],
-        title: "Porcentaje de preñez"
+        title: "Porcentaje de preñez",
+        dates: {decrement: 2, yearsTo: yearNow}
     },
     {
         classes: "col-12",
         endpoint: "weight",
         chartTypes: ['bar'],
-        title: "Peso promedio por categoría"
+        title: "Peso promedio por categoría",
+        dates: {decrement: 1, yearsTo: yearNow}
     },
     {
         classes: "col-12",
         endpoint: "batch",
         chartTypes: ['bar'],
-        title: "Peso promedio por lote"
+        title: "Peso promedio por lote",
+        dates: {decrement: 5, yearsTo: yearNow}
     },
     {
         classes: "col-12",
         endpoint: "feed",
         chartTypes: ['bar'],
-        title: "Cantidad de alimento consumido por categoría"
+        title: "Cantidad de alimento consumido por categoría",
+        dates: {decrement: 3, yearsTo: yearNow}
     },
     {
         classes: "col-12",
         endpoint: "disease",
         chartTypes: ['bar'],
-        title: "Cantidad de infecciones anuales por tipo"
+        title: "Cantidad de infecciones anuales por tipo",
+        dates: {decrement: 2, yearsTo: yearNow}
     },
     {
         classes: "col-12",
         endpoint: "income",
         chartTypes: ['bar'],
-        title: "Gastos vs Ingresos"
+        title: "Gastos vs Ingresos",
+        dates: {decrement: 3, yearsTo: yearNow}
     },
 ];
 
