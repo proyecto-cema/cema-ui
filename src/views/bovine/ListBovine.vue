@@ -235,7 +235,6 @@ export default {
       let index = null;
       let cuig = null;
       for (let i=0; i < this.bovines.length; i++) {
-        console.log(typeof this.bovines[i].tag, "=", typeof tag)
         if (this.bovines[i].tag === tag) {
           index = i;
           cuig = this.bovines[i].establishmentCuig

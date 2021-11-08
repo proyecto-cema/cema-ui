@@ -136,7 +136,7 @@ export default {
     }
   },
   computed: {
-    ...mapState("bovine", ["bovine", "edit","categories"]),
+    ...mapState("bovine", ["bovine", "edit", "categories"]),
     getToday(){
       return this.getMomentToday()
     },
