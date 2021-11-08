@@ -39,7 +39,7 @@
                   </div>
                   <div class="col-lg-6 col-12 mb-3">
                     <cema-input v-model="bovine.birthDate" :max="getToday"
-                                input-title="Fecha de Nacimiento" input-id="birthDate" type="date"></cema-input>
+                                input-title="Fecha de nacimiento" input-id="birthDate" type="date"></cema-input>
                   </div>
                   <div class="col-lg-6 col-12 mb-3">
                     <cema-input v-model="bovine.category" component-type="select" required
@@ -54,13 +54,14 @@
                                 :error-data="{required: true, errorStatus: errorSave.status,
                                     errorMessage: 'Seleccione el estado del bovino'}"
                                 input-title="Estado" input-id="bovineStatus"
+                                :disabled="bovine.category==''"
                                 :options="['Mamando', 'Destetado', 'Muerto', 'Vendido']"></cema-input>
                   </div>
                   <div class="col-lg-6 col-12 mb-3" v-if="bovine.category=='Vaca'">
                    <cema-input v-model="bovine.status" component-type="select" required
                                 :error-data="{required: true, errorStatus: errorSave.status,
                                     errorMessage: 'Seleccione el estado del bovino'}"
-                                
+                                :disabled="bovine.category==''"
                                 input-title="Estado" input-id="bovineStatus"
                                 :options="['Sin preñez', 'Preñada', 'Muerto', 'Vendido']"></cema-input>
                   </div>
@@ -68,10 +69,11 @@
                    <cema-input v-model="bovine.status" component-type="select" required
                                 :error-data="{required: true, errorStatus: errorSave.status,
                                     errorMessage: 'Seleccione el estado del bovino'}"
+                                    :disabled="bovine.category==''"
                                 input-title="Estado" input-id="bovineStatus"
                                 :options="['En servicio', 'Fuera de servicio', 'Muerto', 'Vendido']"></cema-input>
                   </div>
-                  <div class="col-lg-6 col-12 mb-3">
+                  <div class="col-lg-12 col-12 mb-3">
                     <cema-input v-model.trim="bovine.description" maxlength="300" component-type="textarea"
                                 input-title="Descripción" input-id="bovineDescription" type="text" 
                                 rows="4"
@@ -157,13 +159,6 @@ export default {
       this.bovine.category="";
       this.setupCategories(this.bovine.genre);
     },
-    // changeGenre(){
-    //     if (this.bovine.genre=="Macho"){
-    //         this.categories=['Ternero','Toro']
-    //     }else{
-    //         this.categories=['Ternero','Vaca']
-    //     }
-    // },
     getTagError(){
       let message = 'Ingrese el número de caravana del bovino.';
       let isValid = !!this.bovine.tag;
