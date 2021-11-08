@@ -1,6 +1,11 @@
 <template>
   <div style="position: relative">
     <canvas :id="chartId"></canvas>
+    <a :id="`download-${chartId}`" @click.stop="downloadChart()"
+       :download="`cuadro-${chartId}.png`"
+       href="" style="width: 40px"
+       class="float-end"
+       title="Descargar Gráfico"><font-awesome-icon icon="download"/></a>
   </div>
 </template>
 
@@ -42,7 +47,7 @@ export default {
         },
         options: {
           responsive: true,
-          aspectRatio: 2,
+          aspectRatio: 2.12,
           plugins: {
             title: {
               display: true,
@@ -109,6 +114,23 @@ export default {
             this.batchesChart.update();
           }
       );
+    },
+    fillCanvasBackgroundWithColor(canvas, color) {
+      const context = canvas.getContext('2d');
+      context.save();
+
+      context.globalCompositeOperation = 'destination-over';
+
+      context.fillStyle = color;
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.restore();
+    },
+    downloadChart(){
+      let canvas = document.getElementById(this.chartId);
+      this.fillCanvasBackgroundWithColor(canvas, 'white');
+      let url_base64jp = canvas.toDataURL("image/png");
+      let a =  document.getElementById(`download-${this.chartId}`);
+      a.href = url_base64jp;
     }
   },
   mounted() {

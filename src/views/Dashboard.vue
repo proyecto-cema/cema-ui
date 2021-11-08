@@ -11,11 +11,13 @@
         </cema-data-chart>
       </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#chartCarousel" data-bs-slide="prev" @click="changeChart(-1)">
+    <button class="carousel-control-prev" type="button" data-bs-target="#chartCarousel" data-bs-slide="prev"
+            @click.stop="changeChart(-1)">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Anterior</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#chartCarousel" data-bs-slide="next" @click="changeChart(1)">
+    <button class="carousel-control-next" type="button" data-bs-target="#chartCarousel" data-bs-slide="next"
+            @click.stop="changeChart(1)">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Siguiente</span>
     </button>
@@ -110,3 +112,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.carousel-control-next, .carousel-control-prev {
+  margin-bottom: 40px;
+}
+</style>
