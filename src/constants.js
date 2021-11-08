@@ -51,7 +51,9 @@ export const LOGIN_ERRORS = {
 export const BOVINE_ERRORS = {
     ...COMMON_ERRORS,
     404: {type: "Server", message: "Bovino no encontrado"},
-    409: {type: "Server", message: "Esta caravana ya se encuentra en uso. Por favor, revise e intente de nuevo."}
+    409: {type: "Server", message: "Esta caravana ya se encuentra en uso. Por favor, revise e intente de nuevo."},
+    422: {type: "Server", message: "No se puede asignar el estado seleccionado para la categoria del bovino"}
+
 }
 export const BATCH_ERRORS = {
     ...COMMON_ERRORS,

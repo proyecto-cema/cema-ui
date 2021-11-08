@@ -30,15 +30,46 @@
                                 input-title="Fecha de caravaneo" input-id="bovineDate" type="date"></cema-input>
                   </div>
                   <div class="col-lg-6 col-12 mb-3">
-                    <cema-input v-model="bovine.genre" component-type="select" required
+                    <cema-input v-model="bovine.genre" component-type="select" required :disabled="edit"
                                 :error-data="{required: true, errorStatus: errorSave.genre,
                                     errorMessage: 'Seleccione el sexo del bovino'}"
                                 input-title="Sexo" input-id="bovineGenre"
+                                v-on:change="setCategories()"
                                 :options="['Macho', 'Hembra']"></cema-input>
                   </div>
                   <div class="col-lg-6 col-12 mb-3">
-                    <cema-input v-model="bovine.birthDate" :max="getToday" required
+                    <cema-input v-model="bovine.birthDate" :max="getToday"
                                 input-title="Fecha de Nacimiento" input-id="birthDate" type="date"></cema-input>
+                  </div>
+                  <div class="col-lg-6 col-12 mb-3">
+                    <cema-input v-model="bovine.category" component-type="select" required
+                                :error-data="{required: true, errorStatus: errorSave.category,
+                                     errorMessage: 'Seleccione la categoria del bovino'}"
+                                input-title="Categoria" input-id="bovineCategory"
+                                v-on:change="unselectedStatus()"
+                                :options="categories"></cema-input>
+                  </div>
+                  <div class="col-lg-6 col-12 mb-3" v-if=" bovine.category=='Ternero' || bovine.category=='' ||bovine.category==null">
+                   <cema-input v-model="bovine.status" component-type="select" required
+                                :error-data="{required: true, errorStatus: errorSave.status,
+                                    errorMessage: 'Seleccione el estado del bovino'}"
+                                input-title="Estado" input-id="bovineStatus"
+                                :options="['Mamando', 'Destetado', 'Muerto', 'Vendido']"></cema-input>
+                  </div>
+                  <div class="col-lg-6 col-12 mb-3" v-if="bovine.category=='Vaca'">
+                   <cema-input v-model="bovine.status" component-type="select" required
+                                :error-data="{required: true, errorStatus: errorSave.status,
+                                    errorMessage: 'Seleccione el estado del bovino'}"
+                                
+                                input-title="Estado" input-id="bovineStatus"
+                                :options="['Sin preñez', 'Preñada', 'Muerto', 'Vendido']"></cema-input>
+                  </div>
+                  <div class="col-lg-6 col-12 mb-3" v-if="bovine.category=='Toro'">
+                   <cema-input v-model="bovine.status" component-type="select" required
+                                :error-data="{required: true, errorStatus: errorSave.status,
+                                    errorMessage: 'Seleccione el estado del bovino'}"
+                                input-title="Estado" input-id="bovineStatus"
+                                :options="['En servicio', 'Fuera de servicio', 'Muerto', 'Vendido']"></cema-input>
                   </div>
                   <div class="col-lg-6 col-12 mb-3">
                     <cema-input v-model.trim="bovine.description" maxlength="300" component-type="textarea"
@@ -87,7 +118,10 @@ export default {
       errorSave: {
         tag: false,
         taggingDate: false,
-        genre: false
+        genre: false,
+        category: false,
+        status: false
+
       },
     };
   },
@@ -99,7 +133,7 @@ export default {
     }
   },
   computed: {
-    ...mapState("bovine", ["bovine", "edit"]),
+    ...mapState("bovine", ["bovine", "edit","categories"]),
     getToday(){
       return this.getMomentToday()
     },
@@ -107,13 +141,29 @@ export default {
       return {
         tag: !this.getTagError()["isValid"],
         taggingDate: !this.bovine.taggingDate,
-        genre: !this.bovine.genre
+        genre: !this.bovine.genre,
+        category: !this.bovine.category,
+        status: !this.bovine.status
       }
     }
   },
   methods: {
-    ...mapActions("bovine", ["getBovine", "saveBovine", "setupEditBovine", "clearBovineData"]),
+    ...mapActions("bovine", ["getBovine", "saveBovine", "setupEditBovine", "clearBovineData","setupCategories"]),
     ...mapActions(["showSuccess"]),
+    unselectedStatus(){
+      this.bovine.status=""
+    },
+    setCategories(){
+      this.bovine.category="";
+      this.setupCategories(this.bovine.genre);
+    },
+    // changeGenre(){
+    //     if (this.bovine.genre=="Macho"){
+    //         this.categories=['Ternero','Toro']
+    //     }else{
+    //         this.categories=['Ternero','Vaca']
+    //     }
+    // },
     getTagError(){
       let message = 'Ingrese el número de caravana del bovino.';
       let isValid = !!this.bovine.tag;
@@ -137,7 +187,7 @@ export default {
     },
     saveModal() {
       this.errorSave = this.errorSaveHelper;
-      if (this.errorSave.taggingDate || this.errorSave.tag || this.errorSave.genre) {
+      if (this.errorSave.taggingDate || this.errorSave.tag || this.errorSave.genre || this.errorSave.category || this.errorSave.status) {
         console.error(this.errorSave)
         return
       }
