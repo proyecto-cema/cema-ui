@@ -20,7 +20,9 @@ export default {
     };
   },
   mounted() {
-    this.activityData.extraData.bovineTag = this.default_search;
+    if (!this.edit) {
+      this.activityData.extraData.bovineTag = this.default_search;
+    }
     this.searchBovines();
   },
   components: {ComboSearch},
@@ -28,7 +30,7 @@ export default {
     errorSave: {},
   },
   computed: {
-    ...mapState("activity", ["activityData"]),
+    ...mapState("activity", ["activityData", "edit"]),
     ...mapState("bovine", ["selectedCuig"]),
     default_search(){
       return SEARCH_DEFAULT_TAG;

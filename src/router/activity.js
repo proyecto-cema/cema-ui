@@ -1,12 +1,12 @@
-import ActivitySelector from "../views/activities/ActivitySelector";
+import Calendar from '../views/activity/Calendar.vue'
 
 
 const routes = [
   {
-    path: '/actividades',
-    name: 'ActivitySelector',
+    path: '/calendario',
+    name: 'Calendar',
     meta: { requiresAuth: true, requiredRoleLevel: 0 },
-    component: ActivitySelector
+    component: Calendar
   }
 ]
 

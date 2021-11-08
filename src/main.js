@@ -6,6 +6,8 @@ import store from './store'
 import 'bootstrap'
 import { FontAwesomeIcon } from './plugins/font-awesome'
 import utils from "./utils";
+import VCalendar from 'v-calendar';
+
 
 import { Chart, registerables } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -16,4 +18,5 @@ createApp(App)
     .use(router)
     .mixin(utils)
     .component('font-awesome-icon', FontAwesomeIcon)
+    .use(VCalendar, {})
     .mount('#app')

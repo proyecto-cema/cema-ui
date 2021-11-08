@@ -83,6 +83,7 @@ import {ACTIVITIES_EXTRA_DATA, ACTIVITIES_OPTIONS, SEARCH_DEFAULT_TAG} from "../
 
 export default {
   name: "ActivityModal",
+  emits: ['deletedActivity', 'savedActivity'],
   data(){
     return {
       errorSave: {},
@@ -150,9 +151,11 @@ export default {
       this.showSuccess(message);
     },
     deleteModal() {
+      let typeData = this.activityData.type;
       this.deleteActivity({id: this.activityData.id, url: this.activityMap.url}).then(
           () => {
-            this.successCall(`La actividad de ${ACTIVITIES_EXTRA_DATA[this.activityData.type].displayName.toLowerCase()} fue eliminada correctamente`);
+            this.successCall(`La actividad de ${ACTIVITIES_EXTRA_DATA[typeData].displayName.toLowerCase()} fue eliminada correctamente`);
+            this.$emit('deletedActivity');
           }
       );
     },
@@ -168,6 +171,7 @@ export default {
       this.saveActivity(this.activityMap.url).then(
           (activity) => {
             this.successCall(`Se guardó la actividad de ${ACTIVITIES_EXTRA_DATA[activity.type].displayName.toLowerCase()} con nombre ${activity.name}`);
+            this.$emit('savedActivity');
           }
       );
     },

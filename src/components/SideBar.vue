@@ -49,7 +49,7 @@ export default {
            {name: 'Lotes', isCollapsible: false, route: 'ListBatch', roleRequirement: 0},
            {name: 'Establecimientos', isCollapsible: false, route: 'AddEstablishment', roleRequirement: 2}
         ]},
-        {name: 'Actividades', isCollapsible: false, icon:'lightbulb', route: 'ActivitySelector', roleRequirement: 0},
+        {name: 'Actividades', isCollapsible: false, icon:'lightbulb', route: 'Calendar', roleRequirement: 0}
       ]
     }
   },
