@@ -1,6 +1,7 @@
 export const BASE_URL = process.env.VUE_APP_API_URL
 export const JAVA_DATE_FORMAT = "YYYY-MM-DD";
-export const ROLE_REPRESENTATION = {"ADMIN": 2, "PATRON": 1, "PEON": 0}
+export const ROLES = ["Peon", 'Patron', 'Admin'];
+export const ROLE_REPRESENTATION = {"ADMIN": 2, "PATRON": 1, "PEON": 0};
 export const REGEX_LETTERS_NUMBERS = /^([a-zA-Z0-9]+)$/;
 export const REGEX_SPACES = /^\S+$/;
 export const MAXIMUM_TOASTS = 4;
@@ -34,12 +35,14 @@ export const BOVINE_CONTEXT = process.env.VUE_APP_BOVINE_CONTEXT
 export const ADMINISTRATION_CONTEXT = process.env.VUE_APP_ADMINISTRATION_CONTEXT
 export const ACTIVITY_CONTEXT = process.env.VUE_APP_ACTIVITY_CONTEXT
 export const REPORTING_CONTEXT = process.env.VUE_APP_REPORTING_CONTEXT
+export const USERS_CONTEXT = process.env.VUE_APP_USERS_CONTEXT
 
 export const LOGIN_VERSION = process.env.VUE_APP_LOGIN_VERSION
 export const BOVINE_VERSION = process.env.VUE_APP_BOVINE_VERSION
 export const ADMINISTRATION_VERSION = process.env.VUE_APP_ADMINISTRATION_VERSION
 export const ACTIVITY_VERSION = process.env.VUE_APP_ACTIVITY_VERSION
 export const REPORTING_VERSION = process.env.VUE_APP_REPORTING_VERSION
+export const USERS_VERSION = process.env.VUE_APP_USERS_VERSION
 
 const COMMON_ERRORS = {
     400: {type: "Server", message:"Error del servidor, contacte a los desarrolladores"},
@@ -74,6 +77,11 @@ export const ACTIVITY_ERRORS = {
 export const REPORTING_ERRORS = {
     ...COMMON_ERRORS,
     404: {type: "Server", message: "Reporte no encontrado"},
+}
+export const USERS_ERRORS = {
+    ...COMMON_ERRORS,
+    404: {type: "Server", message: "Reporte no encontrado"},
+    409: {type: "Server", message: "El usuario que esta intentando registrar ya existe"},
 }
 
 export const REPORTING_SELECTOR = {

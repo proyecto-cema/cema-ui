@@ -4,6 +4,7 @@ import About from '../views/About.vue'
 import Dashboard from '../views/Dashboard.vue'
 import bovine from './bovine'
 import establishment from './establishment'
+import user from './user'
 import login from './login'
 import activity from './activity'
 import {ROLE_REPRESENTATION} from "../constants";
@@ -23,7 +24,7 @@ const localRoutes = [
     component: About
   }
 ]
-routes = routes.concat(localRoutes, bovine, login, establishment, activity)
+routes = routes.concat(localRoutes, bovine, login, establishment, activity, user)
 
 const router = createRouter({
   history: createWebHistory(),

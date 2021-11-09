@@ -4,6 +4,7 @@ import mutations from './mutations'
 import actions from './actions'
 import bovine from './modules/bovine.module'
 import establishment from './modules/establishment.module'
+import user from './modules/user.module'
 import activity from './modules/activity.module'
 import reporting from './modules/reporting.module'
 
@@ -21,6 +22,7 @@ export default createStore({
     auth,
     bovine,
     establishment,
+    user,
     activity,
     reporting
   },
