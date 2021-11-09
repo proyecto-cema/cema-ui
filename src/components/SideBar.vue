@@ -48,7 +48,7 @@ export default {
         {name: 'Administración', isCollapsible: true, expanded: false, icon:'building', items: [
            {name: 'Lotes', isCollapsible: false, route: 'ListBatch', roleRequirement: 0},
            {name: 'Establecimientos', isCollapsible: false, route: 'AddEstablishment', roleRequirement: 2},
-          //  {name: 'Usuarios', isCollapsible: false, route: 'AddUser', roleRequirement: 2}
+           {name: 'Usuarios', isCollapsible: false, route: 'ListUser', roleRequirement: 2}
         ]},
         {name: 'Actividades', isCollapsible: false, icon:'lightbulb', route: 'Calendar', roleRequirement: 0}
       ]

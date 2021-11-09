@@ -1,11 +1,11 @@
-import AddUser from '../views/user/AddUser.vue'
+import ListUser from '../views/user/ListUsers.vue'
 
 const routes = [
   {
-    path: '/usuarios/formulario',
-    name: 'AddUser',
+    path: '/usuarios',
+    name: 'ListUser',
     meta: { requiresAuth: true, requiredRoleLevel: 2 },
-    component: AddUser
+    component: ListUser
   }
 ]
 

@@ -59,7 +59,19 @@ const actions = {
                 return Promise.reject(error);
             }
         );
-    }
+    },
+    async listUsers({dispatch},role) {
+        return UserService.getUsersList(role).then(
+            response => {
+                console.log(response.data);
+                return Promise.resolve(response);
+            },
+            error => {
+                dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
+                return Promise.reject(error);
+            }
+        );
+    },
 }
 
 

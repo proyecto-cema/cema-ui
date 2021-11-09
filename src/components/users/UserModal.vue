@@ -1,6 +1,6 @@
 
 <template>
-  <div >
+  <div :id="modalId" aria-hidden="true" :aria-labelledby="modalId+'Label'" class="modal fade" tabindex="-1">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header text-center">
@@ -82,14 +82,14 @@
 </template>
 
 <script>
-import CemaInput from "../../components/form/CemaInput";
-// import CemaInput from "../form/CemaInput";
+// import CemaInput from "../../components/form/CemaInput";
+import CemaInput from "../form/CemaInput";
 import {mapActions, mapState} from "vuex";
 
 import {REGEX_LETTERS_NUMBERS} from "../../constants";
 
 export default {
-  name: "AddUser",
+  name: "UserModal",
   data(){
     return {
       password:null,
@@ -118,6 +118,12 @@ export default {
         establishmentCuig: !this.user.establishmentCuig
         
       }
+    }
+  },
+  props: {
+    modalId: {
+      type: String,
+      required: true
     }
   },
   methods: {

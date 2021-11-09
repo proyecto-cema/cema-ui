@@ -14,6 +14,9 @@ class UserService {
   setUser (user,password) {
     return httpUsers.post('users/register', user, { params: {password:password} , headers: authHeader() })
   }
+  getUsersList (role) {
+    return httpUsers.get('users/list/'+role, { headers: authHeader() })
+  }
 }
 
 export default new UserService()
