@@ -89,7 +89,7 @@ export const REPORTING_SELECTOR = {
     "weight": { value: "weight", groupBy: "category" },
     "performance": { value: ["liveWeight", "spending"], groupBy: null, multiple: true, displayNames: ["Peso(Kg)", "Costo($)"] },
     "income": { value: ["spending", "earnings"], groupBy: null, multiple: true, displayNames: ["Gastos", "Ingresos"] },
-    "pregnancy": { value: "percentage" },
+    "pregnancy": { value: "percentage", groupBy: "year" },
     "feed": { value: "foodEaten", groupBy: "category" },
     "disease": { value: "infections", groupBy: "name" },
 }

@@ -79,7 +79,11 @@ export default {
               this.chartData.type = this.chartType[0];
               addType = false;
             }
-            this.chartData.data.labels = [...data.labels];
+            if(this.endpoint === "pregnancy"){
+              this.chartData.data.labels = ["Preñada", ["No preñada"]]
+            }else{
+              this.chartData.data.labels = [...data.labels];
+            }
             let count = 0;
             let preGenerated, extra;
             this.chartData.data.datasets = [];

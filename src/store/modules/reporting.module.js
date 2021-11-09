@@ -51,7 +51,7 @@ function prepareDataSets(list, value) {
     for (let i = 0; i < list.length; i++) {
         const element = list[i];
         labels.add(element.year);
-        color = generateRandomColor(i)
+        color = generateRandomColor(i);
         datasets[0].backgroundColor.push(color+"0.2)");
         datasets[0].borderColor.push(color+"1)");
         datasets[0].data.push(element[value]);
@@ -67,21 +67,36 @@ function prepareGroupedDataSets({ list, value, groupBy, multiple, displayNames }
     }
     let datasets = {};
     let labels = new Set();
-    let color;
+    let color, color2;
     for (let i = 0; i < list.length; i++) {
         const element = list[i];
         labels.add(element.year);
         if( !(element[groupBy] in datasets)){
             color = generateRandomColor(i)
-            datasets[element[groupBy]] = {
-                label: `${element[groupBy]}`,
-                borderWidth: 1,
-                data: [],
-                backgroundColor: color+"0.2)",
-                borderColor: color+"1)"
-            };
+            if(groupBy === 'year') {
+                color = generateRandomColor(0)
+                color2 = generateRandomColor(1)
+                datasets[element[groupBy]] = {
+                    label: `${element[groupBy]}`,
+                    borderWidth: 1,
+                    data: [],
+                    backgroundColor: [color2+"0.2)", color+"0.2)"],
+                    borderColor: [color2+"1)", color+"1)"]
+                };
+            }else{
+                datasets[element[groupBy]] = {
+                    label: `${element[groupBy]}`,
+                    borderWidth: 1,
+                    data: [],
+                    backgroundColor: color+"0.2)",
+                    borderColor: color+"1)"
+                };
+            }
         }
         datasets[element[groupBy]].data.push(element[value]);
+        if(groupBy === 'year'){
+            datasets[element[groupBy]].data.push(100-element[value]);
+        }
     }
     return {labels: labels, datasets: datasets}
 }

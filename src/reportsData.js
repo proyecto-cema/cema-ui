@@ -14,7 +14,7 @@ export const chartIterator = [
         endpoint: "pregnancy",
         chartTypes: ['pie'],
         title: "Porcentaje de preñez",
-        dates: {decrement: 2, yearsTo: yearNow}
+        dates: {decrement: 0, yearsTo: yearNow}
     },
     {
         classes: "col-12",
