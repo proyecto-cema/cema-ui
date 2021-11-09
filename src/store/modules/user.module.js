@@ -1,11 +1,12 @@
 import UserService from '../../services/users/user.service';
-import {USERS_ERRORS} from "../../constants";
+import {ROLES, USERS_ERRORS} from "../../constants";
 import utils from "../../utils"
 
 
 const state = {
     user: {email: null, establishmentCuig: null, lastName: null, name: null, phone: null, role: null, userName: null},
-    edit: false
+    edit: false,
+    userList: [],
 }
 
 const mutations = {
@@ -19,6 +20,17 @@ const mutations = {
             role: null, 
             userName: null
         }: payload
+    },
+    serEdit(state, payload){
+        state.edit = payload? payload:false;
+    },
+    setUserList(state, payload){
+        state.userList = payload? payload:[];
+    },
+    extendUserList(state, payload){
+        if(payload){
+            state.userList.push(...payload);
+        }
     }
 }
 
@@ -34,6 +46,12 @@ const actions = {
             userName: null
         }
         commit('setUser', blankUser);
+        commit('serEdit', false);
+    },
+    setupEditUser({commit}, user){
+        let proxyUser = {...user, role: user.role.charAt(0).toUpperCase() + user.role.slice(1).toLowerCase()};
+        commit('setUser', user);
+        commit('serEdit', true);
     },
     async getUser({commit, dispatch}, userName) {
         return UserService.getUserByUserName(userName).then(
@@ -48,7 +66,6 @@ const actions = {
         );
     },
     async saveUser({dispatch}, data) {
-        data.user=data.user
         return UserService.setUser(data.user, data.password).then(
             () => {
                 console.log(data)
@@ -60,11 +77,18 @@ const actions = {
             }
         );
     },
-    async listUsers({dispatch},role) {
-        return UserService.getUsersList(role).then(
-            response => {
-                console.log(response.data);
-                return Promise.resolve(response);
+    async listUsers({dispatch, state, commit}, role) {
+        if(role > 0){
+            console.log(role);
+            dispatch("listUsers", role-1);
+        }else{
+            commit('setUserList', []);
+        }
+        return UserService.getUsersList(ROLES[role]).then(
+            (response) => {
+                console.log(response);
+                commit('extendUserList', response.data);
+                return Promise.resolve(state.userList);
             },
             error => {
                 dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});

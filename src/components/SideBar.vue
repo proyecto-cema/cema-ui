@@ -49,7 +49,7 @@ export default {
         {name: 'Bovinos', isCollapsible: false, icon:'hat-cowboy', route: 'ListBovine', roleRequirement: 0},
         {name: 'Administración', isCollapsible: true, expanded: false, icon:'building', items: [
            {name: 'Lotes', isCollapsible: false, route: 'ListBatch', roleRequirement: 0},
-           {name: 'Usuarios', isCollapsible: false, route: 'ListUser', roleRequirement: 2},
+           {name: 'Usuarios', isCollapsible: false, route: 'ListUser', roleRequirement: 1},
            {name: 'Establecimientos', isCollapsible: false, route: 'ListEstablishments', roleRequirement: 2}
         ]},
         {name: 'Actividades', isCollapsible: false, icon:'lightbulb', route: 'Calendar', roleRequirement: 0}

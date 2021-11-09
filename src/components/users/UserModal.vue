@@ -4,12 +4,11 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header text-center">
-          <h5  class="modal-title">Registrar Usuario</h5>
-          <!-- <h5  class="modal-title">{{ edit ? "Editar Usuario" : "Registrar Registrar" }}</h5>
-          <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" v-on:click="clean()" type="button"></button> -->
+          <h5  class="modal-title">{{ edit ? "Editar Usuario" : "Registrar Registrar" }}</h5>
+          <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" @click="clean()" type="button"></button>
         </div>
         <div class="modal-body">
-          <form @submit.prevent="">
+          <form @submit.prevent="" v-if="user">
             <div class="row">
               <div class="col-12">
                 <div class="row">
@@ -71,11 +70,11 @@
         </div>
         <div class="modal-footer">
            <button class="btn btn-primary text-white" data-bs-dismiss="modal"
-                  type="button" v-on:click="clean()">
+                  type="button" @click="clean()">
             Cancelar
           </button>
           <button class="btn btn-secondary text-white" 
-                  type="button" v-on:click="saveModal()">
+                  type="button" @click="saveModal()">
             Guardar
           </button>
         </div>
@@ -86,11 +85,8 @@
 </template>
 
 <script>
-// import CemaInput from "../../components/form/CemaInput";
 import CemaInput from "../form/CemaInput";
 import {mapActions, mapState} from "vuex";
-
-import {REGEX_LETTERS_NUMBERS} from "../../constants";
 
 export default {
   name: "UserModal",
@@ -110,7 +106,7 @@ export default {
   },
   components: { CemaInput },
   computed: {
-    ...mapState("user", ["user"]),
+    ...mapState("user", ["user", "edit"]),
     errorSaveHelper(){
       return {
         userName: !this.user.userName,
@@ -131,7 +127,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions("user", ["getUser", "saveUser", "setupEditBovine", "clearUserData"]),
+    ...mapActions("user", ["getUser", "saveUser", "clearUserData", "setupEditUser"]),
     ...mapActions(["showSuccess"]),
     getPasswordError(){
       let message = 'Ingrese la contraseña nuevamente.';
@@ -144,7 +140,7 @@ export default {
     },
     clean(){
       this.errorSave = {};
-      this.clearBovineData()
+      this.clearUserData();
     },
     successCall(message) {
       this.showSuccess(message);
@@ -163,9 +159,9 @@ export default {
         user:this.user
       };
       this.saveUser(data).then(
-          (User) => {
-            this.successCall(`El usuario ${User.user.userName} se guardó correctamente.`);
-            this.setupEditBovine(User);
+          (user) => {
+            this.successCall(`El usuario ${user.user.userName} se guardó correctamente.`);
+            this.setupEditUser(user.user);
           }
       );
     },

@@ -4,7 +4,7 @@ const routes = [
   {
     path: '/usuarios',
     name: 'ListUser',
-    meta: { requiresAuth: true, requiredRoleLevel: 2 },
+    meta: { requiresAuth: true, requiredRoleLevel: 1 },
     component: ListUser
   }
 ]

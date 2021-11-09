@@ -1,8 +1,7 @@
 <template>
   <div class="text-center">
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
-      <button class="btn btn-secondary text-white" type="button"
-              v-on:click="openAddUserModal(null)">
+      <button class="btn btn-secondary text-white" type="button" @click="openAddUserModal(null)">
         + Nuevo Usuario
       </button>
     </div>
@@ -57,6 +56,7 @@ import {Modal} from "bootstrap";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import CemaInput from "../../components/form/CemaInput";
 import UserModal from "../../components/users/UserModal";
+import {ROLE_REPRESENTATION} from "../../constants";
 
 export default {
   name: "ListBovine",
@@ -88,6 +88,16 @@ export default {
     this.isMobile = screen.width <= 760;
     window.addEventListener('resize', this.resizeTimeOut);
     this.searchUsers();
+  },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+    currentRole(){
+      if(this.currentUser){
+        return ROLE_REPRESENTATION[this.currentUser.user.role.toUpperCase()]
+      }
+    }
   },
   methods: {
     ...mapActions("user", ["listUsers", "deleteUser", "clearUserData", "setupEditUser"]),
@@ -148,13 +158,13 @@ export default {
       );
     },
     async searchUsers() {
-      this.users = null;
-      this.listUsers("Patron").then(
-        (response) => {
-          this.users = response.data;
-          console.log(response);
+      this.users = [];
+      this.listUsers(this.currentRole).then(
+        (users) => {
+          this.users = users;
+          console.log(users);
         }
-      )
+      );
     },
   },
 };
