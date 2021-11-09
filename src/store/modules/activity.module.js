@@ -25,7 +25,8 @@ const mutations = {
             executionDate: null,
             type: "",
             extraData: {
-                isBatch: false
+                isBatch: false,
+                result: "",
             }
         } : payload
     },
@@ -50,6 +51,9 @@ const actions = {
             ...state.activityData,
             ...state.activityData.extraData,
         };
+        if(saveActivity.hasOwnProperty("result")){
+            saveActivity.result = saveActivity.result? saveActivity.result: null;
+        }
         delete saveActivity.extraData;
         delete saveActivity.isBatch;
         saveActivity.executionDate = utils.methods.momentDateToJavaDate(state.activityData.executionDate);
