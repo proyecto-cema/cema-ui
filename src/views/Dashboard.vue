@@ -98,14 +98,16 @@ export default {
     this.search = this.chartIterator[this.activeChart]['dates'];
     let thisYear = this.getTodayYear;
     this.retrieveReportData(
-        { name: "live", yearsTo: thisYear, decrement: 0, arrangeData: false }
+        { name: "live", yearsTo: thisYear, decrement: 2000, arrangeData: false }
     ).then(
       reportedList => {
+        this.activeBovines["Toro"].activeQuantity = 0;
+        this.activeBovines["Vaca"].activeQuantity = 0;
+        this.activeBovines["Ternero"].activeQuantity = 0;
+        this.activeBovines["Total"].activeQuantity = 0;
         for (let i = 0; i < reportedList.length; i++) {
-          if(reportedList[i].year == thisYear){
-            this.activeBovines[reportedList[i].category].activeQuantity = reportedList[i].count;
-            this.activeBovines["Total"].activeQuantity += reportedList[i].count;
-          }
+          this.activeBovines[reportedList[i].category].activeQuantity += reportedList[i].count;
+          this.activeBovines["Total"].activeQuantity += reportedList[i].count;
         }
       }
     );
