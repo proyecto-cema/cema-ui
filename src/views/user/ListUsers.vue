@@ -6,33 +6,11 @@
         + Nuevo Usuario
       </button>
     </div>
-    <h2 class="h2 mt-3">Calendario de actividades</h2>
-    <!-- <form @submit.prevent="">
-      <div class="row">
-       
-        <div class="col-12 col-md-6 col-lg-4">
-          <cema-input v-model="search.lastName" component-type="select" required
-                      input-title="Rol" input-id="userRole" :label="false"
-                      :options="['Peon', 'Hembra']" class="mb-2"></cema-input>
-        </div>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-2">
-          <button class="btn btn-primary text-white"
-                  type="button"
-                  v-on:click="this.clearSearchUsersData()">
-            Restablecer
-          </button>
-          <button class="btn btn-secondary text-white"
-                  type="button"
-                  v-on:click="this.searchUsers()">
-            Buscar
-          </button>
-        </div>
-      </div>
-    </form> -->
+    <h2 class="h2 mt-3">Listado de Usuarios</h2>
     <div class="col-12 table-responsive">
       <table class="table">
         <thead>
-        <tr v-if="users.left !== 0">
+        <tr v-if="users.length !== 0">
           <th scope="col">Usuario</th>
           <th scope="col">Nombre</th>
           <th v-if="!this.isMobile" scope="col">Cuig</th>
@@ -50,49 +28,26 @@
           <td v-if="!this.isMobile">{{ user.establishmentCuig }}</td>
           <td v-if="!this.isMobile">{{ user.role }}</td>
           <td class="text-end">
-            <font-awesome-icon
+            <!-- <font-awesome-icon
                 class="me-2"
                 icon="edit"
                 @click.stop="openAddUserModal(user)">
-            </font-awesome-icon>
+            </font-awesome-icon> -->
             <font-awesome-icon
                 icon="trash"
-                @click.stop="formDeleteUsers(user.userName, index)">
+                @click.stop="formDeleteUser(user.userName, index)">
             </font-awesome-icon>
           </td>
         </tr>
         </tbody>
       </table>
     </div>
-    <!-- <div v-if="headers.totalPages > 1" class="d-flex justify-content-center">
-      <div aria-label="Large button group" class="btn-group" role="group">
-        <button :class="headers.currentPage <= 0? 'disabled':''" class="btn btn-outline-primary" type="button"
-                v-on:click="this.searchBovinePage(this.headers.currentPage-1)">
-          Anterior
-        </button>
-        <button v-for="i in headers.totalPages" :key="i"
-                :class="headers.currentPage === i-1? 'btn-primary':'btn-outline-primary'" class="btn"
-                type="button"
-                v-on:click="this.searchBovinePage(i-1)">
-          {{ i }}
-        </button>
-        <button :class="headers.currentPage >= headers.totalPages-1? 'disabled':''" class="btn btn-outline-primary"
-                type="button"
-                v-on:click="this.searchBovinePage(this.headers.currentPage+1)">
-          Siguiente
-        </button>
-      </div>
-    </div> -->
+    
   </div>
   <confirmation-modal
-      :confirmation-message="'¿Confirma que desea eliminar al usuario ?'"
+      :confirmation-message="'¿Confirma que desea eliminar al usuario '+ deleted['userName'] + '?'"
       modal-id="DeleteModal" title="Eliminar"
       @acceptModal="modalDelete(); this.deleteModal.hide()" @rejectModal="this.deleteModal.hide(); this.deleted = {}"></confirmation-modal>
-  <!-- <confirmation-modal
-      :confirmation-message="'¿Confirma que desea eliminar al usuario '
-      + this.deleted['userName'] + '?'"
-      modal-id="DeleteModal" title="Eliminar"
-      @acceptModal="modalDelete(); this.deleteModal.hide()" @rejectModal="this.deleteModal.hide(); this.deleted = {}"></confirmation-modal> -->
   <user-modal modalId="addUserModal" @deleteModal="deleteUserForm"></user-modal>
  
 </template>
@@ -108,6 +63,7 @@ export default {
   data() {
     return {
       // search: {role: null},
+      deleted: {},
       users: [],
       isMobile: false,
       deleteModal: null,
@@ -146,6 +102,7 @@ export default {
       console.log(this.headers)
       if (previous === this.isMobile){return}
     },
+    
     setIndexForUserName(userName, index){
       this.deleted = {
         userName: userName,
@@ -169,7 +126,7 @@ export default {
       this.setIndexForUserName(userName, index);
       this.modalDelete();
     },
-    formDeleteBovine(userName, index) {
+    formDeleteUser(userName, index) {
       this.setIndexForUserName(userName, index);
       this.deleteModal.show()
     },
@@ -185,6 +142,8 @@ export default {
       this.deleteUser(this.deleted).then(
           () => {
             this.users.splice(this.deleted["index"], 1);
+            this.showSuccess(`El usuario ${this.deleted["userName"]} se eliminó correctamente`);
+            this.deleted = {};
           }
       );
     },

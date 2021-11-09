@@ -70,6 +70,10 @@
           </form>
         </div>
         <div class="modal-footer">
+           <button class="btn btn-primary text-white" data-bs-dismiss="modal"
+                  type="button" v-on:click="clean()">
+            Cancelar
+          </button>
           <button class="btn btn-secondary text-white" 
                   type="button" v-on:click="saveModal()">
             Guardar

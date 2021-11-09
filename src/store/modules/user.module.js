@@ -72,6 +72,19 @@ const actions = {
             }
         );
     },
+    async deleteUser({dispatch}, data) {
+        return UserService.deleteUser(data.userName).then(
+            response => {
+                console.log("Delete user with cuig-tag:",data.userName);
+                dispatch("clearUserData");
+                return Promise.resolve(response);
+            },
+            error => {
+                dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
+                return Promise.reject(error);
+            }
+        );
+    },
 }
 
 

@@ -17,6 +17,9 @@ class UserService {
   getUsersList (role) {
     return httpUsers.get('users/list/'+role, { headers: authHeader() })
   }
+  deleteUser (userName) {
+    return httpUsers.delete('users/' + userName, { headers: authHeader() })
+  }
 }
 
 export default new UserService()
