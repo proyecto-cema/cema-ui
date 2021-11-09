@@ -4,7 +4,7 @@ import utils from "../../utils"
 
 
 const state = {
-    user: {email: null, establishmentCuig: null, lastName: null, name: null, phone: null, role: null, userName: null},
+    user: {email: null, establishmentCuig: null, lastName: null, name: null, phone: null, role: "", userName: null},
     edit: false,
     userList: [],
 }
@@ -13,11 +13,11 @@ const mutations = {
     setUser(state, payload) {
         state.user = payload === null ? {
             email: null,
-            establishmentCuig: null, 
+            establishmentCuig: "",
             lastName: null, 
             name: null, 
             phone: null, 
-            role: null, 
+            role: "",
             userName: null
         }: payload
     },
@@ -36,16 +36,7 @@ const mutations = {
 
 const actions = {
     clearUserData({commit}) {
-        let blankUser =  {
-            email: null,
-            establishmentCuig: null, 
-            lastName: null, 
-            name: null, 
-            phone: null, 
-            role: null, 
-            userName: null
-        }
-        commit('setUser', blankUser);
+        commit('setUser', null);
         commit('serEdit', false);
     },
     setupEditUser({commit}, user){
