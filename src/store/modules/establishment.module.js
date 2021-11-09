@@ -4,15 +4,23 @@ import {ADMINISTRATION_ERRORS} from "../../constants";
 
 const state = {
     establishment: {name: null, cuig: null, location: null, phone: null, email: null, ownerUserName: "" },
+    edit: false,
 }
 
 const mutations = {
     setEstablishment(state, payload) {
         state.establishment = payload === null ? { name: null, cuig: null, location: null, phone: null, email: null, ownerUserName: "" } : payload
+    },
+    setEdit(state, payload) {
+        state.edit = payload === null ? false : payload
     }
 }
 
 const actions = {
+    setupEditEstablishment({commit}, establishment){
+        commit('setEdit', true);
+        commit('setEstablishment', establishment);
+    },
     async getEstablishment({commit, dispatch}, cuig) {
         return EstablishmentService.getEstablishmentByCuig(cuig).then(
             response => {
@@ -28,12 +36,14 @@ const actions = {
         );
     },
     clearEstablishmentData({commit}) {
-        commit('setEstablishment', null)
+        commit('setEdit', false);
+        commit('setEstablishment', null);
     },
-    async saveEstablishment({dispatch}, {edit, establishment}) {
-        return EstablishmentService.setEstablishment(establishment, edit).then(
-            establishment => {
-                console.log(edit ? "Edited": "Created", "establishment:", establishment)
+    async saveEstablishment({dispatch, state}, {establishment}) {
+        console.log(establishment, state.edit)
+        return EstablishmentService.setEstablishment(establishment, state.edit).then(
+            (data) => {
+                console.log(state.edit ? "Edited": "Created", "establishment:", data)
                 return Promise.resolve(establishment);
             },
             error => {
@@ -42,7 +52,7 @@ const actions = {
             }
         );
     },
-    async deleteEstablishment({commit, dispatch}, cuig) {
+    async deleteEstablishment({commit, dispatch}, {cuig}) {
         return EstablishmentService.deleteEstablishment(cuig).then(
             response => {
                 console.log("Delete establishment with cuig:", cuig)
@@ -57,6 +67,18 @@ const actions = {
     },
     async listOwners({dispatch}) {
         return UsersService.getOwnerList('patron').then(
+            response => {
+                console.log(response.data);
+                return Promise.resolve(response);
+            },
+            error => {
+                dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
+                return Promise.reject(error);
+            }
+        );
+    },
+    async listEstablishments({dispatch}) {
+        return EstablishmentService.getEstablishmentList().then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);

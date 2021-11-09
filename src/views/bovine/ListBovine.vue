@@ -50,7 +50,9 @@
           <th scope="col">Fecha de caravaneo</th>
           <th v-if="!this.isMobile" scope="col">Sexo</th>
           <th v-if="!this.isMobile" scope="col">Descripción</th>
-          <th v-if="!this.isMobile" scope="col">Lotes</th>
+          <th v-if="!this.isMobile" scope="col">Categoria</th>
+          <th v-if="!this.isMobile" scope="col">Estado</th>
+          <th v-if="!this.isMobile" scope="col">Lotes</th>  
           <th class="text-end" scope="col">Acciones</th>
         </tr>
         <tr v-else>
@@ -66,6 +68,8 @@
           <td>{{ this.javaDateToMomentDate(bovine.taggingDate) }}</td>
           <td v-if="!this.isMobile">{{ bovine.genre }}</td>
           <td v-if="!this.isMobile">{{ bovine.description }}</td>
+          <td v-if="!this.isMobile">{{ bovine.category }}</td>
+          <td v-if="!this.isMobile">{{ bovine.status }}</td>
           <td v-if="!this.isMobile" class="overflow-auto w-25">
             <batch-badge v-for="batch in bovine.batchNames.slice(0,1)" :badge-content="batch" :condition="!hasBovinesSelected"
                          @click.stop="removeBovineFromBatch(bovine, batch)"></batch-badge>
@@ -231,7 +235,6 @@ export default {
       let index = null;
       let cuig = null;
       for (let i=0; i < this.bovines.length; i++) {
-        console.log(typeof this.bovines[i].tag, "=", typeof tag)
         if (this.bovines[i].tag === tag) {
           index = i;
           cuig = this.bovines[i].establishmentCuig

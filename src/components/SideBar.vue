@@ -21,11 +21,13 @@
         <div v-if="navItem.isCollapsible" class="collapse" :class="navItem.expanded ? 'show' : ''">
           <ul class="nav nav-sm flex-column">
             <li v-for="subItem in navItem.items" class="nav-item">
-              <router-link v-if="!subItem.clickable" class="nav-link" :to="{name: subItem.route}">{{ subItem.name }}</router-link>
-              <a v-else class="nav-link" @click.prevent="subItem.clickAction">
-                <font-awesome-icon style="width: 40px; padding-right: 10px" v-if="subItem.icon" :icon="subItem.icon"/>
-                {{ subItem.name }}
-              </a>
+              <template v-if="subItem.roleRequirement <= currentRole">
+                <router-link v-if="!subItem.clickable" class="nav-link" :to="{name: subItem.route}">{{ subItem.name }}</router-link>
+                <a v-else class="nav-link" @click.prevent="subItem.clickAction">
+                  <font-awesome-icon style="width: 40px; padding-right: 10px" v-if="subItem.icon" :icon="subItem.icon"/>
+                  {{ subItem.name }}
+                </a>
+              </template>
             </li>
           </ul>
         </div>
@@ -47,8 +49,8 @@ export default {
         {name: 'Bovinos', isCollapsible: false, icon:'hat-cowboy', route: 'ListBovine', roleRequirement: 0},
         {name: 'Administración', isCollapsible: true, expanded: false, icon:'building', items: [
            {name: 'Lotes', isCollapsible: false, route: 'ListBatch', roleRequirement: 0},
-           {name: 'Establecimientos', isCollapsible: false, route: 'AddEstablishment', roleRequirement: 2},
-           {name: 'Usuarios', isCollapsible: false, route: 'ListUser', roleRequirement: 2}
+           {name: 'Usuarios', isCollapsible: false, route: 'ListUser', roleRequirement: 2},
+           {name: 'Establecimientos', isCollapsible: false, route: 'ListEstablishments', roleRequirement: 2}
         ]},
         {name: 'Actividades', isCollapsible: false, icon:'lightbulb', route: 'Calendar', roleRequirement: 0}
       ]

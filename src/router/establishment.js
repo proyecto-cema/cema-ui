@@ -1,11 +1,11 @@
-import AddEstablishment from '../views/administration/AddEstablishment.vue'
+import ListEstablishments from "../views/administration/ListEstablishments";
 
 const routes = [
   {
-    path: '/establecimiento/formulario',
-    name: 'AddEstablishment',
+    path: '/establecimientos',
+    name: 'ListEstablishments',
     meta: { requiresAuth: true, requiredRoleLevel: 2 },
-    component: AddEstablishment
+    component: ListEstablishments
   }
 ]
 

@@ -4,11 +4,12 @@ import utils from "../../utils"
 
 
 const state = {
-    bovine: {tag: null, genre: "", description: null, taggingDate: null, establishmentCuig: null, batchNames: []},
+    bovine: {tag: null, genre: "", description: null, taggingDate: null, establishmentCuig: null, batchNames: [], birthDate: null, category: "", status: "" },
     listBovinesSelected:[],
     selectedCuig: null,
     cantSelect: null,
     edit: false,
+    categories:["Ternero","Vaca","Toro"],
     batch: {batchName: null, description: null, bovineTags: [], establishmentCuig: null}
 }
 
@@ -20,7 +21,10 @@ const mutations = {
             description: null,
             taggingDate: null,
             establishmentCuig: null,
-            batchNames: []
+            batchNames: [],
+            birthDate: null,
+            category: "",
+            status: ""
         } : payload
     },
     setBovineSelected(state, payload){
@@ -40,6 +44,15 @@ const mutations = {
     },
     setSelectedCuig(state, payload){
         state.selectedCuig = payload;
+    },
+    setCategories(state, payload){
+        if (payload=="Macho"){
+            state.categories=['Ternero','Toro']
+        }else if(payload=="Hembra"){
+            state.categories=['Ternero','Vaca']
+        }else{
+            state.categories=['Ternero','Vaca','Toro']
+        }
     }
 }
 
@@ -57,7 +70,10 @@ const actions = {
             taggingDate: null,
             lot:null,
             establishmentCuig: rootState.auth.user.user.establishmentCuig,
-            batchNames: []
+            batchNames: [],
+            birthDate: null,
+            category:"",
+            status:""
         }
         commit('setBovine', blankBovine);
         commit('setEdit', false);
@@ -65,6 +81,10 @@ const actions = {
     setupEditBovine({commit}, proxyBovine){
         commit('setBovine', proxyBovine);
         commit('setEdit', true);
+        commit('setCategories',proxyBovine.genre);
+    },
+    setupCategories({commit}, genre){
+        commit('setCategories',genre)
     },
     setupBatch({commit}, proxyBatch){
         commit('setBatch', proxyBatch);
@@ -81,6 +101,7 @@ const actions = {
             response => {
                 let bovine = response.data;
                 bovine.taggingDate = utils.methods.javaDateToMomentDate(bovine.taggingDate, 'YYYY-MM-DD');
+                bovine.birthDate = utils.methods.javaDateToMomentDate(bovine.birthDate, 'YYYY-MM-DD');
                 commit('setBovine', bovine);
                 return Promise.resolve(bovine);
             },
@@ -93,6 +114,7 @@ const actions = {
     async saveBovine({dispatch}, {edit, bovine}) {
         let saveBovine = Object.assign({}, bovine);
         saveBovine.taggingDate = utils.methods.momentDateToJavaDate(bovine.taggingDate);
+        saveBovine.birthDate =bovine.birthDate? utils.methods.momentDateToJavaDate(bovine.birthDate): null;
         return BovineService.setBovine(saveBovine, edit).then(
             () => {
                 console.log(edit ? "Edited": "Created", "bovine:", bovine)

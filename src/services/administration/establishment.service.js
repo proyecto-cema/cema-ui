@@ -1,4 +1,4 @@
-import { httpAdministration } from '../http-common'
+import {httpAdministration, httpBovines} from '../http-common'
 import authHeader from '../auth/auth-header'
 
 class EstablishmentService {
@@ -18,6 +18,9 @@ class EstablishmentService {
     return httpAdministration.delete('establishment/' + cuig, { headers: authHeader() })
   }
 
+  getEstablishmentList () {
+    return httpAdministration.get('establishment/list', { headers: authHeader() })
+  }
 }
 
 export default new EstablishmentService()
