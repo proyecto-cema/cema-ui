@@ -25,11 +25,11 @@
   <form @submit.prevent="">
     <div class="row">
       <div class="col-12 col-md-6 col-lg-4 offset-lg-2">
-        <cema-input v-model="yearsFrom" :max="search.yearsTo" class="mb-2" year-format="true"
+        <cema-input v-model="yearsFrom" :min="getTodayYear-500" :max="search.yearsTo" class="mb-2" year-format="true"
                     input-title="Fecha desde" input-id="searchFrom" type="number" @change="redrawChart()"></cema-input>
       </div>
       <div class="col-12 col-md-6 col-lg-4">
-        <cema-input v-model="yearsTo" :max="getTodayYear" class="mb-2" year-format="true"
+        <cema-input v-model="yearsTo" :min="yearsFrom" :max="getTodayYear" class="mb-2" year-format="true"
                     input-title="Fecha hasta" input-id="searchTo" type="number" @change="redrawChart()"></cema-input>
       </div>
     </div>
