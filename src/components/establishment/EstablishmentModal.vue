@@ -34,9 +34,7 @@
                             input-title="Correo Electrónico" input-id="establishmentEmail"></cema-input>
               </div>
               <div class="mb-3 col-12 col-md-6">
-                <cema-input v-model="establishment.ownerUserName" component-type="select" required
-                            :error-data="{required: true, errorStatus: errorSave.owner,
-                                    errorMessage: 'Seleccione el propietario'}"
+                <cema-input v-model="establishment.ownerUserName" component-type="select"
                             input-title="Propietario" input-id="establishmentOwner"
                             :options="owners" optionKey="userName" v-slot="{ option }">
                   {{ option.name+" "+option.lastName }}
@@ -80,8 +78,7 @@ export default {
       owners:[],
       errorSave: {
         name: false,
-        cuig: false,
-        owner: false
+        cuig: false
       },
     };
   },
@@ -99,6 +96,12 @@ export default {
   },
   computed: {
     ...mapState("establishment", ["establishment", "edit"]),
+    errorSaveHelper(){
+      return {
+        name: !this.establishment.name,
+        cuig: !this.establishment.cuig
+      }
+    }
   },
   methods: {
     ...mapActions("establishment", ["getEstablishment", "saveEstablishment", "deleteEstablishment", "clearEstablishmentData", "listOwners"]),
@@ -116,6 +119,11 @@ export default {
       this.clearEstablishmentData();
     },
     async formSaveEstablishment() {
+      this.errorSave = this.errorSaveHelper;
+      if (this.errorSave.name || this.errorSave.cuig ) {
+        console.error(this.errorSave)
+        return
+      }
       this.saveEstablishment({establishment: this.establishment}).then(
           (establishment) => {
             this.$emit('createdNew', {establishment: establishment, edit: this.edit});
