@@ -48,11 +48,11 @@
                   type="button" v-on:click="clean()">
             Cancelar
           </button>
-          <button v-if=edit class="btn btn-primary text-white"
+          <button v-if="edit" class="btn btn-primary text-white"
                   type="button" v-on:click="clean()">
             Crear Nuevo
           </button>
-          <button v-if=edit class="btn btn-danger text-white" data-bs-dismiss="modal"
+          <button v-if="edit" class="btn btn-danger text-white" data-bs-dismiss="modal"
                   type="button" v-on:click="formDeleteEstablishment()">
             Eliminar
           </button>
@@ -68,7 +68,7 @@
 <script>
 import {mapActions, mapState} from "vuex";
 import { Modal } from 'bootstrap';
-import CemaInput from "../../components/form/CemaInput";
+import CemaInput from "../form/CemaInput";
 
 
 export default {
