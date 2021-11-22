@@ -83,7 +83,11 @@ export const USERS_ERRORS = {
     404: {type: "Server", message: "Reporte no encontrado"},
     409: {type: "Server", message: "El usuario que esta intentando registrar ya existe"},
 }
-
+export const LOCATION_ERRORS = {
+    ...COMMON_ERRORS,
+    404: {type: "Server", message: "Ubicación no encontrada"},
+    409: {type: "Server", message: "La ubicación que esta intentando registrar ya existe"},
+}
 export const REPORTING_SELECTOR = {
     "batch": { value: "weight", groupBy: "batchName" },
     "weight": { value: "weight", groupBy: "category" },

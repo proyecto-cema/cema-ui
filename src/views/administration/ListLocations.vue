@@ -1,0 +1,145 @@
+<template>
+  <div class="text-center">
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
+      <button class="btn btn-secondary text-white" type="button"
+              v-on:click="openAddLocationModal(null)">
+        Nuevo Ubicacion
+      </button>
+    </div>
+    <div class="col-12 table-responsive">
+      <table class="table">
+        <caption>Mostrando {{ locationsLength }} de {{ locationsLength }}
+          Ubicaciones
+        </caption>
+        <thead>
+        <tr v-if="locationsLength !== 0">
+          <th scope="col">CUIG</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Tamaño</th>
+          <th class="text-end" scope="col">Acciones</th>
+        </tr>
+        <tr v-else>
+          <th scope="col">No se encontraron resultados.</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(location, index) in locations" :key="location.name">
+          <td>{{ location.establishmentCuig }}</td>
+          <td>{{ location.name }}</td>
+          <td>{{ location.description }}</td>
+          <td>{{ location.size }}</td>
+          <td class="text-end">
+            <font-awesome-icon
+                class="me-2"
+                icon="edit"
+                @click.stop="openAddLocationModal(location)">
+            </font-awesome-icon>
+            <font-awesome-icon
+                icon="trash"
+                @click.stop="formDeleteLocation(index, location.name)">
+            </font-awesome-icon>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <confirmation-modal
+      :confirmation-message="'¿Confirma que desea eliminar la ubicacion '
+      + deleted['name'] + '?'"
+      modal-id="deleteModal" title="Eliminar"
+      @acceptModal="modalDelete(); deleteModal.hide()" @rejectModal="deleteModal.hide(); deleted = {}"></confirmation-modal>
+  <location-modal modalId="addLocationModal" @deleteModal="deleteLocationForm" @createdNew="addLocationToList"></location-modal>
+</template>
+<script>
+import {mapActions} from "vuex";
+import {Modal} from "bootstrap";
+import ConfirmationModal from "../../components/ConfirmationModal";
+import LocationModal from "../../components/administration/LocationModal";
+
+export default {
+  name: "ListLocations",
+  data() {
+    return {
+      locations: [],
+      locationsLength: 0,
+      deleted: {},
+      deleteModal: null,
+      addLocationModal: null,
+      timeout: false,
+      delay: 250,
+    };
+  },
+  components: { ConfirmationModal, LocationModal },
+  mounted() {
+    this.addLocationModal = new Modal(document.getElementById('addLocationModal'));
+    this.deleteModal = new Modal(document.getElementById('deleteModal'));
+    this.searchLocations();
+  },
+  methods: {
+    ...mapActions("location", ["listLocations", "setupEditLocation", "deleteLocation"]),
+    ...mapActions(["showSuccess"]),
+    setIndexForName(index, name){
+      this.deleted = {
+        name: name,
+        index: index
+      };
+    },
+    formDeleteLocation(index, name) {
+      this.setIndexForName(index, name);
+      this.deleteModal.show()
+    },
+    openAddLocationModal(location){
+      if (location){
+        this.setupEditLocation(location);
+      }
+      this.addLocationModal.show();
+    },
+    deleteLocationForm(name){
+      let index = null;
+      for (let i=0; i < this.locations.length; i++) {
+        if (this.locations[i].name === name) {
+          index = i;
+          break;
+        }
+      }
+      if (index === null){
+        console.error(`Searched locacion: ${name}, was not found`)
+        return
+      }
+      this.setIndexForName(index, name);
+      this.modalDelete();
+    },
+    addLocationToList({location, edit}){
+      console.log(location, edit);
+      if(!edit){
+        this.locations.push(location);
+      }
+    },
+    async modalDelete() {
+      let helperDeleted = {...this.deleted};
+      console.log(`Deleting location ${ helperDeleted.name }`)
+      this.deleteLocation(helperDeleted).then(
+          () => {
+            this.locations.splice(helperDeleted.index, 1);
+            this.showSuccess(`La ubicacion ${helperDeleted.name} se eliminó correctamente`);
+            this.deleted = {};
+          }
+      );
+    },
+    async searchLocations(){
+      this.locations = null;
+      this.listLocations().then(
+        (response) => {
+          this.locations = response.data;
+          console.log(response);
+          this.locationsLength = this.locations != null ? this.locations.length:0
+        }
+      )
+    },
+  },
+};
+</script>
+<style>
+</style>
