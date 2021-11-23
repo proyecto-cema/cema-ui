@@ -19,7 +19,7 @@
                                 input-title="Nombre" input-id="locationName" type="text" :disabled="edit"></cema-input>
                   </div>
                   <div class="col-lg-6 col-12 mb-3">
-                    <cema-input v-model.trim="locationData.size"
+                    <cema-input v-model="locationData.size"
                                 input-title="Tamaño" input-id="locationSize" type="number" min="0"></cema-input>
                   </div>
                   <div class="col-12 mb-3">
@@ -74,7 +74,7 @@ export default {
     ...mapState("location", ["locationData", "edit"]),
     errorSaveHelper(){
       return {
-        name: !this.location.name,
+        name: !this.locationData.name,
       }
     }
   },
@@ -110,7 +110,7 @@ export default {
     async commitSave() {
       this.saveLocation().then(
           (response) => {
-            this.showSuccess((`La ubicación ${this.locationData.name} se guardó correctamente`);
+            this.showSuccess(`La ubicación ${this.locationData.name} se guardó correctamente`);
             this.setupEditLocation(this.locationData);
           }
       );
