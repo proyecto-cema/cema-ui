@@ -50,6 +50,18 @@ const actions = {
                 return Promise.reject(error);
             }
         );
+    },
+    async listLocations({dispatch, rootState}) {
+        return LocationService.listLocation(rootState.auth.user.user.establishmentCuig).then(
+            response => {
+                console.log(response.data);
+                return Promise.resolve(response);
+            },
+            error => {
+                dispatch("showError", {error: error, errors: LOCATION_ERRORS}, {root:true});
+                return Promise.reject(error);
+            }
+        );
     }
 }
 

@@ -1,6 +1,7 @@
 import {httpActivity} from '../http-common'
 import authHeader from '../auth/auth-header'
 
+
 class LocationService {
     setLocation (location, edit) {
         if (edit) {
@@ -20,9 +21,10 @@ class LocationService {
         return httpActivity.delete('locations/'+ location.name, { params:{cuig: cuig}, headers: authHeader() })
     }
 
-    listLocations (cuig) {
-        return httpActivity.delete('locations/list', { params:{cuig: cuig}, headers: authHeader() })
+    listLocation (cuig) {
+        return httpActivity.get('locations/list', { params:{cuig: cuig}, headers: authHeader() })
     }
 }
 
 export default new LocationService()
+

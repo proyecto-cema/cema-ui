@@ -88,7 +88,6 @@ export const LOCATION_ERRORS = {
     404: {type: "Server", message: "Ubicación no encontrada"},
     409: {type: "Server", message: "La ubicación que esta intentando registrar ya existe"},
 }
-
 export const REPORTING_SELECTOR = {
     "batch": { value: "weight", groupBy: "batchName" },
     "weight": { value: "weight", groupBy: "category" },
