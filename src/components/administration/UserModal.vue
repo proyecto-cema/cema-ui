@@ -209,14 +209,4 @@ export default {
 </script>
 
 <style scoped>
-.TextCenterImage {
-  position: absolute;
-  top: 70%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.imageIdBovine {
-  width: 60% !important;
-}
 </style>
