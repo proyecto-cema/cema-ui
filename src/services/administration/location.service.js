@@ -5,11 +5,11 @@ import authHeader from '../auth/auth-header'
 class LocationService {
     setLocation (location, edit) {
         if (edit) {
-            return httpActivity.put('locations/', location, { headers: authHeader() })
-        } else {
-            return httpActivity.post('locations/' + location.name, location,{
+            return httpActivity.put('locations/' + location.previousName, location, {
                 params:{cuig: location.establishmentCuig}, headers: authHeader()
             })
+        } else {
+            return httpActivity.post('locations/', location,{headers: authHeader()})
         }
     }
 

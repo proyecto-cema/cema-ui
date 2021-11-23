@@ -2,8 +2,8 @@
   <div class="text-center">
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
       <button class="btn btn-secondary text-white" type="button"
-              v-on:click="openAddLocationModal(null)">
-        Nuevo Ubicacion
+              v-on:click="openAddLocationModal(null, null)">
+        Nueva Ubicación
       </button>
     </div>
     <div class="col-12 table-responsive">
@@ -33,7 +33,7 @@
             <font-awesome-icon
                 class="me-2"
                 icon="edit"
-                @click.stop="openAddLocationModal(location)">
+                @click.stop="openAddLocationModal(index, location)">
             </font-awesome-icon>
             <font-awesome-icon
                 icon="trash"
@@ -90,32 +90,27 @@ export default {
       this.setIndexForName(index, name);
       this.deleteModal.show()
     },
-    openAddLocationModal(location){
+    openAddLocationModal(index, location){
       if (location){
+        this.setIndexForName(index, location.name);
         this.setupEditLocation(location);
       }
       this.addLocationModal.show();
     },
     deleteLocationForm(name){
-      let index = null;
-      for (let i=0; i < this.locations.length; i++) {
-        if (this.locations[i].name === name) {
-          index = i;
-          break;
-        }
+      if (!this.deleted){
+        this.setIndexForName(this.locations.length, name);
       }
-      if (index === null){
-        console.error(`Searched locacion: ${name}, was not found`)
-        return
-      }
-      this.setIndexForName(index, name);
       this.modalDelete();
     },
     addLocationToList({location, edit}){
       console.log(location, edit);
-      if(!edit){
-        this.locations.push(location);
+      let helperDeleted = {...this.deleted};
+      if(edit) {
+        this.locations.splice(helperDeleted.index, 1);
+        this.deleted = {};
       }
+      this.locations.push(location);
     },
     async modalDelete() {
       let helperDeleted = {...this.deleted};

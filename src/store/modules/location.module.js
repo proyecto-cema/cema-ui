@@ -31,7 +31,7 @@ const actions = {
         commit('setEdit', false);
     },
     setupEditLocation({commit}, proxyLocation){
-        commit('setLocation', proxyLocation);
+        commit('setLocation', { previousName: proxyLocation.name, ...proxyLocation});
         commit('setEdit', true);
     },
     async saveLocation({state, dispatch, rootState}){

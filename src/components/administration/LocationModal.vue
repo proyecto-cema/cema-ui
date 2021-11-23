@@ -15,8 +15,8 @@
                   <div class="col-lg-6 col-12 mb-3">
                     <cema-input v-model.trim="locationData.name" required maxlength="50"
                                 :error-data="{required: true, errorStatus: errorSave.name,
-                                    errorMessage: 'Ingrese el nonbre de la ubicación'}"
-                                input-title="Nombre" input-id="locationName" type="text" :disabled="edit"></cema-input>
+                                    errorMessage: 'Ingrese el nombre de la ubicación'}"
+                                input-title="Nombre" input-id="locationName" type="text"></cema-input>
                   </div>
                   <div class="col-lg-6 col-12 mb-3">
                     <cema-input v-model="locationData.size"
@@ -62,6 +62,7 @@ import {mapActions, mapState} from "vuex";
 
 export default {
   name: "LocationModal",
+  emits: ['deleteModal', 'createdNew'],
   data(){
     return {
       errorSave: {
@@ -108,10 +109,12 @@ export default {
       this.clean();
     },
     async commitSave() {
+      let editing = this.edit;
       this.saveLocation().then(
           (response) => {
             this.showSuccess(`La ubicación ${this.locationData.name} se guardó correctamente`);
             this.setupEditLocation(this.locationData);
+            this.$emit('createdNew', { location: this.locationData, edit: editing });
           }
       );
     }
