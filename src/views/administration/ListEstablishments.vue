@@ -54,7 +54,7 @@
 import {mapActions} from "vuex";
 import {Modal} from "bootstrap";
 import ConfirmationModal from "../../components/ConfirmationModal";
-import EstablishmentModal from "../../components/establishment/EstablishmentModal";
+import EstablishmentModal from "../../components/administration/EstablishmentModal";
 
 export default {
   name: "ListEstablishments",

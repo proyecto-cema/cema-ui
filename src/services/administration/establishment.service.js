@@ -1,4 +1,4 @@
-import {httpAdministration, httpBovines} from '../http-common'
+import {httpAdministration} from '../http-common'
 import authHeader from '../auth/auth-header'
 
 class EstablishmentService {

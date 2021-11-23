@@ -55,7 +55,7 @@ import {mapActions} from "vuex";
 import {Modal} from "bootstrap";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import CemaInput from "../../components/form/CemaInput";
-import UserModal from "../../components/users/UserModal";
+import UserModal from "../../components/administration/UserModal";
 import {ROLE_REPRESENTATION} from "../../constants";
 
 export default {
