@@ -78,13 +78,13 @@ import {mapActions} from "vuex";
 import ActivityModal from "../../components/activity/ActivityModal";
 import {Modal} from "bootstrap";
 import CemaInput from "../../components/form/CemaInput";
-import {ACTIVITIES_EXTRA_DATA, ACTIVITIES_OPTIONS} from "../../constants";
+import {ACTIVITIES_EXTRA_DATA} from "../../constants";
 import CalendarMobile from "../../components/activity/CalendarMobile"
 export default {
   name:"Calendar",
   data() {
     return {
-      activitiesOptions: ACTIVITIES_OPTIONS,
+      activitiesOptions: ACTIVITIES_EXTRA_DATA,
       search: { name: null, type: "" },
       isMobile: true,
       activityModal: null,
@@ -134,7 +134,7 @@ export default {
     async searchActivities() {
       this.activities = [];
       this.mobileActivities = [];
-      let type = this.search.type ? ACTIVITIES_EXTRA_DATA[this.search.type].url: "activities";
+      let type = this.search.type ? this.activitiesOptions[this.search.type].url: "activities";
       this.search.name = this.search.name ?? null
 
       let searchAct = { name: this.search.name, type: type }
@@ -148,8 +148,8 @@ export default {
           for(let i = 0;response.data.length>i ; i++)
           {
             future = response.data[i].executionDate < today;
-            style = ACTIVITIES_EXTRA_DATA[response.data[i].type].style;
-            color = ACTIVITIES_EXTRA_DATA[response.data[i].type].color;
+            style = this.activitiesOptions[response.data[i].type].style;
+            color = this.activitiesOptions[response.data[i].type].color;
             date = this.javaDateToMomentDate(response.data[i].executionDate, "", true);
             activity = {
               key: i,
@@ -158,7 +158,7 @@ export default {
                 title: response.data[i].name,
                 class: style,
                 future: future,
-                type: ACTIVITIES_EXTRA_DATA[response.data[i].type].url,
+                type: this.activitiesOptions[response.data[i].type].url,
                 color: color
               },
               dates: date,

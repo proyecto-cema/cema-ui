@@ -11,7 +11,7 @@
       :id="inputId" v-model="value"
       :class="[errorData.required && errorData.errorStatus ? 'is-invalid' : '']"
       class="form-select" v-bind="$attrs">
-    <option selected value="" hidden>{{ inputTitle }}</option>
+    <option selected value="" hidden>{{ selectedOption? selectedOption:inputTitle }}</option>
     <option v-for="option in options" :value="optionKey ? option[optionKey]:option" :key="optionKey ? option[optionKey]:option">
       <slot :option="option">{{option}}</slot>
     </option>
@@ -58,6 +58,10 @@ export default {
     optionKey: {
       type: String,
       default: null
+    },
+    selectedOption: {
+      type: String,
+      required: false
     },
     options: {},
     modelValue: {},

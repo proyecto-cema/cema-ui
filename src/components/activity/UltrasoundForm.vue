@@ -8,7 +8,7 @@
   </div>
   <div class="col-lg-6 col-12 mb-2">
     <cema-input v-model="activityData.extraData.result" component-type="select" required
-                input-title="Resultado" input-id="result" type="text" option-key="back"
+                input-title="Resultado" input-id="result" option-key="back"
                 :options="[{name: 'Positivo', back: 'positive'},{name: 'Negativo', back: 'negative'}]">
       <template v-slot:default="{ option }">
         {{ option.name }}

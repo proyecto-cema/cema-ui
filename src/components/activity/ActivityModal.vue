@@ -78,8 +78,9 @@ import CemaInput from "../form/CemaInput";
 import UltrasoundForm from "../../components/activity/UltrasoundForm";
 import VaccinationForm from "../../components/activity/VaccinationForm";
 import WeighingForm from "../../components/activity/WeighingForm";
+import MovementForm from "../../components/activity/MovementForm";
 import {mapActions, mapState} from "vuex";
-import {ACTIVITIES_EXTRA_DATA, ACTIVITIES_OPTIONS, SEARCH_DEFAULT_TAG} from "../../constants";
+import {ACTIVITIES_EXTRA_DATA, SEARCH_DEFAULT_TAG} from "../../constants";
 
 export default {
   name: "ActivityModal",
@@ -87,10 +88,10 @@ export default {
   data(){
     return {
       errorSave: {},
-      activitiesOptions: ACTIVITIES_OPTIONS,
+      activitiesOptions: ACTIVITIES_EXTRA_DATA,
     };
   },
-  components: { CemaInput, VaccinationForm, WeighingForm, UltrasoundForm },
+  components: { CemaInput, VaccinationForm, WeighingForm, UltrasoundForm, MovementForm },
   props: {
     modalId: {
       type: String,
@@ -107,7 +108,7 @@ export default {
       return this.getMomentToday()
     },
     activityMap(){
-      return ACTIVITIES_EXTRA_DATA[this.activityData.type];
+      return this.activitiesOptions[this.activityData.type];
     },
     selectedActivityComponent(){
       return this.activityMap.componentName;
@@ -154,7 +155,7 @@ export default {
       let typeData = this.activityData.type;
       this.deleteActivity({id: this.activityData.id, url: this.activityMap.url}).then(
           () => {
-            this.successCall(`La actividad de ${ACTIVITIES_EXTRA_DATA[typeData].displayName.toLowerCase()} fue eliminada correctamente`);
+            this.successCall(`La actividad de ${this.activitiesOptions[typeData].displayName.toLowerCase()} fue eliminada correctamente`);
             this.$emit('deletedActivity');
           }
       );
@@ -170,7 +171,7 @@ export default {
     async formSaveActivity() {
       this.saveActivity(this.activityMap.url).then(
           (activity) => {
-            this.successCall(`Se guardó la actividad de ${ACTIVITIES_EXTRA_DATA[activity.type].displayName.toLowerCase()} con nombre ${activity.name}`);
+            this.successCall(`Se guardó la actividad de ${this.activitiesOptions[activity.type].displayName.toLowerCase()} con nombre ${activity.name}`);
             this.$emit('savedActivity');
           }
       );

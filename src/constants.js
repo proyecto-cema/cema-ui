@@ -6,11 +6,6 @@ export const REGEX_LETTERS_NUMBERS = /^([a-zA-Z0-9]+)$/;
 export const REGEX_SPACES = /^\S+$/;
 export const MAXIMUM_TOASTS = 4;
 export const MAXIMUM_NOTIFICATIONS_TOASTS = 4;
-export const ACTIVITIES_OPTIONS = {
-    "Inoculation": {displayName: "Vacunación", backendName: "Inoculation"},
-    "Weighing": {displayName: "Pesaje", backendName: "Weighing"},
-    "Ultrasound": {displayName: "Tacto", backendName: "Ultrasound"}
-};
 export const ACTIVITIES_EXTRA_DATA = {
     "Inoculation": {
         displayName: "Vacunación", backendName: "Inoculation",
@@ -26,6 +21,11 @@ export const ACTIVITIES_EXTRA_DATA = {
         displayName: "Tacto", backendName: "Ultrasound",
         url: "ultrasounds", componentName: "UltrasoundForm",
         validations: {}, style: "bg-info text-white", color:"blue"
+    },
+    "Movement": {
+        displayName: "Movimiento", backendName: "Movement",
+        url: "movements", componentName: "MovementForm",
+        validations: { "location": "location" }, style: "bg-danger text-white", color:"red"
     },
 };
 export const SEARCH_DEFAULT_TAG = "Seleccione la caravana";

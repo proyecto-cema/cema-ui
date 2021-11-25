@@ -9,13 +9,12 @@
 
 <script>
 import {mapActions} from "vuex";
-import {ACTIVITIES_EXTRA_DATA, ACTIVITIES_OPTIONS} from "../../constants";
+import {ACTIVITIES_EXTRA_DATA} from "../../constants";
 
 
 export default {
   data() {
     return {
-      activitiesOptions: ACTIVITIES_OPTIONS,
       search: {name: null, type: ""},
       isMobile: true,
       activity:{},
@@ -30,9 +29,7 @@ export default {
     };
   },
   mounted() {
-    
     this.searchActivitys();
-    
   },
   methods:{
     ...mapActions("activity", ["listActivities"]),
@@ -43,14 +40,14 @@ export default {
     },
     async searchActivitys() {
       this.attributesMobile=[]
-      if(this.search.type==null||this.search.type==""){
-        var type="activities"
-      }
-      else{
+      let type = "";
+      if(!this.search.type){
+        type = "activities"
+      }else{
         console.log(this.search.type)
-        var type =  ACTIVITIES_EXTRA_DATA[this.search.type].url;
+        type = ACTIVITIES_EXTRA_DATA[this.search.type].url;
       }
-      if(this.search.name==undefined){
+      if(this.search.name===undefined){
         this.search.name=null
       }
 
