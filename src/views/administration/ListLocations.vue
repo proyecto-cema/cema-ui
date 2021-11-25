@@ -3,17 +3,16 @@
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
       <button class="btn btn-secondary text-white" type="button"
               v-on:click="openAddLocationModal(null, null)">
-        Nueva Ubicación
+        Nueva ubicación
       </button>
     </div>
     <div class="col-12 table-responsive">
       <table class="table">
         <caption>Mostrando {{ locationsLength }} de {{ locationsLength }}
-          Ubicaciones
+          ubicaciones
         </caption>
         <thead>
         <tr v-if="locationsLength !== 0">
-          <th scope="col">CUIG</th>
           <th scope="col">Nombre</th>
           <th scope="col">Descripción</th>
           <th scope="col">Tamaño</th>
@@ -25,7 +24,6 @@
         </thead>
         <tbody>
         <tr v-for="(location, index) in locations" :key="location.name">
-          <td>{{ location.establishmentCuig }}</td>
           <td>{{ location.name }}</td>
           <td>{{ location.description }}</td>
           <td>{{ location.size }}</td>
@@ -114,8 +112,9 @@ export default {
     },
     async modalDelete() {
       let helperDeleted = {...this.deleted};
+      let toDelete = this.locations[helperDeleted.index];
       console.log(`Deleting location ${ helperDeleted.name }`)
-      this.deleteLocation(helperDeleted).then(
+      this.deleteLocation(toDelete).then(
           () => {
             this.locations.splice(helperDeleted.index, 1);
             this.showSuccess(`La ubicacion ${helperDeleted.name} se eliminó correctamente`);

@@ -155,7 +155,7 @@ export default {
     saveModal() {
       this.errorSave = this.errorSaveHelper;
       if (this.newBatch === true) {
-        if (this.errorSave.name || this.errorSave.description || this.errorSave.batchSelected) {
+        if (this.checkErrors(this.errorSave)) {
           console.error(this.errorSave)
           return
         }

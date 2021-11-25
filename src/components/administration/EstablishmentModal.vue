@@ -120,7 +120,7 @@ export default {
     },
     async formSaveEstablishment() {
       this.errorSave = this.errorSaveHelper;
-      if (this.errorSave.name || this.errorSave.cuig ) {
+      if (this.checkErrors(this.errorSave)) {
         console.error(this.errorSave)
         return
       }

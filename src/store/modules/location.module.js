@@ -62,6 +62,18 @@ const actions = {
                 return Promise.reject(error);
             }
         );
+    },
+    async deleteLocation({dispatch, rootState}, location) {
+        return LocationService.deleteLocation(location, location.establishmentCuig).then(
+            response => {
+                console.log(response.data);
+                return Promise.resolve(response);
+            },
+            error => {
+                dispatch("showError", {error: error, errors: LOCATION_ERRORS}, {root:true});
+                return Promise.reject(error);
+            }
+        );
     }
 }
 

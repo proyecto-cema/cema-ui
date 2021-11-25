@@ -19,7 +19,8 @@
                                 input-title="Nombre" input-id="locationName" type="text"></cema-input>
                   </div>
                   <div class="col-lg-6 col-12 mb-3">
-                    <cema-input v-model="locationData.size"
+                    <cema-input v-model="locationData.size" :error-data="{required: true, errorStatus: errorSave.size,
+                                errorMessage: 'Ingrese un número válido'}"
                                 input-title="Tamaño" input-id="locationSize" type="number" min="0"></cema-input>
                   </div>
                   <div class="col-12 mb-3">
@@ -76,6 +77,7 @@ export default {
     errorSaveHelper(){
       return {
         name: !this.locationData.name,
+        size: this.locationData.size<0,
       }
     }
   },
@@ -98,7 +100,7 @@ export default {
     },
     saveModal() {
       this.errorSave = this.errorSaveHelper;
-      if (this.errorSave.name) {
+      if (this.checkErrors(this.errorSave)) {
         console.error(this.errorSave)
         return
       }
