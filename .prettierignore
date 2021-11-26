@@ -1,0 +1,7 @@
+node_modules/**
+src/assets/**
+public/**
+nginx/**
+
+# Ignore all JS files:
+**/*.js

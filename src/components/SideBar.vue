@@ -5,9 +5,9 @@
     </router-link>
 
     <ul class="list-unstyled components d-flex flex-column" v-if="currentUser" style="height: calc(100vh - 200px);">
-      <li v-for="(navItem, i) in sidenavItems" class="nav-item" :class="navItem.specialClass">
+      <li v-for="(navItem, i) in sidenavItems" class="nav-item" :class="navItem.specialClass" :key="i">
         <router-link v-if="!navItem.isCollapsible && navItem.roleRequirement <= currentRole" class="nav-link"
-                     @click.native="navItemCollapse(i)"
+                     @click="navItemCollapse(i)"
                      active-class="activeSideBar" :to="{name: navItem.route}" exact>
           <font-awesome-icon style="width: 40px; padding-right: 10px" v-if="navItem.icon" :icon="navItem.icon"/>
           <span class="nav-link-text">{{ navItem.name }}</span>
@@ -20,7 +20,7 @@
         </a>
         <div v-if="navItem.isCollapsible" class="collapse" :class="navItem.expanded ? 'show' : ''">
           <ul class="nav nav-sm flex-column">
-            <li v-for="subItem in navItem.items" class="nav-item">
+            <li v-for="subItem in navItem.items" class="nav-item" :key='subItem.name'>
               <template v-if="subItem.roleRequirement <= currentRole">
                 <router-link v-if="!subItem.clickable" class="nav-link" :to="{name: subItem.route}">{{ subItem.name }}</router-link>
                 <a v-else class="nav-link" @click.prevent="subItem.clickAction">
@@ -76,6 +76,7 @@ export default {
       if(this.currentUser){
         return ROLE_REPRESENTATION[this.currentUser.user.role.toUpperCase()]
       }
+      return null;
     }
   },
   methods: {
