@@ -25,14 +25,14 @@
                 icon="edit"
                 style="cursor: pointer; font-size: 20px"
                 title="Editar bovinos del lote"
-                v-on:click="openDeleteBatchModal(batch)"
+                @click="openDeleteBatchModal(batch)"
               >
               </font-awesome-icon>
               <font-awesome-icon
                 icon="trash"
                 style="cursor: pointer; font-size: 20px"
                 title="Eliminar lote"
-                v-on:click="formDeleteBatch(batch.batchName, index, batch.establishmentCuig)"
+                @click="formDeleteBatch(batch.batchName, index, batch.establishmentCuig)"
               >
               </font-awesome-icon>
             </td>

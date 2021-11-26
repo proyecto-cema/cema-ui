@@ -4,12 +4,12 @@
       <button
         class="btn btn-secondary text-white"
         type="button"
-        v-on:click="openBatchModal()"
+        @click="openBatchModal()"
         :disabled="!hasBovinesSelected"
       >
         Agregar Lote
       </button>
-      <button class="btn btn-secondary text-white" type="button" v-on:click="openAddBovineModal(null)">
+      <button class="btn btn-secondary text-white" type="button" @click="openAddBovineModal(null)">
         + Nuevo Bovino
       </button>
     </div>
@@ -53,10 +53,10 @@
           ></cema-input>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-2">
-          <button class="btn btn-primary text-white" type="button" v-on:click="this.clearSearchBovineData()">
+          <button class="btn btn-primary text-white" type="button" @click="this.clearSearchBovineData()">
             Restablecer
           </button>
-          <button class="btn btn-secondary text-white" type="button" v-on:click="this.searchBovines()">Buscar</button>
+          <button class="btn btn-secondary text-white" type="button" @click="this.searchBovines()">Buscar</button>
         </div>
       </div>
     </form>
@@ -147,7 +147,7 @@
           :class="headers.currentPage <= 0 ? 'disabled' : ''"
           class="btn btn-outline-primary"
           type="button"
-          v-on:click="this.searchBovinePage(this.headers.currentPage - 1)"
+          @click="this.searchBovinePage(this.headers.currentPage - 1)"
         >
           Anterior
         </button>
@@ -157,7 +157,7 @@
           :class="headers.currentPage === i - 1 ? 'btn-primary' : 'btn-outline-primary'"
           class="btn"
           type="button"
-          v-on:click="this.searchBovinePage(i - 1)"
+          @click="this.searchBovinePage(i - 1)"
         >
           {{ i }}
         </button>
@@ -165,7 +165,7 @@
           :class="headers.currentPage >= headers.totalPages - 1 ? 'disabled' : ''"
           class="btn btn-outline-primary"
           type="button"
-          v-on:click="this.searchBovinePage(this.headers.currentPage + 1)"
+          @click="this.searchBovinePage(this.headers.currentPage + 1)"
         >
           Siguiente
         </button>

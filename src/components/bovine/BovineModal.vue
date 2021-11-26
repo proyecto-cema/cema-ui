@@ -4,13 +4,7 @@
       <div class="modal-content">
         <div class="modal-header text-center">
           <h5 :id="modalId + 'Label'" class="modal-title">{{ edit ? 'Editar Bovino' : 'Registrar Bovino' }}</h5>
-          <button
-            aria-label="Close"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            v-on:click="clean()"
-            type="button"
-          ></button>
+          <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" @click="clean()" type="button"></button>
         </div>
         <div class="modal-body">
           <form @submit.prevent="">
@@ -69,7 +63,7 @@
                       }"
                       input-title="Sexo"
                       input-id="bovineGenre"
-                      v-on:change="setCategories()"
+                      @change="setCategories()"
                       :options="['Macho', 'Hembra']"
                     ></cema-input>
                   </div>
@@ -95,7 +89,7 @@
                       input-title="Categoria"
                       input-id="bovineCategory"
                       :disabled="edit && (bovine.category == 'Vaca' || bovine.category == 'Toro')"
-                      v-on:change="unselectedStatus()"
+                      @change="unselectedStatus()"
                       :options="categories"
                     ></cema-input>
                   </div>
@@ -167,20 +161,20 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary text-white" data-bs-dismiss="modal" type="button" v-on:click="clean()">
+          <button class="btn btn-primary text-white" data-bs-dismiss="modal" type="button" @click="clean()">
             Cancelar
           </button>
-          <button v-if="edit" class="btn btn-primary text-white" type="button" v-on:click="clean()">Crear Nuevo</button>
+          <button v-if="edit" class="btn btn-primary text-white" type="button" @click="clean()">Crear Nuevo</button>
           <button
             v-if="edit"
             class="btn btn-danger text-white"
             data-bs-dismiss="modal"
             type="button"
-            v-on:click="deleteModal()"
+            @click="deleteModal()"
           >
             Eliminar
           </button>
-          <button class="btn btn-secondary text-white" :disabled="!bovine.tag" type="button" v-on:click="saveModal()">
+          <button class="btn btn-secondary text-white" :disabled="!bovine.tag" type="button" @click="saveModal()">
             {{ edit ? 'Modificar' : 'Guardar' }}
           </button>
         </div>

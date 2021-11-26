@@ -1,7 +1,8 @@
 <template>
-  <label v-if="label" :for="finalDropdownId" class="form-label"
-    >{{ inputTitle }}<small v-if="errorData.required" style="color: red">*</small></label
-  >
+  <label v-if="label" :for="finalDropdownId" class="form-label">
+    {{ inputTitle }}
+    <small v-if="errorData.required" style="color: red">*</small>
+  </label>
   <div class="dropdown">
     <button
       class="form-select text-start"
@@ -9,7 +10,7 @@
       :id="finalDropdownId"
       data-bs-toggle="dropdown"
       data-bs-auto-close="outside"
-      v-on:click="focusSearch()"
+      @click="focusSearch()"
       aria-expanded="false"
     >
       {{ value ? value : defaultName }}
@@ -28,22 +29,22 @@
           <font-awesome-icon icon="times"></font-awesome-icon>
         </button>
       </li>
-      <template v-for="option in filteredOptions" :key="option">
+      <template v-for="option in filteredOptions" :key="option[optionName]">
         <li>
-          <button class="dropdown-item" type="button" v-on:click="selected(option[optionName])">
+          <button class="dropdown-item" type="button" @click="selected(option[optionName])">
             {{ option[optionName] }}
           </button>
         </li>
       </template>
       <template v-if="0 < searchValue.length && filteredOptions.length <= 3 && maintain !== searchValue">
         <li>
-          <button class="dropdown-item" type="button" v-on:click="reCall()">
+          <button class="dropdown-item" type="button" @click="reCall()">
             <b>Buscar mas para {{ searchValue }}</b>
           </button>
         </li>
       </template>
       <li v-if="extraOption.length > 0">
-        <button class="dropdown-item" type="button" v-on:click="selected(extraOption['key'])">
+        <button class="dropdown-item" type="button" @click="selected(extraOption['key'])">
           {{ extraOption['value'] }}
           <font-awesome-icon v-if="extraOption['icon']" class="ms-1" :icon="extraOption['icon']"></font-awesome-icon>
         </button>
@@ -121,8 +122,9 @@ export default {
     modelValue: {},
   },
   mounted() {
+    console.log('++++++++++++++++++++++++');
+    console.log(this.options);
     console.log(this.value);
-    this.localOptions = this.options;
     if (this.withCaller) {
       console.log('Retrieving options');
       this.retrieveOptions();
@@ -130,7 +132,7 @@ export default {
   },
   computed: {
     filteredOptions() {
-      return this.localOptions.filter((o) => this.isSimilar(o));
+      return this.options.filter((o) => this.isSimilar(o));
     },
     searchId() {
       return `search-${this.dropdownId}`;

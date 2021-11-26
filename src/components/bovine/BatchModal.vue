@@ -8,7 +8,7 @@
             aria-label="Close"
             class="btn-close"
             data-bs-dismiss="modal"
-            v-on:click="dismissModal()"
+            @click="dismissModal()"
             type="button"
           ></button>
         </div>
@@ -94,15 +94,10 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-dark text-white" data-bs-dismiss="modal" type="button" v-on:click="clean()">
+          <button class="btn btn-dark text-white" data-bs-dismiss="modal" type="button" @click="clean()">
             Cambiar selección
           </button>
-          <button
-            class="btn btn-secondary text-white"
-            :disabled="!batchSelected"
-            type="button"
-            v-on:click="saveModal()"
-          >
+          <button class="btn btn-secondary text-white" :disabled="!batchSelected" type="button" @click="saveModal()">
             {{ 'Guardar' }}
           </button>
         </div>
@@ -116,7 +111,6 @@ import CemaInput from '../form/CemaInput';
 import { mapActions, mapState } from 'vuex';
 import { REGEX_SPACES } from '../../constants';
 import BatchBadge from './BatchBadge';
-import ComboSearch from '../form/ComboSearch';
 
 export default {
   name: 'BatchModal',

@@ -31,7 +31,7 @@
                 class="me-2"
                 icon="edit"
                 @click.stop="openAddUserModal(user)">
-            </font-awesome-icon> -->
+              </font-awesome-icon> -->
               <font-awesome-icon icon="trash" @click.stop="formDeleteUser(user.userName, index)"> </font-awesome-icon>
             </td>
           </tr>

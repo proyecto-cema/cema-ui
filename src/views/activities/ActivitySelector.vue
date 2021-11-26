@@ -1,6 +1,6 @@
 <template>
   <div class="row mt-3 d-flex justify-content-center">
-    <button class="btn btn-secondary text-white col-lg-4 col-10" type="button" v-on:click="openActivityModal()">
+    <button class="btn btn-secondary text-white col-lg-4 col-10" type="button" @click="openActivityModal()">
       Crear actividad
     </button>
   </div>

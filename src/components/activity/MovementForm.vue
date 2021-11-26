@@ -10,7 +10,6 @@
       input-id="location"
       selected-option="Seleccionar"
       :options="locations"
-      optionKey="name"
     >
       <template v-slot:default="{ option }">
         {{ option.name }}

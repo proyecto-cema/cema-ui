@@ -43,6 +43,7 @@ export default {
   methods: {
     ...mapActions('bovine', ['listBovines']),
     async searchBovines(searchingFor = '') {
+      console.log('++++++++++++++++++++');
       let searchLength = searchingFor.length;
       console.log(searchingFor);
       let defaultSearch = {
@@ -53,7 +54,7 @@ export default {
       if (searchLength === 0 || searchLength >= 1) {
         this.listBovines(defaultSearch).then((response) => {
           this.bovines = response.data;
-          console.log(response);
+          console.log('++++++++++++++++++++', response);
         });
       }
     },

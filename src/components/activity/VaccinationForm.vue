@@ -19,6 +19,12 @@
       v-if="!activityData.extraData.isBatch"
       input-title="Dosis"
       input-id="Dose"
+      :error-data="{
+        required: true,
+        errorStatus: errorSave.dose,
+        errorMessage: 'Ingrese un número válido',
+      }"
+      min="0"
       type="number"
     ></cema-input>
   </div>

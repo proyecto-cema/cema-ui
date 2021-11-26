@@ -7,7 +7,7 @@
           <button
             aria-label="Close"
             class="btn-close"
-            v-on:click="rejectModal()"
+            @click="rejectModal()"
             data-bs-dismiss="modal"
             type="button"
           ></button>
@@ -16,10 +16,10 @@
           <p>{{ confirmationMessage }}</p>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary text-white" data-bs-dismiss="modal" type="button" v-on:click="rejectModal()">
+          <button class="btn btn-primary text-white" data-bs-dismiss="modal" type="button" @click="rejectModal()">
             {{ btnReject ? btnReject : 'No' }}
           </button>
-          <button class="btn btn-secondary text-white" data-bs-dismiss="modal" type="button" v-on:click="acceptModal()">
+          <button class="btn btn-secondary text-white" data-bs-dismiss="modal" type="button" @click="acceptModal()">
             {{ btnAccept ? btnAccept : 'Si' }}
           </button>
         </div>

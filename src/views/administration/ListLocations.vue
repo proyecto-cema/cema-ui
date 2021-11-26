@@ -1,22 +1,16 @@
 <template>
   <div class="text-center">
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
-      <button class="btn btn-secondary text-white" type="button" v-on:click="openAddLocationModal(null, null)">
+      <button class="btn btn-secondary text-white" type="button" @click="openAddLocationModal(null, null)">
         Nueva ubicación
       </button>
     </div>
     <div class="col-12 table-responsive">
       <table class="table">
         <caption>
-          Mostrando
           {{
-            locationsLength
+            `Mostrando ${locationsLength} de ${locationsLength} ubicaciones`
           }}
-          de
-          {{
-            locationsLength
-          }}
-          ubicaciones
         </caption>
         <thead>
           <tr v-if="locationsLength !== 0">

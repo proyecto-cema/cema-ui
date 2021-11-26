@@ -31,15 +31,13 @@
           </cema-input>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-2">
-          <button class="btn btn-secondary text-white" type="button" v-on:click="openActivityModal()">
+          <button class="btn btn-secondary text-white" type="button" @click="openActivityModal()">
             Crear actividad
           </button>
-          <button class="btn btn-primary text-white" type="button" v-on:click="this.clearSearchActivityData()">
+          <button class="btn btn-primary text-white" type="button" @click="this.clearSearchActivityData()">
             Restablecer
           </button>
-          <button class="btn btn-secondary text-white" type="button" v-on:click="this.searchActivities()">
-            Buscar
-          </button>
+          <button class="btn btn-secondary text-white" type="button" @click="this.searchActivities()">Buscar</button>
         </div>
       </div>
     </form>
@@ -63,7 +61,7 @@
                 style="border-radius: 5px"
                 v-bind:style="attr.customData.future ? { opacity: 0.7 } : {}"
                 :class="attr.customData.class"
-                v-on:click="this.openActivityModalWithSearch(attr.customData.id, attr.customData.type)"
+                @click="this.openActivityModalWithSearch(attr.customData.id, attr.customData.type)"
               >
                 {{ attr.customData.title }}
               </div>
@@ -88,7 +86,7 @@ import ActivityModal from '../../components/activity/ActivityModal';
 import { Modal } from 'bootstrap';
 import CemaInput from '../../components/form/CemaInput';
 import { ACTIVITIES_EXTRA_DATA } from '../../constants';
-import CalendarMobile from '../../components/activity/CalendarMobile';
+
 export default {
   name: 'Calendar',
   data() {

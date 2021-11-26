@@ -4,13 +4,7 @@
       <div class="modal-content">
         <div class="modal-header text-center">
           <h5 :id="modalId + 'Label'" class="modal-title">Editar Bovinos del lote {{ batch.batchName }}</h5>
-          <button
-            aria-label="Close"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            v-on:click="clean()"
-            type="button"
-          ></button>
+          <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" @click="clean()" type="button"></button>
         </div>
         <div class="modal-body">
           <form @submit.prevent="">
@@ -46,7 +40,7 @@
                           icon="trash"
                           style="cursor: pointer; font-size: 20px"
                           title="Eliminar bovino del lote"
-                          v-on:click="removeFromList(index)"
+                          @click="removeFromList(index)"
                         >
                         </font-awesome-icon>
                       </td>
@@ -66,7 +60,7 @@
             class="btn btn-secondary text-white"
             data-bs-dismiss="modal"
             type="button"
-            v-on:click="saveModifications()"
+            @click="saveModifications()"
           >
             Modificar
           </button>

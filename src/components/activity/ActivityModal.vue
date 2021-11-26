@@ -4,13 +4,7 @@
       <div class="modal-content">
         <div class="modal-header text-center">
           <h5 :id="modalId + 'Label'" class="modal-title">{{ modalTitle }}</h5>
-          <button
-            aria-label="Close"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            v-on:click="clean()"
-            type="button"
-          ></button>
+          <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" @click="clean()" type="button"></button>
         </div>
         <div class="modal-body">
           <form @submit.prevent="">
@@ -88,20 +82,20 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary text-white" data-bs-dismiss="modal" type="button" v-on:click="clean()">
+          <button class="btn btn-primary text-white" data-bs-dismiss="modal" type="button" @click="clean()">
             Cancelar
           </button>
-          <button v-if="edit" class="btn btn-primary text-white" type="button" v-on:click="clean()">Crear Nuevo</button>
+          <button v-if="edit" class="btn btn-primary text-white" type="button" @click="clean()">Crear Nuevo</button>
           <button
             v-if="edit"
             class="btn btn-danger text-white"
             data-bs-dismiss="modal"
             type="button"
-            v-on:click="deleteModal()"
+            @click="deleteModal()"
           >
             Eliminar
           </button>
-          <button class="btn btn-secondary text-white" type="button" v-on:click="saveModal()">
+          <button class="btn btn-secondary text-white" type="button" @click="saveModal()">
             {{ edit ? 'Modificar' : 'Guardar' }}
           </button>
         </div>
@@ -117,7 +111,7 @@ import VaccinationForm from '../../components/activity/VaccinationForm';
 import WeighingForm from '../../components/activity/WeighingForm';
 import MovementForm from '../../components/activity/MovementForm';
 import { mapActions, mapState } from 'vuex';
-import { ACTIVITIES_EXTRA_DATA, SEARCH_DEFAULT_TAG } from '../../constants';
+import { VALIDATIONS, ACTIVITIES_EXTRA_DATA, SEARCH_DEFAULT_TAG } from '../../constants';
 
 export default {
   name: 'ActivityModal',
@@ -170,7 +164,7 @@ export default {
         (this.activityData.extraData.bovineTag === SEARCH_DEFAULT_TAG || !this.activityData.extraData.bovineTag);
       let validations = this.activityMap.validations;
       for (const key in validations) {
-        this.errorSave[key] = !this.activityData.extraData[validations[key]];
+        this.errorSave[key] = VALIDATIONS[validations[key]](this.activityData.extraData[key]);
       }
     },
     hasErrors() {

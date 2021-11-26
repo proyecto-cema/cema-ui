@@ -10,7 +10,7 @@
         data-target="#navbarSupportedContent"
         data-toggle="collapse"
         type="button"
-        v-on:click="toggleSideNav()"
+        @click="toggleSideNav()"
       >
         <font-awesome-icon icon="align-justify" />
       </button>

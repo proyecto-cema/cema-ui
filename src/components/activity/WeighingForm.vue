@@ -3,7 +3,18 @@
     <tag-search :error-save="errorSave" />
   </div>
   <div class="col-lg-6 col-12 mb-2">
-    <cema-input v-model="activityData.extraData.weight" input-title="Peso" input-id="weight" type="number">
+    <cema-input
+      v-model="activityData.extraData.weight"
+      :error-data="{
+        required: true,
+        errorStatus: errorSave.weight,
+        errorMessage: 'Ingrese un número válido',
+      }"
+      input-title="Peso"
+      input-id="weight"
+      type="number"
+      min="0"
+    >
     </cema-input>
   </div>
   <div class="col-lg-6 col-12 mb-2">
