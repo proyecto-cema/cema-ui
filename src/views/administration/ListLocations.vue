@@ -13,6 +13,7 @@
         </caption>
         <thead>
         <tr v-if="locationsLength !== 0">
+          <th scope="col">Predeterminada</th>
           <th scope="col">Nombre</th>
           <th scope="col">Descripción</th>
           <th scope="col">Tamaño</th>
@@ -24,6 +25,12 @@
         </thead>
         <tbody>
         <tr v-for="(location, index) in locations" :key="location.name">
+          <td>
+            <font-awesome-icon size="lg"
+                :icon="location.isDefault? ['far', 'check-square']:['far', 'square']"
+                @click.stop="changeDefaultLocation(index)">
+            </font-awesome-icon>
+          </td>
           <td>{{ location.name }}</td>
           <td>{{ location.description }}</td>
           <td>{{ location.size }}</td>
@@ -66,7 +73,7 @@ export default {
       deleteModal: null,
       addLocationModal: null,
       timeout: false,
-      delay: 250,
+      delay: 250
     };
   },
   components: { ConfirmationModal, LocationModal },
@@ -76,7 +83,7 @@ export default {
     this.searchLocations();
   },
   methods: {
-    ...mapActions("location", ["listLocations", "setupEditLocation", "deleteLocation"]),
+    ...mapActions("location", ["listLocations", "setupEditLocation", "deleteLocation", "makeDefaultLocation"]),
     ...mapActions(["showSuccess"]),
     setIndexForName(index, name){
       this.deleted = {
@@ -109,6 +116,24 @@ export default {
         this.deleted = {};
       }
       this.locations.push(location);
+    },
+    changeDefaultLocation(index){
+      let location = this.locations[index];
+      if (location.isDefault){
+        console.log("Already default")
+        return
+      }
+      this.makeDefaultLocation(location).then(
+          () => {
+            for (let i = 0; i < this.locations; i++) {
+              if (this.locations[i].isDefault){
+                this.locations[i].isDefault = false;
+                break;
+              }
+            }
+            this.locations[index].isDefault = true;
+          }
+      );
     },
     async modalDelete() {
       let helperDeleted = {...this.deleted};

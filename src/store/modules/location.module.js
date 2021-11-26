@@ -74,7 +74,20 @@ const actions = {
                 return Promise.reject(error);
             }
         );
-    }
+    },
+    async makeDefaultLocation({dispatch}, location){
+        console.log(`Making ${location} default.`)
+        return LocationService.setLocation({ ...location, previousName: location.name, isDefault: true }, true).then(
+            response => {
+                console.log(response);
+                return Promise.resolve(response);
+            },
+            error => {
+                dispatch("showError", {error: error, errors: LOCATION_ERRORS}, {root:true});
+                return Promise.reject(error);
+            }
+        );
+    },
 }
 
 
