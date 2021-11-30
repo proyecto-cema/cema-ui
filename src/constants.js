@@ -29,7 +29,7 @@ export const ACTIVITIES_EXTRA_DATA = {
     "Movement": {
         displayName: "Movimiento", backendName: "Movement",
         url: "movements", componentName: "MovementForm",
-        validations: { "location": "is_null" }, style: "bg-danger text-white", color:"red"
+        validations: { "locationName": "is_null" }, style: "bg-danger text-white", color:"red"
     },
 };
 export const SEARCH_DEFAULT_TAG = "Seleccione la caravana";

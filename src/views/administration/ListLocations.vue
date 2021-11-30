@@ -134,13 +134,7 @@ export default {
         return;
       }
       this.makeDefaultLocation(location).then(() => {
-        for (let i = 0; i < this.locations; i++) {
-          if (this.locations[i].isDefault) {
-            this.locations[i].isDefault = false;
-            break;
-          }
-        }
-        this.locations[index].isDefault = true;
+        this.searchLocations();
       });
     },
     async modalDelete() {
@@ -150,11 +144,11 @@ export default {
       this.deleteLocation(toDelete).then(() => {
         this.locations.splice(helperDeleted.index, 1);
         this.showSuccess(`La ubicacion ${helperDeleted.name} se eliminó correctamente`);
+        this.searchLocations();
         this.deleted = {};
       });
     },
     async searchLocations() {
-      this.locations = null;
       this.listLocations().then((response) => {
         this.locations = response.data;
         console.log(response);

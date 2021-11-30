@@ -131,9 +131,9 @@ const actions = {
         );
     },
     async listActivities({dispatch, rootState},search) {
-        return ActivityService.getActivitiesList(search.name,search.type,rootState.bovine.selectedCuig).then(
+        return ActivityService.getActivitiesList(search.name, search.type, rootState.bovine.selectedCuig).then(
             response => {
-                console.log("List Activities: " +response.data);
+                console.log("List Activities: " + response.data);
                 return Promise.resolve(response);
             },
             error => {

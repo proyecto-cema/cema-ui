@@ -13,15 +13,15 @@ class ActivityService {
     }
 
     deleteActivity(id, cuig, activity_url) {
-        return httpActivity.delete(activity_url + '/' + id, { params:{cuig: cuig}, headers: authHeader() })
+        return httpActivity.delete(activity_url + '/' + id, { params: { cuig: cuig }, headers: authHeader() })
     }
 
     getActivity(id, cuig, activity_url) {
-        return httpActivity.get(activity_url + '/' + id, { params:{cuig: cuig},  headers: authHeader() })
+        return httpActivity.get(activity_url + '/' + id, { params: { cuig: cuig },  headers: authHeader() })
     }
     getActivitiesList (name, activity_url, cuig ) {
-      return httpActivity.post(activity_url +'/search', { cuig: cuig, name:name },
-          { params:{ size:100 },  headers: authHeader() }
+      return httpActivity.post(activity_url +'/search', { cuig: cuig, name: name },
+          { params:{ size: 1000 },  headers: authHeader() }
       )
     }
     getActivityNotifications(cuig) {

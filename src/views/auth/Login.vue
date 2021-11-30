@@ -88,11 +88,13 @@ export default {
       if (!this.username) {
         this.error.type = 'user';
         this.error.message = 'Debe ingregar su usuario';
+        this.loading = false;
         return;
       }
       if (!this.pass) {
         this.error.type = 'pass';
         this.error.message = 'Por favor ingrese su contraseña';
+        this.loading = false;
         return;
       }
       try {
