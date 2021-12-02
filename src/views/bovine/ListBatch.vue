@@ -2,18 +2,18 @@
   <div class="text-center">
     <div class="col-12 table-responsive">
       <div class="mt-2">
-        <h3>Listado Lotes</h3>
+        <h3>Listado de Lotes</h3>
       </div>
       <table class="table">
         <thead>
-          <tr v-if="batches && batches.length !== 0">
-            <th scope="col">Nombre</th>
-            <th scope="col">Descripcion</th>
-            <th class="text-end" scope="col">Acciones</th>
-          </tr>
-          <tr v-else>
-            <th scope="col">No se encontraron lotes creados para este establecimiento.</th>
-          </tr>
+        <tr v-if="batches && batches.length !== 0">
+          <th scope="col">Nombre</th>
+          <th scope="col">Descripción</th>
+          <th class="text-end" scope="col">Acciones</th>
+        </tr>
+        <tr v-else>
+          <th scope="col">No se encontraron lotes creados para este establecimiento.</th>
+        </tr>
         </thead>
         <tbody>
           <tr v-for="(batch, index) in batches" :key="batch.batchName">
@@ -82,8 +82,9 @@ export default {
     this.retrieveBatches();
   },
   methods: {
-    ...mapActions('bovine', ['listBatches', 'deleteBatch', 'setupBatch']),
-    setIndexForBatch(name, index, cuig) {
+    ...mapActions("bovine", ["listBatches", "deleteBatch", "setupBatch"]),
+    ...mapActions(["showSuccess"]),
+    setIndexForBatch(name, index, cuig){
       this.deleted = {
         name: name,
         index: index,
@@ -101,11 +102,15 @@ export default {
       this.editBatchModal.show();
     },
     async modalDelete() {
-      console.log(`Deleting batch ${this.deleted['name']}`);
-      this.deleteBatch(this.deleted).then(() => {
-        this.batches.splice(this.deleted['index'], 1);
-        this.deleted = {};
-      });
+      let helperDeleted = {...this.deleted};
+      console.log(`Deleting batch ${helperDeleted["name"]}`)
+      this.deleteBatch(this.deleted).then(
+          () => {
+            this.showSuccess(`El lote ${helperDeleted["name"]} se eliminó correctamente`);
+            this.batches.splice(helperDeleted["index"], 1);
+            this.deleted = {};
+          }
+      );
     },
     async retrieveBatches() {
       this.batches = null;
