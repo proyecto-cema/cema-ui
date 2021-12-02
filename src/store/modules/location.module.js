@@ -31,7 +31,7 @@ const actions = {
         commit('setEdit', false);
     },
     setupEditLocation({commit}, proxyLocation){
-        commit('setLocation', proxyLocation);
+        commit('setLocation', { previousName: proxyLocation.name, ...proxyLocation});
         commit('setEdit', true);
     },
     async saveLocation({state, dispatch, rootState}){
@@ -53,6 +53,18 @@ const actions = {
     },
     async listLocations({dispatch, rootState}) {
         return LocationService.listLocation(rootState.auth.user.user.establishmentCuig).then(
+            response => {
+                console.log(response.data);
+                return Promise.resolve(response);
+            },
+            error => {
+                dispatch("showError", {error: error, errors: LOCATION_ERRORS}, {root:true});
+                return Promise.reject(error);
+            }
+        );
+    },
+    async deleteLocation({dispatch, rootState}, location) {
+        return LocationService.deleteLocation(location, location.establishmentCuig).then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);

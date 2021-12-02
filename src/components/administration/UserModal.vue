@@ -167,7 +167,7 @@ export default {
     },
     saveModal() {
       this.errorSave = this.errorSaveHelper;
-      if (this.errorSave.userName || this.errorSave.name || this.errorSave.lastName || this.errorSave.role || this.errorSave.establishmentCuig || this.errorSave.password || this.errorSave.passwordRepeat) {
+      if (this.checkErrors(this.errorSave)) {
         console.error(this.errorSave)
         return
       }

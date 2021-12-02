@@ -183,7 +183,7 @@ export default {
     },
     saveModal() {
       this.errorSave = this.errorSaveHelper;
-      if (this.errorSave.taggingDate || this.errorSave.tag || this.errorSave.genre || this.errorSave.category || this.errorSave.status) {
+      if (this.checkErrors(this.errorSave)) {
         console.error(this.errorSave)
         return
       }

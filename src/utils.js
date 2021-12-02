@@ -19,5 +19,12 @@ export default {
         getMomentToday(format="YYYY-MM-DD"){
             return moment().format(format);
         },
+        checkErrors(errorSave){
+            for (const key in errorSave) {
+                if (!errorSave.hasOwnProperty(key)) continue;
+                if (errorSave[key]) return true;
+            }
+            return false;
+        },
     }
 }
