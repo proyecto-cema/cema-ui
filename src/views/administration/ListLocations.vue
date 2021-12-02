@@ -2,10 +2,13 @@
   <div class="text-center">
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
       <button class="btn btn-secondary text-white" type="button" @click="openAddLocationModal(null, null)">
-        Nueva ubicación
+        + Nueva Ubicación
       </button>
     </div>
     <div class="col-12 table-responsive">
+      <div class="mt-2">
+        <h3>Listado de Ubicaciones</h3>
+      </div>
       <table class="table">
         <caption>
           {{
