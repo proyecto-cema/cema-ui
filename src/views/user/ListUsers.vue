@@ -5,7 +5,9 @@
         + Nuevo Usuario
       </button>
     </div>
-    <h2 class="h2 mt-3">Listado de Usuarios</h2>
+    <div class="mt-2">
+      <h3>Listado de Usuarios</h3>
+    </div>
     <div class="col-12 table-responsive">
       <table class="table">
         <thead>

@@ -60,6 +60,9 @@
         </div>
       </div>
     </form>
+    <div class="mt-2">
+      <h3>Listado de Bovinos</h3>
+    </div>
     <div class="col-12 table-responsive">
       <table class="table">
         <caption>
@@ -252,15 +255,9 @@ export default {
     },
   },
   methods: {
-    ...mapActions('bovine', [
-      'listBovines',
-      'deleteBovine',
-      'clearBovineData',
-      'setupEditBovine',
-      'setupListBovineSelected',
-      'removeBovinesFromBatch',
-    ]),
-    toggleBovineSelected(tag, cuig) {
+    ...mapActions("bovine", ["listBovines", "deleteBovine", "clearBovineData", "setupEditBovine", "setupListBovineSelected", "removeBovinesFromBatch"]),
+    ...mapActions(["showSuccess"]),
+    toggleBovineSelected(tag, cuig){
       this.showingExtraData = null;
       if (!this.bovineCuigSelected) {
         this.bovineCuigSelected = cuig;
@@ -368,11 +365,15 @@ export default {
       console.log(`You are in page ${this.headers.currentPage}, and requesting ${page} page`);
       await this.searchBovines(page, this.isMobile ? 5 : 10);
     },
-    async modalDelete() {
-      console.log(`Deleting bovine ${this.deleted['cuig']}-${this.deleted['tag']}`);
-      this.deleteBovine(this.deleted).then(() => {
-        this.bovines.splice(this.deleted['index'], 1);
-      });
+    modalDelete: async function() {
+      let helperDeleted = { ...this.deleted };
+      console.log(`Deleting bovine ${helperDeleted.cuig}-${helperDeleted.tag}`);
+      this.deleteBovine(this.deleted).then(
+        () => {
+          this.bovines.splice(helperDeleted['index'], 1);
+          this.showSuccess(`El bovino con caravana ${helperDeleted.cuig}-${helperDeleted.tag} se eliminó correctamente`);
+        },
+      );
     },
     async searchBovines(page = 0, size = 10) {
       this.bovines = null;

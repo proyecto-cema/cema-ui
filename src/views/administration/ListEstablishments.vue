@@ -5,6 +5,9 @@
         Nuevo Establecimiento
       </button>
     </div>
+    <div class="mt-2">
+      <h3>Listado de Establecimientos</h3>
+    </div>
     <div class="col-12 table-responsive">
       <table class="table">
         <caption>

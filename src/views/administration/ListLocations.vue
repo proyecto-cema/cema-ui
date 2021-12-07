@@ -5,6 +5,9 @@
         + Nueva Ubicación
       </button>
     </div>
+    <div class="mt-2">
+      <h3>Listado de Ubicaciones</h3>
+    </div>
     <div class="col-12 table-responsive">
       <div class="mt-2">
         <h3>Listado de Ubicaciones</h3>
