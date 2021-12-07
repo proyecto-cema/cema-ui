@@ -14,7 +14,7 @@
           <tr v-if="users.length !== 0">
             <th scope="col">Usuario</th>
             <th scope="col">Nombre</th>
-            <th v-if="!this.isMobile" scope="col">Cuig</th>
+            <th v-if="!this.isMobile" scope="col">CUIG</th>
             <th v-if="!this.isMobile" scope="col">Rol</th>
             <th class="text-end" scope="col">Acciones</th>
           </tr>
@@ -107,6 +107,7 @@ export default {
   },
   methods: {
     ...mapActions('user', ['listUsers', 'deleteUser', 'clearUserData', 'setupEditUser']),
+    ...mapActions(["showSuccess"]),
     resizeTimeOut() {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(this.onResize, this.delay);

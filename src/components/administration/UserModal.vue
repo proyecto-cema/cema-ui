@@ -248,7 +248,7 @@ export default {
         user: this.user,
       };
       this.saveUser(data).then((user) => {
-        this.successCall(`El usuario ${user.user.userName} se guardó correctamente.`);
+        this.successCall(`El usuario ${user.user.userName} se guardó correctamente`);
         this.setupEditUser(user.user);
       });
     },
