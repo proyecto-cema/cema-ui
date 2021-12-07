@@ -26,20 +26,11 @@
                   </cema-input>
                 </div>
                 <div class="col-12 mb-3">
-                  <cema-input
-                    v-model="activityData.type"
-                    component-type="select"
-                    required
-                    :error-data="{
-                      required: true,
-                      errorStatus: errorSave.activityType,
-                      errorMessage: 'Seleccione el tipo de actividad',
-                    }"
-                    input-title="Tipo de Actividad"
-                    input-id="activityType"
-                    :options="activitiesOptions"
-                    optionKey="backendName"
-                  >
+                  <cema-input v-model="activityData.type" component-type="select" required
+                              :error-data="{required: true, errorStatus: errorSave.activityType,
+                                errorMessage: 'Seleccione el tipo de actividad'}"
+                              input-title="Tipo de Actividad" input-id="activityType"
+                              :options="activitiesOptions" optionKey="backendName" :disabled="edit">
                     <template v-slot:default="{ option }">
                       {{ option.displayName }}
                     </template>
