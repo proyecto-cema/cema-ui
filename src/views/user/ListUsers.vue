@@ -25,7 +25,7 @@
         <tbody>
           <tr v-for="(user, index) in users" :key="user.userName">
             <td>{{ user.userName }}</td>
-            <td>{{ user.name }} , {{ user.lastName }}</td>
+            <td>{{ user.name }}, {{ user.lastName }}</td>
             <td v-if="!this.isMobile">{{ user.establishmentCuig }}</td>
             <td v-if="!this.isMobile">{{ user.role }}</td>
             <td class="text-end">
