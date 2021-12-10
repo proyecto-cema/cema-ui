@@ -5,26 +5,28 @@ class ActivityService {
     setActivity(activity, edit, activity_url) {
         if (edit) {
             return httpActivity.put(activity_url + '/' + activity.id, activity,
-                { params:{cuig: activity.establishmentCuig}, headers: authHeader() })
+                { params:{ cuig: activity.establishmentCuig }, headers: authHeader() })
         } else {
             return httpActivity.post(activity_url + '/', activity,
-                { params:{cuig: activity.establishmentCuig}, headers: authHeader() })
+                { params:{ cuig: activity.establishmentCuig }, headers: authHeader() })
         }
     }
 
     deleteActivity(id, cuig, activity_url) {
-        return httpActivity.delete(activity_url + '/' + id, { params:{cuig: cuig}, headers: authHeader() })
+        return httpActivity.delete(activity_url + '/' + id, { params: { cuig: cuig }, headers: authHeader() })
     }
 
     getActivity(id, cuig, activity_url) {
-        return httpActivity.get(activity_url + '/' + id, { params:{cuig: cuig},  headers: authHeader() })
+        return httpActivity.get(activity_url + '/' + id, { params: { cuig: cuig },  headers: authHeader() })
     }
     getActivitiesList (name, activity_url, cuig ) {
-      return httpActivity.post(activity_url +'/search', {cuig: cuig,name:name},{ params:{size:100},  headers: authHeader() })
+      return httpActivity.post(activity_url +'/search', { cuig: cuig, name: name },
+          { params:{ size: 1000 },  headers: authHeader() }
+      )
     }
     getActivityNotifications(cuig) {
         return httpActivity.post( 'activities/search', { establishmentCuig: cuig },
-            { params:{pastLimit: 0, futureLimit: 7},  headers: authHeader() })
+            { params:{ pastLimit: 0, futureLimit: 7 },  headers: authHeader() })
     }
 }
 

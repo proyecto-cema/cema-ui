@@ -1,7 +1,6 @@
 <template>
   <div class="row mt-3 d-flex justify-content-center">
-    <button class="btn btn-secondary text-white col-lg-4 col-10" type="button"
-            v-on:click="openActivityModal()">
+    <button class="btn btn-secondary text-white col-lg-4 col-10" type="button" @click="openActivityModal()">
       Crear actividad
     </button>
   </div>
@@ -10,15 +9,15 @@
 </template>
 
 <script>
-import ActivityModal from "../../components/activity/ActivityModal";
-import {Modal} from "bootstrap";
+import ActivityModal from '../../components/activity/ActivityModal';
+import { Modal } from 'bootstrap';
 
 export default {
-  name: "ActivitySelector",
-  date(){
-    return{
+  name: 'ActivitySelector',
+  date() {
+    return {
       activityModal: null,
-    }
+    };
   },
   mounted() {
     this.activityModal = new Modal(document.getElementById('activityModal'));
@@ -27,13 +26,11 @@ export default {
     ActivityModal,
   },
   methods: {
-    openActivityModal(){
-      this.activityModal.show()
-    }
-  }
-}
+    openActivityModal() {
+      this.activityModal.show();
+    },
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

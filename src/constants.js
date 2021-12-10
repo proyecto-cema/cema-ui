@@ -6,26 +6,30 @@ export const REGEX_LETTERS_NUMBERS = /^([a-zA-Z0-9]+)$/;
 export const REGEX_SPACES = /^\S+$/;
 export const MAXIMUM_TOASTS = 4;
 export const MAXIMUM_NOTIFICATIONS_TOASTS = 4;
-export const ACTIVITIES_OPTIONS = {
-    "Inoculation": {displayName: "Vacunación", backendName: "Inoculation"},
-    "Weighing": {displayName: "Pesaje", backendName: "Weighing"},
-    "Ultrasound": {displayName: "Tacto", backendName: "Ultrasound"}
-};
+export const VALIDATIONS = {
+    is_null: (element) => {return !element},
+    lt_zero: (element) => {return element<0},
+}
 export const ACTIVITIES_EXTRA_DATA = {
     "Inoculation": {
         displayName: "Vacunación", backendName: "Inoculation",
         url: "inoculations", componentName: "VaccinationForm",
-        validations: { "drug": "drug" }, style: "bg-success text-white", color:"green"
+        validations: { "drug": "is_null", "dose": "lt_zero" }, style: "bg-success text-white", color:"green"
     },
     "Weighing": {
         displayName: "Pesaje", backendName: "Weighing",
         url: "weightings", componentName: "WeighingForm",
-        validations: {}, style: "bg-warning text-white", color:"yellow"
+        validations: {"weight": "lt_zero"}, style: "bg-warning text-white", color:"yellow"
     },
     "Ultrasound": {
         displayName: "Tacto", backendName: "Ultrasound",
         url: "ultrasounds", componentName: "UltrasoundForm",
-        validations: {}, style: "bg-info text-white", color:"blue"
+        validations: {"serviceNumber": "lt_zero"}, style: "bg-info text-white", color:"blue"
+    },
+    "Movement": {
+        displayName: "Movimiento", backendName: "Movement",
+        url: "movements", componentName: "MovementForm",
+        validations: { "locationName": "is_null" }, style: "bg-danger text-white", color:"red"
     },
 };
 export const SEARCH_DEFAULT_TAG = "Seleccione la caravana";

@@ -6,19 +6,21 @@ class UserService {
     return httpUsers.post('users', {}, { headers: authHeader() })
   }
   getOwnerList (role) {
-    return httpUsers.get('users/list/'+role, { headers: authHeader() })
+    return httpUsers.get('users/list/' + role, { headers: authHeader() })
   }
   getUserByUserName (userName) {
-    return httpUsers.get('users/'+userName, { params: {username:userName} , headers: authHeader() })
+    return httpUsers.get('users/' + encodeURIComponent(userName),
+        { params: {username:userName} , headers: authHeader() }
+    )
   }
   setUser (user,password) {
     return httpUsers.post('users/register', user, { params: {password:password} , headers: authHeader() })
   }
   getUsersList (role) {
-    return httpUsers.get('users/list/'+role, { headers: authHeader() })
+    return httpUsers.get('users/list/' + role, { headers: authHeader() })
   }
   deleteUser (userName) {
-    return httpUsers.delete('users/' + userName, { headers: authHeader() })
+    return httpUsers.delete('users/' + encodeURIComponent(userName), { headers: authHeader() })
   }
 }
 
