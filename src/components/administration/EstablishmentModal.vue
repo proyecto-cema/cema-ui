@@ -171,10 +171,12 @@ export default {
         console.error(this.errorSave);
         return;
       }
-      this.saveEstablishment({ establishment: this.establishment }).then((establishment) => {
-        this.$emit('createdNew', { establishment: establishment, edit: this.edit });
-        this.successCall(`El establecimiento con cuig ${establishment.cuig} se guardó correctamente`);
-      });
+      this.saveEstablishment({establishment: this.establishment}).then(
+          (establishment) => {
+            this.$emit('createdNew', {establishment: establishment, edit: this.edit});
+            this.successCall(`El establecimiento con CUIG ${establishment.cuig} se guardó correctamente`);
+          }
+      );
     },
     async searchOwners() {
       this.listOwners().then((response) => {

@@ -1,9 +1,13 @@
 <template>
   <div class="text-center">
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
-      <button class="btn btn-secondary text-white" type="button" @click="openAddEstablishmentModal(null)">
-        Nuevo Establecimiento
+      <button class="btn btn-secondary text-white" type="button"
+              v-on:click="openAddEstablishmentModal(null)">
+        + Nuevo Establecimiento
       </button>
+    </div>
+    <div class="mt-2">
+      <h3>Listado de Establecimientos</h3>
     </div>
     <div class="col-12 table-responsive">
       <table class="table">

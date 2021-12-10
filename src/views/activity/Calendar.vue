@@ -1,6 +1,11 @@
 <template>
   <div class="text-center section">
-    <h2 class="h2 mt-3">Calendario de actividades</h2>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
+      <button class="btn btn-secondary text-white" type="button"
+              v-on:click="openActivityModal()">
+        + Nueva Actividad
+      </button>
+    </div>
     <form @submit.prevent="">
       <div class="row">
         <div class="col-12 col-md-6 col-lg-6">
@@ -16,31 +21,27 @@
           ></cema-input>
         </div>
         <div class="col-12 col-md-6 col-lg-6">
-          <cema-input
-            v-model="search.type"
-            component-type="select"
-            input-title="Tipo Actividad"
-            input-id="Type"
-            :label="false"
-            :options="activitiesOptions"
-            optionKey="backendName"
-          >
-            <template v-slot:default="{ option }">
-              {{ option.displayName }}
-            </template>
-          </cema-input>
+          <cema-input v-model="search.type" component-type="select" 
+                              input-title="Tipo de actividad" input-id="Type" :label="false"
+                              :options="activitiesOptions" optionKey="backendName">
+                    <template v-slot:default="{ option }">
+                      {{ option.displayName }}
+                    </template>
+                  </cema-input>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-2">
-          <button class="btn btn-secondary text-white" type="button" @click="openActivityModal()">
-            Crear actividad
-          </button>
-          <button class="btn btn-primary text-white" type="button" @click="this.clearSearchActivityData()">
+          <button class="btn btn-primary text-white"
+                  type="button"
+                  v-on:click="this.clearSearchActivityData()">
             Restablecer
           </button>
           <button class="btn btn-secondary text-white" type="button" @click="this.searchActivities()">Buscar</button>
         </div>
       </div>
     </form>
+    <div class="mt-2">
+      <h3>Calendario de Actividades</h3>
+    </div>
     <div v-if="!isMobile">
       <v-calendar
         ref="calendar"

@@ -5,14 +5,16 @@
         + Nuevo Usuario
       </button>
     </div>
-    <h2 class="h2 mt-3">Listado de Usuarios</h2>
+    <div class="mt-2">
+      <h3>Listado de Usuarios</h3>
+    </div>
     <div class="col-12 table-responsive">
       <table class="table">
         <thead>
           <tr v-if="users.length !== 0">
             <th scope="col">Usuario</th>
             <th scope="col">Nombre</th>
-            <th v-if="!this.isMobile" scope="col">Cuig</th>
+            <th v-if="!this.isMobile" scope="col">CUIG</th>
             <th v-if="!this.isMobile" scope="col">Rol</th>
             <th class="text-end" scope="col">Acciones</th>
           </tr>
@@ -23,7 +25,7 @@
         <tbody>
           <tr v-for="(user, index) in users" :key="user.userName">
             <td>{{ user.userName }}</td>
-            <td>{{ user.name }} , {{ user.lastName }}</td>
+            <td>{{ user.name }}, {{ user.lastName }}</td>
             <td v-if="!this.isMobile">{{ user.establishmentCuig }}</td>
             <td v-if="!this.isMobile">{{ user.role }}</td>
             <td class="text-end">
@@ -105,6 +107,7 @@ export default {
   },
   methods: {
     ...mapActions('user', ['listUsers', 'deleteUser', 'clearUserData', 'setupEditUser']),
+    ...mapActions(["showSuccess"]),
     resizeTimeOut() {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(this.onResize, this.delay);
