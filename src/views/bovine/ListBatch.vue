@@ -116,7 +116,7 @@ export default {
       this.batches = null;
       this.listBatches().then((response) => {
         this.batches = response.data;
-        console.log(response);
+        console.log('Lotes:' + response);
       });
     },
   },

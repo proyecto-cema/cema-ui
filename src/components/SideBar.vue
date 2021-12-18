@@ -77,6 +77,7 @@ export default {
           ],
         },
         { name: 'Actividades', isCollapsible: false, icon: 'lightbulb', route: 'Calendar', roleRequirement: 0 },
+        { name: 'Operaciones', isCollapsible: false, icon:'lightbulb', route: 'ListOperations', roleRequirement: 0 }
       ],
     };
   },

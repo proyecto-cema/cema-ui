@@ -5,6 +5,7 @@ import Dashboard from '../views/Dashboard.vue'
 import bovine from './bovine'
 import establishment from './establishment'
 import location from './location'
+import operation from './operation'
 import user from './user'
 import login from './login'
 import activity from './activity'
@@ -26,7 +27,7 @@ const localRoutes = [
     component: About
   }
 ]
-routes = routes.concat(localRoutes, bovine, login, establishment, activity, user,location, audit)
+routes = routes.concat(localRoutes, bovine, login, establishment, activity, user, location, operation, audit)
 
 const router = createRouter({
   history: createWebHistory(),
