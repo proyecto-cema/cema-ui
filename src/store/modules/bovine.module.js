@@ -9,7 +9,7 @@ const state = {
     selectedCuig: null,
     cantSelect: null,
     edit: false,
-    categories:["Ternero","Vaca","Toro"],
+    categories: ["Ternero","Vaca","Toro"],
     batch: {batchName: null, description: null, bovineTags: [], establishmentCuig: null}
 }
 

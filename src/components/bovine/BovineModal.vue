@@ -9,32 +9,41 @@
         <div class="modal-body">
           <form @submit.prevent="">
             <div class="row">
-              <div class="col-lg-4 col-12">
+              <div class="col-lg-4 col-12 offset-lg-1">
+                <div class="mb-3">
+                  <cema-input
+                    v-model.trim="bovine.tag"
+                    maxlength="10"
+                    required
+                    :error-data="{
+                      required: true,
+                      errorStatus: errorSave.tag,
+                      errorMessage: getTagError()['message'],
+                    }"
+                    input-title="Caravana"
+                    input-id="bovineTag"
+                    type="text"
+                    :disabled="edit"
+                  ></cema-input>
+                </div>
                 <div class="position-relative text-center">
-                  <img alt="Identificador" class="imageIdBovine" src="../../assets/images/bovine/tag_bovino.png" />
-                  <div class="TextCenterImage">
+                  <img
+                    alt="Identificador"
+                    class="imageIdBovine"
+                    id="tagImg"
+                    :src="!selectedImage ? require('../../assets/images/bovine/tag_bovino.png') : selectedImage"
+                  />
+                  <div class="TextCenterImage" v-if="!selectedImage">
                     <h4>{{ bovine.establishmentCuig }}<br />{{ bovine.tag }}</h4>
                   </div>
                 </div>
+                <div class="mt-3" v-if="!edit">
+                  <input type="file" class="form-control-file" id="bovineTagFile" @change="recognize" />
+                  <small>Puede subir una imagen para escanear la caravana</small>
+                </div>
               </div>
-              <div class="col-lg-7 col-12">
+              <div class="col-lg-6 col-12">
                 <div class="row">
-                  <div class="col-lg-6 col-12 mb-3">
-                    <cema-input
-                      v-model.trim="bovine.tag"
-                      maxlength="10"
-                      required
-                      :error-data="{
-                        required: true,
-                        errorStatus: errorSave.tag,
-                        errorMessage: getTagError()['message'],
-                      }"
-                      input-title="Caravana"
-                      input-id="bovineTag"
-                      type="text"
-                      :disabled="edit"
-                    ></cema-input>
-                  </div>
                   <div class="col-lg-6 col-12 mb-3">
                     <cema-input
                       v-model="bovine.taggingDate"
@@ -187,11 +196,17 @@
 import CemaInput from '../form/CemaInput';
 import { mapActions, mapState } from 'vuex';
 import { REGEX_LETTERS_NUMBERS } from '../../constants';
+import { createWorker, OEM, PSM } from 'tesseract.js';
+
+const worker = createWorker({
+  logger: (m) => console.log(m),
+});
 
 export default {
   name: 'BovineModal',
   data() {
     return {
+      selectedImage: null,
       errorSave: {
         tag: false,
         taggingDate: false,
@@ -267,12 +282,25 @@ export default {
         edit: this.edit,
         bovine: this.bovine,
       };
-      this.saveBovine(data).then(
-          (bovine) => {
-            this.successCall(`El bovino con caravana ${bovine.establishmentCuig}-${bovine.tag} se guardó correctamente`);
-            this.setupEditBovine(bovine);
-          }
-      );
+      this.saveBovine(data).then((bovine) => {
+        this.successCall(`El bovino con caravana ${bovine.establishmentCuig}-${bovine.tag} se guardó correctamente`);
+        this.setupEditBovine(bovine);
+      });
+    },
+    async recognize(e) {
+      let files = e.target.files;
+      if (!files.length) return;
+      this.selectedImage = URL.createObjectURL(files[0]);
+      const img = document.getElementById('tagImg');
+      console.log(img);
+      await worker.load();
+      await worker.loadLanguage('eng');
+      await worker.initialize('eng');
+      const {
+        data: { text },
+      } = await worker.recognize(img);
+      console.log(text);
+      this.bovine.tag = text;
     },
   },
 };

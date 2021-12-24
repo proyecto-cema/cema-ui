@@ -21,7 +21,8 @@ import {
     faCommentAlt,
     faVenusMars,
     faChartLine,
-    faDownload
+    faDownload,
+  faCamera
 } from '@fortawesome/free-solid-svg-icons'
 import {
     faSquare,
@@ -51,7 +52,8 @@ library.add(
     faChartLine,
     faDownload,
     faCheckSquare,
-    faSquare
+    faSquare,
+  faCamera
 )
 
 export {FontAwesomeIcon}
