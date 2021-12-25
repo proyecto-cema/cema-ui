@@ -38,7 +38,14 @@
                   </div>
                 </div>
                 <div class="mt-3" v-if="!edit">
-                  <input type="file" class="form-control-file" id="bovineTagFile" @change="recognize" />
+                  <input
+                    type="file"
+                    class="form-control-file"
+                    id="bovineTagFile"
+                    @change="recognize"
+                    accept="image/*"
+                    capture="environment"
+                  />
                   <small>Puede subir una imagen para escanear la caravana</small>
                 </div>
               </div>
@@ -196,11 +203,16 @@
 import CemaInput from '../form/CemaInput';
 import { mapActions, mapState } from 'vuex';
 import { REGEX_LETTERS_NUMBERS } from '../../constants';
-import { createWorker, OEM, PSM } from 'tesseract.js';
+import { createWorker } from 'tesseract.js';
 
 const worker = createWorker({
   logger: (m) => console.log(m),
 });
+
+const MAX_WIDTH = 320;
+const MAX_HEIGHT = 180;
+const MIME_TYPE = 'image/jpeg';
+const QUALITY = 0.7;
 
 export default {
   name: 'BovineModal',
@@ -291,8 +303,16 @@ export default {
       let files = e.target.files;
       if (!files.length) return;
       this.selectedImage = URL.createObjectURL(files[0]);
+
       const img = document.getElementById('tagImg');
-      console.log(img);
+      const [newWidth, newHeight] = this.calculateSize(img, MAX_WIDTH, MAX_HEIGHT);
+      const canvas = document.createElement('canvas');
+      canvas.width = newWidth;
+      canvas.height = newHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, newWidth, newHeight);
+      canvas.toBlob((blob) => {}, MIME_TYPE, QUALITY);
+
       await worker.load();
       await worker.loadLanguage('eng');
       await worker.initialize('eng');
@@ -301,6 +321,25 @@ export default {
       } = await worker.recognize(img);
       console.log(text);
       this.bovine.tag = text;
+    },
+
+    calculateSize(img, maxWidth, maxHeight) {
+      let width = img.width;
+      let height = img.height;
+
+      // calculate the width and height, constraining the proportions
+      if (width > height) {
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width = Math.round((width * maxHeight) / height);
+          height = maxHeight;
+        }
+      }
+      return [width, height];
     },
   },
 };
