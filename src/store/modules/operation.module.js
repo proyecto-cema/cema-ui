@@ -17,7 +17,7 @@ const state = {
         id:null
     },
     extraData: {
-        isSell: true
+        isSell: false
     },
     edit: false
 }
@@ -69,17 +69,10 @@ const actions = {
         saveOperation.establishmentCuig=rootState.auth.user.user.establishmentCuig;
         saveOperation.operatorUserName=rootState.auth.user.user.userName;
 
-        // saveOperation.operationData = utils.methods.momentDateToJavaDate(data.operationData);
         OperationService.setOperation(saveOperation, edit).then(
             () => {
                 console.log(edit ? "Edited": "Created", "Operation:", operation)
-                if(operation.operationType=='sell'){
-                    // getBovine(operation.bovineTag)
-                }
-                else{
-
-                }
-                // return Promise.resolve(operation);
+                
             },
             error => {
                 dispatch("showError", {error: error, errors: OPERATION_ERRORS}, {root:true});
@@ -90,7 +83,6 @@ const actions = {
     },
     async getBovine(bovineTag){
         var data
-        
             BovineService.getBovineByTag(bovineTag).then(
                 response => {
                     var bovine= response;
@@ -112,7 +104,7 @@ const actions = {
         BovineService.setBovine(data).then(
                 () => {
                     console.log("Bovine: "+data)
-                    // return Promise.resolve(operation);
+                    return Promise.resolve(data);
                 },
                 error => {
                     dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
