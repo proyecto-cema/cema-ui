@@ -54,6 +54,10 @@ export const getSuccessStructure = function (message) {
   return {type: 'OK', message: message != null ? message: 'Acción realizada correctamente', color: 'bg-success'};
 }
 
+export const getErrorStructure = function (message) {
+  return {type: 'OK', message: message != null ? message: 'Error al realizar la accion', color: 'bg-danger'};
+}
+
 export const getInfoStructure = function (notificationData) {
   return {id: notificationData.id, type: 'Info',
     date: notificationData.executionDate,

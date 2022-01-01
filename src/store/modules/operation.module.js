@@ -1,5 +1,6 @@
-import OperationService from '../../services/operation/operation.service';
+import OperationService  from '../../services/operation/operation.service';
 import BovineService from '../../services/bovines/bovine.service';
+
 import {OPERATION_ERRORS,BOVINE_ERRORS} from "../../constants";
 import utils from "../../utils"
 
@@ -68,10 +69,15 @@ const actions = {
         let saveOperation = Object.assign({}, operation);
         saveOperation.establishmentCuig=rootState.auth.user.user.establishmentCuig;
         saveOperation.operatorUserName=rootState.auth.user.user.userName;
+        // Borrar
+        // saveBovine.taggingDate = utils.methods.momentDateToJavaDate(bovine.taggingDate);
+        // saveBovine.birthDate =bovine.birthDate? utils.methods.momentDateToJavaDate(bovine.birthDate): null;
+        // let saveBovine = Object.assign({}, bovine);
 
         OperationService.setOperation(saveOperation, edit).then(
             () => {
                 console.log(edit ? "Edited": "Created", "Operation:", operation)
+                Promise.resolve(operation);
                 
             },
             error => {
@@ -79,39 +85,21 @@ const actions = {
                 return Promise.reject(error);
             }
         );
+        //Borrar
+        // BovineService.setBovine(saveBovine, editBovine).then(
+        //     () => {
+        //         console.log(editBovine ? "Edited": "Created", "bovine:", bovine)
+        //         Promise.resolve(bovine);
+                
+        //     },
+        //     error => {
+        //         dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
+        //         return Promise.reject(error);
+        //     }
+        // )
         
-    },
-    async getBovine(bovineTag){
-        var data
-            BovineService.getBovineByTag(bovineTag).then(
-                response => {
-                    var bovine= response;
-                    bovine.status="Vendido";
-                    data={
-                        edit:true,
-                        bovine:bovine
-                    }
-                    this.saveBovine(data)    
-                },
-                error => {
-                    dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
-                    return Promise.reject(error);
-                }        
-            );
-               
-    },
-    async saveBovine(data){
-        BovineService.setBovine(data).then(
-                () => {
-                    console.log("Bovine: "+data)
-                    return Promise.resolve(data);
-                },
-                error => {
-                    dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
-                    return Promise.reject(error);
-                }
-            ) 
-    } 
+        
+    }
 }
 
 

@@ -103,6 +103,7 @@ export const OPERATION_ERRORS = {
     ...COMMON_ERRORS,
     404: {type: "Server", message: "Operacion no encontrada"},
     409: {type: "Server", message: "La Operacion que esta intentando registrar ya existe"},
+    422: {type: "Server", message: "Error al guardar operacion"},
 }
 export const AUDIT_ERRORS = {
     ...COMMON_ERRORS,

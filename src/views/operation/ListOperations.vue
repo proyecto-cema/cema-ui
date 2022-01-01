@@ -100,7 +100,7 @@
               :class="headers.currentPage <= 0 ? 'disabled' : ''"
               class="btn btn-outline-primary"
               type="button"
-              v-on:click="this.searchBovinePage(this.headers.currentPage - 1)"
+              v-on:click="this.searchOperations(this.headers.currentPage - 1)"
             >
               Anterior
             </button>
@@ -110,7 +110,7 @@
               :class="headers.currentPage === i - 1 ? 'btn-primary' : 'btn-outline-primary'"
               class="btn"
               type="button"
-              v-on:click="this.searchBovinePage(i - 1)"
+              v-on:click="this.searchOperations(i - 1)"
             >
               {{ i }}
             </button>
@@ -118,7 +118,7 @@
               :class="headers.currentPage >= headers.totalPages - 1 ? 'disabled' : ''"
               class="btn btn-outline-primary"
               type="button"
-              v-on:click="this.searchBovinePage(this.headers.currentPage + 1)"
+              v-on:click="this.searchOperations(this.headers.currentPage + 1)"
             >
               Siguiente
             </button>
@@ -205,6 +205,8 @@ export default {
     },
     async searchOperations(page = 0, size = 10) {
       this.operations = null;
+      this.results = { income: 0, expenses: 0, total: 0 };
+
       this.listOperations({ page: page, size: size }).then((response) => {
         this.operations = response.data;
         console.log(response);
