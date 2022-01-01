@@ -1,7 +1,7 @@
 <template>
   <div class="text-center">
     <div class="mt-2">
-      <h3>Listado Auditoria</h3>
+      <h3>Listado de Auditoria</h3>
     </div>
     <div class="col-12 table-responsive">
       <table class="table">
@@ -12,11 +12,11 @@
         </caption>
         <thead>
           <tr v-if="auditsLength !== 0">
-            <th scope="col">Fecha</th>
+            <th scope="col">Fecha de operación</th>
             <th scope="col">Usuario</th>
             <th scope="col">Rol</th>
-            <th scope="col">Cuig</th>
-            <th scope="col">Modulo</th>
+            <th scope="col">CUIG</th>
+            <th scope="col">Módulo</th>
           </tr>
           <tr v-else>
             <th scope="col">No se encontraron resultados.</th>
