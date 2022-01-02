@@ -11,6 +11,7 @@ import VCalendar from 'v-calendar';
 
 import { Chart, registerables } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import './registerServiceWorker'
 Chart.register(...registerables, ChartDataLabels);
 
 createApp(App)

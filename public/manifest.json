@@ -1,0 +1,8 @@
+{
+  "name": "Como Está Mi Animal",
+  "short_name": "CEMA",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#212529",
+  "background_color": "#fff"
+}
