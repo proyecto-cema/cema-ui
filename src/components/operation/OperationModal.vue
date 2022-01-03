@@ -384,7 +384,7 @@ export default {
     },
 
     validateSellerOrBuyerName() {
-      var valid = true;
+      let valid = true;
       if (this.extraData.isSell) {
         valid = !this.operation.buyerName;
       } else {
