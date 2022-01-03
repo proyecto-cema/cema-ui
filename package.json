@@ -1,6 +1,6 @@
 {
     "name": "cema-ui",
-    "version": "1.6.0-RELEASE",
+    "version": "1.7.0-SNAPSHOT",
     "private": true,
     "scripts":     {
         "serve": "vue-cli-service serve",
