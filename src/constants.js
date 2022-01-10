@@ -31,6 +31,11 @@ export const ACTIVITIES_EXTRA_DATA = {
         url: "movements", componentName: "MovementForm",
         validations: { "locationName": "is_null" }, style: "bg-danger text-white", color:"red"
     },
+    "Feeding": {
+        displayName: "Alimentación", backendName: "Feeding",
+        url: "feedings", componentName: "FeedingForm",
+        validations: { "food": "is_null", "amount": "lt_zero" }, style: "bg-warning text-white", color:"orange"
+    }
 };
 export const SEARCH_DEFAULT_TAG = "Seleccione la caravana";
 
