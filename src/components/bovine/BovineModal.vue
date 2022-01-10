@@ -7,158 +7,7 @@
           <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" @click="clean()" type="button"></button>
         </div>
         <div class="modal-body">
-          <form @submit.prevent="">
-            <div class="row">
-              <div class="col-lg-4 col-12">
-                <div class="position-relative text-center">
-                  <img alt="Identificador" class="imageIdBovine" src="../../assets/images/bovine/tag_bovino.png" />
-                  <div class="TextCenterImage">
-                    <h4>{{ bovine.establishmentCuig }}<br />{{ bovine.tag }}</h4>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-7 col-12">
-                <div class="row">
-                  <div class="col-lg-6 col-12 mb-3">
-                    <cema-input
-                      v-model.trim="bovine.tag"
-                      maxlength="10"
-                      required
-                      :error-data="{
-                        required: true,
-                        errorStatus: errorSave.tag,
-                        errorMessage: getTagError()['message'],
-                      }"
-                      input-title="Caravana"
-                      input-id="bovineTag"
-                      type="text"
-                      :disabled="edit"
-                    ></cema-input>
-                  </div>
-                  <div class="col-lg-6 col-12 mb-3">
-                    <cema-input
-                      v-model="bovine.taggingDate"
-                      :max="getToday"
-                      required
-                      :error-data="{
-                        required: true,
-                        errorStatus: errorSave.taggingDate,
-                        errorMessage: 'Ingrese la fecha del caravaneo',
-                      }"
-                      input-title="Fecha de caravaneo"
-                      input-id="bovineDate"
-                      type="date"
-                    ></cema-input>
-                  </div>
-                  <div class="col-lg-6 col-12 mb-3">
-                    <cema-input
-                      v-model="bovine.genre"
-                      component-type="select"
-                      required
-                      :disabled="edit"
-                      :error-data="{
-                        required: true,
-                        errorStatus: errorSave.genre,
-                        errorMessage: 'Seleccione el sexo del bovino',
-                      }"
-                      input-title="Sexo"
-                      input-id="bovineGenre"
-                      @change="setCategories()"
-                      :options="['Macho', 'Hembra']"
-                    ></cema-input>
-                  </div>
-                  <div class="col-lg-6 col-12 mb-3">
-                    <cema-input
-                      v-model="bovine.birthDate"
-                      :max="getToday"
-                      input-title="Fecha de nacimiento"
-                      input-id="birthDate"
-                      type="date"
-                    ></cema-input>
-                  </div>
-                  <div class="col-lg-6 col-12 mb-3">
-                    <cema-input
-                      v-model="bovine.category"
-                      component-type="select"
-                      required
-                      :error-data="{
-                        required: true,
-                        errorStatus: errorSave.category,
-                        errorMessage: 'Seleccione la categoria del bovino',
-                      }"
-                      input-title="Categoria"
-                      input-id="bovineCategory"
-                      :disabled="edit && (bovine.category == 'Vaca' || bovine.category == 'Toro')"
-                      @change="unselectedStatus()"
-                      :options="categories"
-                    ></cema-input>
-                  </div>
-                  <div
-                    class="col-lg-6 col-12 mb-3"
-                    v-if="bovine.category == 'Ternero' || bovine.category == '' || bovine.category == null"
-                  >
-                    <cema-input
-                      v-model="bovine.status"
-                      component-type="select"
-                      required
-                      :error-data="{
-                        required: true,
-                        errorStatus: errorSave.status,
-                        errorMessage: 'Seleccione el estado del bovino',
-                      }"
-                      input-title="Estado"
-                      input-id="bovineStatus"
-                      :disabled="bovine.category == ''"
-                      :options="['Mamando', 'Destetado', 'Muerto', 'Vendido']"
-                    ></cema-input>
-                  </div>
-                  <div class="col-lg-6 col-12 mb-3" v-if="bovine.category == 'Vaca'">
-                    <cema-input
-                      v-model="bovine.status"
-                      component-type="select"
-                      required
-                      :error-data="{
-                        required: true,
-                        errorStatus: errorSave.status,
-                        errorMessage: 'Seleccione el estado del bovino',
-                      }"
-                      :disabled="bovine.category == ''"
-                      input-title="Estado"
-                      input-id="bovineStatus"
-                      :options="['Sin preñez', 'Preñada', 'Muerto', 'Vendido']"
-                    ></cema-input>
-                  </div>
-                  <div class="col-lg-6 col-12 mb-3" v-if="bovine.category == 'Toro'">
-                    <cema-input
-                      v-model="bovine.status"
-                      component-type="select"
-                      required
-                      :error-data="{
-                        required: true,
-                        errorStatus: errorSave.status,
-                        errorMessage: 'Seleccione el estado del bovino',
-                      }"
-                      :disabled="bovine.category == ''"
-                      input-title="Estado"
-                      input-id="bovineStatus"
-                      :options="['En servicio', 'Fuera de servicio', 'Muerto', 'Vendido']"
-                    ></cema-input>
-                  </div>
-                  <div class="col-lg-12 col-12 mb-3">
-                    <cema-input
-                      v-model.trim="bovine.description"
-                      maxlength="300"
-                      component-type="textarea"
-                      input-title="Descripción"
-                      input-id="bovineDescription"
-                      type="text"
-                      rows="4"
-                    ></cema-input>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
+          <bovine-modal-content :error-save="errorSave"></bovine-modal-content>
         </div>
         <div class="modal-footer">
           <button class="btn btn-primary text-white" data-bs-dismiss="modal" type="button" @click="clean()">
@@ -184,7 +33,7 @@
 </template>
 
 <script>
-import CemaInput from '../form/CemaInput';
+import BovineModalContent from '../bovine/BovineModalContent';
 import { mapActions, mapState } from 'vuex';
 import { REGEX_LETTERS_NUMBERS } from '../../constants';
 
@@ -201,7 +50,7 @@ export default {
       },
     };
   },
-  components: { CemaInput },
+  components: { BovineModalContent },
   props: {
     modalId: {
       type: String,
@@ -209,10 +58,7 @@ export default {
     },
   },
   computed: {
-    ...mapState('bovine', ['bovine', 'edit', 'categories']),
-    getToday() {
-      return this.getMomentToday();
-    },
+    ...mapState('bovine', ['bovine', 'edit']),
     errorSaveHelper() {
       return {
         tag: !this.getTagError()['isValid'],
@@ -224,24 +70,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions('bovine', ['getBovine', 'saveBovine', 'setupEditBovine', 'clearBovineData', 'setupCategories']),
+    ...mapActions('bovine', ['saveBovine', 'setupEditBovine', 'clearBovineData']),
     ...mapActions(['showSuccess']),
-    unselectedStatus() {
-      this.bovine.status = '';
-    },
-    setCategories() {
-      this.bovine.category = '';
-      this.setupCategories(this.bovine.genre);
-    },
+
     getTagError() {
-      let message = 'Ingrese el número de caravana del bovino.';
-      let isValid = !!this.bovine.tag;
-      let testRegex = REGEX_LETTERS_NUMBERS.test(this.bovine.tag);
-      if (isValid && !testRegex) {
-        message = 'La caravana ingresada no es valida. Solo se permiten numeros y letras.';
-        isValid = false;
-      }
-      return { isValid: isValid, message: message };
+      return this.tagHasError(this.bovine.tag);
     },
     clean() {
       this.errorSave = {};
@@ -267,26 +100,13 @@ export default {
         edit: this.edit,
         bovine: this.bovine,
       };
-      this.saveBovine(data).then(
-          (bovine) => {
-            this.successCall(`El bovino con caravana ${bovine.establishmentCuig}-${bovine.tag} se guardó correctamente`);
-            this.setupEditBovine(bovine);
-          }
-      );
+      this.saveBovine(data).then((bovine) => {
+        this.successCall(`El bovino con caravana ${bovine.establishmentCuig}-${bovine.tag} se guardó correctamente`);
+        this.setupEditBovine(bovine);
+      });
     },
   },
 };
 </script>
 
-<style scoped>
-.TextCenterImage {
-  position: absolute;
-  top: 70%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.imageIdBovine {
-  width: 60% !important;
-}
-</style>
+<style scoped></style>

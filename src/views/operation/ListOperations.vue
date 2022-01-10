@@ -48,7 +48,7 @@
               }}
               de
               {{
-                operationsLength
+                headers.totalElements
               }}
               Operaciones
             </caption>
