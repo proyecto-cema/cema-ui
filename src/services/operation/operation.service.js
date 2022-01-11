@@ -7,8 +7,7 @@ class OperationService {
         if (edit) {
             return httpOperation.put('operation/' + operation.id , operation, { headers: authHeader() })
         } else {
-            return httpOperation.post('operation/', operation,{headers: authHeader()
-            })
+            return httpOperation.post('operation/', operation,{ headers: authHeader() })
         }
     }
 
