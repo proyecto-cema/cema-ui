@@ -70,7 +70,7 @@ const actions = {
         saveOperation.operatorUserName = rootState.auth.user.user.userName;
 
         await OperationService.setOperation(saveOperation, edit).then(
-            (response) => {
+            () => {
                 console.log(edit ? "Edited": "Created", "Operation:", operation)
                 return Promise.resolve(operation);
             },

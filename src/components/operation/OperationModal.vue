@@ -84,7 +84,8 @@
                 </cema-input>
               </div>
               <div class="mb-3 col-12 col-md-6" v-if="extraData.isSell">
-                <tag-search :error-save="errorSave" v-model="operation.bovineTag" :disabled="edit" />
+                <tag-search :error-save="errorSave" v-model="operation.bovineTag" v-if="!edit" />
+                <label v-else>Caravana relacionada: {{ operation.bovineTag }}</label>
               </div>
             </div>
           </form>
@@ -241,6 +242,7 @@ export default {
       }
       if (this.extraData.isSell) {
         this.getBovine(this.operation.bovineTag).then((response) => {
+          console.log(response);
           let bovine = {
             edit: true,
             bovine: response,
@@ -296,13 +298,13 @@ export default {
         bovine: this.bovine,
       };
       this.saveBovine(data).then((bovine) => {
-        this.formSaveOperationBuy(operation);
+        this.formSaveOperationBuy(operation, bovine);
       });
     },
-    async formSaveOperationBuy(operation) {
+    async formSaveOperationBuy(operation, bovine) {
       console.log('Operacion:  ' + operation);
-      this.saveOperation(operation).then((operation) => {
-        this.successCall(`La compra del bovino con caravana ${operation.bovineTag} se guardó correctamente.`);
+      this.saveOperation(operation).then(() => {
+        this.successCall(`La compra del bovino con caravana ${bovine.tag} se guardó correctamente.`);
         this.clean();
       });
     },
