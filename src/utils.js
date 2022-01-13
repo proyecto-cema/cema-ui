@@ -5,6 +5,7 @@ import {JAVA_DATE_FORMAT, REGEX_LETTERS_NUMBERS} from "./constants";
 export default {
     methods: {
         javaDateToMomentDate(date, format = "DD/MM/YYYY", dateOnly=false) {
+            if (date === null){ return null }
             let trueDate = moment(String(date), JAVA_DATE_FORMAT);
             if(dateOnly){
                 return trueDate.toDate();
