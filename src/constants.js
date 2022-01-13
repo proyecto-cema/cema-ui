@@ -110,3 +110,10 @@ export const REPORTING_SELECTOR = {
     "feed": { value: "foodEaten", groupBy: "category" },
     "disease": { value: "infections", groupBy: "name" },
 }
+
+export const FILTERS = {
+    "active": {
+        "type": "not in",
+        "filterSet": new Set(['Muerto', 'Vendido'])
+    }
+}

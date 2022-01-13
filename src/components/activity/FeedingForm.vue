@@ -1,6 +1,6 @@
 <template>
   <div class="col-12 mb-2">
-    <tag-search :error-save="errorSave" />
+    <tag-search :error-save="errorSave" :filters="filterData" />
   </div>
   <div class="col-lg-6 col-12 mb-2">
     <cema-input
@@ -37,6 +37,7 @@
 import CemaInput from '../form/CemaInput';
 import { mapState } from 'vuex';
 import TagSearch from './TagSearch';
+import { FILTERS } from '../../constants';
 
 export default {
   name: 'FeedingForm',
@@ -49,6 +50,9 @@ export default {
   },
   computed: {
     ...mapState('activity', ['activityData', 'edit']),
+    filterData() {
+      return { active: FILTERS['active'] };
+    },
   },
   mounted() {
     if (!this.edit) {

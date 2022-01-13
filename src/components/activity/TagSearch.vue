@@ -32,6 +32,10 @@ export default {
   components: { ComboSearch },
   props: {
     errorSave: {},
+    filters: {
+      default: null,
+      type: Object,
+    },
   },
   computed: {
     ...mapState('activity', ['activityData', 'edit']),
@@ -48,15 +52,29 @@ export default {
       console.log(searchingFor);
       let defaultSearch = {
         page: 0,
-        size: 5,
+        size: 20,
         search: { tag: searchLength !== 0 ? searchingFor : null, cuig: this.selectedCuig },
       };
       if (searchLength === 0 || searchLength >= 1) {
         this.listBovines(defaultSearch).then((response) => {
-          this.bovines = response.data;
+          let bovines = response.data;
+          if (this.filters) {
+            bovines = bovines.filter((bovine) => this.checkFilter(bovine));
+          }
+          this.bovines = bovines.slice(0, 5);
           console.log('++++++++++++++++++++', response);
         });
       }
+    },
+    checkFilter(bovine) {
+      for (const filterKey in this.filters) {
+        if (this.filters[filterKey].type === 'in') {
+          return this.filters[filterKey].filterSet.has(bovine['status']);
+        } else if (this.filters[filterKey].type === 'not in') {
+          return !this.filters[filterKey].filterSet.has(bovine['status']);
+        }
+      }
+      return false;
     },
   },
 };
