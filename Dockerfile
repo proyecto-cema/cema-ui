@@ -3,9 +3,10 @@ FROM node:lts-alpine as build-stage
 ARG ENVIRONMENT_NAME
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+COPY yarn.lock ./
+RUN yarn
 COPY . .
-RUN npm run "build-$ENVIRONMENT_NAME"
+RUN yarn run "build-$ENVIRONMENT_NAME"
 
 # production stage
 FROM nginx:stable-alpine as production-stage
