@@ -55,7 +55,7 @@
               }"
               input-title="Sexo"
               input-id="bovineGenre"
-              @change="setCategories()"
+              @change="resetCategories()"
               :options="['Macho', 'Hembra']"
             ></cema-input>
           </div>
@@ -82,13 +82,10 @@
               input-id="bovineCategory"
               :disabled="edit && (bovine.category == 'Vaca' || bovine.category == 'Toro')"
               @change="unselectedStatus()"
-              :options="categories"
+              :options="possibleCategories"
             ></cema-input>
           </div>
-          <div
-            class="col-lg-6 col-12 mb-3"
-            v-if="bovine.category == 'Ternero' || bovine.category == '' || bovine.category == null"
-          >
+          <div class="col-lg-6 col-12 mb-3">
             <cema-input
               v-model="bovine.status"
               component-type="select"
@@ -101,39 +98,7 @@
               input-title="Estado"
               input-id="bovineStatus"
               :disabled="bovine.category == ''"
-              :options="['Mamando', 'Destetado', 'Muerto', 'Vendido']"
-            ></cema-input>
-          </div>
-          <div class="col-lg-6 col-12 mb-3" v-if="bovine.category == 'Vaca'">
-            <cema-input
-              v-model="bovine.status"
-              component-type="select"
-              required
-              :error-data="{
-                required: true,
-                errorStatus: errorSave.status,
-                errorMessage: 'Seleccione el estado del bovino',
-              }"
-              :disabled="bovine.category == ''"
-              input-title="Estado"
-              input-id="bovineStatus"
-              :options="['Sin preñez', 'Preñada', 'Muerto', 'Vendido']"
-            ></cema-input>
-          </div>
-          <div class="col-lg-6 col-12 mb-3" v-if="bovine.category == 'Toro'">
-            <cema-input
-              v-model="bovine.status"
-              component-type="select"
-              required
-              :error-data="{
-                required: true,
-                errorStatus: errorSave.status,
-                errorMessage: 'Seleccione el estado del bovino',
-              }"
-              :disabled="bovine.category == ''"
-              input-title="Estado"
-              input-id="bovineStatus"
-              :options="['En servicio', 'Fuera de servicio', 'Muerto', 'Vendido']"
+              :options="possibleStatus"
             ></cema-input>
           </div>
           <div class="col-lg-12 col-12 mb-3">
@@ -157,6 +122,8 @@
 import CemaInput from '../form/CemaInput';
 import { mapActions, mapState } from 'vuex';
 
+import { BOVINE_CATEGORIES, BOVINE_STATUS } from '../../constants';
+
 export default {
   name: 'BovineModal',
   components: { CemaInput },
@@ -171,6 +138,18 @@ export default {
     getToday() {
       return this.getMomentToday();
     },
+    possibleStatus() {
+      if (this.edit) {
+        return [...BOVINE_STATUS[this.bovine.category], ...BOVINE_STATUS['Todos']];
+      }
+      return BOVINE_STATUS[this.bovine.category];
+    },
+    possibleCategories() {
+      if (this.bovine.genre == null || this.bovine.genre == 'Macho' || this.bovine.genre == 'Hembra') {
+        return [...BOVINE_CATEGORIES[this.bovine.genre]];
+      }
+      return BOVINE_CATEGORIES['Todos'];
+    },
   },
   methods: {
     ...mapActions('bovine', ['setupCategories']),
@@ -180,9 +159,8 @@ export default {
     unselectedStatus() {
       this.bovine.status = '';
     },
-    setCategories() {
+    resetCategories() {
       this.bovine.category = '';
-      this.setupCategories(this.bovine.genre);
     },
   },
 };

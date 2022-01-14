@@ -118,6 +118,17 @@ export const REPORTING_SELECTOR = {
     "feed": { value: "foodEaten", groupBy: "category" },
     "disease": { value: "infections", groupBy: "name" },
 }
+export const BOVINE_STATUS = {
+    "Toro": ['En servicio', 'Fuera de servicio'],
+    "Vaca": ['Sin preñez', 'Preñada'],
+    "Ternero": ['Mamando', 'Destetado'],
+    "Todos": ["Muerto", "Vendido"]
+};
+export const BOVINE_CATEGORIES = {
+    "Macho": ['Ternero','Toro'],
+    "Hembra": ['Ternero','Vaca'],
+    "Todos": ['Ternero','Vaca','Toro']
+};
 
 export const FILTERS = {
     "active": {

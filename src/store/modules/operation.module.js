@@ -39,6 +39,14 @@ const mutations = {
     },
     setEdit(state, value){
         state.edit = value;
+    },
+    setIsSell(state, payload){
+        if(payload=='sell')
+        {
+            state.extraData.isSell=true;
+        }else{
+            state.extraData.isSell=false;
+        }
     }
 }
 
@@ -50,6 +58,7 @@ const actions = {
     setupEditOperation({commit}, proxyOperation){
         proxyOperation.transactionDate = utils.methods.javaDateToMomentDate(proxyOperation.transactionDate, 'YYYY-MM-DD');
         commit('setOperation', proxyOperation);
+        commit('setIsSell', proxyOperation.operationType);
         commit('setEdit', true);
     },
     async listOperations({dispatch, rootState},data) {
