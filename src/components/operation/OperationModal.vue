@@ -84,7 +84,7 @@
                 </cema-input>
               </div>
               <div class="mb-3 col-12 col-md-6" v-if="extraData.isSell">
-                <tag-search :error-save="errorSave" v-model="operation.bovineTag" v-if="!edit" />
+                <tag-search :error-save="errorSave" v-model="operation.bovineTag" v-if="!edit" :filters="filterData" />
                 <label v-else>Caravana relacionada: {{ operation.bovineTag }}</label>
               </div>
             </div>
@@ -134,6 +134,7 @@
 import CemaSwitch from '../form/CemaSwitchOperation';
 import TagSearch from '../activity/TagSearch';
 import BovineModalContent from '../bovine/BovineModalContent';
+import { FILTERS } from '../../constants';
 
 import { mapActions, mapState } from 'vuex';
 import CemaInput from '../form/CemaInput';
@@ -202,6 +203,9 @@ export default {
         category: !this.bovine.category,
         status: !this.bovine.status,
       };
+    },
+    filterData() {
+      return { active: FILTERS['active'] };
     },
   },
   mounted() {
