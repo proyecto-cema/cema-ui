@@ -3,7 +3,7 @@
     <cema-switch v-model="activityData.extraData.isBatch" @trigger-switch="prepareSelection"></cema-switch>
   </div>
   <div class="col-12 col-lg-8 mb-3" v-if="!activityData.extraData.isBatch">
-    <tag-search :error-save="errorSave" />
+    <tag-search :error-save="errorSave" :filters="['active']" />
   </div>
   <div class="col-12 col-lg-8 mb-3" v-else>
     <cema-input

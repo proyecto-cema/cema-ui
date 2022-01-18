@@ -14,7 +14,7 @@
 <script>
 import ComboSearch from '../form/ComboSearch';
 import { mapActions, mapState } from 'vuex';
-import { SEARCH_DEFAULT_TAG } from '../../constants';
+import { FILTERS, SEARCH_DEFAULT_TAG } from '../../constants';
 
 export default {
   name: 'tag-search',
@@ -34,7 +34,7 @@ export default {
     errorSave: {},
     filters: {
       default: null,
-      type: Object,
+      type: Array,
     },
   },
   computed: {
@@ -67,11 +67,14 @@ export default {
       }
     },
     checkFilter(bovine) {
-      for (const filterKey in this.filters) {
-        if (this.filters[filterKey].type === 'in') {
-          return this.filters[filterKey].filterSet.has(bovine['status']);
-        } else if (this.filters[filterKey].type === 'not in') {
-          return !this.filters[filterKey].filterSet.has(bovine['status']);
+      let filterKey, filterBy;
+      for (let i = 0; i < this.filters.length; i++) {
+        filterKey = this.filters[i];
+        filterBy = FILTERS[filterKey];
+        if (filterBy.type === 'in') {
+          return filterBy.filterSet.has(bovine['status']);
+        } else if (filterBy.type === 'not in') {
+          return !filterBy.filterSet.has(bovine['status']);
         }
       }
       return false;
