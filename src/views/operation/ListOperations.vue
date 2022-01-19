@@ -240,9 +240,9 @@ export default {
 </script>
 <style>
 .sell {
-  background-color: #97e089;
+  background-color: #def4bb;
 }
 .buy {
-  background-color: #c56161;
+  background-color: #eeb9b9;
 }
 </style>
