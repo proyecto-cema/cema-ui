@@ -45,6 +45,7 @@ export const ADMINISTRATION_CONTEXT = process.env.VUE_APP_ADMINISTRATION_CONTEXT
 export const ACTIVITY_CONTEXT = process.env.VUE_APP_ACTIVITY_CONTEXT
 export const REPORTING_CONTEXT = process.env.VUE_APP_REPORTING_CONTEXT
 export const USERS_CONTEXT = process.env.VUE_APP_USERS_CONTEXT
+export const OPERATION_CONTEXT = process.env.VUE_APP_OPERATION_CONTEXT
 
 export const LOGIN_VERSION = process.env.VUE_APP_LOGIN_VERSION
 export const BOVINE_VERSION = process.env.VUE_APP_BOVINE_VERSION
@@ -52,6 +53,7 @@ export const ADMINISTRATION_VERSION = process.env.VUE_APP_ADMINISTRATION_VERSION
 export const ACTIVITY_VERSION = process.env.VUE_APP_ACTIVITY_VERSION
 export const REPORTING_VERSION = process.env.VUE_APP_REPORTING_VERSION
 export const USERS_VERSION = process.env.VUE_APP_USERS_VERSION
+export const OPERATION_VERSION = process.env.VUE_APP_OPERATION_VERSION
 
 const COMMON_ERRORS = {
     400: {type: "Server", message:"Error del servidor, contacte a los desarrolladores"},
@@ -97,6 +99,12 @@ export const LOCATION_ERRORS = {
     404: {type: "Server", message: "Ubicación no encontrada"},
     409: {type: "Server", message: "La ubicación que esta intentando registrar ya existe"},
 }
+export const OPERATION_ERRORS = {
+    ...COMMON_ERRORS,
+    404: {type: "Server", message: "Operacion no encontrada"},
+    409: {type: "Server", message: "La Operacion que esta intentando registrar ya existe"},
+    422: {type: "Server", message: "Error al guardar operacion"},
+}
 export const AUDIT_ERRORS = {
     ...COMMON_ERRORS,
     404: {type: "Server", message: "Auditorias no encontradas"},
@@ -110,6 +118,17 @@ export const REPORTING_SELECTOR = {
     "feed": { value: "foodEaten", groupBy: "category" },
     "disease": { value: "infections", groupBy: "name" },
 }
+export const BOVINE_STATUS = {
+    "Toro": ['En servicio', 'Fuera de servicio'],
+    "Vaca": ['Sin preñez', 'Preñada'],
+    "Ternero": ['Mamando', 'Destetado'],
+    "Todos": ["Muerto", "Vendido"]
+};
+export const BOVINE_CATEGORIES = {
+    "Macho": ['Ternero','Toro'],
+    "Hembra": ['Ternero','Vaca'],
+    "Todos": ['Ternero','Vaca','Toro']
+};
 
 export const FILTERS = {
     "active": {
