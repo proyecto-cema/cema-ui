@@ -9,6 +9,7 @@ import activity from './modules/activity.module'
 import reporting from './modules/reporting.module'
 import location from './modules/location.module'
 import audit from './modules/audit.module'
+import supply from './modules/supply.module'
 
 export default createStore({
   state: {
@@ -28,7 +29,8 @@ export default createStore({
     activity,
     reporting,
     location,
-    audit
+    audit,
+    supply
   },
   getters:{
     isMobile(){

@@ -40,6 +40,8 @@ export const ADMINISTRATION_CONTEXT = process.env.VUE_APP_ADMINISTRATION_CONTEXT
 export const ACTIVITY_CONTEXT = process.env.VUE_APP_ACTIVITY_CONTEXT
 export const REPORTING_CONTEXT = process.env.VUE_APP_REPORTING_CONTEXT
 export const USERS_CONTEXT = process.env.VUE_APP_USERS_CONTEXT
+export const OPERATION_CONTEXT = process.env.VUE_APP_OPERATION_CONTEXT
+export const ECONOMIC_CONTEXT = process.env.VUE_APP_ECONOMIC_CONTEXT
 
 export const LOGIN_VERSION = process.env.VUE_APP_LOGIN_VERSION
 export const BOVINE_VERSION = process.env.VUE_APP_BOVINE_VERSION
@@ -47,6 +49,8 @@ export const ADMINISTRATION_VERSION = process.env.VUE_APP_ADMINISTRATION_VERSION
 export const ACTIVITY_VERSION = process.env.VUE_APP_ACTIVITY_VERSION
 export const REPORTING_VERSION = process.env.VUE_APP_REPORTING_VERSION
 export const USERS_VERSION = process.env.VUE_APP_USERS_VERSION
+export const OPERATION_VERSION = process.env.VUE_APP_OPERATION_VERSION
+export const ECONOMIC_VERSION = process.env.VUE_APP_ECONOMIC_VERSION
 
 const COMMON_ERRORS = {
     400: {type: "Server", message:"Error del servidor, contacte a los desarrolladores"},
@@ -95,6 +99,11 @@ export const LOCATION_ERRORS = {
 export const AUDIT_ERRORS = {
     ...COMMON_ERRORS,
     404: {type: "Server", message: "Auditorias no encontradas"},
+}
+export const SUPPLY_ERRORS = {
+    ...COMMON_ERRORS,
+    404: {type: "Server", message: "Insumo no encontrada"},
+    409: {type: "Server", message: "El Insumo que esta intentando registrar ya existe"},
 }
 export const REPORTING_SELECTOR = {
     "batch": { value: "weight", groupBy: "batchName" },
