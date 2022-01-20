@@ -130,7 +130,7 @@ const actions = {
             }
         );
     },
-    async listActivities({dispatch, rootState},search) {
+    async listActivities({dispatch, rootState}, search) {
         return ActivityService.getActivitiesList(search.name, search.type, rootState.bovine.selectedCuig).then(
             response => {
                 console.log("List Activities: " + response.data);
@@ -140,6 +140,23 @@ const actions = {
                 dispatch("showError", {error: error, errors: ACTIVITY_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
+        );
+    },
+    async getFeedingSupplyList({dispatch, rootState}, { page, size, search }){
+        let searchingFor = {
+            establishmentCuig: rootState.bovine.selectedCui,
+            categoryName: "Alimento",
+            ...search
+        };
+        return ActivityService.getFeedingSupplies(page, size, searchingFor).then(
+          response => {
+              console.log("Supply list: " + response.data);
+              return Promise.resolve(response);
+          },
+          error => {
+              dispatch("showError", {error: error, errors: ACTIVITY_ERRORS}, {root:true});
+              return Promise.reject(error);
+          }
         );
     }
 }
