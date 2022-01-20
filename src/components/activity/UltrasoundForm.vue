@@ -1,6 +1,6 @@
 <template>
   <div class="col-12 mb-2">
-    <tag-search :error-save="errorSave" />
+    <tag-search :error-save="errorSave" :filters="['active']" />
   </div>
   <div class="col-lg-6 col-12 mb-2">
     <cema-input
@@ -8,11 +8,6 @@
       type="number"
       input-title="Número de servicio"
       input-id="serviceNumber"
-      :error-data="{
-        required: true,
-        errorStatus: errorSave.serviceNumber,
-        errorMessage: 'Ingrese un número válido',
-      }"
       min="0"
     ></cema-input>
   </div>

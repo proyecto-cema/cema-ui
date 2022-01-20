@@ -31,6 +31,11 @@ export const ACTIVITIES_EXTRA_DATA = {
         url: "movements", componentName: "MovementForm",
         validations: { "locationName": "is_null" }, style: "bg-danger text-white", color:"red"
     },
+    "Feeding": {
+        displayName: "Alimentación", backendName: "Feeding",
+        url: "feedings", componentName: "FeedingForm",
+        validations: { "food": "is_null", "amount": "lt_zero" }, style: "bg-primary text-white", color:"gray"
+    }
 };
 export const SEARCH_DEFAULT_TAG = "Seleccione la caravana";
 
@@ -104,4 +109,11 @@ export const REPORTING_SELECTOR = {
     "pregnancy": { value: "percentage", groupBy: "year" },
     "feed": { value: "foodEaten", groupBy: "category" },
     "disease": { value: "infections", groupBy: "name" },
+}
+
+export const FILTERS = {
+    "active": {
+        "type": "not in",
+        "filterSet": new Set(['Muerto', 'Vendido'])
+    }
 }
