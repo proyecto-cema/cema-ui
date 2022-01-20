@@ -14,7 +14,7 @@ const state = {
         operatorUserName: null,
         sellerName: null,
         transactionDate: null,
-        id:null
+        id: null
     },
     extraData: {
         isSell: false
@@ -34,19 +34,14 @@ const mutations = {
             operatorUserName: null,
             sellerName: null,
             transactionDate: null,
-            id:null
+            id: null
         } : payload
     },
     setEdit(state, value){
         state.edit = value;
     },
     setIsSell(state, payload){
-        if(payload=='sell')
-        {
-            state.extraData.isSell=true;
-        }else{
-            state.extraData.isSell=false;
-        }
+        state.extraData.isSell = payload === 'sell';
     }
 }
 

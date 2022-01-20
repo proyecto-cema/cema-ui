@@ -128,7 +128,7 @@
     </div>
     <div class="tab-pane fade" id="insumos" role="tabpanel" aria-labelledby="insumos-tab">Insumos</div>
   </div>
-  <operation-modal modalId="addOperationModal"></operation-modal>
+  <operation-modal modalId="addOperationModal" @modalSuccess="closeOperationModal"></operation-modal>
 </template>
 <script>
 import { mapActions } from 'vuex';
@@ -166,6 +166,9 @@ export default {
     formDeleteOperation(index, name) {
       this.setIndexForName(index, name);
       this.deleteModal.show();
+    },
+    closeOperationModal() {
+      this.addOperationModal.hide();
     },
     openAddOperationModal(operation) {
       if (operation) {

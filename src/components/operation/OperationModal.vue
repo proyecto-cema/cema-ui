@@ -172,10 +172,10 @@ export default {
       required: true,
     },
   },
-
+  emits: ['modalSuccess'],
   computed: {
     ...mapState('operation', ['operation', 'edit', 'extraData']),
-    ...mapState('bovine', ['bovine', 'categories']),
+    ...mapState('bovine', ['bovine']),
 
     validateSellerOrBuyerName() {
       let valid = true;
@@ -208,8 +208,8 @@ export default {
     this.clearBovineData();
   },
   methods: {
-    ...mapActions('operation', ['getOperation', 'saveOperation', 'deleteOperation', 'clearOperationData']),
-    ...mapActions('bovine', ['getBovine', 'listBovines', 'saveBovine', 'clearBovineData', 'setupEditBovine']),
+    ...mapActions('operation', ['saveOperation', 'clearOperationData']),
+    ...mapActions('bovine', ['getBovine', 'saveBovine', 'clearBovineData']),
     ...mapActions(['showSuccess', 'showErrorFront']),
     getTagError() {
       return this.tagHasError(this.bovine.tag);
@@ -224,6 +224,7 @@ export default {
     successCall(message) {
       this.showSuccess(message);
       this.clean();
+      this.$emit('modalSuccess');
     },
     async stepSaveBovine() {
       this.errorSave = this.errorSaveHelper;
@@ -247,9 +248,8 @@ export default {
             edit: true,
             bovine: response,
           };
-          if (bovine.bovine.status == 'Vendido') {
-            this.showErrorFront('Esta caravana ' + bovine.bovine.tag + ' ya se encuentra en estado vendido.');
-            return;
+          if (bovine.bovine.status === 'Vendido') {
+            this.showErrorFront(`Esta caravana ${bovine.bovine.tag} ya se encuentra en estado vendido.`);
           } else {
             bovine.bovine.status = 'Vendido';
             this.formSaveOperationSell(bovine);
@@ -273,8 +273,7 @@ export default {
     },
     async saveBovineSellData(bovine) {
       this.saveBovine(bovine).then(() => {
-        this.successCall('La venta del bovino ' + this.bovine.tag + ' se realizo con exito.');
-        this.clean();
+        this.successCall(`La venta del bovino ${this.bovine.tag} se realizo con exito.`);
       });
     },
     fromValidateBovine() {
@@ -305,7 +304,6 @@ export default {
       console.log('Operacion:  ' + operation);
       this.saveOperation(operation).then(() => {
         this.successCall(`La compra del bovino con caravana ${bovine.tag} se guardó correctamente.`);
-        this.clean();
       });
     },
   },
