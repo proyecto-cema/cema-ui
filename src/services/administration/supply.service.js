@@ -1,4 +1,4 @@
-import {httpEconomic,httpOperation} from '../http-common'
+import {httpEconomic, httpOperation} from '../http-common'
 import authHeader from '../auth/auth-header'
 
 
@@ -26,11 +26,11 @@ class SupplyService {
     }
 
     getSuppliesList (page=0, size=10) {
-        return httpEconomic.get('supply/list', { params:{page: page, size: size}, headers: authHeader() })
+        return httpOperation.get('supply/list', { params:{page: page, size: size}, headers: authHeader() })
     }
 
     getCategoriesList () {
-        return httpEconomic.get('category/list', { params:{page: 0, size: 100}, headers: authHeader() })
+        return httpOperation.get('category/list', { params:{page: 0, size: 100}, headers: authHeader() })
     }
 }
 
