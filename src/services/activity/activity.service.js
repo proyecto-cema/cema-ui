@@ -39,7 +39,7 @@ class ActivityService {
     }
     getFeedingSupplies(page=0, size=10, search){
         return httpOperation.post(
-          'operation/supply/search',
+          'supply/search',
           search,
           { params:{ page: page, size: size }, headers: authHeader() }
         )
