@@ -1,7 +1,7 @@
 import ActivityService from '../../services/activity/activity.service';
-import {ACTIVITY_ERRORS} from "../../constants";
 import {getHttpError} from "../../services/http-common";
 import utils from "../../utils"
+import { ACTIVITY_ERRORS } from '../../services/errors-common';
 
 
 const state = {

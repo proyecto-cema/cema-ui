@@ -15,7 +15,8 @@
       v-model="activityData.extraData.food"
       option-name="name"
       :options="supplies"
-      defaultName="Seleccione el alimento"
+      default-name="Seleccione el alimento"
+      fail-message="No hay alimentos registrados"
     >
     </combo-search>
   </div>
@@ -49,6 +50,7 @@ export default {
     ...mapState('activity', ['activityData', 'edit']),
   },
   mounted() {
+    this.getFeedingSupplies('');
     if (!this.edit) {
       this.activityData.extraData = {
         isBatch: false,
@@ -58,7 +60,7 @@ export default {
   methods: {
     ...mapActions('activity', ['getFeedingSupplyList']),
     async getFeedingSupplies(searchingFor) {
-      console.log('++++++++++++++++++++');
+      console.log('++++++++++food++++++++++');
       let searchLength = searchingFor.length;
       console.log(searchingFor);
       let defaultSearch = {
@@ -67,10 +69,15 @@ export default {
         search: { name: searchLength !== 0 ? searchingFor : null },
       };
       if (searchLength === 0 || searchLength >= 1) {
-        this.getFeedingSupplyList(defaultSearch).then((response) => {
-          this.supplies = response.data;
-          console.log('++++++++++++++++++++', response);
-        });
+        this.getFeedingSupplyList(defaultSearch).then(
+          (response) => {
+            this.supplies = response.data;
+            console.log('++++++++++++++++++++', response);
+          },
+          (errorResponse) => {
+            this.supplies = [];
+          }
+        );
       }
     },
   },

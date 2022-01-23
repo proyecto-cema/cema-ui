@@ -19,6 +19,7 @@
       <li class="input-group">
         <input class="form-control" :id="searchId" type="text" autocomplete="off" v-model="searchValue" />
         <button
+          v-if="options.length > 0 || (searchValue.length > 0 && maintain)"
           class="btn"
           type="button"
           @click.prevent="
@@ -29,26 +30,35 @@
           <font-awesome-icon icon="times"></font-awesome-icon>
         </button>
       </li>
-      <template v-for="option in filteredOptions" :key="option[optionName]">
+      <template v-if="options.length === 0 && !maintain">
         <li>
-          <button class="dropdown-item" type="button" @click="selected(option[optionName])">
-            {{ option[optionName] }}
+          <button class="dropdown-item" type="button">
+            <b>{{ failMessage }}</b>
           </button>
         </li>
       </template>
-      <template v-if="0 < searchValue.length && filteredOptions.length <= 3 && maintain !== searchValue">
-        <li>
-          <button class="dropdown-item" type="button" @click="reCall()">
-            <b>Buscar mas para {{ searchValue }}</b>
+      <template v-else>
+        <template v-for="option in filteredOptions" :key="option[optionName]">
+          <li>
+            <button class="dropdown-item" type="button" @click="selected(option[optionName])">
+              {{ option[optionName] }}
+            </button>
+          </li>
+        </template>
+        <template v-if="searchValue.length > 0 && filteredOptions.length <= 3 && maintain !== searchValue">
+          <li>
+            <button class="dropdown-item" type="button" @click="reCall()">
+              <b>Buscar mas para {{ searchValue }}</b>
+            </button>
+          </li>
+        </template>
+        <li v-if="extraOption.length > 0">
+          <button class="dropdown-item" type="button" @click="selected(extraOption['key'])">
+            {{ extraOption['value'] }}
+            <font-awesome-icon v-if="extraOption['icon']" class="ms-1" :icon="extraOption['icon']"></font-awesome-icon>
           </button>
         </li>
       </template>
-      <li v-if="extraOption.length > 0">
-        <button class="dropdown-item" type="button" @click="selected(extraOption['key'])">
-          {{ extraOption['value'] }}
-          <font-awesome-icon v-if="extraOption['icon']" class="ms-1" :icon="extraOption['icon']"></font-awesome-icon>
-        </button>
-      </li>
     </ul>
   </div>
   <div v-if="errorData.required && errorData.errorStatus" class="textError">
@@ -120,6 +130,10 @@ export default {
       },
     },
     modelValue: {},
+    failMessage: {
+      type: String,
+      default: 'No se encontraron resultados',
+    },
   },
   mounted() {
     console.log('++++++++++++++++++++++++');

@@ -1,5 +1,5 @@
 import LocationService from '../../services/administration/location.service';
-import {LOCATION_ERRORS} from "../../constants";
+import { LOCATION_ERRORS } from '../../services/errors-common';
 
 const state = {
     locationData: {

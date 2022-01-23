@@ -1,7 +1,7 @@
 import OperationService  from '../../services/operation/operation.service';
 
-import {OPERATION_ERRORS} from "../../constants";
 import utils from "../../utils"
+import { OPERATION_ERRORS } from '../../services/errors-common';
 
 const state = {
     operation: {

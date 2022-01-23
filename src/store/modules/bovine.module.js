@@ -1,6 +1,6 @@
 import BovineService from '../../services/bovines/bovine.service';
-import {BATCH_ERRORS, BOVINE_ERRORS} from "../../constants";
 import utils from "../../utils"
+import { BATCH_ERRORS, BOVINE_ERRORS } from '../../services/errors-common';
 
 
 const state = {
