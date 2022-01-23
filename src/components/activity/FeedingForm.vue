@@ -4,30 +4,20 @@
   </div>
   <div class="col-lg-6 col-12 mb-2">
     <cema-input
-      v-model="activityData.extraData.weight"
+      v-model="activityData.extraData.food"
       :error-data="{
         required: true,
-        errorStatus: errorSave.weight,
-        errorMessage: 'Ingrese un número válido',
+        errorStatus: errorSave.food,
+        errorMessage: 'Ingrese un alimento',
       }"
-      input-title="Peso"
-      input-id="weight"
-      type="number"
-      min="0"
+      input-title="Alimento"
+      input-id="food"
+      type="text"
     >
     </cema-input>
   </div>
   <div class="col-lg-6 col-12 mb-2">
-    <cema-input v-model.trim="activityData.extraData.category" input-title="Categoría" input-id="category" type="text">
-    </cema-input>
-  </div>
-  <div class="col-lg-12 col-12 mb-2">
-    <cema-input
-      v-model.trim="activityData.extraData.dentalNotes"
-      input-title="Notas dentadura"
-      input-id="dental_notes"
-      type="text"
-    >
+    <cema-input v-model="activityData.extraData.amount" input-title="Cantidad" input-id="amount" type="number" min="0">
     </cema-input>
   </div>
 </template>
@@ -38,7 +28,7 @@ import { mapState } from 'vuex';
 import TagSearch from './TagSearch';
 
 export default {
-  name: 'WeighingForm',
+  name: 'FeedingForm',
   components: { CemaInput, TagSearch },
   props: {
     errorSave: {

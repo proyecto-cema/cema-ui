@@ -8,6 +8,7 @@ import user from './modules/user.module'
 import activity from './modules/activity.module'
 import reporting from './modules/reporting.module'
 import location from './modules/location.module'
+import operation from './modules/operation.module'
 import audit from './modules/audit.module'
 import supply from './modules/supply.module'
 
@@ -29,6 +30,7 @@ export default createStore({
     activity,
     reporting,
     location,
+    operation,
     audit,
     supply
   },

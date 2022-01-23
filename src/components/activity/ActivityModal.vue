@@ -26,11 +26,21 @@
                   </cema-input>
                 </div>
                 <div class="col-12 mb-3">
-                  <cema-input v-model="activityData.type" component-type="select" required
-                              :error-data="{required: true, errorStatus: errorSave.activityType,
-                                errorMessage: 'Seleccione el tipo de actividad'}"
-                              input-title="Tipo de Actividad" input-id="activityType"
-                              :options="activitiesOptions" optionKey="backendName" :disabled="edit">
+                  <cema-input
+                    v-model="activityData.type"
+                    component-type="select"
+                    required
+                    :error-data="{
+                      required: true,
+                      errorStatus: errorSave.activityType,
+                      errorMessage: 'Seleccione el tipo de actividad',
+                    }"
+                    input-title="Tipo de Actividad"
+                    input-id="activityType"
+                    :options="activitiesOptions"
+                    optionKey="backendName"
+                    :disabled="edit"
+                  >
                     <template v-slot:default="{ option }">
                       {{ option.displayName }}
                     </template>
@@ -101,6 +111,7 @@ import UltrasoundForm from '../../components/activity/UltrasoundForm';
 import VaccinationForm from '../../components/activity/VaccinationForm';
 import WeighingForm from '../../components/activity/WeighingForm';
 import MovementForm from '../../components/activity/MovementForm';
+import FeedingForm from '../../components/activity/FeedingForm';
 import { mapActions, mapState } from 'vuex';
 import { VALIDATIONS, ACTIVITIES_EXTRA_DATA, SEARCH_DEFAULT_TAG } from '../../constants';
 
@@ -113,7 +124,7 @@ export default {
       activitiesOptions: ACTIVITIES_EXTRA_DATA,
     };
   },
-  components: { CemaInput, VaccinationForm, WeighingForm, UltrasoundForm, MovementForm },
+  components: { CemaInput, VaccinationForm, WeighingForm, UltrasoundForm, MovementForm, FeedingForm },
   props: {
     modalId: {
       type: String,
