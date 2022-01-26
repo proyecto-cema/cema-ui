@@ -82,7 +82,7 @@
             <th scope="col">Fecha de caravaneo</th>
             <th v-if="!this.isMobile" scope="col">Sexo</th>
             <th v-if="!this.isMobile" scope="col">Descripción</th>
-            <th v-if="!this.isMobile" scope="col">Categoria</th>
+            <th v-if="!this.isMobile" scope="col">Categoría</th>
             <th v-if="!this.isMobile" scope="col">Estado</th>
             <th v-if="!this.isMobile" scope="col">Lotes</th>
             <th class="text-end" scope="col">Acciones</th>
@@ -255,9 +255,16 @@ export default {
     },
   },
   methods: {
-    ...mapActions("bovine", ["listBovines", "deleteBovine", "clearBovineData", "setupEditBovine", "setupListBovineSelected", "removeBovinesFromBatch"]),
-    ...mapActions(["showSuccess"]),
-    toggleBovineSelected(tag, cuig){
+    ...mapActions('bovine', [
+      'listBovines',
+      'deleteBovine',
+      'clearBovineData',
+      'setupEditBovine',
+      'setupListBovineSelected',
+      'removeBovinesFromBatch',
+    ]),
+    ...mapActions(['showSuccess']),
+    toggleBovineSelected(tag, cuig) {
       this.showingExtraData = null;
       if (!this.bovineCuigSelected) {
         this.bovineCuigSelected = cuig;
@@ -365,15 +372,13 @@ export default {
       console.log(`You are in page ${this.headers.currentPage}, and requesting ${page} page`);
       await this.searchBovines(page, this.isMobile ? 5 : 10);
     },
-    modalDelete: async function() {
+    modalDelete: async function () {
       let helperDeleted = { ...this.deleted };
       console.log(`Deleting bovine ${helperDeleted.cuig}-${helperDeleted.tag}`);
-      this.deleteBovine(this.deleted).then(
-        () => {
-          this.bovines.splice(helperDeleted['index'], 1);
-          this.showSuccess(`El bovino con caravana ${helperDeleted.cuig}-${helperDeleted.tag} se eliminó correctamente`);
-        },
-      );
+      this.deleteBovine(this.deleted).then(() => {
+        this.bovines.splice(helperDeleted['index'], 1);
+        this.showSuccess(`El bovino con caravana ${helperDeleted.cuig}-${helperDeleted.tag} se eliminó correctamente`);
+      });
     },
     async searchBovines(page = 0, size = 10) {
       this.bovines = null;

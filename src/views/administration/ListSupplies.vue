@@ -64,7 +64,7 @@
     </div>
   </div>
   <confirmation-modal
-    :confirmation-message="'¿Confirma que desea eliminar la ubicacion ' + deleted['name'] + '?'"
+    :confirmation-message="'¿Confirma que desea eliminar el insumo ' + deleted['name'] + '?'"
     modal-id="deleteModal"
     title="Eliminar"
     @acceptModal="
@@ -155,7 +155,7 @@ export default {
       console.log(`Deleting supply ${helperDeleted.name}`);
       this.deleteSupply(toDelete).then(() => {
         this.supplies.splice(helperDeleted.index, 1);
-        this.showSuccess(`La ubicacion ${helperDeleted.name} se eliminó correctamente`);
+        this.showSuccess(`El insumo ${helperDeleted.name} se eliminó correctamente`);
         this.searchSupplies();
         this.deleted = {};
       });

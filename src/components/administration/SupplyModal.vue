@@ -19,7 +19,7 @@
                       :error-data="{
                         required: true,
                         errorStatus: errorSave.name,
-                        errorMessage: 'Ingrese el nombre de la insumo',
+                        errorMessage: 'Ingrese el nombre del insumo',
                       }"
                       input-title="Nombre"
                       input-id="supplyName"
@@ -33,9 +33,9 @@
                       :error-data="{
                         required: true,
                         errorStatus: errorSave.categoryName,
-                        errorMessage: 'Seleccione la categoria del insumo',
+                        errorMessage: 'Seleccione la categoría del insumo',
                       }"
-                      input-title="Categoria"
+                      input-title="Categoría"
                       input-id="supplyCategoryName"
                       :options="categoriesName"
                       optionKey="name"
@@ -66,9 +66,9 @@
                       :error-data="{
                         required: true,
                         errorStatus: errorSave.units,
-                        errorMessage: 'Ingrese la unidad de medicion del insumo',
+                        errorMessage: 'Ingrese la unidad de medición del insumo',
                       }"
-                      input-title="Unidad de medicion"
+                      input-title="Unidad de medición"
                       input-id="supplyUnits"
                       type="text"
                     ></cema-input>
@@ -162,7 +162,7 @@ export default {
     async commitSave() {
       let editing = this.edit;
       this.saveSupply().then((response) => {
-        this.showSuccess(`La insumo ${this.supplyData.name} se guardó correctamente`);
+        this.showSuccess(`El insumo ${this.supplyData.name} se guardó correctamente`);
         this.setupEditSupply(this.supplyData);
         this.$emit('createdNew', { supply: this.supplyData, edit: editing });
       });
