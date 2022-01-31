@@ -53,5 +53,6 @@ export const AUDIT_ERRORS = {
 };
 export const SUPPLY_ERRORS = {
   ...COMMON_ERRORS,
-  404: { type: 'User', message: 'No hay insumos' },
+  404: {type: "Server", message: "Insumo no encontrada"},
+  409: {type: "Server", message: "El Insumo que esta intentando registrar ya existe"},
 };

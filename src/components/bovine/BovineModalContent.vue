@@ -76,9 +76,9 @@
               :error-data="{
                 required: true,
                 errorStatus: errorSave.category,
-                errorMessage: 'Seleccione la categoria del bovino',
+                errorMessage: 'Seleccione la categoría del bovino',
               }"
-              input-title="Categoria"
+              input-title="Categoría"
               input-id="bovineCategory"
               :disabled="edit && (bovine.category == 'Vaca' || bovine.category == 'Toro')"
               @change="unselectedStatus()"
