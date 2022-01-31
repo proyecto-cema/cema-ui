@@ -1,5 +1,6 @@
 import ReportingService from '../../services/reporting/reporting.service';
-import {ADMINISTRATION_ERRORS, REPORTING_ERRORS, REPORTING_SELECTOR} from "../../constants";
+import {REPORTING_SELECTOR} from "../../constants";
+import { ADMINISTRATION_ERRORS, REPORTING_ERRORS } from '../../services/errors-common';
 
 const state = {
 }

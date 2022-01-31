@@ -7,7 +7,9 @@ import {
   LOGIN_CONTEXT,
   LOGIN_VERSION,
   ACTIVITY_CONTEXT,
-  ACTIVITY_VERSION, REPORTING_CONTEXT, REPORTING_VERSION
+  ACTIVITY_VERSION, REPORTING_CONTEXT, REPORTING_VERSION,
+  OPERATION_CONTEXT,
+  OPERATION_VERSION
 } from '../constants'
 
 const headers = { 'Content-type': 'application/json' }
@@ -37,6 +39,11 @@ export const httpReporting = axios.create({
   headers: headers
 })
 
+export const httpOperation = axios.create({
+  baseURL: BASE_URL + OPERATION_CONTEXT + OPERATION_VERSION,
+  headers: headers
+})
+
 export const getHttpError = function (object, key) {
   let defaultError = {type: 'Undefined', message: 'ERROR indefinido, intente nuevamente mas tarde.', color: 'bg-danger'};
   let result = {...object[key], color: 'bg-danger'};
@@ -45,6 +52,10 @@ export const getHttpError = function (object, key) {
 
 export const getSuccessStructure = function (message) {
   return {type: 'OK', message: message != null ? message: 'Acción realizada correctamente', color: 'bg-success'};
+}
+
+export const getErrorStructure = function (message) {
+  return {type: 'OK', message: message != null ? message: 'Error al realizar la accion', color: 'bg-danger'};
 }
 
 export const getInfoStructure = function (notificationData) {

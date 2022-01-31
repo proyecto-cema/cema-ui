@@ -1,6 +1,6 @@
 import BovineService from '../../services/bovines/bovine.service';
-import {BATCH_ERRORS, BOVINE_ERRORS} from "../../constants";
 import utils from "../../utils"
+import { BATCH_ERRORS, BOVINE_ERRORS } from '../../services/errors-common';
 
 
 const state = {
@@ -9,7 +9,6 @@ const state = {
     selectedCuig: null,
     cantSelect: null,
     edit: false,
-    categories: ["Ternero","Vaca","Toro"],
     batch: {batchName: null, description: null, bovineTags: [], establishmentCuig: null}
 }
 
@@ -45,15 +44,7 @@ const mutations = {
     setSelectedCuig(state, payload){
         state.selectedCuig = payload;
     },
-    setCategories(state, payload){
-        if (payload=="Macho"){
-            state.categories=['Ternero','Toro']
-        }else if(payload=="Hembra"){
-            state.categories=['Ternero','Vaca']
-        }else{
-            state.categories=['Ternero','Vaca','Toro']
-        }
-    }
+
 }
 
 const actions = {
@@ -81,10 +72,6 @@ const actions = {
     setupEditBovine({commit}, proxyBovine){
         commit('setBovine', proxyBovine);
         commit('setEdit', true);
-        commit('setCategories',proxyBovine.genre);
-    },
-    setupCategories({commit}, genre){
-        commit('setCategories',genre)
     },
     setupBatch({commit}, proxyBatch){
         commit('setBatch', proxyBatch);

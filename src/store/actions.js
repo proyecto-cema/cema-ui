@@ -1,6 +1,6 @@
 import EstablishmentService from "../services/administration/establishment.service";
 import ActivityService from "../services/activity/activity.service";
-import {getHttpError, getSuccessStructure} from "../services/http-common";
+import {getHttpError, getSuccessStructure, getErrorStructure} from "../services/http-common";
 
 export default {
     setSideNav({ commit }) {
@@ -35,6 +35,10 @@ export default {
     showError({commit}, {errors, error}){
         commit('appendToDataToastsArray', getHttpError(errors, error.response.status), { root: true });
         console.log(error);
+    },
+    showErrorFront({commit}, message){
+        commit('appendToDataToastsArray', getErrorStructure(message), { root: true });
+        console.log(message);
     },
     getNotifications({ commit }, cuig){
         return ActivityService.getActivityNotifications(cuig).then(

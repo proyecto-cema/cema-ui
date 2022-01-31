@@ -74,9 +74,11 @@ export default {
             { name: 'Ubicaciones', isCollapsible: false, route: 'ListLocations', roleRequirement: 1 },
             { name: 'Establecimientos', isCollapsible: false, route: 'ListEstablishments', roleRequirement: 2 },
             { name: 'Auditoria', isCollapsible: false, route: 'ListAudits', roleRequirement: 2 },
+            { name: 'Insumos', isCollapsible: false, route: 'ListSupplies', roleRequirement: 1 },
           ],
         },
         { name: 'Actividades', isCollapsible: false, icon: 'lightbulb', route: 'Calendar', roleRequirement: 0 },
+        { name: 'Operaciones', isCollapsible: false, icon: 'lightbulb', route: 'ListOperations', roleRequirement: 0 },
       ],
     };
   },

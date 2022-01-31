@@ -1,7 +1,7 @@
 
 import AuditsService from '../../services/administration/audit.service';
-import {AUDIT_ERRORS} from "../../constants";
 import utils from "../../utils"
+import { AUDIT_ERRORS } from '../../services/errors-common';
 
 
 const state = {

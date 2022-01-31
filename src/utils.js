@@ -1,9 +1,11 @@
 import moment from "moment";
-import {JAVA_DATE_FORMAT} from "./constants";
+import {JAVA_DATE_FORMAT, REGEX_LETTERS_NUMBERS} from "./constants";
+
 
 export default {
     methods: {
         javaDateToMomentDate(date, format = "DD/MM/YYYY", dateOnly=false) {
+            if (date === null){ return null }
             let trueDate = moment(String(date), JAVA_DATE_FORMAT);
             if(dateOnly){
                 return trueDate.toDate();
@@ -26,5 +28,15 @@ export default {
             }
             return false;
         },
+        tagHasError(tag) {
+            let message = 'Ingrese el número de caravana del bovino.';
+            let isValid = !!tag;
+            let testRegex = REGEX_LETTERS_NUMBERS.test(tag);
+            if (isValid && !testRegex) {
+              message = 'La caravana ingresada no es valida. Solo se permiten numeros y letras.';
+              isValid = false;
+            }
+            return { isValid: isValid, message: message };
+          },
     }
 }
