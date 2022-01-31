@@ -1,6 +1,6 @@
 import ActivityService from '../../services/activity/activity.service';
-import {ACTIVITY_ERRORS} from "../../constants";
 import utils from "../../utils"
+import { ACTIVITY_ERRORS, SUPPLY_ERRORS } from '../../services/errors-common';
 
 const state = {
     activityData: {
@@ -130,7 +130,7 @@ const actions = {
             }
         );
     },
-    async listActivities({dispatch, rootState},search) {
+    async listActivities({dispatch, rootState}, search) {
         return ActivityService.getActivitiesList(search.name, search.type, rootState.bovine.selectedCuig).then(
             response => {
                 console.log("List Activities: " + response.data);
@@ -140,6 +140,25 @@ const actions = {
                 dispatch("showError", {error: error, errors: ACTIVITY_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
+        );
+    },
+    async getFeedingSupplyList({dispatch, rootState}, { page, size, search }){
+        let searchingFor = {
+            establishmentCuig: rootState.bovine.selectedCuig,
+            categoryName: "comida",
+            ...search
+        };
+        return ActivityService.getFeedingSupplies(page, size, searchingFor).then(
+          response => {
+              console.log("Supply list: " + response.data);
+              return Promise.resolve(response);
+          },
+          error => {
+              if (error.response.status !== 404){
+                  dispatch("showError", {error: error, errors: SUPPLY_ERRORS}, {root:true});
+              }
+              return Promise.reject(error);
+          }
         );
     }
 }

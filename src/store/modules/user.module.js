@@ -1,6 +1,7 @@
 import UserService from '../../services/users/user.service';
-import {ROLES, USERS_ERRORS} from "../../constants";
+import {ROLES} from "../../constants";
 import utils from "../../utils"
+import { USERS_ERRORS } from '../../services/errors-common';
 
 
 const state = {
