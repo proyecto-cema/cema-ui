@@ -1,6 +1,6 @@
 import EstablishmentService from '../../services/administration/establishment.service';
 import UsersService from '../../services/users/user.service';
-import {ADMINISTRATION_ERRORS} from "../../constants";
+import { ADMINISTRATION_ERRORS } from '../../services/errors-common';
 
 const state = {
     establishment: {name: null, cuig: null, location: null, phone: null, email: null, ownerUserName: "" },

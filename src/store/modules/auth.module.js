@@ -1,6 +1,6 @@
 import AuthService from '../../services/auth/auth.service';
 import {getHttpError} from "../../services/http-common";
-import {LOGIN_ERRORS} from "../../constants";
+import { LOGIN_ERRORS } from '../../services/errors-common';
 
 const user = JSON.parse(localStorage.getItem('user'));
 const initialState = user
