@@ -9,7 +9,8 @@ const state = {
     selectedCuig: null,
     cantSelect: null,
     edit: false,
-    batch: {batchName: null, description: null, bovineTags: [], establishmentCuig: null}
+    batch: {batchName: null, description: null, bovineTags: [], establishmentCuig: null},
+    selectedImage: null
 }
 
 const mutations = {
@@ -44,10 +45,15 @@ const mutations = {
     setSelectedCuig(state, payload){
         state.selectedCuig = payload;
     },
-
+    setSelectedImage(state, payload){
+        state.selectedImage = payload;
+    },
 }
 
 const actions = {
+    setupSelectedImage({commit}, payload){
+        commit('setSelectedImage', payload);
+    },
     setCuigToDefault({state, commit, rootState}){
         if(!state.selectedCuig){
             commit('setSelectedCuig', rootState.auth.user.user.establishmentCuig);
@@ -68,6 +74,7 @@ const actions = {
         }
         commit('setBovine', blankBovine);
         commit('setEdit', false);
+        commit('setSelectedImage', null)
     },
     setupEditBovine({commit}, proxyBovine){
         commit('setBovine', proxyBovine);

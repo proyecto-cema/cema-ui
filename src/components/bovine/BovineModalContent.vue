@@ -23,22 +23,35 @@
             alt="Identificador"
             class="imageIdBovine"
             id="tagImg"
-            :src="!selectedImage ? require('../../assets/images/bovine/tag_bovino.png') : selectedImage"
+            :src="!imageTag ? require('../../assets/images/bovine/tag_bovino.png') : imageTag"
           />
-          <div class="TextCenterImage" v-if="!selectedImage">
+          <div class="TextCenterImage" v-if="!imageTag">
             <h4>{{ bovine.establishmentCuig }}<br />{{ bovine.tag }}</h4>
           </div>
         </div>
         <div class="mt-3" v-if="!edit">
           <input
-            type="file"
-            class="form-control-file"
+            :disabled="imageTag && !hideBar"
+            class="form-control form-control-sm"
             id="bovineTagFile"
+            type="file"
             @change="recognize"
             accept="image/*"
             capture="environment"
           />
-          <small>Puede subir una imagen para escanear la caravana</small>
+          <div class="mt-3" v-if="!edit">
+            <div class="progress" v-if="imageTag && !hideBar">
+              <div
+                class="progress-bar progress-bar-striped progress-bar-animated"
+                role="progressbar"
+                :aria-valuenow="recognizeProgress"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                :style="'width: ' + recognizeProgress + '%'"
+              ></div>
+            </div>
+            <small v-if="!imageTag">Puede subir una imagen para escanear la caravana</small>
+          </div>
         </div>
       </div>
       <div class="col-lg-6 col-12">
@@ -141,10 +154,6 @@ import { mapActions, mapState } from 'vuex';
 import { BOVINE_CATEGORIES, BOVINE_STATUS } from '../../constants';
 import { createWorker } from 'tesseract.js';
 
-const worker = createWorker({
-  logger: (m) => console.log(m),
-});
-
 const MAX_WIDTH = 320;
 const MAX_HEIGHT = 180;
 const MIME_TYPE = 'image/jpeg';
@@ -155,7 +164,10 @@ export default {
   components: { CemaInput },
   data() {
     return {
-      selectedImage: null,
+      tagFile: null,
+      recognizeProgress: 0,
+      worker: null,
+      hideBar: false,
     };
   },
   props: {
@@ -164,8 +176,29 @@ export default {
       required: true,
     },
   },
+  mounted() {
+    this.worker = createWorker({
+      logger: (m) => {
+        console.log(m);
+        if (m.status === 'recognizing text') {
+          this.recognizeProgress = Math.floor(m.progress * 100) + 1;
+        }
+      },
+    });
+    this.setupSW();
+    this.tagFile = document.getElementById('bovineTagFile');
+  },
   computed: {
-    ...mapState('bovine', ['bovine', 'edit', 'categories']),
+    ...mapState('bovine', ['bovine', 'edit', 'selectedImage']),
+    imageTag: {
+      get() {
+        this.checkToEmptyInput();
+        return this.selectedImage;
+      },
+      set(value) {
+        this.setupSelectedImage(value);
+      },
+    },
     getToday() {
       return this.getMomentToday();
     },
@@ -176,14 +209,19 @@ export default {
       return BOVINE_STATUS[this.bovine.category];
     },
     possibleCategories() {
-      if (this.bovine.genre == null || this.bovine.genre == 'Macho' || this.bovine.genre == 'Hembra') {
+      if (this.bovine.genre == null || this.bovine.genre === 'Macho' || this.bovine.genre === 'Hembra') {
         return [...BOVINE_CATEGORIES[this.bovine.genre]];
       }
       return BOVINE_CATEGORIES['Todos'];
     },
   },
   methods: {
-    ...mapActions('bovine', ['setupCategories']),
+    ...mapActions('bovine', ['setupSelectedImage']),
+    checkToEmptyInput() {
+      if (!this.selectedImage && this.tagFile) {
+        this.tagFile.value = '';
+      }
+    },
     getTagError() {
       return this.tagHasError(this.bovine.tag);
     },
@@ -193,10 +231,16 @@ export default {
     resetCategories() {
       this.bovine.category = '';
     },
+    async setupSW() {
+      await this.worker.load();
+      await this.worker.loadLanguage('eng');
+    },
     async recognize(e) {
+      this.hideBar = false;
+      this.recognizeProgress = 1;
       let files = e.target.files;
       if (!files.length) return;
-      this.selectedImage = URL.createObjectURL(files[0]);
+      this.imageTag = URL.createObjectURL(files[0]);
       const img = document.getElementById('tagImg');
       const [newWidth, newHeight] = this.calculateSize(img, MAX_WIDTH, MAX_HEIGHT);
       const canvas = document.createElement('canvas');
@@ -205,14 +249,13 @@ export default {
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, newWidth, newHeight);
       canvas.toBlob((blob) => {}, MIME_TYPE, QUALITY);
-      await worker.load();
-      await worker.loadLanguage('eng');
-      await worker.initialize('eng');
+      await this.worker.initialize('eng');
       const {
         data: { text },
-      } = await worker.recognize(img);
+      } = await this.worker.recognize(img);
       console.log(text);
-      this.bovine.tag = text;
+      this.bovine.tag = text.trim().replace(/\s+/g, '');
+      this.hideBar = true;
     },
     calculateSize(img, maxWidth, maxHeight) {
       let width = img.width;
