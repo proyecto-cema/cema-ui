@@ -9,7 +9,9 @@ import {
   ACTIVITY_CONTEXT,
   ACTIVITY_VERSION, REPORTING_CONTEXT, REPORTING_VERSION,
   OPERATION_CONTEXT,
-  OPERATION_VERSION
+  OPERATION_VERSION,
+  HEALTH_CONTEXT, 
+  HEALTH_VERSION,
 } from '../constants'
 
 const headers = { 'Content-type': 'application/json' }
@@ -41,6 +43,11 @@ export const httpReporting = axios.create({
 
 export const httpOperation = axios.create({
   baseURL: BASE_URL + OPERATION_CONTEXT + OPERATION_VERSION,
+  headers: headers
+})
+
+export const httpHealth = axios.create({
+  baseURL: BASE_URL + HEALTH_CONTEXT + HEALTH_VERSION,
   headers: headers
 })
 

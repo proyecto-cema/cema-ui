@@ -11,6 +11,7 @@ import login from './login'
 import activity from './activity'
 import audit from './audit'
 import supply from './supply'
+import disease from './disease'
 import {ROLE_REPRESENTATION} from "../constants";
 
 let routes = []
@@ -28,7 +29,7 @@ const localRoutes = [
     component: About
   }
 ]
-routes = routes.concat(localRoutes, bovine, login, establishment, activity, user, location, operation, audit, supply)
+routes = routes.concat(localRoutes, bovine, login, establishment, activity, user, location, operation, audit, supply,disease)
 
 const router = createRouter({
   history: createWebHistory(),

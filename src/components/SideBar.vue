@@ -110,6 +110,7 @@ export default {
             { name: 'Auditoria', isCollapsible: false, route: 'ListAudits', roleRequirement: 2 },
           ],
         },
+        { name: 'Enfermedades', isCollapsible: false, icon: 'heartbeat', route: 'ListDiseases', roleRequirement: 0 },
       ],
     };
   },
