@@ -77,7 +77,8 @@ export default {
             { name: 'Insumos', isCollapsible: false, route: 'ListSupplies', roleRequirement: 1 },
           ],
         },
-        { name: 'Actividades', isCollapsible: false, icon: 'lightbulb', route: 'Calendar', roleRequirement: 0 },
+        { name: 'Actividades', isCollapsible: false, icon: 'calendar', route: 'Calendar', roleRequirement: 0 },
+        { name: 'Enfermedades', isCollapsible: false, icon: 'heartbeat', route: 'ListDiseases', roleRequirement: 0 },
         { name: 'Operaciones', isCollapsible: false, icon: 'lightbulb', route: 'ListOperations', roleRequirement: 0 },
       ],
     };

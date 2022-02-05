@@ -11,6 +11,7 @@ import location from './modules/location.module'
 import operation from './modules/operation.module'
 import audit from './modules/audit.module'
 import supply from './modules/supply.module'
+import disease from './modules/disease.module'
 
 export default createStore({
   state: {
@@ -32,7 +33,8 @@ export default createStore({
     location,
     operation,
     audit,
-    supply
+    supply,
+    disease
   },
   getters:{
     isMobile(){

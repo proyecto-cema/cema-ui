@@ -56,3 +56,8 @@ export const SUPPLY_ERRORS = {
   404: {type: "Server", message: "Insumo no encontrada"},
   409: {type: "Server", message: "El Insumo que esta intentando registrar ya existe"},
 };
+export const DISEASE_ERRORS = {
+  ...COMMON_ERRORS,
+  404: {type: "Server", message: "Enfermedad no encontrada"},
+  409: {type: "Server", message: "La enfermedad que esta intentando registrar ya existe"},
+};
