@@ -6,12 +6,12 @@ import {
     faUserPlus,
     faSignInAlt,
     faSignOutAlt,
-    faHatCowboy,
+    faTags,
     faLightbulb,
     faHeartbeat,
     faEdit,
     faTrash,
-    faBuilding,
+    faDesktop,
     faAlignJustify,
     faTimes,
     faPlus,
@@ -22,7 +22,9 @@ import {
     faVenusMars,
     faChartLine,
     faDownload,
-  faCamera
+    faCalendarAlt,
+    faCamera,
+    faMoneyBillAlt
 } from '@fortawesome/free-solid-svg-icons'
 import {
     faSquare,
@@ -35,12 +37,12 @@ library.add(
     faUserPlus,
     faSignInAlt,
     faSignOutAlt,
-    faHatCowboy,
+    faTags,
     faLightbulb,
     faHeartbeat,
     faEdit,
     faTrash,
-    faBuilding,
+    faDesktop,
     faAlignJustify,
     faTimes,
     faPlus,
@@ -53,7 +55,9 @@ library.add(
     faDownload,
     faCheckSquare,
     faSquare,
-  faCamera
+    faCalendarAlt,
+    faCamera,
+    faMoneyBillAlt
 )
 
 export {FontAwesomeIcon}
