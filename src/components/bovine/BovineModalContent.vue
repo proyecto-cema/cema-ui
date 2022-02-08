@@ -185,7 +185,6 @@ export default {
         }
       },
     });
-    this.setupSW();
     this.tagFile = document.getElementById('bovineTagFile');
   },
   computed: {
@@ -231,10 +230,6 @@ export default {
     resetCategories() {
       this.bovine.category = '';
     },
-    async setupSW() {
-      await this.worker.load();
-      await this.worker.loadLanguage('eng');
-    },
     async recognize(e) {
       this.hideBar = false;
       this.recognizeProgress = 1;
@@ -249,10 +244,13 @@ export default {
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, newWidth, newHeight);
       canvas.toBlob((blob) => {}, MIME_TYPE, QUALITY);
+      await this.worker.load();
+      await this.worker.loadLanguage('eng');
       await this.worker.initialize('eng');
       const {
         data: { text },
       } = await this.worker.recognize(img);
+      await this.worker.terminate();
       console.log(text);
       this.bovine.tag = text.trim().replace(/\s+/g, '');
       this.hideBar = true;
