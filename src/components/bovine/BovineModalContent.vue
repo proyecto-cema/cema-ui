@@ -42,7 +42,7 @@
           <div class="mt-3" v-if="!edit">
             <div class="progress" v-if="imageTag && !hideBar">
               <div
-                class="progress-bar progress-bar-striped progress-bar-animated"
+                class="progress-bar progress-bar-striped progress-bar-animated bg-secondary"
                 role="progressbar"
                 :aria-valuenow="recognizeProgress"
                 aria-valuemin="0"
@@ -152,7 +152,7 @@ import CemaInput from '../form/CemaInput';
 import { mapActions, mapState } from 'vuex';
 
 import { BOVINE_CATEGORIES, BOVINE_STATUS } from '../../constants';
-import { createWorker } from 'tesseract.js';
+import { createWorker, OEM, PSM } from 'tesseract.js';
 
 const MAX_WIDTH = 320;
 const MAX_HEIGHT = 180;
@@ -185,6 +185,7 @@ export default {
         }
       },
     });
+    this.setupSW();
     this.tagFile = document.getElementById('bovineTagFile');
   },
   computed: {
@@ -230,6 +231,10 @@ export default {
     resetCategories() {
       this.bovine.category = '';
     },
+    async setupSW() {
+      await this.worker.load();
+      await this.worker.loadLanguage('eng');
+    },
     async recognize(e) {
       this.hideBar = false;
       this.recognizeProgress = 1;
@@ -244,13 +249,13 @@ export default {
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, newWidth, newHeight);
       canvas.toBlob((blob) => {}, MIME_TYPE, QUALITY);
-      await this.worker.load();
-      await this.worker.loadLanguage('eng');
-      await this.worker.initialize('eng');
+      await this.worker.initialize('eng', OEM.LSTM_ONLY);
+      await this.worker.setParameters({
+        tessedit_pageseg_mode: PSM.SINGLE_BLOCK,
+      });
       const {
         data: { text },
       } = await this.worker.recognize(img);
-      await this.worker.terminate();
       console.log(text);
       this.bovine.tag = text.trim().replace(/\s+/g, '');
       this.hideBar = true;
