@@ -23,7 +23,7 @@
             alt="Identificador"
             class="imageIdBovine"
             id="tagImg"
-            :src="!imageTag ? require('../../assets/images/bovine/tag_bovino.png') : imageTag"
+            :src="require('../../assets/images/bovine/tag_bovino.png')"
           />
           <div class="TextCenterImage" v-if="!imageTag">
             <h4>{{ bovine.establishmentCuig }}<br />{{ bovine.tag }}</h4>
@@ -157,7 +157,6 @@ import { createWorker, OEM, PSM } from 'tesseract.js';
 const MAX_WIDTH = 320;
 const MAX_HEIGHT = 180;
 const MIME_TYPE = 'image/jpeg';
-const QUALITY = 0.7;
 
 export default {
   name: 'BovineModal',
@@ -234,6 +233,10 @@ export default {
     async setupSW() {
       await this.worker.load();
       await this.worker.loadLanguage('eng');
+      await this.worker.initialize('eng');
+      await this.worker.setParameters({
+        tessedit_pageseg_mode: PSM.SINGLE_BLOCK,
+      });
     },
     async recognize(e) {
       this.hideBar = false;
@@ -241,24 +244,26 @@ export default {
       let files = e.target.files;
       if (!files.length) return;
       this.imageTag = URL.createObjectURL(files[0]);
+
       const img = document.getElementById('tagImg');
       const [newWidth, newHeight] = this.calculateSize(img, MAX_WIDTH, MAX_HEIGHT);
+
       const canvas = document.createElement('canvas');
       canvas.width = newWidth;
       canvas.height = newHeight;
       const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, newWidth, newHeight);
-      canvas.toBlob((blob) => {}, MIME_TYPE, QUALITY);
-      await this.worker.initialize('eng', OEM.LSTM_ONLY);
-      await this.worker.setParameters({
-        tessedit_pageseg_mode: PSM.SINGLE_BLOCK,
-      });
-      const {
-        data: { text },
-      } = await this.worker.recognize(img);
-      console.log(text);
-      this.bovine.tag = text.trim().replace(/\s+/g, '');
-      this.hideBar = true;
+      img.onload = async () => {
+        ctx.drawImage(img, 0, 0, newWidth, newHeight);
+        const dataUrl = canvas.toDataURL();
+
+        const {
+          data: { text },
+        } = await this.worker.recognize(dataUrl);
+        console.log(text);
+        this.bovine.tag = text.trim().replace(/\s+/g, '');
+        this.hideBar = true;
+      };
+      img.src = this.imageTag;
     },
     calculateSize(img, maxWidth, maxHeight) {
       let width = img.width;
