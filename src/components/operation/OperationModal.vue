@@ -28,7 +28,7 @@
                   type="date"
                 ></cema-input>
                 <div class="mt-4 d-flex justify-content-center">
-                  <cema-switch v-model="extraData.isSell"></cema-switch>
+                  <cema-switch :editing="edit" v-model="extraData.isSell"></cema-switch>
                 </div>
               </div>
               <div class="mb-3 col-12 col-md-6">
@@ -83,8 +83,13 @@
                 >
                 </cema-input>
               </div>
-              <div class="mb-3 col-12 col-md-6" v-if="extraData.isSell">
-                <tag-search :error-save="errorSave" v-model="operation.bovineTag" v-if="!edit" :filters="['active']" />
+              <div class="mb-3 col-12 col-md-6">
+                <tag-search
+                  :error-save="errorSave"
+                  v-model="operation.bovineTag"
+                  v-if="!edit && extraData.isSell"
+                  :filters="['active']"
+                />
                 <label v-else>Caravana relacionada: {{ operation.bovineTag }}</label>
               </div>
             </div>
@@ -248,7 +253,7 @@ export default {
             edit: true,
             bovine: response,
           };
-          if (bovine.bovine.status === 'Vendido') {
+          if (!this.edit && bovine.bovine.status === 'Vendido') {
             this.showErrorFront(`Esta caravana ${bovine.bovine.tag} ya se encuentra en estado vendido.`);
           } else {
             bovine.bovine.status = 'Vendido';

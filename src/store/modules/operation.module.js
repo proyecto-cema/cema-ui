@@ -1,4 +1,4 @@
-import OperationService  from '../../services/operation/operation.service';
+import BovineOperationService  from '../../services/operation/bovine-operation.service';
 
 import utils from "../../utils"
 import { OPERATION_ERRORS } from '../../services/errors-common';
@@ -48,6 +48,7 @@ const mutations = {
 const actions = {
     clearOperationData({commit}) {
         commit('setOperation', null);
+        commit('setIsSell', null);
         commit('setEdit', false);
     },
     setupEditOperation({commit}, proxyOperation){
@@ -57,7 +58,7 @@ const actions = {
         commit('setEdit', true);
     },
     async listOperations({dispatch, rootState},data) {
-        return OperationService.listOperation(data.page, data.size).then(
+        return BovineOperationService.listOperation(data.page, data.size).then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);
@@ -73,7 +74,7 @@ const actions = {
         saveOperation.establishmentCuig = rootState.auth.user.user.establishmentCuig;
         saveOperation.operatorUserName = rootState.auth.user.user.userName;
 
-        await OperationService.setOperation(saveOperation, edit).then(
+        await BovineOperationService.setOperation(saveOperation, edit).then(
             () => {
                 console.log(edit ? "Edited": "Created", "Operation:", operation)
                 return Promise.resolve(operation);

@@ -69,6 +69,7 @@
                 <th scope="col">Vendedor</th>
                 <th scope="col">Descripcion</th>
                 <th scope="col">Monto</th>
+                <th scope="col">Caravana Relacionada</th>
                 <th class="text-end" scope="col">Acciones</th>
               </tr>
               <tr v-else>
@@ -86,6 +87,7 @@
                 <td>{{ operation.sellerName }}</td>
                 <td>{{ operation.description }}</td>
                 <td>{{ operation.amount }}</td>
+                <td>{{ operation.establishmentCuig }}-{{ operation.bovineTag }}</td>
                 <td class="text-end">
                   <font-awesome-icon class="me-2" icon="edit" @click.stop="openAddOperationModal(operation)">
                   </font-awesome-icon>
@@ -155,7 +157,7 @@ export default {
     this.addOperationModal = new Modal(document.getElementById('addOperationModal'));
   },
   methods: {
-    ...mapActions('operation', ['listOperations', 'setupEditOperation']),
+    ...mapActions('operation', ['listOperations', 'setupEditOperation', 'clearOperationData']),
     ...mapActions(['showSuccess']),
     setIndexForName(index, name) {
       this.deleted = {
@@ -169,9 +171,12 @@ export default {
     },
     closeOperationModal() {
       this.addOperationModal.hide();
+      this.clearOperationData();
     },
     openAddOperationModal(operation) {
+      this.clearOperationData();
       if (operation) {
+        console.log(operation);
         this.setupEditOperation(operation);
       }
       this.addOperationModal.show();
