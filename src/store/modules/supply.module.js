@@ -54,9 +54,8 @@ const actions = {
         );
     },
     async listSupplies({dispatch}, data) {
-        return SupplyService.getSuppliesList(data.page, data.size).then(
+        return SupplyService.getSuppliesList(data.page, data.size, data.search).then(
             response => {
-                
                 console.log(response.data);
                 return Promise.resolve(response);
             },

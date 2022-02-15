@@ -90,7 +90,7 @@
                   v-if="!edit && extraData.isSell"
                   :filters="['active']"
                 />
-                <label v-else>Caravana relacionada: {{ operation.bovineTag }}</label>
+                <label v-if="edit">Caravana relacionada: {{ operation.bovineTag }}</label>
               </div>
             </div>
           </form>

@@ -110,10 +110,8 @@ export default {
   emits: ['deleteModal', 'createdNew'],
   data() {
     return {
-      categoriesName: [],
       errorSave: {
         name: null,
-        categoryName: '',
         price: 0,
         units: 0,
       },
@@ -136,12 +134,17 @@ export default {
       type: String,
       required: true,
     },
+    categoriesName: {
+      required: true,
+      default: [],
+    },
   },
   mounted() {
-    this.searchCategoriesName();
+    this.setCuigToDefault();
   },
   methods: {
-    ...mapActions('supply', ['listCategories', 'clearSupplyData', 'saveSupply', 'setupEditSupply']),
+    ...mapActions('supply', ['clearSupplyData', 'saveSupply', 'setupEditSupply']),
+    ...mapActions('bovine', ['setCuigToDefault']),
     ...mapActions(['showSuccess']),
     clean() {
       this.errorSave = {};
@@ -165,13 +168,6 @@ export default {
         this.showSuccess(`El insumo ${this.supplyData.name} se guardó correctamente`);
         this.setupEditSupply(this.supplyData);
         this.$emit('createdNew', { supply: this.supplyData, edit: editing });
-      });
-    },
-    async searchCategoriesName() {
-      this.listCategories().then((response) => {
-        this.categoriesName = response.data;
-        console.log(response);
-        console.log('Categorias:', this.categoriesName);
       });
     },
   },
