@@ -1,4 +1,4 @@
-import ListSupplies from "../views/administration/ListSupplies";
+import ListSupplies from "../views/operation/ListSupplies";
 
 const routes = [
   {

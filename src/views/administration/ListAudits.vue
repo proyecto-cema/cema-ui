@@ -7,12 +7,12 @@
       <table class="table">
         <caption>
           {{
-            `Mostrando ${auditsLength} de ${auditsLength} ubicaciones`
+            `Mostrando ${auditsLength} de ${this.headers.totalPages} registros`
           }}
         </caption>
         <thead>
           <tr v-if="auditsLength !== 0">
-            <th scope="col">Fecha de operación</th>
+            <th scope="col">Fecha/Hora de operación</th>
             <th scope="col">Usuario</th>
             <th scope="col">Rol</th>
             <th scope="col">CUIG</th>
@@ -24,7 +24,7 @@
         </thead>
         <tbody>
           <tr v-for="audit in audits" :key="audit.name">
-            <td>{{ this.javaDateToMomentDate(audit.auditDate) }}</td>
+            <td>{{ this.replaceFormat(audit.auditDate, 'YYYY-MM-DDTHH:mm:ss:SSZ', 'HH:MM - DD/MM/YYYY') }}</td>
             <td>{{ audit.username }}</td>
             <td>{{ audit.role }}</td>
             <td>{{ audit.establishmentCuig }}</td>
@@ -33,7 +33,7 @@
         </tbody>
       </table>
     </div>
-    <div class="d-flex justify-content-center">
+    <div v-if="headers.totalPages > 1" class="d-flex justify-content-center">
       <div aria-label="Large button group" class="btn-group" role="group">
         <button
           :class="headers.currentPage <= 0 ? 'disabled' : ''"
@@ -42,6 +42,38 @@
           @click="this.searchAuditPage(this.headers.currentPage - 1)"
         >
           Anterior
+        </button>
+        <button
+          :class="headers.currentPage <= 0 ? 'disabled' : ''"
+          class="btn btn-outline-primary"
+          type="button"
+          @click="this.searchAuditPage(this.headers.currentPage - 200)"
+        >
+          -200
+        </button>
+        <button
+          v-for="i in this.pageFor"
+          :key="i"
+          :class="
+            headers.currentPage === pageHelper(i) - 1
+              ? 'btn-primary'
+              : pageHelper(i) - 1 >= headers.totalPages
+              ? 'disabled'
+              : 'btn-outline-primary'
+          "
+          class="btn"
+          type="button"
+          @click="this.searchAuditPage(pageHelper(i) - 1)"
+        >
+          {{ pageHelper(i) }}
+        </button>
+        <button
+          :class="headers.currentPage >= headers.totalPages - 1 ? 'disabled' : ''"
+          class="btn btn-outline-primary"
+          type="button"
+          @click="this.searchAuditPage(this.headers.currentPage + 200)"
+        >
+          +200
         </button>
         <button
           :class="headers.currentPage >= headers.totalPages - 1 ? 'disabled' : ''"
@@ -58,7 +90,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { Modal } from 'bootstrap';
 
 export default {
   name: 'ListAudits',
@@ -67,7 +98,7 @@ export default {
       audits: [],
       auditsLength: 0,
       headers: { totalPages: 0, currentPage: 0, totalElements: 0 },
-
+      displace: 2,
       timeout: false,
       delay: 250,
     };
@@ -75,14 +106,31 @@ export default {
   mounted() {
     this.searchAudits();
   },
+  computed: {
+    pageFor() {
+      let displace = this.displace * 2 + 1;
+      return this.headers.totalPages > displace ? displace : this.headers.totalPages;
+    },
+  },
   methods: {
     ...mapActions('audit', ['listAudits']),
     ...mapActions(['showSuccess']),
-
-    async searchAuditPage(page) {
-      await this.searchAudits(page, 10);
+    pageHelper(i) {
+      let page =
+        this.headers.currentPage <= this.displace
+          ? this.headers.currentPage - this.headers.currentPage
+          : this.headers.currentPage - this.displace;
+      return page + i;
     },
-    async searchAudits(page = 0, size = 10) {
+    async searchAuditPage(page) {
+      if (page < 0) {
+        page = 0;
+      } else if (page > this.headers.totalPages) {
+        page = this.headers.totalPages - 1;
+      }
+      await this.searchAudits(page, 15);
+    },
+    async searchAudits(page = 0, size = 15) {
       this.audits = null;
       this.listAudits({ page: page, size: size }).then((response) => {
         this.audits = response.data;
