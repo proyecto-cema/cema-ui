@@ -15,6 +15,7 @@ const state = {
 
 const mutations = {
     setBovine(state, payload) {
+        console.log(payload);
         state.bovine = payload === null ? {
             tag: null,
             genre: "",

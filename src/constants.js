@@ -1,5 +1,6 @@
 export const BASE_URL = process.env.VUE_APP_API_URL
 export const JAVA_DATE_FORMAT = "YYYY-MM-DD";
+export const JAVA_DATETIME_FORMAT = "'YYYY-MM-DD[T]HH:mm:ss:SSZ'";
 export const ROLES = ["Peon", 'Patron', 'Admin'];
 export const ROLE_REPRESENTATION = {"ADMIN": 2, "PATRON": 1, "PEON": 0};
 export const REGEX_LETTERS_NUMBERS = /^([a-zA-Z0-9]+)$/;

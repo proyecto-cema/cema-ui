@@ -111,7 +111,7 @@ const actions = {
                     }
                 }
                 activityData.executionDate = utils.methods.javaDateToMomentDate(activityData.executionDate, "YYYY-MM-DD");
-                extraData["isBatch"] = activityData.hasOwnProperty("batch_name");
+                extraData["isBatch"] = extraData.hasOwnProperty("batchName");
                 activityData["extraData"] = extraData;
                 dispatch("setupEditActivity", activityData);
                 console.log(activityData);

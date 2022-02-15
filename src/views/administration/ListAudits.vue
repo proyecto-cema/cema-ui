@@ -24,7 +24,7 @@
         </thead>
         <tbody>
           <tr v-for="audit in audits" :key="audit.name">
-            <td>{{ this.replaceFormat(audit.auditDate, 'YYYY-MM-DDTHH:mm:ss:SSZ', 'HH:MM - DD/MM/YYYY') }}</td>
+            <td>{{ this.javaDateToMomentDate(audit.auditDate, 'HH:MM - DD/MM/YYYY', false, true) }}</td>
             <td>{{ audit.username }}</td>
             <td>{{ audit.role }}</td>
             <td>{{ audit.establishmentCuig }}</td>

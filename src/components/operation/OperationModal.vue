@@ -28,7 +28,7 @@
                   type="date"
                 ></cema-input>
                 <div class="mt-4 d-flex justify-content-center">
-                  <cema-switch :editing="edit" v-model="extraData.isSell"></cema-switch>
+                  <cema-switch-operation :editing="edit" v-model="extraData.isSell"></cema-switch-operation>
                 </div>
               </div>
               <div class="mb-3 col-12 col-md-6">
@@ -136,7 +136,7 @@
   </div>
 </template>
 <script>
-import CemaSwitch from '../form/CemaSwitchOperation';
+import CemaSwitchOperation from '../form/CemaSwitchOperation';
 import TagSearch from '../activity/TagSearch';
 import BovineModalContent from '../bovine/BovineModalContent';
 
@@ -168,7 +168,7 @@ export default {
   components: {
     TagSearch,
     CemaInput,
-    CemaSwitch,
+    CemaSwitchOperation,
     BovineModalContent,
   },
   props: {
