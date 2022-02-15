@@ -283,7 +283,7 @@ export default {
     },
     fromValidateBovine() {
       this.errorSaveBovine = this.errorSaveBovineHelper;
-      if (this.checkErrors(this.errorSaveBovine)) {
+      if (!this.edit && this.checkErrors(this.errorSaveBovine)) {
         console.error(this.errorSaveBovine);
         return;
       }
@@ -293,22 +293,27 @@ export default {
       this.operation.operationType = 'buy';
       this.operation.buyerName = null;
       this.operation.bovineTag = this.bovine.tag;
+      let bovineTag = this.bovine.tag;
       let operation = {
         edit: this.edit,
         operation: this.operation,
       };
-      let data = {
-        edit: false,
-        bovine: this.bovine,
-      };
-      this.saveBovine(data).then((bovine) => {
-        this.formSaveOperationBuy(operation, bovine);
-      });
+      if (!this.edit) {
+        let data = {
+          edit: false,
+          bovine: this.bovine,
+        };
+        this.saveBovine(data).then((bovine) => {
+          this.formSaveOperationBuy(operation, bovine.tag);
+        });
+      } else {
+        await this.formSaveOperationBuy(operation, bovineTag);
+      }
     },
-    async formSaveOperationBuy(operation, bovine) {
+    async formSaveOperationBuy(operation, tag) {
       console.log('Operacion:  ' + operation);
       this.saveOperation(operation).then(() => {
-        this.successCall(`La compra del bovino con caravana ${bovine.tag} se guardó correctamente.`);
+        this.successCall(`La compra del bovino con caravana ${tag} se guardó correctamente.`);
       });
     },
   },
