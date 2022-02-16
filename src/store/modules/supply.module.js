@@ -1,5 +1,5 @@
 import SupplyService from '../../services/administration/supply.service';
-import {SUPPLY_ERRORS} from "../../services/errors-common";
+import { SUPPLY_ERRORS } from '../../services/errors-common';
 
 const state = {
     supplyData: {

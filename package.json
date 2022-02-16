@@ -2,15 +2,15 @@
     "name": "cema-ui",
     "version": "1.8.0-SNAPSHOT",
     "private": true,
-    "scripts":     {
+    "scripts": {
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
-        "build-qa": "vue-cli-service build --mode qa",
-        "build-prod": "vue-cli-service build --mode prod",
         "lint": "eslint --ext .js,.vue src",
+        "build-prod": "vue-cli-service build --mode prod",
+        "build-qa": "vue-cli-service build --mode qa",
         "prepare": "husky install"
     },
-    "dependencies":     {
+    "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^1.2.36",
         "@fortawesome/free-regular-svg-icons": "^5.15.4",
         "@fortawesome/free-solid-svg-icons": "^5.15.4",
@@ -22,12 +22,15 @@
         "chartjs-plugin-datalabels": "^2.0.0",
         "core-js": "^3.6.5",
         "moment": "^2.29.1",
+        "tesseract.js": "^2.1.5",
         "v-calendar": "^3.0.0-alpha.6",
         "vue": "^3.2.20",
         "vue-router": "^4.0.0-0",
-        "vuex": "^4.0.0-0"
+        "vuex": "^4.0.0-0",
+        "workbox-window": "^6.4.2"
     },
-    "devDependencies":     {
+    "devDependencies": {
+        "@babel/core": "^7.16.7",
         "@babel/eslint-parser": "^7.15.0",
         "@vue/cli-plugin-babel": "~4.5.0",
         "@vue/cli-plugin-router": "~4.5.0",
@@ -38,16 +41,26 @@
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^4.0.0",
         "eslint-plugin-vue": "^7.16.0",
+        "http-server": "^14.0.0",
         "husky": "^7.0.0",
         "lint-staged": "^11.1.2",
         "prettier": "^2.5.0",
         "sass": "^1.40.1",
         "sass-loader": "^10",
-        "stylelint": "^14.1.0"
+        "stylelint": "^14.1.0",
+        "webpack": "^4.36.0",
+        "workbox-cli": "^6.4.2",
+        "workbox-webpack-plugin": "^5.1.4"
     },
-    "husky": {"hooks": {"pre-commit": "lint-staged"}},
-    "lint-staged": {"src/**/*.{js,vue}":     [
-        "eslint --fix",
-        "prettier --write"
-    ]}
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "src/**/*.{js,vue}": [
+            "eslint --fix",
+            "prettier --write"
+        ]
+    }
 }

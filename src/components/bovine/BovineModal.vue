@@ -35,7 +35,6 @@
 <script>
 import BovineModalContent from '../bovine/BovineModalContent';
 import { mapActions, mapState } from 'vuex';
-import { REGEX_LETTERS_NUMBERS } from '../../constants';
 
 export default {
   name: 'BovineModal',

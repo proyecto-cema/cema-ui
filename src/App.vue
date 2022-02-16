@@ -40,15 +40,29 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'App',
+  inject: ['workbox'],
   components: {
     ToastMessage,
     NavBar,
     SideBar,
   },
+  created() {
+    if (this.$workbox) {
+      this.$workbox.addEventListener('waiting', () => {
+        this.showUpdateUI = true;
+      });
+    }
+  },
   computed: {
     ...mapState(['dataToasts', 'notificationsToasts']),
     sideNav() {
       return this.$store.state.sidenav;
+    },
+  },
+  methods: {
+    async accept() {
+      this.showUpdateUI = false;
+      await this.$workbox.messageSW({ type: 'SKIP_WAITING' });
     },
   },
 };

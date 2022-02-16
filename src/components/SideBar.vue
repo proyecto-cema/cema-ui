@@ -62,24 +62,57 @@ export default {
     return {
       sidenavItems: [
         { name: 'Tablero', isCollapsible: false, icon: 'chart-line', route: 'Dashboard', roleRequirement: 1 },
-        { name: 'Bovinos', isCollapsible: false, icon: 'hat-cowboy', route: 'ListBovine', roleRequirement: 0 },
+        {
+          name: 'Bovinos',
+          isCollapsible: true,
+          expanded: false,
+          icon: 'tags',
+          items: [
+            { name: 'Gestión', isCollapsible: false, route: 'ListBovine', roleRequirement: 0 },
+            { name: 'Lotes', isCollapsible: false, route: 'ListBatch', roleRequirement: 0 },
+          ],
+        },
+        {
+          name: 'Actividades',
+          isCollapsible: true,
+          expanded: false,
+          icon: 'calendar-alt',
+          items: [
+            { name: 'Calendario', isCollapsible: false, route: 'Calendar', roleRequirement: 0 },
+            { name: 'Ubicaciones', isCollapsible: false, route: 'ListLocations', roleRequirement: 1 },
+          ],
+        },
+        {
+          name: 'Económico',
+          isCollapsible: true,
+          expanded: false,
+          icon: 'money-bill-alt',
+          items: [
+            { name: 'Operaciones', isCollapsible: false, route: 'ListOperations', roleRequirement: 0 },
+            { name: 'Insumos', isCollapsible: false, route: 'ListSupplies', roleRequirement: 1 },
+          ],
+        },
         {
           name: 'Administración',
           isCollapsible: true,
           expanded: false,
-          icon: 'building',
+          icon: 'desktop',
           items: [
-            { name: 'Lotes', isCollapsible: false, route: 'ListBatch', roleRequirement: 0 },
             { name: 'Usuarios', isCollapsible: false, route: 'ListUser', roleRequirement: 1 },
-            { name: 'Ubicaciones', isCollapsible: false, route: 'ListLocations', roleRequirement: 1 },
             { name: 'Establecimientos', isCollapsible: false, route: 'ListEstablishments', roleRequirement: 2 },
             { name: 'Auditoria', isCollapsible: false, route: 'ListAudits', roleRequirement: 2 },
-            { name: 'Insumos', isCollapsible: false, route: 'ListSupplies', roleRequirement: 1 },
           ],
         },
-        { name: 'Actividades', isCollapsible: false, icon: 'calendar', route: 'Calendar', roleRequirement: 0 },
-        { name: 'Enfermedades', isCollapsible: false, icon: 'heartbeat', route: 'ListDiseases', roleRequirement: 0 },
-        { name: 'Operaciones', isCollapsible: false, icon: 'lightbulb', route: 'ListOperations', roleRequirement: 0 },
+        {
+          name: 'Salud',
+          isCollapsible: true,
+          expanded: false,
+          icon: 'heartbeat',
+          items: [
+            { name: 'Enfermedades', isCollapsible: false, route: 'ListDiseases', roleRequirement: 1 },
+            { name: 'Seguimiento', isCollapsible: false, route: 'ListIllness', roleRequirement: 1 },
+          ],
+        },
       ],
     };
   },
