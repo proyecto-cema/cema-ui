@@ -242,7 +242,7 @@ export default {
         return;
       }
       if (this.extraData.isSell) {
-        this.getBovine(this.operation.bovineTag).then((response) => {
+        this.getBovine({ tag: this.operation.bovineTag }).then((response) => {
           console.log(response);
           let bovine = {
             edit: true,
