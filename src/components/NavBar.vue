@@ -14,7 +14,7 @@
       >
         <font-awesome-icon icon="align-justify" />
       </button>
-      <a class="navbar-brand" :class="this.sidenav ? '' : 'd-none d-md-block'">{{ establishmentName }}</a>
+      <a class="navbar-brand" :class="this.sidenav ? '' : 'd-none d-md-block'">{{ establishmentData.name }}</a>
       <div class="navbar-nav flex-grow-1"></div>
       <div class="d-none d-sm-block mb-2 mb-lg-0">
         <ul v-if="!currentUser" class="navbar-nav">
@@ -43,6 +43,10 @@
                 <font-awesome-icon class="ms-2" icon="sign-out-alt" />
                 Cerrar Sesión
               </a>
+              <a class="nav-link dropdown-item" @click.prevent="showEstablishment">
+                <font-awesome-icon class="ms-2" icon="building" />
+                Ver Mi Establecimiento
+              </a>
             </div>
           </li>
         </ul>
@@ -57,7 +61,7 @@ export default {
   name: 'NavBar',
   mounted() {
     if (this.currentUser) {
-      this.setEstablishmentName(this.currentUser.user.establishmentCuig).then(
+      this.setEstablishmentData(this.currentUser.user.establishmentCuig).then(
         () => {},
         (error) => {
           let jsonError = error.toJSON();
@@ -76,19 +80,25 @@ export default {
     }
   },
   computed: {
-    ...mapState(['sidenav', 'establishmentName']),
+    ...mapState(['sidenav', 'establishmentData']),
     currentUser() {
       return this.$store.state.auth.user;
     },
   },
   methods: {
-    ...mapActions(['setSideNav', 'setEstablishmentName', 'getNotifications']),
+    ...mapActions(['setSideNav', 'setEstablishmentData', 'getNotifications']),
     toggleSideNav() {
       this.setSideNav();
     },
     logOut() {
       this.$store.dispatch('auth/logout');
       this.$router.push('/login');
+    },
+    showEstablishment() {
+      this.$router.push({
+        name: 'ListSubscriptions',
+        params: { modal: true },
+      });
     },
   },
 };

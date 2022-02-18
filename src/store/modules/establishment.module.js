@@ -17,6 +17,13 @@ const mutations = {
 }
 
 const actions = {
+    setupEditMyEstablishment({dispatch}){
+      dispatch("getEstablishmentData", null, {root:true}).then(
+        (establishment) => {
+          dispatch("setupEditEstablishment", establishment);
+        }
+      );
+    },
     setupEditEstablishment({commit}, establishment){
         commit('setEdit', true);
         commit('setEstablishment', establishment);
@@ -40,7 +47,7 @@ const actions = {
         commit('setEstablishment', null);
     },
     async saveEstablishment({dispatch, state}, {establishment}) {
-        console.log(establishment, state.edit)
+        console.log(establishment, state.edit);
         return EstablishmentService.setEstablishment(establishment, state.edit).then(
             (data) => {
                 console.log(state.edit ? "Edited": "Created", "establishment:", data)
@@ -87,6 +94,19 @@ const actions = {
                 dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
+        );
+    },
+    async listSubscriptions({dispatch, rootState}, {page, size}) {
+      let cuig = rootState.auth.user.user.establishmentCuig;
+        return EstablishmentService.getSubscriptionsList(cuig, page, size).then(
+          response => {
+              console.log(response.data);
+              return Promise.resolve(response);
+          },
+          error => {
+              dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
+              return Promise.reject(error);
+          }
         );
     }
  
