@@ -12,7 +12,7 @@
       <table class="table">
         <caption>
           {{
-            `Mostrando ${this.subscriptionsLength} de ${this.headers.totalElements} suscripciones`
+            `Mostrando ${this.subscriptionsLength} de ${this.subscriptionsLength} suscripciones`
           }}
         </caption>
         <thead>
@@ -81,7 +81,7 @@ export default {
       this.subscriptions = null;
       this.listSubscriptions({ page: page, size: LIST_SIZE }).then((response) => {
         this.subscriptions = response.data;
-        this.headers = this.parsePageHeaders(response.headers);
+        //this.headers = this.parsePageHeaders(response.headers);
       });
     },
     openMyEstablishmentModal() {

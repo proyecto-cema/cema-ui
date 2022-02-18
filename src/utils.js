@@ -40,9 +40,9 @@ export default {
         },
         parsePageHeaders(headers){
             return {
-                totalPages: parseInt(headers['total-pages']),
-                currentPage: parseInt(headers['current-page']),
-                totalElements: parseInt(headers['total-elements'])
+                totalPages: parseInt(headers['total-pages']) || 0,
+                currentPage: parseInt(headers['current-page']) || 0,
+                totalElements: parseInt(headers['total-elements']) || 0
             }
         }
     }

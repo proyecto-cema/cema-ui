@@ -41,7 +41,7 @@
                   <label style="color: white">¿Por primera vez en <b>CEMA</b>?</label>
                 </div>
                 <div class="col-md-5 in-line negrita">
-                  <a class="nav-link text-secondary" href="mailto:proyecto-cema.outlook.com">Contáctanos</a>
+                  <a class="nav-link text-secondary" href="mailto:proyecto-cema@outlook.com">Contáctanos</a>
                 </div>
               </div>
             </div>
