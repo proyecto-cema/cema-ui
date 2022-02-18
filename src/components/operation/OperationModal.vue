@@ -292,13 +292,13 @@ export default {
     async formSaveBovine() {
       this.operation.operationType = 'buy';
       this.operation.buyerName = null;
-      this.operation.bovineTag = this.bovine.tag;
-      let bovineTag = this.bovine.tag;
+      let bovineTag = this.operation.bovineTag;
       let operation = {
         edit: this.edit,
         operation: this.operation,
       };
       if (!this.edit) {
+        operation.operation.bovineTag = this.bovine.tag;
         let data = {
           edit: false,
           bovine: this.bovine,

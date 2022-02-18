@@ -235,7 +235,7 @@ export default {
       console.log('operaciones  ' + this.operations);
 
       for (var i = 0; this.operationsLength > i; i++) {
-        if (this.operations[i].operationType == 'sell') {
+        if (this.operations[i].operationType === 'sell') {
           this.results.income += this.operations[i].amount;
         } else {
           this.results.expenses += this.operations[i].amount;
