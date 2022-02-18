@@ -1,11 +1,14 @@
 import ActivityService from '../../services/activity/activity.service';
 import utils from "../../utils"
-import { ACTIVITY_ERRORS, SUPPLY_ERRORS } from '../../services/errors-common';
+import { ACTIVITY_ERRORS, SUPPLY_ERRORS, USERS_ERRORS } from '../../services/errors-common';
+import UserService from '../../services/users/user.service';
+import { ROLES } from '../../constants';
 
 const state = {
     activityData: {
         id: null,
         name: null,
+        workerUserName: null,
         description: null,
         executionDate: null,
         type: null,
@@ -21,6 +24,7 @@ const mutations = {
         state.activityData = payload === null ? {
             id: null,
             name: null,
+            workerUserName: null,
             description: null,
             executionDate: null,
             type: "",
@@ -87,6 +91,7 @@ const actions = {
                 let activityData = {
                     id: null,
                     name: null,
+                    workerUserName: null,
                     description: null,
                     executionDate: null,
                     type: "",
@@ -133,7 +138,6 @@ const actions = {
     async listActivities({dispatch, rootState}, search) {
         return ActivityService.getActivitiesList(search.name, search.type, rootState.bovine.selectedCuig).then(
             response => {
-                console.log("List Activities: " + response.data);
                 return Promise.resolve(response);
             },
             error => {
@@ -160,6 +164,9 @@ const actions = {
               return Promise.reject(error);
           }
         );
+    },
+    async getWorkerList({dispatch}){
+      return dispatch("user/listUsers", 1, { root: true });
     }
 }
 
