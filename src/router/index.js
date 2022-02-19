@@ -29,7 +29,7 @@ const localRoutes = [
     component: About
   }
 ]
-routes = routes.concat(localRoutes, bovine, login, establishment, activity, user, location, operation, audit, supply,disease)
+routes = routes.concat(localRoutes, bovine, login, establishment, activity, user, location, operation, audit, supply, disease)
 
 const router = createRouter({
   history: createWebHistory(),
