@@ -13,7 +13,7 @@ export default {
             return trueDate.format(format);
         },
         momentDateToJavaDate(date, format = "YYYY-MM-DD") {
-            return moment(String(date), format).format(JAVA_DATE_FORMAT);
+            return moment(String(date), format).format(format);
         },
         replaceFormat(date, format1 = "DD/MM/YYYY", format2 = "YYYY-MM-DD") {
             return moment(String(date), format1).format(format2);

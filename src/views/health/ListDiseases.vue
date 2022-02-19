@@ -1,36 +1,6 @@
 <template>
-  <ul class="nav nav-tabs mt-5" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button
-        class="nav-link active"
-        id="animales-tab"
-        data-bs-toggle="tab"
-        data-bs-target="#animales"
-        type="button"
-        role="tab"
-        aria-controls="animales"
-        aria-selected="true"
-      >
-        SEGUIMIENTO Y CONTROL DE ENFERMEDADES
-      </button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button
-        class="nav-link"
-        id="insumos-tab"
-        data-bs-toggle="tab"
-        data-bs-target="#insumos"
-        type="button"
-        role="tab"
-        aria-controls="insumos"
-        aria-selected="false"
-      >
-        ENFERMEDADES
-      </button>
-    </li>
-  </ul>
   <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="animales" role="tabpanel" aria-labelledby="animales-tab">
+    <div id="disease">
       <div class="text-center">
         <br />
         <h3>Listado De Enfermedades</h3>
@@ -71,7 +41,10 @@
                 <td class="text-end">
                   <font-awesome-icon class="me-2" icon="edit" @click.stop="openAddDiseaseModal(disease)">
                   </font-awesome-icon>
-                  <font-awesome-icon icon="trash" @click.stop="formDeleteDisease(index, disease.name)">
+                  <font-awesome-icon
+                    icon="trash"
+                    @click.stop="formDeleteDisease(index, disease.name, disease.establishmentCuig)"
+                  >
                   </font-awesome-icon>
                 </td>
               </tr>
@@ -110,7 +83,6 @@
         </div>
       </div>
     </div>
-    <div class="tab-pane fade" id="insumos" role="tabpanel" aria-labelledby="insumos-tab">Enfermedades</div>
   </div>
   <confirmation-modal
     :confirmation-message="'¿Confirma que desea eliminar la enfermedad ' + deleted['name'] + '?'"
@@ -159,14 +131,15 @@ export default {
   methods: {
     ...mapActions('disease', ['listDiseases', 'setupEditDisease', 'deleteDisease']),
     ...mapActions(['showSuccess']),
-    setIndexForName(index, name) {
+    setIndexForName(index, name, cuig) {
       this.deleted = {
         name: name,
         index: index,
+        cuig: cuig,
       };
     },
-    formDeleteDisease(index, name) {
-      this.setIndexForName(index, name);
+    formDeleteDisease(index, name, cuig) {
+      this.setIndexForName(index, name, cuig);
       this.deleteModal.show();
     },
     closeDiseaseModal() {
@@ -185,7 +158,7 @@ export default {
         this.disease.splice(helperDeleted.index, 1);
         this.deleted = {};
       }
-      this.disease.push(disease);
+      this.diseases.push(disease);
     },
     deleteDiseaseForm(name) {
       let index = null;
@@ -204,9 +177,8 @@ export default {
     },
     async modalDelete() {
       let helperDeleted = { ...this.deleted };
-      let toDelete = this.diseases[helperDeleted.index];
       console.log(`Deleting disease ${helperDeleted.name}`);
-      this.deleteDisease(toDelete).then(() => {
+      this.deleteDisease(this.deleted).then(() => {
         this.diseases.splice(helperDeleted.index, 1);
         this.showSuccess(`La enfermedad ${helperDeleted.name} se eliminó correctamente`);
         this.searchDiseases();

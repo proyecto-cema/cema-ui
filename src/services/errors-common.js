@@ -61,3 +61,9 @@ export const DISEASE_ERRORS = {
   404: {type: "Server", message: "Enfermedad no encontrada"},
   409: {type: "Server", message: "La enfermedad que esta intentando registrar ya existe"},
 };
+export const ILLNESS_ERRORS = {
+  ...COMMON_ERRORS,
+  404: {type: "Server", message: "Enfermedad no encontrada"},
+  409: {type: "Server", message: "La enfermedad que esta intentando registrar ya existe"},
+  422: {type: "Server", message: "La fecha de inicio de enfermedad no puede ser mayor a la de finalizacion"},
+};
