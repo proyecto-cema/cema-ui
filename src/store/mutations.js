@@ -5,8 +5,8 @@ export default {
     toggleSideNav(state) {
         state.sidenav = !state.sidenav;
     },
-    setEstablishmentName(state, payload) {
-        state.establishmentName = payload.name;
+    setEstablishment(state, payload) {
+        state.establishmentData = payload;
     },
     appendToNotificationToasts(state, payload){
         state.notificationsToasts = [];

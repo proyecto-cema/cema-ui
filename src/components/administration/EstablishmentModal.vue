@@ -73,6 +73,7 @@
                   :options="owners"
                   optionKey="userName"
                   v-slot="{ option }"
+                  :disabled="hideActions"
                 >
                   {{ option.name + ' ' + option.lastName }}
                 </cema-input>
@@ -84,9 +85,11 @@
           <button class="btn btn-primary text-white" data-bs-dismiss="modal" type="button" @click="clean()">
             Cancelar
           </button>
-          <button v-if="edit" class="btn btn-primary text-white" type="button" @click="clean()">Crear Nuevo</button>
+          <button v-if="edit && !hideActions" class="btn btn-primary text-white" type="button" @click="clean()">
+            Crear Nuevo
+          </button>
           <button
-            v-if="edit"
+            v-if="edit && !hideActions"
             class="btn btn-danger text-white"
             data-bs-dismiss="modal"
             type="button"
@@ -131,6 +134,10 @@ export default {
       type: String,
       required: true,
     },
+    hideActions: {
+      type: Boolean,
+      default: false,
+    },
   },
   mounted() {
     this.searchOwners();
@@ -163,7 +170,9 @@ export default {
     },
     successCall(message) {
       this.showSuccess(message);
-      this.clearEstablishmentData();
+      if (!this.hideActions) {
+        this.clearEstablishmentData();
+      }
     },
     async formSaveEstablishment() {
       this.errorSave = this.errorSaveHelper;
@@ -171,12 +180,10 @@ export default {
         console.error(this.errorSave);
         return;
       }
-      this.saveEstablishment({establishment: this.establishment}).then(
-          (establishment) => {
-            this.$emit('createdNew', {establishment: establishment, edit: this.edit});
-            this.successCall(`El establecimiento con CUIG ${establishment.cuig} se guardó correctamente`);
-          }
-      );
+      this.saveEstablishment({ establishment: this.establishment }).then((establishment) => {
+        this.$emit('createdNew', { establishment: establishment, edit: this.edit });
+        this.successCall(`El establecimiento con CUIG ${establishment.cuig} se guardó correctamente`);
+      });
     },
     async searchOwners() {
       this.listOwners().then((response) => {

@@ -15,7 +15,7 @@ import supply from './modules/supply.module'
 export default createStore({
   state: {
     sidenav: true,
-    establishmentName: "Nombre Establecimiento",
+    establishmentData: {},
     dataToasts: [],
     notificationsToasts: [],
     idToastHelper: {}
