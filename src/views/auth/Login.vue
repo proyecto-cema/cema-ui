@@ -23,7 +23,7 @@
                 v-model.trim="pass"
                 :class="[error.type === 'pass' ? 'is-invalid' : '']"
               />
-              <div class="row">
+              <div class="row" hidden>
                 <div class="col-lg-5 col-md-12" style="padding-top: 8px">
                   <input type="checkbox" id="cbox2" value="remember" checked />
                   <label style="color: white" for="cbox2">Recuerdame</label>
@@ -41,7 +41,7 @@
                   <label style="color: white">¿Por primera vez en <b>CEMA</b>?</label>
                 </div>
                 <div class="col-md-5 in-line negrita">
-                  <a class="nav-link text-secondary" href="mailto:proyecto-cema.outlook.com">Contáctanos</a>
+                  <a class="nav-link text-secondary" href="mailto:proyecto-cema@outlook.com">Contáctanos</a>
                 </div>
               </div>
             </div>

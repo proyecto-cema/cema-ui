@@ -63,6 +63,25 @@
                 </div>
               </div>
               <div class="col-lg-6 col-12">
+                <div class="col-12 mb-2">
+                  <cema-input
+                    v-model="activityData.workerUserName"
+                    component-type="select"
+                    input-title="Encargado"
+                    input-id="workerName"
+                    selected-option="Seleccione un encargado"
+                    :error-data="{
+                      required: true,
+                      errorStatus: errorSave.workerUserName,
+                      errorMessage: 'Ingrese quien realizara la actividad',
+                    }"
+                    :options="workers"
+                    optionKey="userName"
+                    v-slot="{ option }"
+                  >
+                    {{ option.name + ' ' + option.lastName }}
+                  </cema-input>
+                </div>
                 <div class="col-12 mb-3">
                   <cema-input
                     v-model.trim="activityData.description"
@@ -71,7 +90,7 @@
                     input-title="Observaciones"
                     input-id="vaccineDescription"
                     type="text"
-                    rows="8"
+                    rows="5"
                   >
                   </cema-input>
                 </div>
@@ -122,6 +141,7 @@ export default {
     return {
       errorSave: {},
       activitiesOptions: ACTIVITIES_EXTRA_DATA,
+      workers: null,
     };
   },
   components: { CemaInput, VaccinationForm, WeighingForm, UltrasoundForm, MovementForm, FeedingForm },
@@ -133,6 +153,7 @@ export default {
   },
   mounted() {
     this.setCuigToDefault();
+    this.searchWorkersNames();
     this.activityData.executionDate = this.getToday;
   },
   computed: {
@@ -152,12 +173,13 @@ export default {
     },
   },
   methods: {
-    ...mapActions('activity', ['saveActivity', 'deleteActivity', 'clearActivityData']),
+    ...mapActions('activity', ['saveActivity', 'deleteActivity', 'clearActivityData', 'getWorkerList']),
     ...mapActions('bovine', ['setCuigToDefault']),
     ...mapActions(['showSuccess']),
     validate() {
       this.errorSave = {};
       this.errorSave['activityName'] = !this.activityData.name;
+      this.errorSave['workerUserName'] = !this.activityData.workerUserName;
       this.errorSave['activityType'] = !this.activityData.type;
       this.errorSave['executionDate'] = !this.activityData.executionDate;
       this.errorSave['bovineBatch'] = this.activityData.extraData.isBatch && !this.activityData.extraData.batchName;
@@ -210,6 +232,16 @@ export default {
         );
         this.$emit('savedActivity');
       });
+    },
+    async searchWorkersNames() {
+      console.log('Checking workers');
+      if (!this.workers) {
+        console.log('Searching workers');
+        this.getWorkerList().then((users) => {
+          this.workers = users;
+          console.log(users);
+        });
+      }
     },
   },
 };

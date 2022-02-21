@@ -6,12 +6,12 @@ export default {
     setSideNav({ commit }) {
         commit('toggleSideNav');
     },
-    setEstablishmentName({ commit }, cuig) {
+    setEstablishmentData({ commit }, cuig) {
         return EstablishmentService.getEstablishmentByCuig(cuig).then(
             response => {
                 let establishment = response.data;
                 console.log(establishment)
-                commit('setEstablishmentName', establishment);
+                commit('setEstablishment', establishment);
                 return Promise.resolve(establishment);
             },
             error => {
@@ -20,6 +20,12 @@ export default {
                 return Promise.reject(error);
             }
         );
+    },
+    getEstablishmentData({ state, dispatch, rootState }){
+        if (state.establishmentData === {}){
+            dispatch("setEstablishmentData", rootState.auth.user.user.establishmentCuig);
+        }
+        return Promise.resolve(state.establishmentData);
     },
     removeIndexItemFromToasts({ commit }, index){
         console.log("Removing toast number", index);

@@ -180,7 +180,7 @@ export default {
   components: { CemaInput },
   computed: {
     ...mapState('user', ['user', 'edit']),
-    ...mapState(['establishmentName']),
+    ...mapState(['establishmentData']),
     currentUser() {
       return this.$store.state.auth.user;
     },
@@ -261,8 +261,8 @@ export default {
         });
       } else {
         this.establishments.push({
-          name: this.establishmentName,
-          cuig: this.currentUser.user.establishmentCuig,
+          name: this.establishmentData.name,
+          cuig: this.establishmentData.cuig,
         });
         this.user.establishmentCuig = this.currentUser.user.establishmentCuig;
       }

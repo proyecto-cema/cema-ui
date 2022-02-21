@@ -17,7 +17,7 @@ import illness from './modules/illness.module'
 export default createStore({
   state: {
     sidenav: true,
-    establishmentName: "Nombre Establecimiento",
+    establishmentData: {},
     dataToasts: [],
     notificationsToasts: [],
     idToastHelper: {}

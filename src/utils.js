@@ -37,6 +37,13 @@ export default {
               isValid = false;
             }
             return { isValid: isValid, message: message };
-          },
+        },
+        parsePageHeaders(headers){
+            return {
+                totalPages: parseInt(headers['total-pages']) || 0,
+                currentPage: parseInt(headers['current-page']) || 0,
+                totalElements: parseInt(headers['total-elements']) || 0
+            }
+        }
     }
 }

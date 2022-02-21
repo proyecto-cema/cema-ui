@@ -21,6 +21,16 @@ class EstablishmentService {
   getEstablishmentList () {
     return httpAdministration.get('establishment/list', { headers: authHeader() })
   }
+
+  getSubscriptionsList (cuig, page=0, size=10) {
+    return httpAdministration.get(`establishment/${cuig}/subscriptions`, {
+      params:{ page: page, size: size }, headers: authHeader()
+    })
+  }
+
+  validateSubscription(){
+    return httpAdministration.get(`establishment/validate/${cuig}`, { headers: authHeader() })
+  }
 }
 
 export default new EstablishmentService()

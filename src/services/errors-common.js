@@ -4,6 +4,7 @@ const COMMON_ERRORS = {
   403: { type: 'Not-Allowed', message: 'Su usuario no tiene permisos' },
 };
 export const LOGIN_ERRORS = {
+  400: { type: 'establishment', message: 'Su establecimiento no es válido'},
   401: { type: 'password', message: 'Contraseña incorrecta' },
   404: { type: 'UserPass', message: 'Usuario o Contraseña incorrectos' },
 };
