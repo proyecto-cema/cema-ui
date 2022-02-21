@@ -1,8 +1,6 @@
 import ActivityService from '../../services/activity/activity.service';
 import utils from "../../utils"
-import { ACTIVITY_ERRORS, SUPPLY_ERRORS, USERS_ERRORS } from '../../services/errors-common';
-import UserService from '../../services/users/user.service';
-import { ROLES } from '../../constants';
+import { ACTIVITY_ERRORS, SUPPLY_ERRORS } from '../../services/errors-common';
 
 const state = {
     activityData: {
