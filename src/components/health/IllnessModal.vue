@@ -62,7 +62,7 @@
                       optionKey="name"
                       v-slot="{ option }"
                     >
-                      {{ option.name + ' - ' + option.duration + ' dias' }}
+                      {{ option.name + ' - ' + option.duration + ' días' }}
                     </cema-input>
                   </div>
                   <div class="mb-6 col-12 col-md-6">
@@ -112,7 +112,7 @@
                   maxlength="300"
                   required
                   component-type="textarea"
-                  input-title="Observacion"
+                  input-title="Observación"
                   input-id="Observation"
                   type="text"
                   rows="4"
@@ -243,7 +243,9 @@ export default {
     async commitSave() {
       let editing = this.edit;
       this.saveIllness().then((response) => {
-        this.showSuccess(`La enfermedad ${this.illness.name} se guardó correctamente`);
+        this.showSuccess(
+          `Se guardó el seguimiento de la enfermedad ${this.illness.diseaseName} del bovino con caravana ${this.illness.bovineTag}`
+        );
         this.setupEditIllness(this.illness);
         this.$emit('createdNew', { illness: this.illness, edit: editing });
       });
@@ -263,7 +265,8 @@ export default {
       this.addNote = { content: this.observation, creationDate: this.getMomentToday('YYYY-MM-DD HH:mm:ss') };
 
       this.addObservationToList(this.addNote).then((response) => {
-        console.log('Observacion agregada ' + this.addNote);
+        console.log('Observación agregada ' + this.addNote);
+        this.observation = null;
       });
     },
   },
