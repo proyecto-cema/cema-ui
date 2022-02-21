@@ -73,6 +73,7 @@
                   :options="owners"
                   optionKey="userName"
                   v-slot="{ option }"
+                  :disabled="hideActions"
                 >
                   {{ option.name + ' ' + option.lastName }}
                 </cema-input>
@@ -169,7 +170,9 @@ export default {
     },
     successCall(message) {
       this.showSuccess(message);
-      this.clearEstablishmentData();
+      if (!this.hideActions) {
+        this.clearEstablishmentData();
+      }
     },
     async formSaveEstablishment() {
       this.errorSave = this.errorSaveHelper;

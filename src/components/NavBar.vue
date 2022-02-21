@@ -39,13 +39,13 @@
               {{ currentUser['user']['name'] + ' ' + currentUser['user']['lastName'] }}
             </a>
             <div aria-labelledby="dropdownUser" class="dropdown-menu dropdown-menu-dark bg-primary dropdown-menu-end">
-              <a class="nav-link dropdown-item" @click.prevent="logOut">
-                <font-awesome-icon class="ms-2" icon="sign-out-alt" />
-                Cerrar Sesión
-              </a>
               <a class="nav-link dropdown-item" @click.prevent="showEstablishment">
                 <font-awesome-icon class="ms-2" icon="building" />
                 Ver Mi Establecimiento
+              </a>
+              <a class="nav-link dropdown-item" @click.prevent="logOut">
+                <font-awesome-icon class="ms-2" icon="sign-out-alt" />
+                Cerrar Sesión
               </a>
             </div>
           </li>

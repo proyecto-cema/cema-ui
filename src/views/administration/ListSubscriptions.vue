@@ -18,7 +18,7 @@
         <thead>
           <tr v-if="this.subscriptionsLength !== 0">
             <th scope="col">Nombre</th>
-            <th scope="col">Duración(dias)</th>
+            <th scope="col">Duración(días)</th>
             <th scope="col">Precio</th>
             <th scope="col">Fecha Inicio</th>
             <th scope="col">Fecha Fin</th>
@@ -42,7 +42,7 @@
       <list-pagination @call-change-page="this.searchSubscriptions" :headers="this.headers"></list-pagination>
     </div>
   </div>
-  <establishment-modal modalId="establishmentModal"></establishment-modal>
+  <establishment-modal modalId="establishmentModal" :hide-actions="true"></establishment-modal>
 </template>
 <script>
 import { mapActions } from 'vuex';
