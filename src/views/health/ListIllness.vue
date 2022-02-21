@@ -204,10 +204,16 @@ export default {
     },
     async modalDelete() {
       let helperDeleted = { ...this.deleted };
-      console.log(`Deleting illness ${helperDeleted.name}`);
+      console.log(`Deleting illness ${helperDeleted.bovineTag}`);
       this.deleteIllness(this.deleted).then(() => {
         this.illnesses.splice(helperDeleted.index, 1);
-        this.showSuccess(`La enfermedad ${helperDeleted.name} se eliminó correctamente`);
+        this.showSuccess(
+          'El seguimiento de la enfermedad ' +
+            this.deleted.diseaseName +
+            ' del bovino con caravana ' +
+            this.deleted.bovineTag +
+            ' se eliminó correctamente'
+        );
         this.searchIllnesses();
         this.deleted = {};
       });

@@ -32,6 +32,9 @@ const mutations = {
     setEdit(state, value){
         state.edit = value;
     },
+    setId(state, value){
+        state.illness.id = value;
+    },
     setNote(state, value){
         state.illness.notes.push({content: value.content, creationDate: value.creationDate});
     }
@@ -49,7 +52,7 @@ const actions = {
     addObservationToList({commit},proxyNote){
         commit('setNote', proxyNote);
     },
-    async saveIllness({state, dispatch, rootState}){
+    async saveIllness({commit, state, dispatch, rootState}){
         console.log(state.illness, "Editing: ", state.edit);
         let saveIllness = Object.assign({}, state.illness);
         saveIllness.endingDate = utils.methods.momentDateToJavaDate(saveIllness.endingDate,"YYYY-MM-DD HH:mm:ss");
@@ -60,7 +63,8 @@ const actions = {
         }
         return IllnessService.setIllness(saveIllness, state.edit).then(
             response => {
-                console.log(response);
+                commit('setId', response.data.id);
+                console.log("save Illness"+response);
                 return Promise.resolve(response);
             },
             error => {

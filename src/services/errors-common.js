@@ -61,6 +61,7 @@ export const SUPPLY_ERRORS = {
 export const DISEASE_ERRORS = {
   ...COMMON_ERRORS,
   404: {type: "Server", message: "Enfermedad no encontrada"},
+  422: {type: "Server", message: "No se puede elimiar porque hay bovinos con esta enfermdad"},
   409: {type: "Server", message: "La enfermedad que esta intentando registrar ya existe"},
 };
 export const SUPPLY_OPERATION_ERRORS = {
@@ -71,5 +72,5 @@ export const ILLNESS_ERRORS = {
   ...COMMON_ERRORS,
   404: {type: "Server", message: "Enfermedad no encontrada"},
   409: {type: "Server", message: "La enfermedad que esta intentando registrar ya existe"},
-  422: {type: "Server", message: "La fecha de inicio de enfermedad no puede ser mayor a la de finalizacion"},
+  422: {type: "Server", message: "La fecha de inicio de enfermedad no puede ser mayor a la de finalización"},
 };

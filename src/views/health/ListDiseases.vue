@@ -179,8 +179,8 @@ export default {
       let helperDeleted = { ...this.deleted };
       console.log(`Deleting disease ${helperDeleted.name}`);
       this.deleteDisease(this.deleted).then(() => {
-        this.diseases.splice(helperDeleted.index, 1);
         this.showSuccess(`La enfermedad ${helperDeleted.name} se eliminó correctamente`);
+        this.diseases.splice(helperDeleted.index, 1);
         this.searchDiseases();
         this.deleted = {};
       });

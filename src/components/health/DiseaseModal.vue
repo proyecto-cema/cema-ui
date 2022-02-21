@@ -14,6 +14,7 @@
               <div class="mb-3 col-12 col-md-6">
                 <cema-input
                   v-model.trim="disease.name"
+                  :readonly="edit"
                   :error-data="{
                     required: true,
                     errorStatus: errorSave.name,
@@ -30,7 +31,7 @@
                   :error-data="{
                     required: true,
                     errorStatus: errorSave.duration,
-                    errorMessage: 'Ingrese la duracion de la enfermedad',
+                    errorMessage: 'Ingrese la duración de la enfermedad',
                   }"
                   input-title="Duración"
                   input-id="duration"
