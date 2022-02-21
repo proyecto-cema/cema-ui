@@ -90,13 +90,15 @@ const actions = {
     setCuig({commit}, payload){
         commit('setSelectedCuig', payload);
     },
-    async getBovine({commit, dispatch}, tag) {
+    async getBovine({commit, dispatch}, {tag, doCommit=true}) {
         return BovineService.getBovineByTag(tag).then(
             response => {
                 let bovine = response.data;
-                bovine.taggingDate = utils.methods.javaDateToMomentDate(bovine.taggingDate, 'YYYY-MM-DD');
-                bovine.birthDate = utils.methods.javaDateToMomentDate(bovine.birthDate, 'YYYY-MM-DD');
-                commit('setBovine', bovine);
+                if(doCommit) {
+                    bovine.taggingDate = utils.methods.javaDateToMomentDate(bovine.taggingDate, 'YYYY-MM-DD');
+                    bovine.birthDate = utils.methods.javaDateToMomentDate(bovine.birthDate, 'YYYY-MM-DD');
+                    commit('setBovine', bovine);
+                }
                 return Promise.resolve(bovine);
             },
             error => {

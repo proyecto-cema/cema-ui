@@ -98,21 +98,17 @@
             ></cema-input>
           </div>
           <div class="col-lg-6 col-12 mb-3">
-            <cema-input
-              v-model="bovine.category"
-              component-type="select"
-              required
+            <category-selector
+              @update-category="updateCategory"
+              :bovine="bovine"
+              :edit="edit"
               :error-data="{
                 required: true,
                 errorStatus: errorSave.category,
                 errorMessage: 'Seleccione la categoría del bovino',
               }"
-              input-title="Categoría"
-              input-id="bovineCategory"
-              :disabled="edit && (bovine.category == 'Vaca' || bovine.category == 'Toro')"
               @change="unselectedStatus()"
-              :options="possibleCategories"
-            ></cema-input>
+            ></category-selector>
           </div>
           <div class="col-lg-6 col-12 mb-3">
             <cema-input
@@ -151,8 +147,9 @@
 import CemaInput from '../form/CemaInput';
 import { mapActions, mapState } from 'vuex';
 
-import { BOVINE_CATEGORIES, BOVINE_STATUS } from '../../constants';
-import { createWorker, OEM, PSM } from 'tesseract.js';
+import { createWorker, PSM } from 'tesseract.js';
+import CategorySelector from './CategorySelector';
+import { BOVINE_STATUS } from '../../constants';
 
 const MAX_WIDTH = 320;
 const MAX_HEIGHT = 180;
@@ -160,7 +157,7 @@ const MIME_TYPE = 'image/jpeg';
 
 export default {
   name: 'BovineModal',
-  components: { CemaInput },
+  components: { CemaInput, CategorySelector },
   data() {
     return {
       tagFile: null,
@@ -207,15 +204,12 @@ export default {
       }
       return BOVINE_STATUS[this.bovine.category];
     },
-    possibleCategories() {
-      if (this.bovine.genre == null || this.bovine.genre === 'Macho' || this.bovine.genre === 'Hembra') {
-        return [...BOVINE_CATEGORIES[this.bovine.genre]];
-      }
-      return BOVINE_CATEGORIES['Todos'];
-    },
   },
   methods: {
     ...mapActions('bovine', ['setupSelectedImage']),
+    updateCategory(value) {
+      this.bovine.category = value;
+    },
     checkToEmptyInput() {
       if (!this.selectedImage && this.tagFile) {
         this.tagFile.value = '';
