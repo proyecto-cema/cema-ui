@@ -81,6 +81,7 @@
         </caption>
         <thead>
           <tr v-if="headers.totalElements !== 0">
+            <th scope="col"></th>
             <th scope="col">Caravana</th>
             <th scope="col">Fecha de caravaneo</th>
             <th v-if="!this.isMobile" scope="col">Sexo</th>
@@ -104,6 +105,9 @@
             "
             @click="toggleBovineSelected(bovine.tag, bovine.establishmentCuig)"
           >
+            <td>
+              <div v-if="bovine.illness != null"><font-awesome-icon icon="virus"></font-awesome-icon></div>
+            </td>
             <td>{{ bovine.establishmentCuig }}-{{ bovine.tag }}</td>
             <td>{{ this.javaDateToMomentDate(bovine.taggingDate) }}</td>
             <td v-if="!this.isMobile">{{ bovine.genre }}</td>

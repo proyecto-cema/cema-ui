@@ -11,8 +11,8 @@ class DiseaseService {
         }
     }
 
-    getDisease (disease, cuig) {
-        return httpHealth.get('disease/'+ disease.name, { params:{cuig: cuig}, headers: authHeader() })
+    getDisease (name, cuig) {
+        return httpHealth.get('disease/'+ name, { params:{cuig: cuig}, headers: authHeader() })
     }
 
     deleteDisease (name, cuig) {

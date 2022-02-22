@@ -102,10 +102,6 @@
           <!-- Tab 2 -->
           <div class="tab-pane fade" id="follow" role="tabpanel" aria-labelledby="follow-tab">
             <div class="row ms-2 me-2">
-              <div class="mb-3 col-12 col-md-12 mt-3">
-                <!-- <input type="checkbox" class="larger" id="checkbox" v-model="checked" /> -->
-                <label class="form-label">&emsp; Enfermedad Finalizada</label>
-              </div>
               <div class="mb-3 col-12 col-md-9">
                 <cema-input
                   v-model.trim="observation"
@@ -272,9 +268,4 @@ export default {
   },
 };
 </script>
-<style>
-input.larger {
-  width: 20px;
-  height: 20px;
-}
-</style>
+<style></style>

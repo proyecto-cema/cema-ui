@@ -68,13 +68,14 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
+                console.log("Error: "+error)
                 dispatch("showError", {error: error, errors: ILLNESS_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
         );
     },
-    async getIllnesses({commit, dispatch}, cuig) {
-        return IllnessesService.getIllnessesByCuig(cuig).then(
+    async getIllnesses({commit, dispatch}, data) {
+        return IllnessesService.getIllnesses(data.id, data.cuig).then(
             response => {
                 let illness = response.data;
                 illness.startingDate = utils.methods.javaDateToMomentDate(illness.startingDate, 'YYYY-MM-DD');
