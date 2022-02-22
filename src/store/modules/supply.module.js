@@ -39,7 +39,7 @@ const actions = {
     async saveSupply({state, dispatch, rootState}){
         console.log(state.supplyData, "Editing: ", state.edit);
         if (!state.supplyData.establishmentCuig){
-            state.supplyData.establishmentCuig = rootState.bovine.selectedCuig;
+            state.supplyData.establishmentCuig = rootState.auth.user.user.establishmentCuig;
         }
 
         return SupplyService.setSupply(state.supplyData, state.edit).then(
