@@ -29,8 +29,14 @@
             <td v-if="!this.isMobile">{{ user.establishmentCuig }}</td>
             <td v-if="!this.isMobile">{{ user.role }}</td>
             <td class="text-end">
-              <font-awesome-icon class="me-2" icon="edit" @click.stop="openAddUserModal(user)"> </font-awesome-icon>
-              <font-awesome-icon icon="trash" @click.stop="formDeleteUser(user.userName, index)"> </font-awesome-icon>
+              <font-awesome-icon class="me-2" icon="edit" @click.stop="openAddUserModal(user)"></font-awesome-icon>
+              <font-awesome-icon
+                v-if="this.currentUser.user.userName !== user.userName"
+                icon="trash"
+                @click.stop="formDeleteUser(user.userName, index)"
+              >
+              </font-awesome-icon>
+              <font-awesome-icon v-else icon="trash-restore"></font-awesome-icon>
             </td>
           </tr>
         </tbody>
@@ -63,7 +69,6 @@ export default {
   name: 'ListBovine',
   data() {
     return {
-      // search: {role: null},
       deleted: {},
       users: [],
       isMobile: false,

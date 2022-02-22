@@ -22,7 +22,7 @@
                         errorMessage: 'Ingrese el nonbre de usuario',
                       }"
                       input-title="Usuario"
-                      input-id="userName"
+                      :input-id="`${modalId}-userName`"
                       type="text"
                       :disabled="edit"
                     ></cema-input>
@@ -38,7 +38,7 @@
                         errorMessage: 'Ingrese el cuig del establecimiento',
                       }"
                       input-title="CUIG"
-                      input-id="establishmentCuig"
+                      :input-id="`${modalId}-establishmentCuig`"
                       :options="establishments"
                       :disabled="edit"
                       optionKey="cuig"
@@ -58,7 +58,7 @@
                         errorMessage: 'Ingrese el nombre de la persona',
                       }"
                       input-title="Nombre"
-                      input-id="Name"
+                      :input-id="`${modalId}-name`"
                       type="text"
                     ></cema-input>
                   </div>
@@ -72,7 +72,7 @@
                         errorMessage: 'Ingrese el apellido de la persona',
                       }"
                       input-title="Apellido"
-                      input-id="lastName"
+                      :input-id="`${modalId}-lastName`"
                       type="text"
                     ></cema-input>
                   </div>
@@ -81,7 +81,7 @@
                       v-model.trim="user.email"
                       required
                       input-title="Email"
-                      input-id="userEmail"
+                      :input-id="`${modalId}-userEmail`"
                       type="email"
                     ></cema-input>
                   </div>
@@ -91,7 +91,7 @@
                       maxlength="15"
                       required
                       input-title="Telefono"
-                      input-id="userPhone"
+                      :input-id="`${modalId}-userPhone`"
                       type="text"
                     ></cema-input>
                   </div>
@@ -106,7 +106,7 @@
                         errorMessage: 'Ingrese la contraseña del usuario',
                       }"
                       input-title="Contraseña"
-                      input-id="userPassword"
+                      :input-id="`${modalId}-userPassword`"
                       type="password"
                     ></cema-input>
                   </div>
@@ -121,7 +121,7 @@
                         errorMessage: getPasswordError()['message'],
                       }"
                       input-title="Repetir Contraseña "
-                      input-id="userPasswordRepeat"
+                      :input-id="`${modalId}-userPasswordRepeat`"
                       type="password"
                     ></cema-input>
                   </div>
@@ -136,8 +136,9 @@
                         errorMessage: 'Seleccione el rol del usuario',
                       }"
                       input-title="Rol"
-                      input-id="userRole"
+                      :input-id="`${modalId}-userRole`"
                       :options="this.roleList"
+                      :disabled="hideActions || user.userName === this.currentUser.user.userName"
                     ></cema-input>
                   </div>
                 </div>
@@ -153,7 +154,7 @@
             Crear Nuevo
           </button>
           <button
-            v-if="edit && !hideActions"
+            v-if="edit && !hideActions && user.userName !== this.currentUser.user.userName"
             class="btn btn-danger text-white"
             data-bs-dismiss="modal"
             type="button"

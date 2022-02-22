@@ -25,7 +25,8 @@ import {
     faCalendarAlt,
     faCamera,
     faMoneyBillAlt,
-    faBuilding
+    faBuilding,
+    faTrashRestore
 } from '@fortawesome/free-solid-svg-icons'
 import {
     faSquare,
@@ -59,7 +60,8 @@ library.add(
     faCalendarAlt,
     faCamera,
     faMoneyBillAlt,
-    faBuilding
+    faBuilding,
+    faTrashRestore
 )
 
 export {FontAwesomeIcon}

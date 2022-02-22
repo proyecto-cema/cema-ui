@@ -41,7 +41,11 @@
             <div aria-labelledby="dropdownUser" class="dropdown-menu dropdown-menu-dark bg-primary dropdown-menu-end">
               <a class="nav-link dropdown-item" @click.prevent="showEstablishment">
                 <font-awesome-icon class="ms-2" icon="building" />
-                Ver Mi Establecimiento
+                Mi Establecimiento
+              </a>
+              <a class="nav-link dropdown-item" @click.prevent="showUserData">
+                <font-awesome-icon class="ms-2" icon="user" />
+                Mi Perfil
               </a>
               <a class="nav-link dropdown-item" @click.prevent="logOut">
                 <font-awesome-icon class="ms-2" icon="sign-out-alt" />
@@ -53,12 +57,21 @@
       </div>
     </div>
   </nav>
+  <user-modal modalId="myDataUserModal" :hide-actions="true"></user-modal>
 </template>
 <script>
 import { mapActions, mapState } from 'vuex';
+import UserModal from './administration/UserModal';
+import { Modal } from 'bootstrap';
 
 export default {
   name: 'NavBar',
+  components: { UserModal },
+  data() {
+    return {
+      myUserModal: null,
+    };
+  },
   mounted() {
     if (this.currentUser) {
       this.setEstablishmentData(this.currentUser.user.establishmentCuig).then(
@@ -78,6 +91,7 @@ export default {
       );
       this.getNotifications(this.currentUser.user.establishmentCuig);
     }
+    this.myUserModal = new Modal(document.getElementById('myDataUserModal'));
   },
   computed: {
     ...mapState(['sidenav', 'establishmentData']),
@@ -87,6 +101,7 @@ export default {
   },
   methods: {
     ...mapActions(['setSideNav', 'setEstablishmentData', 'getNotifications']),
+    ...mapActions('user', ['setupEditUser']),
     toggleSideNav() {
       this.setSideNav();
     },
@@ -99,6 +114,10 @@ export default {
         name: 'ListSubscriptions',
         params: { modal: true },
       });
+    },
+    showUserData() {
+      this.setupEditUser(this.currentUser.user);
+      this.myUserModal.show();
     },
   },
 };

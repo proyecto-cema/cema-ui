@@ -41,6 +41,7 @@ const actions = {
         commit('serEdit', false);
     },
     setupEditUser({commit}, user){
+        console.log(user);
         let proxyUser = {...user, role: user.role.charAt(0).toUpperCase() + user.role.slice(1).toLowerCase()};
         commit('setUser', proxyUser);
         commit('serEdit', true);
