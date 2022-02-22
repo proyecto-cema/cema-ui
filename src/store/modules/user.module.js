@@ -61,16 +61,28 @@ const actions = {
             }
         );
     },
-    async saveUser({dispatch}, data) {
+    async newUser({dispatch}, data){
         return UserService.setUser(data.user, data.password).then(
-            () => {
-                console.log(data)
-                return Promise.resolve(data);
-            },
-            error => {
-                dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
-                return Promise.reject(error);
-            }
+          () => {
+              console.log(data)
+              return Promise.resolve(data);
+          },
+          error => {
+              dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
+              return Promise.reject(error);
+          }
+        );
+    },
+    async changeUser({dispatch}, user){
+        return UserService.changeUserData(user.userName, user).then(
+          () => {
+              console.log(user)
+              return Promise.resolve(user);
+          },
+          error => {
+              dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
+              return Promise.reject(error);
+          }
         );
     },
     async listUsers({dispatch, state, commit}, role) {

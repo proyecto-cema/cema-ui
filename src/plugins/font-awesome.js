@@ -26,7 +26,8 @@ import {
     faCamera,
     faMoneyBillAlt,
     faBuilding,
-    faTrashRestore
+    faTrashRestore,
+    faUserSlash
 } from '@fortawesome/free-solid-svg-icons'
 import {
     faSquare,
@@ -61,7 +62,8 @@ library.add(
     faCamera,
     faMoneyBillAlt,
     faBuilding,
-    faTrashRestore
+    faTrashRestore,
+    faUserSlash
 )
 
 export {FontAwesomeIcon}

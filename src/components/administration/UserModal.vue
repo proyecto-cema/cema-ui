@@ -95,7 +95,7 @@
                       type="text"
                     ></cema-input>
                   </div>
-                  <div class="col-lg-6 col-12 mb-3">
+                  <div class="col-lg-6 col-12 mb-3" v-if="!edit">
                     <cema-input
                       v-model.trim="password"
                       maxlength="10"
@@ -110,7 +110,7 @@
                       type="password"
                     ></cema-input>
                   </div>
-                  <div class="col-lg-6 col-12 mb-3">
+                  <div class="col-lg-6 col-12 mb-3" v-if="!edit">
                     <cema-input
                       v-model.trim="passwordRepeat"
                       maxlength="10"
@@ -178,7 +178,7 @@ import { ROLE_REPRESENTATION, ROLES } from '../../constants';
 
 export default {
   name: 'UserModal',
-  emits: ['deleteModal', 'closeModal'],
+  emits: ['deleteModal', 'closeModal', 'userSaved'],
   data() {
     return {
       password: null,
@@ -213,8 +213,8 @@ export default {
         name: !this.user.name,
         lastName: !this.user.lastName,
         role: !this.user.role,
-        password: !this.password,
-        passwordRepeat: !this.getPasswordError()['isValid'],
+        password: this.edit || !this.password,
+        passwordRepeat: this.edit || !this.getPasswordError()['isValid'],
         establishmentCuig: !this.user.establishmentCuig,
       };
     },
@@ -236,14 +236,14 @@ export default {
     this.searchEstablishments();
   },
   methods: {
-    ...mapActions('user', ['getUser', 'saveUser', 'clearUserData', 'setupEditUser']),
+    ...mapActions('user', ['getUser', 'newUser', 'changeUser', 'clearUserData', 'setupEditUser']),
     ...mapActions('establishment', ['listEstablishments']),
     ...mapActions(['showSuccess']),
     getPasswordError() {
       let message = 'Ingrese la contraseña nuevamente.';
       let isValid = !!this.passwordRepeat;
       if (isValid && this.password != this.passwordRepeat) {
-        message = 'Las contraseñas ingresadas no coinsiden.';
+        message = 'Las contraseñas ingresadas no coinciden.';
         isValid = false;
       }
       return { isValid: isValid, message: message };
@@ -265,6 +265,10 @@ export default {
     },
     saveModal() {
       this.errorSave = this.errorSaveHelper;
+      if (this.edit) {
+        delete this.errorSave['password'];
+        delete this.errorSave['passwordRepeat'];
+      }
       if (this.checkErrors(this.errorSave)) {
         console.error(this.errorSave);
         return;
@@ -272,14 +276,22 @@ export default {
       this.formSaveUser();
     },
     async formSaveUser() {
-      let data = {
-        password: this.password,
-        user: this.user,
-      };
-      this.saveUser(data).then((user) => {
-        this.successCall(`El usuario ${user.user.userName} se guardó correctamente`);
-        this.setupEditUser(user.user);
-      });
+      if (this.edit) {
+        this.changeUser(this.user).then((user) => {
+          this.successCall(`El usuario ${this.user.userName} se guardó correctamente`);
+          this.$emit('userSaved', { user: this.user });
+        });
+      } else {
+        let data = {
+          password: this.password,
+          user: this.user,
+        };
+        this.newUser(data).then((user) => {
+          this.successCall(`El usuario ${user.user.userName} se guardó correctamente`);
+          this.setupEditUser(user.user);
+          this.$emit('userSaved', { user: user.user, userName: user.user.userName });
+        });
+      }
     },
     async searchEstablishments() {
       this.establishments = [];
