@@ -53,13 +53,15 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { ROLE_REPRESENTATION } from '../constants';
+import { Modal } from 'bootstrap';
 
 export default {
   name: 'SideBar',
   data() {
     return {
+      myUserModal: null,
       sidenavItems: [
         { name: 'Tablero', isCollapsible: false, icon: 'chart-line', route: 'Dashboard', roleRequirement: 1 },
         {
@@ -108,14 +110,21 @@ export default {
     };
   },
   mounted() {
+    this.myUserModal = Modal.getOrCreateInstance(document.getElementById('myDataUserModal'));
+    let items;
     if (this.currentUser) {
+      items = [
+        { name: 'Mi Establecimiento', clickable: true, clickAction: this.showEstablishment, roleRequirement: 0 },
+        { name: 'Mi Perfil', clickable: true, clickAction: this.showUserData, roleRequirement: 0 },
+        { name: 'Cerrar Sesión', clickable: true, clickAction: this.logOut, roleRequirement: 0 },
+      ];
       this.sidenavItems.push({
         name: `${this.currentUser['user']['userName']}`,
-        specialClass: 'mt-auto d-lg-none',
+        specialClass: 'd-lg-none',
         isCollapsible: true,
         expanded: false,
         icon: 'user',
-        items: [{ name: 'Cerrar Sesión', clickable: true, clickAction: this.logOut, icon: 'sign-out-alt' }],
+        items: items,
       });
     }
   },
@@ -132,9 +141,20 @@ export default {
     },
   },
   methods: {
+    ...mapActions('user', ['setupEditUser']),
     logOut() {
       this.$store.dispatch('auth/logout');
       this.$router.push('/login');
+    },
+    showEstablishment() {
+      this.$router.push({
+        name: 'ListSubscriptions',
+        params: { modal: true },
+      });
+    },
+    showUserData() {
+      this.setupEditUser(this.currentUser.user);
+      this.myUserModal.show();
     },
     navItemCollapse(index) {
       this.sidenavItems = this.sidenavItems.map((item, i) => {

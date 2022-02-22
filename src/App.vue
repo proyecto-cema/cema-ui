@@ -26,6 +26,7 @@
         ></toast-message>
       </div>
     </div>
+    <user-modal modalId="myDataUserModal" :hide-actions="true"></user-modal>
   </div>
   <div v-if="$route.meta.plainLayout">
     <router-view />
@@ -37,6 +38,7 @@ import SideBar from './components/SideBar.vue';
 import NavBar from './components/NavBar';
 import ToastMessage from './components/ToastMessage';
 import { mapState } from 'vuex';
+import UserModal from './components/administration/UserModal';
 
 export default {
   name: 'App',
@@ -45,6 +47,7 @@ export default {
     ToastMessage,
     NavBar,
     SideBar,
+    UserModal,
   },
   created() {
     if (this.$workbox) {

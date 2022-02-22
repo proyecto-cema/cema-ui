@@ -22,7 +22,7 @@
             required
             maxlength="10"
             input-title="Caravana"
-            input-id="bovineTag"
+            input-id="bovineTagSearch"
             :label="false"
             type="text"
             class="mb-2"
@@ -34,7 +34,7 @@
             component-type="select"
             required
             input-title="Sexo"
-            input-id="bovineGenre"
+            input-id="bovineGenreSearch"
             :label="false"
             :options="['Macho', 'Hembra']"
             class="mb-2"
@@ -46,7 +46,7 @@
             component-type="input"
             required
             input-title="Descripción"
-            input-id="bovineDescription"
+            input-id="bovineDescriptionSearch"
             :label="false"
             type="text"
             class="mb-2"

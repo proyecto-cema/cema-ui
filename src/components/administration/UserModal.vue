@@ -178,7 +178,7 @@ import { ROLE_REPRESENTATION, ROLES } from '../../constants';
 
 export default {
   name: 'UserModal',
-  emits: ['deleteModal'],
+  emits: ['deleteModal', 'closeModal'],
   data() {
     return {
       password: null,
@@ -258,6 +258,7 @@ export default {
       this.passwordRepeat = null;
       this.clearUserData();
       this.user.establishmentCuig = this.currentUser.user.establishmentCuig;
+      this.$emit('closeModal');
     },
     successCall(message) {
       this.showSuccess(message);

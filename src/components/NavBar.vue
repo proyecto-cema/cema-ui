@@ -57,16 +57,13 @@
       </div>
     </div>
   </nav>
-  <user-modal modalId="myDataUserModal" :hide-actions="true"></user-modal>
 </template>
 <script>
 import { mapActions, mapState } from 'vuex';
-import UserModal from './administration/UserModal';
 import { Modal } from 'bootstrap';
 
 export default {
   name: 'NavBar',
-  components: { UserModal },
   data() {
     return {
       myUserModal: null,
@@ -91,7 +88,7 @@ export default {
       );
       this.getNotifications(this.currentUser.user.establishmentCuig);
     }
-    this.myUserModal = new Modal(document.getElementById('myDataUserModal'));
+    this.myUserModal = Modal.getOrCreateInstance(document.getElementById('myDataUserModal'));
   },
   computed: {
     ...mapState(['sidenav', 'establishmentData']),

@@ -41,10 +41,13 @@ const actions = {
         commit('serEdit', false);
     },
     setupEditUser({commit}, user){
+        console.log("user");
         console.log(user);
-        let proxyUser = {...user, role: user.role.charAt(0).toUpperCase() + user.role.slice(1).toLowerCase()};
-        commit('setUser', proxyUser);
-        commit('serEdit', true);
+        if(user){
+            let proxyUser = {...user, role: user.role.charAt(0).toUpperCase() + user.role.slice(1).toLowerCase()};
+            commit('setUser', proxyUser);
+            commit('serEdit', true);
+        }
     },
     async getUser({commit, dispatch}, userName) {
         return UserService.getUserByUserName(userName).then(
