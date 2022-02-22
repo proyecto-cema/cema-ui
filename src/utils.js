@@ -1,19 +1,19 @@
 import moment from "moment";
-import {JAVA_DATE_FORMAT, REGEX_LETTERS_NUMBERS} from "./constants";
+import { JAVA_DATE_FORMAT, JAVA_DATETIME_FORMAT, REGEX_LETTERS_NUMBERS } from './constants';
 
 
 export default {
     methods: {
-        javaDateToMomentDate(date, format = "DD/MM/YYYY", dateOnly=false) {
+        javaDateToMomentDate(date, format = "DD/MM/YYYY", dateOnly=false, useDateTime=false) {
             if (date === null){ return null }
-            let trueDate = moment(String(date), JAVA_DATE_FORMAT);
+            let trueDate = moment(String(date), useDateTime ? JAVA_DATETIME_FORMAT:JAVA_DATE_FORMAT);
             if(dateOnly){
                 return trueDate.toDate();
             }
             return trueDate.format(format);
         },
-        momentDateToJavaDate(date, format = "YYYY-MM-DD") {
-            return moment(String(date), format).format(JAVA_DATE_FORMAT);
+        momentDateToJavaDate(date, format = "YYYY-MM-DD"){
+            return moment(String(date), format).toISOString(true);
         },
         replaceFormat(date, format1 = "DD/MM/YYYY", format2 = "YYYY-MM-DD") {
             return moment(String(date), format1).format(format2);

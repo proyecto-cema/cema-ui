@@ -15,6 +15,7 @@ const state = {
 
 const mutations = {
     setBovine(state, payload) {
+        console.log(payload);
         state.bovine = payload === null ? {
             tag: null,
             genre: "",
@@ -110,7 +111,7 @@ const actions = {
     async saveBovine({dispatch}, {edit, bovine}) {
         let saveBovine = Object.assign({}, bovine);
         saveBovine.taggingDate = utils.methods.momentDateToJavaDate(bovine.taggingDate);
-        saveBovine.birthDate =bovine.birthDate? utils.methods.momentDateToJavaDate(bovine.birthDate): null;
+        saveBovine.birthDate = bovine.birthDate? utils.methods.momentDateToJavaDate(bovine.birthDate): null;
         return BovineService.setBovine(saveBovine, edit).then(
             () => {
                 console.log(edit ? "Edited": "Created", "bovine:", bovine)

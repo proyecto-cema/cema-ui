@@ -4,7 +4,7 @@
     <div class="col-auto">
       <div class="switch" @click="changeSwitch()">
         <input type="checkbox" id="togBtn" v-model="value" />
-        <div class="slider round"></div>
+        <div class="slider round" :class="editing ? 'disabled' : ''"></div>
       </div>
     </div>
     <div class="col-auto mt-1"><label>Venta</label></div>
@@ -18,6 +18,7 @@ export default {
   props: {
     options: {},
     modelValue: {},
+    editing: { default: false },
   },
   computed: {
     value: {
@@ -31,8 +32,10 @@ export default {
   },
   methods: {
     changeSwitch() {
-      this.value = !this.value;
-      this.$emit('triggerSwitch');
+      if (!this.editing) {
+        this.value = !this.value;
+        this.$emit('triggerSwitch');
+      }
     },
   },
 };
@@ -74,6 +77,10 @@ export default {
   -webkit-transition: 0.4s;
   transition: 0.4s;
   border-radius: 50%;
+}
+
+input:checked + .slider + .disabled {
+  background-color: #a3a1a1 !important;
 }
 
 input:checked + .slider {

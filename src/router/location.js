@@ -1,4 +1,4 @@
-import ListLocations from "../views/administration/ListLocations";
+import ListLocations from "../views/activity/ListLocations";
 
 const routes = [
   {

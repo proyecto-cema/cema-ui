@@ -28,7 +28,7 @@
                   type="date"
                 ></cema-input>
                 <div class="mt-4 d-flex justify-content-center">
-                  <cema-switch v-model="extraData.isSell"></cema-switch>
+                  <cema-switch-operation :editing="edit" v-model="extraData.isSell"></cema-switch-operation>
                 </div>
               </div>
               <div class="mb-3 col-12 col-md-6">
@@ -83,9 +83,14 @@
                 >
                 </cema-input>
               </div>
-              <div class="mb-3 col-12 col-md-6" v-if="extraData.isSell">
-                <tag-search :error-save="errorSave" v-model="operation.bovineTag" v-if="!edit" :filters="['active']" />
-                <label v-else>Caravana relacionada: {{ operation.bovineTag }}</label>
+              <div class="mb-3 col-12 col-md-6">
+                <tag-search
+                  :error-save="errorSave"
+                  v-model="operation.bovineTag"
+                  v-if="!edit && extraData.isSell"
+                  :filters="['active']"
+                />
+                <label v-if="edit">Caravana relacionada: {{ operation.bovineTag }}</label>
               </div>
             </div>
           </form>
@@ -131,7 +136,7 @@
   </div>
 </template>
 <script>
-import CemaSwitch from '../form/CemaSwitchOperation';
+import CemaSwitchOperation from '../form/CemaSwitchOperation';
 import TagSearch from '../activity/TagSearch';
 import BovineModalContent from '../bovine/BovineModalContent';
 
@@ -163,7 +168,7 @@ export default {
   components: {
     TagSearch,
     CemaInput,
-    CemaSwitch,
+    CemaSwitchOperation,
     BovineModalContent,
   },
   props: {
@@ -221,10 +226,10 @@ export default {
       this.clearOperationData();
       this.clearBovineData();
     },
-    successCall(message) {
+    successCall(message, operation) {
       this.showSuccess(message);
       this.clean();
-      this.$emit('modalSuccess');
+      this.$emit('modalSuccess', operation);
     },
     async stepSaveBovine() {
       this.errorSave = this.errorSaveHelper;
@@ -248,7 +253,7 @@ export default {
             edit: true,
             bovine: response,
           };
-          if (bovine.bovine.status === 'Vendido') {
+          if (!this.edit && bovine.bovine.status === 'Vendido') {
             this.showErrorFront(`Esta caravana ${bovine.bovine.tag} ya se encuentra en estado vendido.`);
           } else {
             bovine.bovine.status = 'Vendido';
@@ -268,17 +273,17 @@ export default {
         operation: this.operation,
       };
       this.saveOperation(saveOperation).then((operation) => {
-        this.saveBovineSellData(bovine);
+        this.saveBovineSellData(bovine, saveOperation);
       });
     },
-    async saveBovineSellData(bovine) {
+    async saveBovineSellData(bovine, saveOperation) {
       this.saveBovine(bovine).then(() => {
-        this.successCall(`La venta del bovino ${this.bovine.tag} se realizo con exito.`);
+        this.successCall(`La venta del bovino con caravana ${this.bovine.tag} se guardó correctamente.`, saveOperation);
       });
     },
     fromValidateBovine() {
       this.errorSaveBovine = this.errorSaveBovineHelper;
-      if (this.checkErrors(this.errorSaveBovine)) {
+      if (!this.edit && this.checkErrors(this.errorSaveBovine)) {
         console.error(this.errorSaveBovine);
         return;
       }
@@ -287,23 +292,29 @@ export default {
     async formSaveBovine() {
       this.operation.operationType = 'buy';
       this.operation.buyerName = null;
-      this.operation.bovineTag = this.bovine.tag;
+      let bovineTag = this.operation.bovineTag;
       let operation = {
         edit: this.edit,
         operation: this.operation,
       };
-      let data = {
-        edit: false,
-        bovine: this.bovine,
-      };
-      this.saveBovine(data).then((bovine) => {
-        this.formSaveOperationBuy(operation, bovine);
-      });
+      if (!this.edit) {
+        operation.operation.bovineTag = this.bovine.tag;
+        operation.operation.establishmentCuig = this.bovine.establishmentCuig;
+        let data = {
+          edit: false,
+          bovine: this.bovine,
+        };
+        this.saveBovine(data).then((bovine) => {
+          this.formSaveOperationBuy(operation, bovine.tag);
+        });
+      } else {
+        await this.formSaveOperationBuy(operation, bovineTag);
+      }
     },
-    async formSaveOperationBuy(operation, bovine) {
+    async formSaveOperationBuy(operation, tag) {
       console.log('Operacion:  ' + operation);
       this.saveOperation(operation).then(() => {
-        this.successCall(`La compra del bovino con caravana ${bovine.tag} se guardó correctamente.`);
+        this.successCall(`La compra del bovino con caravana ${tag} se guardó correctamente.`, operation);
       });
     },
   },

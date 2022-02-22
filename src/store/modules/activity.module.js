@@ -1,8 +1,6 @@
 import ActivityService from '../../services/activity/activity.service';
 import utils from "../../utils"
-import { ACTIVITY_ERRORS, SUPPLY_ERRORS, USERS_ERRORS } from '../../services/errors-common';
-import UserService from '../../services/users/user.service';
-import { ROLES } from '../../constants';
+import { ACTIVITY_ERRORS, SUPPLY_ERRORS } from '../../services/errors-common';
 
 const state = {
     activityData: {
@@ -111,7 +109,7 @@ const actions = {
                     }
                 }
                 activityData.executionDate = utils.methods.javaDateToMomentDate(activityData.executionDate, "YYYY-MM-DD");
-                extraData["isBatch"] = activityData.hasOwnProperty("batch_name");
+                extraData["isBatch"] = extraData.hasOwnProperty("batchName");
                 activityData["extraData"] = extraData;
                 dispatch("setupEditActivity", activityData);
                 console.log(activityData);
