@@ -33,7 +33,7 @@
     <div class="tab-pane fade show active" id="animales" role="tabpanel" aria-labelledby="animales-tab">
       <div class="text-center">
         <br />
-        <h3>Listado De Operaciones</h3>
+        <h3>Listado de Operaciones</h3>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
           <button class="btn btn-secondary text-white" type="button" v-on:click="openAddOperationModal(null)">
             + Nueva Operación
@@ -59,7 +59,8 @@
               <br />
               Egreso: ${{
                 results.expenses
-              }}<br />
+              }}
+              <br />
               <b>Total: ${{ results.total }}</b>
             </caption>
             <thead>
@@ -153,11 +154,11 @@ export default {
   components: { OperationModal },
   mounted() {
     this.searchOperations(0, 10);
-
+    this.obtainMetrics();
     this.addOperationModal = new Modal(document.getElementById('addOperationModal'));
   },
   methods: {
-    ...mapActions('operation', ['listOperations', 'setupEditOperation', 'clearOperationData']),
+    ...mapActions('operation', ['listOperations', 'setupEditOperation', 'clearOperationData', 'getOperationMetrics']),
     ...mapActions(['showSuccess']),
     setIndexForName(index, name) {
       this.deleted = {
@@ -178,6 +179,11 @@ export default {
       this.clearOperationData();
       if (operation) {
         console.log(operation);
+        if (operation.operationType === 'sell') {
+          this.results.income -= operation.amount;
+        } else {
+          this.results.expenses -= operation.amount;
+        }
         this.setupEditOperation(operation);
       }
       this.addOperationModal.show();
@@ -199,7 +205,13 @@ export default {
     },
     addOperationToList({ operation, edit }) {
       console.log(operation, edit);
-      if (!edit && this.operationsLength < 10) {
+      if (edit) {
+        if (operation.operationType === 'sell') {
+          this.results.income += operation.amount;
+        } else {
+          this.results.expenses += operation.amount;
+        }
+      } else if (this.operationsLength < 10) {
         this.operations.push(operation);
       }
     },
@@ -214,7 +226,6 @@ export default {
     },
     async searchOperations(page = 0, size = 10) {
       this.operations = null;
-      this.results = { income: 0, expenses: 0, total: 0 };
 
       this.listOperations({ page: page, size: size }).then((response) => {
         this.operations = response.data;
@@ -227,22 +238,15 @@ export default {
         this.headers.totalElements = parseInt(response.headers['total-elements']);
 
         this.operationsLength = this.operations != null ? this.operations.length : 0;
-
-        this.resultCaculiation();
       });
     },
-    async resultCaculiation() {
-      // var i=0;
-      console.log('operaciones  ' + this.operations);
-
-      for (var i = 0; this.operationsLength > i; i++) {
-        if (this.operations[i].operationType === 'sell') {
-          this.results.income += this.operations[i].amount;
-        } else {
-          this.results.expenses += this.operations[i].amount;
-        }
-      }
-      this.results.total = this.results.income - this.results.expenses;
+    async obtainMetrics() {
+      this.getOperationMetrics().then((data) => {
+        console.log(data);
+        this.results.income = data.income;
+        this.results.expenses = data.spending;
+        this.results.total = data.total;
+      });
     },
   },
 };

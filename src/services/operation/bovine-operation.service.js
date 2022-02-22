@@ -22,6 +22,11 @@ class BovineOperationService {
     listOperation (page=0,size=10) {
         return httpOperation.get('bovine-operations/list', { params:{page: page, size: size}, headers: authHeader() })
     }
+
+    getOperationTotals (cuig) {
+        return httpOperation.get('/bovine-operations/total', { params:{cuig: cuig}, headers: authHeader() })
+    }
+
 }
 
 export default new BovineOperationService()
