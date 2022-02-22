@@ -122,7 +122,7 @@
               }"
               input-title="Estado"
               input-id="bovineStatus"
-              :disabled="bovine.category == ''"
+              :disabled="bovine.category == '' || bovine.status == 'Muerto' || bovine.status == 'Vendido'"
               :options="possibleStatus"
             ></cema-input>
           </div>

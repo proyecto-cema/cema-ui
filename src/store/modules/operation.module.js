@@ -70,8 +70,8 @@ const actions = {
         );
     },
     async saveOperation({dispatch,rootState}, {edit, operation}){
+        operation.establishmentCuig = rootState.auth.user.user.establishmentCuig;
         let saveOperation = Object.assign({}, operation);
-        saveOperation.establishmentCuig = rootState.auth.user.user.establishmentCuig;
         saveOperation.operatorUserName = rootState.auth.user.user.userName;
 
         await BovineOperationService.setOperation(saveOperation, edit).then(

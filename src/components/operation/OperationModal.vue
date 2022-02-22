@@ -226,10 +226,10 @@ export default {
       this.clearOperationData();
       this.clearBovineData();
     },
-    successCall(message) {
+    successCall(message, operation) {
       this.showSuccess(message);
       this.clean();
-      this.$emit('modalSuccess');
+      this.$emit('modalSuccess', operation);
     },
     async stepSaveBovine() {
       this.errorSave = this.errorSaveHelper;
@@ -273,12 +273,12 @@ export default {
         operation: this.operation,
       };
       this.saveOperation(saveOperation).then((operation) => {
-        this.saveBovineSellData(bovine);
+        this.saveBovineSellData(bovine, saveOperation);
       });
     },
-    async saveBovineSellData(bovine) {
+    async saveBovineSellData(bovine, saveOperation) {
       this.saveBovine(bovine).then(() => {
-        this.successCall(`La venta del bovino ${this.bovine.tag} se realizo con exito.`);
+        this.successCall(`La venta del bovino con caravana ${this.bovine.tag} se guardó correctamente.`, saveOperation);
       });
     },
     fromValidateBovine() {
@@ -299,6 +299,7 @@ export default {
       };
       if (!this.edit) {
         operation.operation.bovineTag = this.bovine.tag;
+        operation.operation.establishmentCuig = this.bovine.establishmentCuig;
         let data = {
           edit: false,
           bovine: this.bovine,
@@ -313,7 +314,7 @@ export default {
     async formSaveOperationBuy(operation, tag) {
       console.log('Operacion:  ' + operation);
       this.saveOperation(operation).then(() => {
-        this.successCall(`La compra del bovino con caravana ${tag} se guardó correctamente.`);
+        this.successCall(`La compra del bovino con caravana ${tag} se guardó correctamente.`, operation);
       });
     },
   },
