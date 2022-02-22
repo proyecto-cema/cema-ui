@@ -42,7 +42,7 @@ const actions = {
     },
     setupEditUser({commit}, user){
         let proxyUser = {...user, role: user.role.charAt(0).toUpperCase() + user.role.slice(1).toLowerCase()};
-        commit('setUser', user);
+        commit('setUser', proxyUser);
         commit('serEdit', true);
     },
     async getUser({commit, dispatch}, userName) {

@@ -29,11 +29,7 @@
             <td v-if="!this.isMobile">{{ user.establishmentCuig }}</td>
             <td v-if="!this.isMobile">{{ user.role }}</td>
             <td class="text-end">
-              <!-- <font-awesome-icon
-                class="me-2"
-                icon="edit"
-                @click.stop="openAddUserModal(user)">
-              </font-awesome-icon> -->
+              <font-awesome-icon class="me-2" icon="edit" @click.stop="openAddUserModal(user)"> </font-awesome-icon>
               <font-awesome-icon icon="trash" @click.stop="formDeleteUser(user.userName, index)"> </font-awesome-icon>
             </td>
           </tr>
@@ -60,7 +56,6 @@
 import { mapActions } from 'vuex';
 import { Modal } from 'bootstrap';
 import ConfirmationModal from '../../components/ConfirmationModal';
-import CemaInput from '../../components/form/CemaInput';
 import UserModal from '../../components/administration/UserModal';
 import { ROLE_REPRESENTATION } from '../../constants';
 
@@ -121,7 +116,6 @@ export default {
         return;
       }
     },
-
     setIndexForUserName(userName, index) {
       this.deleted = {
         userName: userName,
@@ -131,9 +125,9 @@ export default {
     deleteUserForm(userName) {
       let index = null;
       for (let i = 0; i < this.users.length; i++) {
-        if (this.user[i].userName === userName) {
+        if (this.users[i].userName === userName) {
           index = i;
-          userName = this.user[i].userName;
+          userName = this.users[i].userName;
           console.log(`Searched user: ${userName}, found at ${index}`);
           break;
         }

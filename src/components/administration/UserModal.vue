@@ -40,6 +40,7 @@
                       input-title="CUIG"
                       input-id="establishmentCuig"
                       :options="establishments"
+                      :disabled="edit"
                       optionKey="cuig"
                       v-slot="{ option }"
                     >
@@ -136,7 +137,7 @@
                       }"
                       input-title="Rol"
                       input-id="userRole"
-                      :options="['Patron', 'Peon']"
+                      :options="this.roleList"
                     ></cema-input>
                   </div>
                 </div>
@@ -148,7 +149,21 @@
           <button class="btn btn-primary text-white" data-bs-dismiss="modal" type="button" @click="clean()">
             Cancelar
           </button>
-          <button class="btn btn-secondary text-white" type="button" @click="saveModal()">Guardar</button>
+          <button v-if="edit && !hideActions" class="btn btn-primary text-white" type="button" @click="clean()">
+            Crear Nuevo
+          </button>
+          <button
+            v-if="edit && !hideActions"
+            class="btn btn-danger text-white"
+            data-bs-dismiss="modal"
+            type="button"
+            @click="callDeleteModal()"
+          >
+            Eliminar
+          </button>
+          <button class="btn btn-secondary text-white" type="button" @click="saveModal()">
+            {{ edit ? 'Modificar' : 'Guardar' }}
+          </button>
         </div>
       </div>
     </div>
@@ -158,10 +173,11 @@
 <script>
 import CemaInput from '../form/CemaInput';
 import { mapActions, mapState } from 'vuex';
-import { ROLE_REPRESENTATION } from '../../constants';
+import { ROLE_REPRESENTATION, ROLES } from '../../constants';
 
 export default {
   name: 'UserModal',
+  emits: ['deleteModal'],
   data() {
     return {
       password: null,
@@ -201,11 +217,18 @@ export default {
         establishmentCuig: !this.user.establishmentCuig,
       };
     },
+    roleList() {
+      return ROLES.slice(0, this.currentRole + 1);
+    },
   },
   props: {
     modalId: {
       type: String,
       required: true,
+    },
+    hideActions: {
+      type: Boolean,
+      default: false,
     },
   },
   mounted() {
@@ -223,6 +246,10 @@ export default {
         isValid = false;
       }
       return { isValid: isValid, message: message };
+    },
+    callDeleteModal() {
+      this.$emit('deleteModal', this.user.userName);
+      this.clean();
     },
     clean() {
       this.errorSave = {};
