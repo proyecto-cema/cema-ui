@@ -25,8 +25,8 @@
             <thead>
               <tr v-if="diseasesLength !== 0">
                 <th scope="col">Nombre</th>
-                <th scope="col">Descripcion</th>
-                <th scope="col">Duración(días)</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Duración (días)</th>
                 <th class="text-end" scope="col">Acciones</th>
               </tr>
               <tr v-else>

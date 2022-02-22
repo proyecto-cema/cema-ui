@@ -4,7 +4,7 @@ import { BATCH_ERRORS, BOVINE_ERRORS } from '../../services/errors-common';
 
 
 const state = {
-    bovine: {tag: null, genre: "", description: null, taggingDate: null, establishmentCuig: null, batchNames: [], birthDate: null, category: "", status: "" },
+    bovine: {tag: null, genre: "", description: null, taggingDate: null, establishmentCuig: null, batchNames: [], birthDate: null, category: "", status: "", illness:{} },
     listBovinesSelected:[],
     selectedCuig: null,
     cantSelect: null,
@@ -24,7 +24,8 @@ const mutations = {
             batchNames: [],
             birthDate: null,
             category: "",
-            status: ""
+            status: "",
+            illness:{}
         } : payload
     },
     setBovineSelected(state, payload){
@@ -70,7 +71,8 @@ const actions = {
             batchNames: [],
             birthDate: null,
             category:"",
-            status:""
+            status:"",
+            illness:{}
         }
         commit('setBovine', blankBovine);
         commit('setEdit', false);

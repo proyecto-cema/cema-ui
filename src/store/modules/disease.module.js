@@ -51,8 +51,8 @@ const actions = {
             }
         );
     },
-    async getDiseases({commit, dispatch}, cuig) {
-        return DiseasesService.getDiseasesByCuig(cuig).then(
+    async getDiseases({commit, dispatch}, data) {
+        return DiseasesService.getDiseases(data.name,data.cuig).then(
             response => {
                 let disease = response.data;
                 console.log(disease)
