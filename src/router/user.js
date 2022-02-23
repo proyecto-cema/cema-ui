@@ -1,4 +1,4 @@
-import ListUser from '../views/user/ListUsers.vue'
+import ListUser from '../views/administration/ListUsers.vue'
 
 const routes = [
   {

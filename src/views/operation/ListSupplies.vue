@@ -5,6 +5,54 @@
         + Nuevo Insumo
       </button>
     </div>
+    <form @submit.prevent="">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4">
+          <cema-input
+            v-model.trim="search.name"
+            component-type="input"
+            maxlength="10"
+            input-title="Nombre"
+            input-id="supplyNameSearch"
+            :label="false"
+            type="text"
+            class="mb-2"
+          ></cema-input>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+          <cema-input
+            v-model="search.categoryName"
+            component-type="select"
+            input-title="Categoría"
+            input-id="supplyCategoryNameSearch"
+            :options="categoriesName"
+            :label="false"
+            optionKey="name"
+            v-slot="{ option }"
+          >
+            {{ option.name }}
+          </cema-input>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+          <cema-input
+            v-model.trim="search.units"
+            component-type="input"
+            maxlength="10"
+            input-title="Unidad"
+            input-id="supplyUnitSearch"
+            :label="false"
+            type="text"
+            class="mb-2"
+          ></cema-input>
+        </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-2">
+          <button class="btn btn-primary text-white" type="button" @click="this.clearSearchSupplyData()">
+            Restablecer
+          </button>
+          <button class="btn btn-secondary text-white" type="button" @click="this.searchSupplies()">Buscar</button>
+        </div>
+      </div>
+    </form>
     <div class="mt-2">
       <h3>Listado de Insumos</h3>
     </div>
@@ -12,7 +60,7 @@
       <table class="table">
         <caption>
           {{
-            `Mostrando ${suppliesLength} de ${suppliesLength} insumos`
+            `Mostrando ${suppliesLength} de ${this.headers.totalElements} insumos`
           }}
         </caption>
         <thead>
@@ -42,7 +90,7 @@
         </tbody>
       </table>
     </div>
-    <div class="d-flex justify-content-center">
+    <div v-if="headers.totalPages > 1" class="d-flex justify-content-center">
       <div aria-label="Large button group" class="btn-group" role="group">
         <button
           :class="headers.currentPage <= 0 ? 'disabled' : ''"
@@ -51,6 +99,16 @@
           @click="this.searchSupplyPage(this.headers.currentPage - 1)"
         >
           Anterior
+        </button>
+        <button
+          v-for="i in headers.totalPages"
+          :key="i"
+          :class="headers.currentPage === i - 1 ? 'btn-primary' : 'btn-outline-primary'"
+          class="btn"
+          type="button"
+          @click="this.searchSupplyPage(i - 1)"
+        >
+          {{ i }}
         </button>
         <button
           :class="headers.currentPage >= headers.totalPages - 1 ? 'disabled' : ''"
@@ -76,36 +134,50 @@
       deleted = {};
     "
   ></confirmation-modal>
-  <supply-modal modalId="addSupplyModal" @deleteModal="deleteSupplyForm" @createdNew="addSupplyToList"></supply-modal>
+  <supply-modal
+    modal-id="addSupplyModal"
+    :categories-name="categoriesName"
+    @deleteModal="deleteSupplyForm"
+    @createdNew="addSupplyToList"
+  ></supply-modal>
 </template>
 <script>
 import { mapActions } from 'vuex';
 import { Modal } from 'bootstrap';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import SupplyModal from '../../components/administration/SupplyModal';
+import CemaInput from '../../components/form/CemaInput';
 
 export default {
   name: 'ListSupplies',
   data() {
     return {
       supplies: [],
-      suppliesLength: 0,
       headers: { totalPages: 0, currentPage: 0, totalElements: 0 },
       deleted: {},
       deleteModal: null,
       addSupplyModal: null,
+      search: { categoryName: '' },
+      categoriesName: [],
       timeout: false,
       delay: 250,
     };
   },
-  components: { ConfirmationModal, SupplyModal },
+  components: { ConfirmationModal, SupplyModal, CemaInput },
   mounted() {
+    console.log('here');
+    this.searchCategoriesName();
     this.addSupplyModal = new Modal(document.getElementById('addSupplyModal'));
     this.deleteModal = new Modal(document.getElementById('deleteModal'));
     this.searchSupplies();
   },
+  computed: {
+    suppliesLength() {
+      return this.supplies != null ? this.supplies.length : 0;
+    },
+  },
   methods: {
-    ...mapActions('supply', ['listSupplies', 'setupEditSupply', 'deleteSupply', 'makeDefaultSupply']),
+    ...mapActions('supply', ['listCategories', 'listSupplies', 'setupEditSupply', 'deleteSupply', 'makeDefaultSupply']),
     ...mapActions(['showSuccess']),
     setIndexForName(index, name) {
       this.deleted = {
@@ -116,6 +188,10 @@ export default {
     formDeleteSupply(index, name) {
       this.setIndexForName(index, name);
       this.deleteModal.show();
+    },
+    clearSearchSupplyData() {
+      this.search = { categoryName: '' };
+      this.searchSupplies(0);
     },
     openAddSupplyModal(index, supply) {
       if (supply) {
@@ -137,17 +213,13 @@ export default {
         this.supplies.splice(helperDeleted.index, 1);
         this.deleted = {};
       }
-      this.supplies.push(supply);
-    },
-    changeDefaultSupply(index) {
-      let supply = this.supplies[index];
-      if (supply.isDefault) {
-        console.log('Already default');
-        return;
+      if (this.supplies.length % 10 === 0) {
+        this.headers.totalPages += 1;
+        this.headers.currentPage += 1;
+        this.headers.totalElements += 1;
+        this.supplies = [];
       }
-      this.makeDefaultSupply(supply).then(() => {
-        this.searchSupplies();
-      });
+      this.supplies.push(supply);
     },
     async modalDelete() {
       let helperDeleted = { ...this.deleted };
@@ -156,16 +228,21 @@ export default {
       this.deleteSupply(toDelete).then(() => {
         this.supplies.splice(helperDeleted.index, 1);
         this.showSuccess(`El insumo ${helperDeleted.name} se eliminó correctamente`);
-        this.searchSupplies();
+        let index_to_search = this.headers.currentPage;
+        if (helperDeleted.index % 11 === 0) {
+          index_to_search -= 1;
+        }
+        this.searchSupplies(index_to_search);
         this.deleted = {};
       });
     },
-    async searchSuppliesPage(page) {
+    async searchSupplyPage(page) {
+      console.log(`You are in page ${this.headers.currentPage}, and requesting ${page} page`);
       await this.searchSupplies(page, 10);
     },
     async searchSupplies(page = 0, size = 10) {
       this.supplies = null;
-      this.listSupplies({ page: page, size: size }).then((response) => {
+      this.listSupplies({ page: page, size: size, search: this.search }).then((response) => {
         this.supplies = response.data;
 
         console.log(response);
@@ -173,7 +250,14 @@ export default {
         this.headers.totalPages = parseInt(response.headers['total-pages']);
         this.headers.currentPage = parseInt(response.headers['current-page']);
         this.headers.totalElements = parseInt(response.headers['total-elements']);
-        this.suppliesLength = this.supplies != null ? this.supplies.length : 0;
+      });
+    },
+    async searchCategoriesName() {
+      console.log('here');
+      this.listCategories().then((response) => {
+        this.categoriesName = response.data;
+        console.log(response);
+        console.log('Categorias:', this.categoriesName);
       });
     },
   },

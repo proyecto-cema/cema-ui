@@ -25,8 +25,8 @@ class SupplyService {
         )
     }
 
-    getSuppliesList (page=0, size=10) {
-        return httpOperation.get('supply/list', { params:{page: page, size: size}, headers: authHeader() })
+    getSuppliesList (page=0, size=10, supplyData={}) {
+        return httpOperation.post('supply/search', supplyData, { params:{page: page, size: size}, headers: authHeader() })
     }
 
     getCategoriesList () {

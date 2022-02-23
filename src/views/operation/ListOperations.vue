@@ -64,11 +64,12 @@
             </caption>
             <thead>
               <tr v-if="operationsLength !== 0">
-                <th scope="col">Fecha Operacion</th>
+                <th scope="col">Fecha Operación</th>
                 <th scope="col">Comprador</th>
                 <th scope="col">Vendedor</th>
-                <th scope="col">Descripcion</th>
+                <th scope="col">Descripción</th>
                 <th scope="col">Monto</th>
+                <th scope="col">Caravana Relacionada</th>
                 <th class="text-end" scope="col">Acciones</th>
               </tr>
               <tr v-else>
@@ -86,6 +87,7 @@
                 <td>{{ operation.sellerName }}</td>
                 <td>{{ operation.description }}</td>
                 <td>{{ operation.amount }}</td>
+                <td>{{ operation.establishmentCuig }}-{{ operation.bovineTag }}</td>
                 <td class="text-end">
                   <font-awesome-icon class="me-2" icon="edit" @click.stop="openAddOperationModal(operation)">
                   </font-awesome-icon>
@@ -155,7 +157,7 @@ export default {
     this.addOperationModal = new Modal(document.getElementById('addOperationModal'));
   },
   methods: {
-    ...mapActions('operation', ['listOperations', 'setupEditOperation']),
+    ...mapActions('operation', ['listOperations', 'setupEditOperation', 'clearOperationData']),
     ...mapActions(['showSuccess']),
     setIndexForName(index, name) {
       this.deleted = {
@@ -167,11 +169,15 @@ export default {
       this.setIndexForName(index, name);
       this.deleteModal.show();
     },
-    closeOperationModal() {
+    closeOperationModal(operation) {
+      this.addOperationToList(operation);
       this.addOperationModal.hide();
+      this.clearOperationData();
     },
     openAddOperationModal(operation) {
+      this.clearOperationData();
       if (operation) {
+        console.log(operation);
         this.setupEditOperation(operation);
       }
       this.addOperationModal.show();
@@ -193,7 +199,7 @@ export default {
     },
     addOperationToList({ operation, edit }) {
       console.log(operation, edit);
-      if (!edit) {
+      if (!edit && this.operationsLength < 10) {
         this.operations.push(operation);
       }
     },
@@ -230,7 +236,7 @@ export default {
       console.log('operaciones  ' + this.operations);
 
       for (var i = 0; this.operationsLength > i; i++) {
-        if (this.operations[i].operationType == 'sell') {
+        if (this.operations[i].operationType === 'sell') {
           this.results.income += this.operations[i].amount;
         } else {
           this.results.expenses += this.operations[i].amount;

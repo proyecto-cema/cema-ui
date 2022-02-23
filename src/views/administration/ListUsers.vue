@@ -107,7 +107,7 @@ export default {
   },
   methods: {
     ...mapActions('user', ['listUsers', 'deleteUser', 'clearUserData', 'setupEditUser']),
-    ...mapActions(["showSuccess"]),
+    ...mapActions(['showSuccess']),
     resizeTimeOut() {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(this.onResize, this.delay);

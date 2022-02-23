@@ -350,7 +350,9 @@ export default {
     openAddBovineModal(bovine) {
       this.clearBovineData();
       if (bovine) {
+        console.log('Setup for edit', bovine);
         bovine.taggingDate = this.javaDateToMomentDate(bovine.taggingDate, 'YYYY-MM-DD');
+        bovine.birthDate = this.javaDateToMomentDate(bovine.birthDate, 'YYYY-MM-DD');
         this.setupEditBovine(bovine);
       }
       this.addBovineModal.show();
