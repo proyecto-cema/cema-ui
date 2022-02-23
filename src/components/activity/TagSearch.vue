@@ -68,16 +68,17 @@ export default {
     },
     checkFilter(bovine) {
       let filterKey, filterBy;
+      let is_valid = true;
       for (let i = 0; i < this.filters.length; i++) {
         filterKey = this.filters[i];
         filterBy = FILTERS[filterKey];
         if (filterBy.type === 'in') {
-          return filterBy.filterSet.has(bovine['status']);
+          is_valid = is_valid && filterBy.filterSet.has(bovine[filterBy.field]);
         } else if (filterBy.type === 'not in') {
-          return !filterBy.filterSet.has(bovine['status']);
+          is_valid = is_valid && !filterBy.filterSet.has(bovine[filterBy.field]);
         }
       }
-      return false;
+      return is_valid;
     },
   },
 };
