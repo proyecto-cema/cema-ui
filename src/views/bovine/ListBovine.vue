@@ -15,7 +15,7 @@
     </div>
     <form @submit.prevent="">
       <div class="row">
-        <div class="col-12 col-md-6 col-lg-4">
+        <div class="col-12 col-md-6 col-lg-6">
           <cema-input
             v-model.trim="search.tag"
             component-type="input"
@@ -28,7 +28,7 @@
             class="mb-2"
           ></cema-input>
         </div>
-        <div class="col-12 col-md-6 col-lg-4">
+        <div class="col-12 col-md-6 col-lg-6">
           <cema-input
             v-model="search.genre"
             component-type="select"
@@ -40,7 +40,10 @@
             class="mb-2"
           ></cema-input>
         </div>
-        <div class="col-12 col-md-6 col-lg-4">
+        <div class="col-12 col-md-6 col-lg-6">
+          <image-search @finishTagHandle="finishTagHandle"></image-search>
+        </div>
+        <div class="col-12 col-md-6 col-lg-6">
           <cema-input
             v-model.trim="search.description"
             component-type="input"
@@ -208,6 +211,7 @@ import CemaInput from '../../components/form/CemaInput';
 import BovineModal from '../../components/bovine/BovineModal';
 import BatchModal from '../../components/bovine/BatchModal';
 import BatchBadge from '../../components/bovine/BatchBadge';
+import ImageSearch from '../../components/form/ImageSearch';
 
 export default {
   name: 'ListBovine',
@@ -235,6 +239,7 @@ export default {
     BatchModal,
     ConfirmationModal,
     CemaInput,
+    ImageSearch,
   },
   beforeUnmount() {
     if (typeof window !== 'undefined') {
@@ -264,6 +269,9 @@ export default {
       'removeBovinesFromBatch',
     ]),
     ...mapActions(['showSuccess']),
+    finishTagHandle(tag) {
+      this.search.tag = tag;
+    },
     toggleBovineSelected(tag, cuig) {
       this.showingExtraData = null;
       if (!this.bovineCuigSelected) {

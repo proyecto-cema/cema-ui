@@ -185,7 +185,9 @@ export default {
       this.errorSave['bovineBatch'] = this.activityData.extraData.isBatch && !this.activityData.extraData.batchName;
       this.errorSave['bovineTag'] =
         !this.activityData.extraData.isBatch &&
-        (this.activityData.extraData.bovineTag === SEARCH_DEFAULT_TAG || !this.activityData.extraData.bovineTag);
+        (this.activityData.extraData.bovineTag === SEARCH_DEFAULT_TAG ||
+          !this.activityData.extraData.bovineTag ||
+          this.activityData.extraData.bovineTag === 'Bovino no encontrado');
       let validations = this.activityMap.validations;
       for (const key in validations) {
         this.errorSave[key] = VALIDATIONS[validations[key]](this.activityData.extraData[key]);

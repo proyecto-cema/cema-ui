@@ -30,7 +30,7 @@
           <font-awesome-icon icon="times"></font-awesome-icon>
         </button>
       </li>
-      <template v-if="options.length === 0 && !maintain">
+      <template v-if="options.length === 0 && maintain === searchValue">
         <li>
           <button class="dropdown-item" type="button">
             <b>{{ failMessage }}</b>
