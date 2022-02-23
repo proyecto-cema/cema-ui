@@ -23,12 +23,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(user, index) in users" :key="user.userName">
+          <tr v-for="(user, index) in users" :key="user.userName" :style="user.enabled ? '' : 'color: grey'">
             <td>{{ user.userName }}</td>
             <td>{{ user.name }}, {{ user.lastName }}</td>
             <td v-if="!this.isMobile">{{ user.establishmentCuig }}</td>
             <td v-if="!this.isMobile">{{ user.role }}</td>
-            <td class="text-end">
+            <td class="text-end" style="color: #212529">
               <font-awesome-icon
                 class="me-2"
                 icon="edit"
@@ -203,6 +203,7 @@ export default {
     async searchUsers() {
       this.users = [];
       this.listUsers(this.currentRole).then((users) => {
+        users.sort((a, b) => (a.role > b.role ? 1 : b.role > a.role ? -1 : 0));
         this.users = users;
         console.log(users);
       });
@@ -233,6 +234,7 @@ export default {
 <style scoped>
 .disabled-icon {
   opacity: 0.5;
+  color: #a22727 !important;
   cursor: not-allowed;
   pointer-events: none;
 }
