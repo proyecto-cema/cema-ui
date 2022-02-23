@@ -8,7 +8,7 @@
       input-title="Alimento"
       @reCall="getFeedingSupplies"
       :error-data="{
-        required: true,
+        required: false,
         errorStatus: errorSave.food,
         errorMessage: 'Ingrese un alimento',
       }"

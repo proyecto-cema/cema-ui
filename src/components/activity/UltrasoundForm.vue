@@ -1,6 +1,6 @@
 <template>
   <div class="col-12 mb-2">
-    <tag-search :error-save="errorSave" :filters="['active']" />
+    <tag-search :error-save="errorSave" :filters="['active', 'cows_only']" />
   </div>
   <div class="col-lg-6 col-12 mb-2">
     <cema-input
