@@ -25,6 +25,7 @@
                       :input-id="`${modalId}-userName`"
                       type="text"
                       :disabled="edit"
+                      autocomplete="username"
                     ></cema-input>
                   </div>
                   <div class="col-lg-6 col-12 mb-3">
@@ -83,6 +84,7 @@
                       input-title="Email"
                       :input-id="`${modalId}-userEmail`"
                       type="email"
+                      autocomplete="email"
                     ></cema-input>
                   </div>
                   <div class="col-lg-6 col-12 mb-3">
@@ -108,6 +110,7 @@
                       input-title="Contraseña"
                       :input-id="`${modalId}-userPassword`"
                       type="password"
+                      autocomplete="new-password"
                     ></cema-input>
                   </div>
                   <div class="col-lg-6 col-12 mb-3" v-if="!edit">
@@ -123,6 +126,7 @@
                       input-title="Repetir Contraseña "
                       :input-id="`${modalId}-userPasswordRepeat`"
                       type="password"
+                      autocomplete="new-password"
                     ></cema-input>
                   </div>
                   <div class="col-lg-6 col-12 mb-3">
@@ -233,12 +237,14 @@ export default {
     },
   },
   mounted() {
-    this.searchEstablishments();
+    if (this.currentUser) {
+      this.searchEstablishments();
+    }
   },
   methods: {
     ...mapActions('user', ['getUser', 'newUser', 'changeUser', 'clearUserData', 'setupEditUser']),
     ...mapActions('establishment', ['listEstablishments']),
-    ...mapActions(['showSuccess']),
+    ...mapActions(['showSuccess', 'setEstablishmentData']),
     getPasswordError() {
       let message = 'Ingrese la contraseña nuevamente.';
       let isValid = !!this.passwordRepeat;
@@ -295,17 +301,21 @@ export default {
     },
     async searchEstablishments() {
       this.establishments = [];
+      console.log('The current role is: ', this.currentRole);
       if (this.currentRole > 1) {
         this.listEstablishments().then((response) => {
           this.establishments = response.data;
           console.log(response);
         });
       } else {
-        this.establishments.push({
-          name: this.establishmentData.name,
-          cuig: this.establishmentData.cuig,
+        this.setEstablishmentData(this.currentUser.user.establishmentCuig).then(() => {
+          console.log('No permissions so adding', this.establishmentData);
+          this.establishments.push({
+            name: this.establishmentData.name,
+            cuig: this.establishmentData.cuig,
+          });
+          this.user.establishmentCuig = this.currentUser.user.establishmentCuig;
         });
-        this.user.establishmentCuig = this.currentUser.user.establishmentCuig;
       }
     },
   },

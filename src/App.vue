@@ -61,6 +61,9 @@ export default {
     sideNav() {
       return this.$store.state.sidenav;
     },
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
   },
   methods: {
     async accept() {
