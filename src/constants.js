@@ -9,25 +9,23 @@ export const MAXIMUM_TOASTS = 4;
 export const MAXIMUM_NOTIFICATIONS_TOASTS = 4;
 export const VALIDATIONS = {
     is_not_null: (element) => { return !element },
-    is_null: (element) => { return element != null },
-    lt_zero: (element) => { return element<0 },
-    lt_zero_or_null: (element) => { return element != null || element<0 },
+    lt_zero_and_null: (element) => { return (element != null && element<0) },
 }
 export const ACTIVITIES_EXTRA_DATA = {
     "Inoculation": {
         displayName: "Vacunación", backendName: "Inoculation",
         url: "inoculations", componentName: "VaccinationForm",
-        validations: { "drug": "is_not_null", "dose": "lt_zero_or_null" }, style: "bg-success text-white", color:"green"
+        validations: { "drug": "is_not_null", "dose": "lt_zero_and_null" }, style: "bg-success text-white", color:"green"
     },
     "Weighing": {
         displayName: "Pesaje", backendName: "Weighing",
         url: "weightings", componentName: "WeighingForm",
-        validations: {"weight": "lt_zero_or_null"}, style: "bg-warning text-white", color:"yellow"
+        validations: {"weight": "lt_zero_and_null"}, style: "bg-warning text-white", color:"yellow"
     },
     "Ultrasound": {
         displayName: "Tacto", backendName: "Ultrasound",
         url: "ultrasounds", componentName: "UltrasoundForm",
-        validations: {"serviceNumber": "lt_zero_or_null"}, style: "bg-info text-white", color:"blue"
+        validations: {"serviceNumber": "lt_zero_and_null"}, style: "bg-info text-white", color:"blue"
     },
     "Movement": {
         displayName: "Movimiento", backendName: "Movement",
@@ -37,7 +35,7 @@ export const ACTIVITIES_EXTRA_DATA = {
     "Feeding": {
         displayName: "Alimentación", backendName: "Feeding",
         url: "feedings", componentName: "FeedingForm",
-        validations: { "food": "is_null", "amount": "lt_zero_or_null" }, style: "bg-primary text-white", color:"gray"
+        validations: { "amount": "lt_zero_and_null" }, style: "bg-primary text-white", color:"gray"
     }
 };
 export const SEARCH_DEFAULT_TAG = "Seleccione la caravana";

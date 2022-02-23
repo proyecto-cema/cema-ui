@@ -15,7 +15,7 @@
   </div>
   <div class="col-lg-4 col-6 mb-2">
     <cema-input
-      v-model.trim="activityData.extraData.dose"
+      v-model="activityData.extraData.dose"
       v-if="!activityData.extraData.isBatch"
       input-title="Dosis"
       input-id="Dose"
