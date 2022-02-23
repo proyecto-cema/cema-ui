@@ -18,7 +18,7 @@
           <span class="nav-link-text">{{ navItem.name }}</span>
         </router-link>
         <a
-          v-if="navItem.isCollapsible"
+          v-if="navItem.isCollapsible && navItem.roleRequirement <= currentRole"
           class="nav-link dropdown-toggle"
           href="javascript:void(0)"
           @click="navItemCollapse(i)"
@@ -69,6 +69,7 @@ export default {
           isCollapsible: true,
           expanded: false,
           icon: 'tags',
+          roleRequirement: 0,
           items: [
             { name: 'Gestión', isCollapsible: false, route: 'ListBovine', roleRequirement: 0 },
             { name: 'Lotes', isCollapsible: false, route: 'ListBatch', roleRequirement: 0 },
@@ -79,6 +80,7 @@ export default {
           isCollapsible: true,
           expanded: false,
           icon: 'calendar-alt',
+          roleRequirement: 0,
           items: [
             { name: 'Calendario', isCollapsible: false, route: 'Calendar', roleRequirement: 0 },
             { name: 'Ubicaciones', isCollapsible: false, route: 'ListLocations', roleRequirement: 1 },
@@ -89,6 +91,7 @@ export default {
           isCollapsible: true,
           expanded: false,
           icon: 'money-bill-alt',
+          roleRequirement: 0,
           items: [
             { name: 'Operaciones', isCollapsible: false, route: 'ListOperations', roleRequirement: 0 },
             { name: 'Insumos', isCollapsible: false, route: 'ListSupplies', roleRequirement: 1 },
@@ -99,6 +102,7 @@ export default {
           isCollapsible: true,
           expanded: false,
           icon: 'desktop',
+          roleRequirement: 1,
           items: [
             { name: 'Subscripciones', isCollapsible: false, route: 'ListSubscriptions', roleRequirement: 1 },
             { name: 'Usuarios', isCollapsible: false, route: 'ListUser', roleRequirement: 1 },
