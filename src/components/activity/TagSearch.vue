@@ -59,10 +59,13 @@ export default {
   methods: {
     ...mapActions('bovine', ['listBovines']),
     finishTagHandle(tag) {
-      let elementDropdown = document.getElementById(`dropdown-${this.dropdownId}`);
-      let elementSearch = document.getElementById(`search-${this.dropdownId}`);
-      elementDropdown.click();
-      elementSearch.value = tag;
+      this.activityData.extraData.bovineTag = tag;
+      this.searchBovines(tag).then((bovines) => {
+        if (bovines.length === 0) {
+          this.activityData.extraData.bovineTag = 'Bovino no encontrado';
+          this.searchBovines();
+        }
+      });
     },
     async searchBovines(searchingFor = '') {
       console.log('++++++++++++++++++++');
@@ -73,13 +76,20 @@ export default {
         size: 100,
         search: { tag: searchLength !== 0 ? searchingFor : null, cuig: this.currentUser.user.establishmentCuig },
       };
-      this.listBovines(defaultSearch).then((response) => {
+      return this.listBovines(defaultSearch).then((response) => {
         let bovines = response.data;
+        console.log('Pre filter', bovines);
         if (this.filters) {
           bovines = bovines.filter((bovine) => this.checkFilter(bovine));
         }
+        console.log('After filter', bovines);
+        if (bovines.length === 0) {
+          console.log('No encontre nada');
+        }
         this.bovines = bovines.slice(0, 5);
+        console.log('Slice', bovines);
         console.log('++++++++++++++++++++', response);
+        return Promise.resolve(bovines);
       });
     },
     checkFilter(bovine) {
