@@ -5,6 +5,7 @@ const COMMON_ERRORS = {
 };
 export const LOGIN_ERRORS = {
   400: { type: 'establishment', message: 'Su establecimiento no es válido'},
+  409: { type: 'invalid-user', message: 'Su usuario no esta deshabilitado'},
   401: { type: 'password', message: 'Contraseña incorrecta' },
   404: { type: 'UserPass', message: 'Usuario o Contraseña incorrectos' },
 };
