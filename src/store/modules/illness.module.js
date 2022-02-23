@@ -55,8 +55,8 @@ const actions = {
     async saveIllness({commit, state, dispatch, rootState}){
         console.log(state.illness, "Editing: ", state.edit);
         let saveIllness = Object.assign({}, state.illness);
-        saveIllness.endingDate = utils.methods.momentDateToJavaDate(saveIllness.endingDate,"YYYY-MM-DD HH:mm:ss");
-        saveIllness.startingDate = utils.methods.momentDateToJavaDate(saveIllness.startingDate,"YYYY-MM-DD HH:mm:ss");
+        saveIllness.endingDate = utils.methods.replaceFormat(saveIllness.endingDate, "YYYY-MM-DD", "YYYY-MM-DD HH:mm:ss")
+        saveIllness.startingDate = utils.methods.replaceFormat(saveIllness.startingDate, "YYYY-MM-DD", "YYYY-MM-DD HH:mm:ss")
 
         if (!saveIllness.establishmentCuig){
             saveIllness.establishmentCuig = rootState.auth.user.user.establishmentCuig;

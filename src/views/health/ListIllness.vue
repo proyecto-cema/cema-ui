@@ -182,7 +182,7 @@ export default {
       console.log(illness, edit);
       let helperDeleted = { ...this.deleted };
       if (edit) {
-        this.illness.splice(helperDeleted.index, 1);
+        this.illnesses.splice(helperDeleted.index, 1);
         this.deleted = {};
       }
       this.illnesses.push(illness);
