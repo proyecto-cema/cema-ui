@@ -71,7 +71,6 @@ export default {
   methods: {
     ...mapActions('bovine', ['saveBovine', 'setupEditBovine', 'clearBovineData']),
     ...mapActions(['showSuccess']),
-
     getTagError() {
       return this.tagHasError(this.bovine.tag);
     },
