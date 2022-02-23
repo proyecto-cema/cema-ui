@@ -15,6 +15,7 @@
                 class="form-control my-2"
                 v-model.trim="username"
                 :class="[error.type === 'user' ? 'is-invalid' : '']"
+                autocomplete="username"
               />
               <input
                 type="password"
@@ -22,6 +23,7 @@
                 class="form-control my-2"
                 v-model.trim="pass"
                 :class="[error.type === 'pass' ? 'is-invalid' : '']"
+                autocomplete="current-password"
               />
               <div class="row" hidden>
                 <div class="col-lg-5 col-md-12" style="padding-top: 8px">

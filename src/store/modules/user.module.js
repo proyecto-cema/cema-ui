@@ -41,9 +41,13 @@ const actions = {
         commit('serEdit', false);
     },
     setupEditUser({commit}, user){
-        let proxyUser = {...user, role: user.role.charAt(0).toUpperCase() + user.role.slice(1).toLowerCase()};
-        commit('setUser', user);
-        commit('serEdit', true);
+        console.log("user");
+        console.log(user);
+        if(user){
+            let proxyUser = {...user, role: user.role.charAt(0).toUpperCase() + user.role.slice(1).toLowerCase()};
+            commit('setUser', proxyUser);
+            commit('serEdit', true);
+        }
     },
     async getUser({commit, dispatch}, userName) {
         return UserService.getUserByUserName(userName).then(
@@ -57,16 +61,31 @@ const actions = {
             }
         );
     },
-    async saveUser({dispatch}, data) {
+    async newUser({dispatch}, data){
         return UserService.setUser(data.user, data.password).then(
-            () => {
-                console.log(data)
-                return Promise.resolve(data);
-            },
-            error => {
-                dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
-                return Promise.reject(error);
-            }
+          () => {
+              console.log(data)
+              return Promise.resolve(data);
+          },
+          error => {
+              dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
+              return Promise.reject(error);
+          }
+        );
+    },
+    async changeUser({dispatch, rootState}, { user, isSelf }){
+        return UserService.changeUserData(user.userName, user).then(
+          () => {
+              console.log(user)
+              if(isSelf){
+                  rootState.auth.user.user = user;
+              }
+              return Promise.resolve(user);
+          },
+          error => {
+              dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
+              return Promise.reject(error);
+          }
         );
     },
     async listUsers({dispatch, state, commit}, role) {

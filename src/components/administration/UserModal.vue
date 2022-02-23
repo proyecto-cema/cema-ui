@@ -22,9 +22,10 @@
                         errorMessage: 'Ingrese el nonbre de usuario',
                       }"
                       input-title="Usuario"
-                      input-id="userName"
+                      :input-id="`${modalId}-userName`"
                       type="text"
                       :disabled="edit"
+                      autocomplete="username"
                     ></cema-input>
                   </div>
                   <div class="col-lg-6 col-12 mb-3">
@@ -38,8 +39,9 @@
                         errorMessage: 'Ingrese el cuig del establecimiento',
                       }"
                       input-title="CUIG"
-                      input-id="establishmentCuig"
+                      :input-id="`${modalId}-establishmentCuig`"
                       :options="establishments"
+                      :disabled="edit"
                       optionKey="cuig"
                       v-slot="{ option }"
                     >
@@ -57,7 +59,7 @@
                         errorMessage: 'Ingrese el nombre de la persona',
                       }"
                       input-title="Nombre"
-                      input-id="Name"
+                      :input-id="`${modalId}-name`"
                       type="text"
                     ></cema-input>
                   </div>
@@ -71,7 +73,7 @@
                         errorMessage: 'Ingrese el apellido de la persona',
                       }"
                       input-title="Apellido"
-                      input-id="lastName"
+                      :input-id="`${modalId}-lastName`"
                       type="text"
                     ></cema-input>
                   </div>
@@ -80,8 +82,9 @@
                       v-model.trim="user.email"
                       required
                       input-title="Email"
-                      input-id="userEmail"
+                      :input-id="`${modalId}-userEmail`"
                       type="email"
+                      autocomplete="email"
                     ></cema-input>
                   </div>
                   <div class="col-lg-6 col-12 mb-3">
@@ -90,11 +93,11 @@
                       maxlength="15"
                       required
                       input-title="Telefono"
-                      input-id="userPhone"
+                      :input-id="`${modalId}-userPhone`"
                       type="text"
                     ></cema-input>
                   </div>
-                  <div class="col-lg-6 col-12 mb-3">
+                  <div class="col-lg-6 col-12 mb-3" v-if="!edit">
                     <cema-input
                       v-model.trim="password"
                       maxlength="10"
@@ -105,11 +108,12 @@
                         errorMessage: 'Ingrese la contraseña del usuario',
                       }"
                       input-title="Contraseña"
-                      input-id="userPassword"
+                      :input-id="`${modalId}-userPassword`"
                       type="password"
+                      autocomplete="new-password"
                     ></cema-input>
                   </div>
-                  <div class="col-lg-6 col-12 mb-3">
+                  <div class="col-lg-6 col-12 mb-3" v-if="!edit">
                     <cema-input
                       v-model.trim="passwordRepeat"
                       maxlength="10"
@@ -120,8 +124,9 @@
                         errorMessage: getPasswordError()['message'],
                       }"
                       input-title="Repetir Contraseña "
-                      input-id="userPasswordRepeat"
+                      :input-id="`${modalId}-userPasswordRepeat`"
                       type="password"
+                      autocomplete="new-password"
                     ></cema-input>
                   </div>
                   <div class="col-lg-6 col-12 mb-3">
@@ -135,8 +140,9 @@
                         errorMessage: 'Seleccione el rol del usuario',
                       }"
                       input-title="Rol"
-                      input-id="userRole"
-                      :options="['Patron', 'Peon']"
+                      :input-id="`${modalId}-userRole`"
+                      :options="this.roleList"
+                      :disabled="hideActions || user.userName === this.currentUser.user.userName"
                     ></cema-input>
                   </div>
                 </div>
@@ -148,7 +154,21 @@
           <button class="btn btn-primary text-white" data-bs-dismiss="modal" type="button" @click="clean()">
             Cancelar
           </button>
-          <button class="btn btn-secondary text-white" type="button" @click="saveModal()">Guardar</button>
+          <button v-if="edit && !hideActions" class="btn btn-primary text-white" type="button" @click="clean()">
+            Crear Nuevo
+          </button>
+          <button
+            v-if="edit && !hideActions && user.userName !== this.currentUser.user.userName"
+            class="btn btn-danger text-white"
+            data-bs-dismiss="modal"
+            type="button"
+            @click="callDeleteModal()"
+          >
+            Eliminar
+          </button>
+          <button class="btn btn-secondary text-white" type="button" @click="saveModal()">
+            {{ edit ? 'Modificar' : 'Guardar' }}
+          </button>
         </div>
       </div>
     </div>
@@ -158,10 +178,11 @@
 <script>
 import CemaInput from '../form/CemaInput';
 import { mapActions, mapState } from 'vuex';
-import { ROLE_REPRESENTATION } from '../../constants';
+import { ROLE_REPRESENTATION, ROLES } from '../../constants';
 
 export default {
   name: 'UserModal',
+  emits: ['deleteModal', 'closeModal', 'userSaved'],
   data() {
     return {
       password: null,
@@ -196,10 +217,13 @@ export default {
         name: !this.user.name,
         lastName: !this.user.lastName,
         role: !this.user.role,
-        password: !this.password,
-        passwordRepeat: !this.getPasswordError()['isValid'],
+        password: this.edit || !this.password,
+        passwordRepeat: this.edit || !this.getPasswordError()['isValid'],
         establishmentCuig: !this.user.establishmentCuig,
       };
+    },
+    roleList() {
+      return ROLES.slice(0, this.currentRole + 1);
     },
   },
   props: {
@@ -207,22 +231,32 @@ export default {
       type: String,
       required: true,
     },
+    hideActions: {
+      type: Boolean,
+      default: false,
+    },
   },
   mounted() {
-    this.searchEstablishments();
+    if (this.currentUser) {
+      this.searchEstablishments();
+    }
   },
   methods: {
-    ...mapActions('user', ['getUser', 'saveUser', 'clearUserData', 'setupEditUser']),
+    ...mapActions('user', ['getUser', 'newUser', 'changeUser', 'clearUserData', 'setupEditUser']),
     ...mapActions('establishment', ['listEstablishments']),
-    ...mapActions(['showSuccess']),
+    ...mapActions(['showSuccess', 'setEstablishmentData']),
     getPasswordError() {
       let message = 'Ingrese la contraseña nuevamente.';
       let isValid = !!this.passwordRepeat;
       if (isValid && this.password != this.passwordRepeat) {
-        message = 'Las contraseñas ingresadas no coinsiden.';
+        message = 'Las contraseñas ingresadas no coinciden.';
         isValid = false;
       }
       return { isValid: isValid, message: message };
+    },
+    callDeleteModal() {
+      this.$emit('deleteModal', this.user.userName);
+      this.clean();
     },
     clean() {
       this.errorSave = {};
@@ -230,12 +264,17 @@ export default {
       this.passwordRepeat = null;
       this.clearUserData();
       this.user.establishmentCuig = this.currentUser.user.establishmentCuig;
+      this.$emit('closeModal');
     },
     successCall(message) {
       this.showSuccess(message);
     },
     saveModal() {
       this.errorSave = this.errorSaveHelper;
+      if (this.edit) {
+        delete this.errorSave['password'];
+        delete this.errorSave['passwordRepeat'];
+      }
       if (this.checkErrors(this.errorSave)) {
         console.error(this.errorSave);
         return;
@@ -243,28 +282,40 @@ export default {
       this.formSaveUser();
     },
     async formSaveUser() {
-      let data = {
-        password: this.password,
-        user: this.user,
-      };
-      this.saveUser(data).then((user) => {
-        this.successCall(`El usuario ${user.user.userName} se guardó correctamente`);
-        this.setupEditUser(user.user);
-      });
+      if (this.edit) {
+        this.changeUser({ user: this.user, isSelf: this.hideActions }).then((user) => {
+          this.successCall(`El usuario ${this.user.userName} se guardó correctamente`);
+          this.$emit('userSaved', { user: this.user });
+        });
+      } else {
+        let data = {
+          password: this.password,
+          user: this.user,
+        };
+        this.newUser(data).then((user) => {
+          this.successCall(`El usuario ${user.user.userName} se guardó correctamente`);
+          this.setupEditUser(user.user);
+          this.$emit('userSaved', { user: user.user, userName: user.user.userName });
+        });
+      }
     },
     async searchEstablishments() {
       this.establishments = [];
+      console.log('The current role is: ', this.currentRole);
       if (this.currentRole > 1) {
         this.listEstablishments().then((response) => {
           this.establishments = response.data;
           console.log(response);
         });
       } else {
-        this.establishments.push({
-          name: this.establishmentData.name,
-          cuig: this.establishmentData.cuig,
+        this.setEstablishmentData(this.currentUser.user.establishmentCuig).then(() => {
+          console.log('No permissions so adding', this.establishmentData);
+          this.establishments.push({
+            name: this.establishmentData.name,
+            cuig: this.establishmentData.cuig,
+          });
+          this.user.establishmentCuig = this.currentUser.user.establishmentCuig;
         });
-        this.user.establishmentCuig = this.currentUser.user.establishmentCuig;
       }
     },
   },

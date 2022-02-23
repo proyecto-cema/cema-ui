@@ -18,7 +18,7 @@
           <span class="nav-link-text">{{ navItem.name }}</span>
         </router-link>
         <a
-          v-if="navItem.isCollapsible"
+          v-if="navItem.isCollapsible && navItem.roleRequirement <= currentRole"
           class="nav-link dropdown-toggle"
           href="javascript:void(0)"
           @click="navItemCollapse(i)"
@@ -53,13 +53,15 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { ROLE_REPRESENTATION } from '../constants';
+import { Modal } from 'bootstrap';
 
 export default {
   name: 'SideBar',
   data() {
     return {
+      myUserModal: null,
       sidenavItems: [
         { name: 'Tablero', isCollapsible: false, icon: 'chart-line', route: 'Dashboard', roleRequirement: 1 },
         {
@@ -67,6 +69,7 @@ export default {
           isCollapsible: true,
           expanded: false,
           icon: 'tags',
+          roleRequirement: 0,
           items: [
             { name: 'Gestión', isCollapsible: false, route: 'ListBovine', roleRequirement: 0 },
             { name: 'Lotes', isCollapsible: false, route: 'ListBatch', roleRequirement: 0 },
@@ -77,6 +80,7 @@ export default {
           isCollapsible: true,
           expanded: false,
           icon: 'calendar-alt',
+          roleRequirement: 0,
           items: [
             { name: 'Calendario', isCollapsible: false, route: 'Calendar', roleRequirement: 0 },
             { name: 'Ubicaciones', isCollapsible: false, route: 'ListLocations', roleRequirement: 1 },
@@ -87,6 +91,7 @@ export default {
           isCollapsible: true,
           expanded: false,
           icon: 'money-bill-alt',
+          roleRequirement: 0,
           items: [
             { name: 'Operaciones', isCollapsible: false, route: 'ListOperations', roleRequirement: 0 },
             { name: 'Insumos', isCollapsible: false, route: 'ListSupplies', roleRequirement: 1 },
@@ -97,8 +102,9 @@ export default {
           isCollapsible: true,
           expanded: false,
           icon: 'desktop',
+          roleRequirement: 1,
           items: [
-            { name: 'Subscripciones', isCollapsible: false, route: 'ListSubscriptions', roleRequirement: 0 },
+            { name: 'Subscripciones', isCollapsible: false, route: 'ListSubscriptions', roleRequirement: 1 },
             { name: 'Usuarios', isCollapsible: false, route: 'ListUser', roleRequirement: 1 },
             { name: 'Establecimientos', isCollapsible: false, route: 'ListEstablishments', roleRequirement: 2 },
             { name: 'Auditoria', isCollapsible: false, route: 'ListAudits', roleRequirement: 2 },
@@ -108,14 +114,21 @@ export default {
     };
   },
   mounted() {
+    this.myUserModal = Modal.getOrCreateInstance(document.getElementById('myDataUserModal'));
+    let items;
     if (this.currentUser) {
+      items = [
+        { name: 'Mi Establecimiento', clickable: true, clickAction: this.showEstablishment, roleRequirement: 1 },
+        { name: 'Mi Perfil', clickable: true, clickAction: this.showUserData, roleRequirement: 0 },
+        { name: 'Cerrar Sesión', clickable: true, clickAction: this.logOut, roleRequirement: 0 },
+      ];
       this.sidenavItems.push({
         name: `${this.currentUser['user']['userName']}`,
-        specialClass: 'mt-auto d-lg-none',
+        specialClass: 'd-lg-none',
         isCollapsible: true,
         expanded: false,
         icon: 'user',
-        items: [{ name: 'Cerrar Sesión', clickable: true, clickAction: this.logOut, icon: 'sign-out-alt' }],
+        items: items,
       });
     }
   },
@@ -132,9 +145,20 @@ export default {
     },
   },
   methods: {
+    ...mapActions('user', ['setupEditUser']),
     logOut() {
       this.$store.dispatch('auth/logout');
       this.$router.push('/login');
+    },
+    showEstablishment() {
+      this.$router.push({
+        name: 'ListSubscriptions',
+        params: { modal: true },
+      });
+    },
+    showUserData() {
+      this.setupEditUser(this.currentUser.user);
+      this.myUserModal.show();
     },
     navItemCollapse(index) {
       this.sidenavItems = this.sidenavItems.map((item, i) => {
