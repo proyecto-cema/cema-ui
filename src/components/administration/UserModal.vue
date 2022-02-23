@@ -283,7 +283,7 @@ export default {
     },
     async formSaveUser() {
       if (this.edit) {
-        this.changeUser(this.user).then((user) => {
+        this.changeUser({ user: this.user, isSelf: this.hideActions }).then((user) => {
           this.successCall(`El usuario ${this.user.userName} se guardó correctamente`);
           this.$emit('userSaved', { user: this.user });
         });

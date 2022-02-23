@@ -73,10 +73,13 @@ const actions = {
           }
         );
     },
-    async changeUser({dispatch}, user){
+    async changeUser({dispatch, rootState}, { user, isSelf }){
         return UserService.changeUserData(user.userName, user).then(
           () => {
               console.log(user)
+              if(isSelf){
+                  rootState.auth.user.user = user;
+              }
               return Promise.resolve(user);
           },
           error => {

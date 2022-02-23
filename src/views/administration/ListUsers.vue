@@ -212,7 +212,7 @@ export default {
       let index = this.disable['index'];
       user.enabled = !user.enabled;
       this.setupEditUser(user);
-      this.changeUser(user).then(() => {
+      this.changeUser({ user: user, isSelf: false }).then(() => {
         this.showSuccess(
           `El usuario ${user['userName']} se ${this.disable['user'].enabled ? 'habilitó' : 'deshabilitó'} correctamente`
         );
