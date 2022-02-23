@@ -123,8 +123,7 @@ const actions = {
                 return Promise.resolve(returnData);
             },
             error => {
-                dispatch("showError", {error: error, errors: REPORTING_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: REPORTING_ERRORS}, {root:true});
             }
         );
     },

@@ -61,6 +61,10 @@ export const getSuccessStructure = function (message) {
   return {type: 'OK', message: message != null ? message: 'Acción realizada correctamente', color: 'bg-success'};
 }
 
+export const getWarningStructure = function (message) {
+  return {type: 'GOOD', message: message != null ? message: 'La acción intentará impactar (dentro de las 24h).', color: 'bg-warning'};
+}
+
 export const getErrorStructure = function (message) {
   return {type: 'OK', message: message != null ? message: 'Error al realizar la accion', color: 'bg-danger'};
 }

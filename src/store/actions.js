@@ -1,6 +1,7 @@
 import EstablishmentService from "../services/administration/establishment.service";
 import ActivityService from "../services/activity/activity.service";
-import {getHttpError, getSuccessStructure, getErrorStructure} from "../services/http-common";
+import { getHttpError, getSuccessStructure, getErrorStructure, getWarningStructure } from '../services/http-common';
+import { OFFLINE_CODE } from '../constants';
 
 export default {
     setSideNav({ commit }) {
@@ -38,9 +39,23 @@ export default {
     showSuccess({commit}, message){
         commit('appendToDataToastsArray', getSuccessStructure(message), { root: true });
     },
-    showError({commit}, {errors, error}){
-        commit('appendToDataToastsArray', getHttpError(errors, error.response.status), { root: true });
+    showWarning({commit}, error){
+        let toast = getWarningStructure(error.message);
+        commit('appendToDataToastsArray', toast, { root: true });
         console.log(error);
+        return Promise.reject(error);
+    },
+    showError({commit}, {errors, error}){
+        let toast;
+        console.log(error);
+        if(!error.response){
+            toast = getWarningStructure(null);
+        }else{
+            toast = getHttpError(errors, error.response.status);
+        }
+        commit('appendToDataToastsArray', toast, { root: true });
+        console.log(error);
+        return Promise.reject(error);
     },
     showErrorFront({commit}, message){
         commit('appendToDataToastsArray', getErrorStructure(message), { root: true });

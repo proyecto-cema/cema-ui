@@ -23,8 +23,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
             }
         );
     },

@@ -7,6 +7,7 @@ export const REGEX_LETTERS_NUMBERS = /^([a-zA-Z0-9]+)$/;
 export const REGEX_SPACES = /^\S+$/;
 export const MAXIMUM_TOASTS = 4;
 export const MAXIMUM_NOTIFICATIONS_TOASTS = 4;
+export const OFFLINE_CODE = 0;
 export const VALIDATIONS = {
     is_not_null: (element) => { return !element },
     lt_zero_and_null: (element) => { return (element != null && element<0) },

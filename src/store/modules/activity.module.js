@@ -68,8 +68,7 @@ const actions = {
                 return Promise.resolve(response.data);
             },
             error => {
-                dispatch("showError", {error: error, errors: ACTIVITY_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: ACTIVITY_ERRORS}, {root:true});
             }
         );
     },
@@ -81,8 +80,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: ACTIVITY_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: ACTIVITY_ERRORS}, {root:true});
             }
         );
     },
@@ -119,8 +117,7 @@ const actions = {
                 return Promise.resolve(activityData);
             },
             error => {
-                dispatch("showError", {error: error, errors: ACTIVITY_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: ACTIVITY_ERRORS}, {root:true});
             }
         );
     },
@@ -131,8 +128,7 @@ const actions = {
                 return Promise.resolve(state.activityData);
             },
             error => {
-                dispatch("showError", {error: error, errors: ACTIVITY_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: ACTIVITY_ERRORS}, {root:true});
             }
         );
     },
@@ -142,8 +138,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: ACTIVITY_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: ACTIVITY_ERRORS}, {root:true});
             }
         );
     },
@@ -159,10 +154,7 @@ const actions = {
               return Promise.resolve(response);
           },
           error => {
-              if (error.response.status !== 404){
-                  dispatch("showError", {error: error, errors: SUPPLY_ERRORS}, {root:true});
-              }
-              return Promise.reject(error);
+              return dispatch("showError", {error: error, errors: SUPPLY_ERRORS}, {root:true});
           }
         );
     },

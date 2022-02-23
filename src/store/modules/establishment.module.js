@@ -37,8 +37,7 @@ const actions = {
                 return Promise.resolve(establishment);
             },
             error => {
-                dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
             }
         );
     },
@@ -54,8 +53,7 @@ const actions = {
                 return Promise.resolve(establishment);
             },
             error => {
-                dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
             }
         );
     },
@@ -67,8 +65,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
             }
         );
     },
@@ -79,8 +76,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
             }
         );
     },
@@ -91,8 +87,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
             }
         );
     },
@@ -104,8 +99,7 @@ const actions = {
               return Promise.resolve(response);
           },
           error => {
-              dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
-              return Promise.reject(error);
+            return dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
           }
         );
     }

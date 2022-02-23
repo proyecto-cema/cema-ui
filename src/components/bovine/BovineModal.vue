@@ -35,6 +35,7 @@
 <script>
 import BovineModalContent from '../bovine/BovineModalContent';
 import { mapActions, mapState } from 'vuex';
+import { OFFLINE_CODE } from '../../constants';
 
 export default {
   name: 'BovineModal',
@@ -98,19 +99,10 @@ export default {
         edit: this.edit,
         bovine: this.bovine,
       };
-      this.saveBovine(data).then(
-        (bovine) => {
-          this.successCall(`El bovino con caravana ${bovine.establishmentCuig}-${bovine.tag} se guardó correctamente`);
-          this.setupEditBovine(bovine);
-        },
-        (error) => {
-          if (error.hasOwnProperty('code') && error.code === 0) {
-            console.log('Sending it on background');
-            this.successCall(error.message);
-            this.setupEditBovine(error.bovine);
-          }
-        }
-      );
+      this.saveBovine(data).then((bovine) => {
+        this.successCall(`El bovino con caravana ${bovine.establishmentCuig}-${bovine.tag} se guardó correctamente`);
+        this.setupEditBovine(bovine);
+      });
     },
   },
 };

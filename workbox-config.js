@@ -11,7 +11,7 @@ module.exports = {
       options: {
         cacheName: 'CemaImages',
         expiration: {
-          maxEntries: 25,
+          maxEntries: 100,
         },
       },
     },
@@ -66,25 +66,12 @@ module.exports = {
       }
     },
     {
-      urlPattern: new RegExp('https://qa.proyecto-cema.com/activity'),
+      urlPattern: new RegExp('https://qa.proyecto-cema.com/(activity|bovine)'),
       handler: 'NetworkOnly',
       method: 'POST',
       options: {
         backgroundSync: {
-          name: 'activity-queue',
-          options: {
-            maxRetentionTime: 24 * 60 * 60,
-          },
-        },
-      },
-    },
-    {
-      urlPattern: new RegExp('https://qa.proyecto-cema.com/bovine'),
-      handler: 'NetworkOnly',
-      method: 'POST',
-      options: {
-        backgroundSync: {
-          name: 'bovine-queue',
+          name: 'cema-queue',
           options: {
             maxRetentionTime: 24 * 60 * 60,
           },
