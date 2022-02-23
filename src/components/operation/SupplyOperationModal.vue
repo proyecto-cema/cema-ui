@@ -209,10 +209,10 @@ export default {
       let isValid = !!this.supplyOperation.amount;
       if (
         isValid &&
-        this.supplyOperation.amount < this.availableSupply &&
+        this.supplyOperation.amount > this.availableSupply &&
         this.supplyOperation.operationType != 'Compra'
       ) {
-        message = 'La cantidad no puede ser menor a la disponible';
+        message = 'La cantidad no puede ser mayor a la disponible';
         isValid = false;
       }
       return { isValid: isValid, message: message };
