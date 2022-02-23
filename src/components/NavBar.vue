@@ -39,7 +39,7 @@
               {{ currentUser['user']['name'] + ' ' + currentUser['user']['lastName'] }}
             </a>
             <div aria-labelledby="dropdownUser" class="dropdown-menu dropdown-menu-dark bg-primary dropdown-menu-end">
-              <a class="nav-link dropdown-item" @click.prevent="showEstablishment">
+              <a class="nav-link dropdown-item" @click.prevent="showEstablishment" v-if="currentRole > 0">
                 <font-awesome-icon class="ms-2" icon="building" />
                 Mi Establecimiento
               </a>
@@ -61,6 +61,7 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { Modal } from 'bootstrap';
+import { ROLE_REPRESENTATION } from '../constants';
 
 export default {
   name: 'NavBar',
@@ -94,6 +95,12 @@ export default {
     ...mapState(['sidenav', 'establishmentData']),
     currentUser() {
       return this.$store.state.auth.user;
+    },
+    currentRole() {
+      if (this.currentUser) {
+        return ROLE_REPRESENTATION[this.currentUser.user.role.toUpperCase()];
+      }
+      return null;
     },
   },
   methods: {

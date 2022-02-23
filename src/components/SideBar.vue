@@ -114,7 +114,7 @@ export default {
     let items;
     if (this.currentUser) {
       items = [
-        { name: 'Mi Establecimiento', clickable: true, clickAction: this.showEstablishment, roleRequirement: 0 },
+        { name: 'Mi Establecimiento', clickable: true, clickAction: this.showEstablishment, roleRequirement: 1 },
         { name: 'Mi Perfil', clickable: true, clickAction: this.showUserData, roleRequirement: 0 },
         { name: 'Cerrar Sesión', clickable: true, clickAction: this.logOut, roleRequirement: 0 },
       ];
