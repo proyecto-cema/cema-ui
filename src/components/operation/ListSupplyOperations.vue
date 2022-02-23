@@ -93,7 +93,16 @@ export default {
     this.addSupplyOperationModal = new Modal(document.getElementById('addSupplyOperationModal'));
   },
   methods: {
-    ...mapActions('supplyOperation', ['listSupplyOperations', 'setupEditSupplyOperation', 'clearSupplyOperationData']),
+    ...mapActions('supplyOperation', [
+      'listSupplyOperations',
+      'setupEditSupplyOperation',
+      'clearSupplyOperationData',
+      'getSupplyOperationAvailableForName',
+      'setupEditAvailableSupply',
+      'setupEditPrice',
+      'setupEditTotalOperation',
+    ]),
+    ...mapActions('supply', ['getSupply']),
     ...mapActions(['showSuccess']),
     setIndexForName(index, name) {
       this.deleted = {
@@ -107,11 +116,22 @@ export default {
       this.clearSupplyOperationData();
     },
     openAddSupplyOperationModal(SupplyOperation) {
+      let price = 0;
       this.clearSupplyOperationData();
       if (SupplyOperation) {
         console.log(SupplyOperation);
         this.setupEditSupplyOperation(SupplyOperation);
+        this.getSupply(SupplyOperation.supplyName).then((response) => {
+          this.price = response.data.price;
+          this.setupEditPrice(response.data.price);
+          this.getSupplyOperationAvailableForName(SupplyOperation.supplyName).then((response) => {
+            this.setupEditAvailableSupply(response.data.available);
+            console.log('Disponiblilidad: ' + response);
+            this.setupEditTotalOperation(SupplyOperation.amount * this.price);
+          });
+        });
       }
+
       this.addSupplyOperationModal.show();
     },
 

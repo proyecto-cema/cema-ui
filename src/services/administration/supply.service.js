@@ -13,8 +13,8 @@ class SupplyService {
         }
     }
 
-    getSupply (supply, cuig) {
-        return httpOperation.get('supply/'+ encodeURIComponent(supply.name),
+    getSupply (supplyName, cuig) {
+        return httpOperation.get('supply/'+ encodeURIComponent(supplyName),
             { params:{cuig: cuig}, headers: authHeader() }
         )
     }

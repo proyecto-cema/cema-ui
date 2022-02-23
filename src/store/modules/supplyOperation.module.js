@@ -14,6 +14,9 @@ const state = {
         supplyName: null,
         transactionDate: null
     },
+    availableSupply:null,
+    price:null,
+    totalOperation:null,
     edit: false
 }
 
@@ -32,6 +35,15 @@ const mutations = {
     },
     setEdit(state, value) {
         state.edit = value;
+    },
+    setAvailableSupply(state, value){
+        state.availableSupply=value
+    },
+    setPrice(state, value){
+        state.price=value
+    },
+    setTotalOperation(state, value){
+        state.totalOperation=value
     }
 }
 
@@ -39,11 +51,23 @@ const actions = {
     clearSupplyOperationData({ commit }) {
         commit('setSupplyOperation', null);
         commit('setEdit', false);
+        commit('setAvailableSupply', null);
+        commit('setPrice', null);
+        commit('setTotalOperation', null);
     },
     setupEditSupplyOperation({ commit }, proxySupplyOperation) {
         proxySupplyOperation.transactionDate = utils.methods.javaDateToMomentDate(proxySupplyOperation.transactionDate, 'YYYY-MM-DD');
         commit('setSupplyOperation', proxySupplyOperation);
         commit('setEdit', true);
+    },
+    setupEditAvailableSupply({ commit }, proxyAvailableSupply) {
+        commit('setAvailableSupply', proxyAvailableSupply);
+    },
+    setupEditPrice({ commit }, proxyPrice) {
+        commit('setPrice', proxyPrice);
+    },
+    setupEditTotalOperation({ commit }, proxyTotalOperation) {
+        commit('setTotalOperation', proxyTotalOperation);
     },
     async listSupplyOperations({ dispatch, rootState }, data) {
         return SupplyOperationService.listSupplyOperation(data.page, data.size).then(

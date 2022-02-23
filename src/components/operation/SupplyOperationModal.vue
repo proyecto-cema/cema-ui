@@ -69,7 +69,7 @@
               </div>
               <div class="mb-3 col-12 col-md-6">
                 <cema-input
-                  v-model.trim="supplySelected.availableSupply"
+                  v-model.trim="price"
                   input-title="Precio"
                   input-id="supplyOperationPrecio"
                   type="input"
@@ -87,7 +87,7 @@
                   :error-data="{
                     required: true,
                     errorStatus: errorSave.amount,
-                    errorMessage: 'Ingrese la cantidad',
+                    errorMessage: validateAmount()['message'],
                   }"
                 ></cema-input>
               </div>
@@ -153,8 +153,6 @@ export default {
     return {
       supplies: [],
       supplySelected: {},
-      availableSupply: null,
-      totalOperation: null,
       errorSave: {
         transactionDate: false,
         operationType: false,
@@ -174,22 +172,14 @@ export default {
   },
   emits: ['modalSuccess'],
   computed: {
-    ...mapState('supplyOperation', ['supplyOperation', 'edit']),
+    ...mapState('supplyOperation', ['supplyOperation', 'edit', 'availableSupply', 'price', 'totalOperation']),
 
     errorSaveHelper() {
       return {
         transactionDate: !this.supplyOperation.transactionDate,
         operationType: !this.supplyOperation.operationType,
         supplyName: !this.supplyOperation.supplyName,
-        amount: !this.supplyOperation.amount,
-      };
-    },
-    errorSaveBovineHelper() {
-      return {
-        transactionDate: !this.supplyOperation.transactionDate,
-        operationType: !this.supplyOperation.operationType,
-        supplyName: !this.supplyOperation.supplyName,
-        amount: !this.supplyOperation.amount,
+        amount: !this.validateAmount()['isValid'],
       };
     },
   },
@@ -202,6 +192,9 @@ export default {
       'clearSupplyOperationData',
       'setupEditSupplyOperation',
       'getSupplyOperationAvailableForName',
+      'setupEditAvailableSupply',
+      'setupEditPrice',
+      'setupEditTotalOperation',
     ]),
     ...mapActions('supply', ['listSupplies']),
 
@@ -209,6 +202,20 @@ export default {
     clean() {
       this.errorSave = {};
       this.clearSupplyOperationData();
+    },
+    validateAmount() {
+      let message = 'Ingrese la cantidad';
+      console.log('Suply Operation: ' + this.supplyOperation);
+      let isValid = !!this.supplyOperation.amount;
+      if (
+        isValid &&
+        this.supplyOperation.amount < this.availableSupply &&
+        this.supplyOperation.operationType != 'Compra'
+      ) {
+        message = 'La cantidad no puede ser menor a la disponible';
+        isValid = false;
+      }
+      return { isValid: isValid, message: message };
     },
     saveModal() {
       this.errorSave = this.errorSaveHelper;
@@ -218,21 +225,21 @@ export default {
       }
       this.commitSave();
     },
-    onChange(supply) {
+    onChange() {
       for (var i = 0; i < this.supplies.length; i++) {
         if (this.supplies[i].name == this.supplyOperation.supplyName) {
-          this.supplySelected = this.supplies[i];
+          this.setupEditPrice(this.supplies[i].price);
         }
       }
       this.getSupplyOperationAvailableForName(this.supplyOperation.supplyName).then((response) => {
-        this.availableSupply = response.data.available;
+        this.setupEditAvailableSupply(response.data.available);
         console.log('Disponiblilidad: ' + response);
       });
       this.calculationTotalOperation();
     },
     calculationTotalOperation() {
-      if (this.supplySelected != null && this.supplyOperation.amount != null) {
-        this.totalOperation = this.supplySelected.price * this.supplyOperation.amount;
+      if (this.price != null && this.supplyOperation.amount != null) {
+        this.setupEditTotalOperation(this.price * this.supplyOperation.amount);
       }
     },
     async commitSave() {

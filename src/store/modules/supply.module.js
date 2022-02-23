@@ -36,6 +36,19 @@ const actions = {
         commit('setSupply', { previousName: proxySupply.name, ...proxySupply});
         commit('setEdit', true);
     },
+    async getSupply({rootState},name){
+        return SupplyService.getSupply(name, rootState.auth.user.user.establishmentCuig).then(
+            response => {
+                console.log(response);
+                return Promise.resolve(response);
+            },
+            error => {
+                dispatch("showError", {error: error, errors: SUPPLY_ERRORS}, {root:true});
+                return Promise.reject(error);
+            }
+        ); 
+        
+    },
     async saveSupply({state, dispatch, rootState}){
         console.log(state.supplyData, "Editing: ", state.edit);
         if (!state.supplyData.establishmentCuig){
