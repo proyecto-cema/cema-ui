@@ -69,6 +69,7 @@
   <supply-operation-modal
     modalId="addSupplyOperationModal"
     @modalSuccess="closeSupplyOperationModal"
+    @createdNew="addSupplyOperationToList"
   ></supply-operation-modal>
 </template>
 <script>
@@ -135,12 +136,12 @@ export default {
       this.addSupplyOperationModal.show();
     },
 
-    addSupplyOperationToList({ supplyOperation, edit }) {
-      console.log(supplyOperation, edit);
-      if (!edit && this.supplyOperationsLength < 10) {
-        this.supplyOperations.push(supplyOperation);
-      }
-    },
+    // addSupplyOperationToList({ supplyOperation, edit }) {
+    //   console.log(supplyOperation, edit);
+    //   if (!edit && this.supplyOperationsLength < 10) {
+    //     this.supplyOperations.push(supplyOperation);
+    //   }
+    // },
 
     async searchSupplyOperations(page = 0, size = 10) {
       this.supplliesOperations = null;
@@ -167,6 +168,20 @@ export default {
 
         this.supplliesOperationsLength = this.supplliesOperations != null ? this.supplliesOperations.length : 0;
       });
+    },
+    addSupplyOperationToList({ supplyOperation, edit }) {
+      console.log(supplyOperation, edit);
+      let helperDeleted = { ...this.deleted };
+      if (edit) {
+        this.supplliesOperations.splice(helperDeleted.index, 1);
+      }
+      if (this.supplliesOperations.length % 10 === 0) {
+        this.headers.totalPages += 1;
+        this.headers.currentPage += 1;
+        this.headers.totalElements += 1;
+        this.supplliesOperations = [];
+      }
+      this.supplliesOperations.push(supplyOperation);
     },
   },
 };
