@@ -98,10 +98,19 @@ export default {
         edit: this.edit,
         bovine: this.bovine,
       };
-      this.saveBovine(data).then((bovine) => {
-        this.successCall(`El bovino con caravana ${bovine.establishmentCuig}-${bovine.tag} se guardó correctamente`);
-        this.setupEditBovine(bovine);
-      });
+      this.saveBovine(data).then(
+        (bovine) => {
+          this.successCall(`El bovino con caravana ${bovine.establishmentCuig}-${bovine.tag} se guardó correctamente`);
+          this.setupEditBovine(bovine);
+        },
+        (error) => {
+          if (error.hasOwnProperty('code') && error.code === 0) {
+            console.log('Sending it on background');
+            this.successCall(error.message);
+            this.setupEditBovine(error.bovine);
+          }
+        }
+      );
     },
   },
 };

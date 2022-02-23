@@ -65,5 +65,31 @@ module.exports = {
         },
       }
     },
+    {
+      urlPattern: new RegExp('https://qa.proyecto-cema.com/activity'),
+      handler: 'NetworkOnly',
+      method: 'POST',
+      options: {
+        backgroundSync: {
+          name: 'activity-queue',
+          options: {
+            maxRetentionTime: 24 * 60 * 60,
+          },
+        },
+      },
+    },
+    {
+      urlPattern: new RegExp('https://qa.proyecto-cema.com/bovine'),
+      handler: 'NetworkOnly',
+      method: 'POST',
+      options: {
+        backgroundSync: {
+          name: 'bovine-queue',
+          options: {
+            maxRetentionTime: 24 * 60 * 60,
+          },
+        },
+      },
+    },
   ],
 };

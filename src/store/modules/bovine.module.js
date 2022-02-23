@@ -119,11 +119,17 @@ const actions = {
                 console.log(edit ? "Edited": "Created", "bovine:", bovine)
                 return Promise.resolve(bovine);
             },
-            error => {
+            (error) => {
+                if(!error.response){
+                    return Promise.reject({
+                        code: 0, bovine: bovine,
+                        message: `El bovino ${bovine.tag} se creará cuando la conexión se restablezca.`,
+                    });
+                }
                 dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
-        );
+        )
     },
     async deleteBovine({dispatch}, {tag, cuig}) {
         return BovineService.deleteBovine(tag, cuig).then(
