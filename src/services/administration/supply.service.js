@@ -25,7 +25,7 @@ class SupplyService {
         )
     }
 
-    getSuppliesList (page=0, size=10, supplyData={}) {
+    getSuppliesList (page=0, size=10, supplyData={establishmentCuig:null}) {
         return httpOperation.post('supply/search', supplyData, { params:{page: page, size: size}, headers: authHeader() })
     }
 

@@ -53,7 +53,9 @@ const actions = {
             }
         );
     },
-    async listSupplies({dispatch}, data) {
+    async listSupplies({dispatch, rootState}, data) {
+        data.search={"establishmentCuig":rootState.auth.user.user.establishmentCuig}
+        console.log("DATASEARCH: "+data.search)
         return SupplyService.getSuppliesList(data.page, data.size, data.search).then(
             response => {
                 console.log(response.data);

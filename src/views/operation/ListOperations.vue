@@ -128,7 +128,9 @@
         </div>
       </div>
     </div>
-    <div class="tab-pane fade" id="insumos" role="tabpanel" aria-labelledby="insumos-tab">Insumos</div>
+    <div class="tab-pane fade" id="insumos" role="tabpanel" aria-labelledby="insumos-tab">
+      <list-supply-operation></list-supply-operation>
+    </div>
   </div>
   <operation-modal modalId="addOperationModal" @modalSuccess="closeOperationModal"></operation-modal>
 </template>
@@ -136,6 +138,7 @@
 import { mapActions } from 'vuex';
 import { Modal } from 'bootstrap';
 import OperationModal from '../../components/operation/OperationModal';
+import ListSupplyOperation from '../../components/operation/ListSupplyOperations';
 
 export default {
   name: 'ListOperations',
@@ -150,7 +153,7 @@ export default {
       delay: 250,
     };
   },
-  components: { OperationModal },
+  components: { OperationModal, ListSupplyOperation },
   mounted() {
     this.searchOperations(0, 10);
 
