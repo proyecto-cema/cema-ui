@@ -10,7 +10,7 @@
     <div class="col-12 table-responsive">
       <table class="table">
         <thead>
-          <tr v-if="supplliesOperationsLength !== 0">
+          <tr v-if="suppliesOperationsLength !== 0">
             <th scope="col">Fecha Operación</th>
             <th scope="col">Tipo Operación</th>
             <th scope="col">Insumo</th>
@@ -22,9 +22,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="supplyOperation in supplliesOperations" :key="supplyOperation.id">
+          <tr v-for="supplyOperation in suppliesOperations" :key="supplyOperation.id">
             <td>{{ this.javaDateToMomentDate(supplyOperation.transactionDate) }}</td>
-            <td>{{ supplyOperation.operationType }}</td>
+            <td>{{ operationsTypes[supplyOperation.operationType] }}</td>
             <td>{{ supplyOperation.supplyName }}</td>
             <td>{{ supplyOperation.amount }}</td>
             <td class="text-end">
@@ -35,36 +35,7 @@
         </tbody>
       </table>
     </div>
-    <div v-if="headers.totalPages > 1" class="d-flex justify-content-center">
-      <div aria-label="Large button group" class="btn-group" role="group">
-        <button
-          :class="headers.currentPage <= 0 ? 'disabled' : ''"
-          class="btn btn-outline-primary"
-          type="button"
-          v-on:click="this.searchSupplyOperations(this.headers.currentPage - 1)"
-        >
-          Anterior
-        </button>
-        <button
-          v-for="i in headers.totalPages"
-          :key="i"
-          :class="headers.currentPage === i - 1 ? 'btn-primary' : 'btn-outline-primary'"
-          class="btn"
-          type="button"
-          v-on:click="this.searchSupplyOperations(i - 1)"
-        >
-          {{ i }}
-        </button>
-        <button
-          :class="headers.currentPage >= headers.totalPages - 1 ? 'disabled' : ''"
-          class="btn btn-outline-primary"
-          type="button"
-          v-on:click="this.searchSupplyOperations(this.headers.currentPage + 1)"
-        >
-          Siguiente
-        </button>
-      </div>
-    </div>
+    <list-pagination @call-change-page="this.searchSupplyOperations" :headers="this.headers"></list-pagination>
   </div>
   <supply-operation-modal
     modalId="addSupplyOperationModal"
@@ -76,22 +47,31 @@
 import { mapActions } from 'vuex';
 import { Modal } from 'bootstrap';
 import supplyOperationModal from '../../components/operation/SupplyOperationModal';
+import ListPagination from '../ListPagination';
+import { SUPPLY_OPERATION_TYPE } from '../../constants';
 
 export default {
   name: 'ListSupplyOperations',
   data() {
     return {
-      supplliesOperations: [],
-      supplliesOperationsLength: 0,
+      suppliesOperations: [],
       headers: { totalPages: 0, currentPage: 0, totalElements: 0 },
       addOperationModal: null,
     };
   },
-  components: { supplyOperationModal },
+  components: { ListPagination, supplyOperationModal },
   mounted() {
     this.searchSupplyOperations(0, 10);
 
     this.addSupplyOperationModal = new Modal(document.getElementById('addSupplyOperationModal'));
+  },
+  computed: {
+    suppliesOperationsLength() {
+      return this.suppliesOperations != null ? this.suppliesOperations.length : 0;
+    },
+    operationsTypes() {
+      return SUPPLY_OPERATION_TYPE;
+    },
   },
   methods: {
     ...mapActions('supplyOperation', [
@@ -136,29 +116,13 @@ export default {
       this.addSupplyOperationModal.show();
     },
     async searchSupplyOperations(page = 0, size = 10) {
-      this.supplliesOperations = null;
+      this.suppliesOperations = null;
 
       this.listSupplyOperations({ page: page, size: size }).then((response) => {
-        this.supplliesOperations = response.data;
+        this.suppliesOperations = response.data;
         console.log(response);
-        console.log('SupplyOperaciones ' + this.supplliesOperations);
-        console.log('SupplyOperaciones length ' + this.supplliesOperations.length);
-        for (var i = 0; i < this.supplliesOperations.length; i++) {
-          if (this.supplliesOperations[i].operationType == 'buy') {
-            this.supplliesOperations[i].operationType = 'Compra';
-          } else {
-            if (this.supplliesOperations[i].operationType == 'use') {
-              this.supplliesOperations[i].operationType = 'Consumo';
-            } else {
-              this.supplliesOperations[i].operationType = 'Perdida';
-            }
-          }
-        }
-        this.headers.totalPages = parseInt(response.headers['total-pages']);
-        this.headers.currentPage = parseInt(response.headers['current-page']);
-        this.headers.totalElements = parseInt(response.headers['total-elements']);
-
-        this.supplliesOperationsLength = this.supplliesOperations != null ? this.supplliesOperations.length : 0;
+        console.log('SupplyOperations ', this.suppliesOperations);
+        this.headers = this.parsePageHeaders(response.headers);
       });
     },
     addSupplyOperationToList({ supplyOperation, edit }) {

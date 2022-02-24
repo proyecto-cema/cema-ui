@@ -44,8 +44,13 @@
                   }"
                   input-title="Tipo de Operación"
                   input-id="supplyOperationType"
-                  :options="['Compra', 'Consumo', 'Perdida']"
-                ></cema-input>
+                  option-key="back"
+                  :options="operationsTypes"
+                >
+                  <template v-slot:default="{ option }">
+                    {{ option.name }}
+                  </template>
+                </cema-input>
               </div>
               <div class="mb-3 col-12 col-md-6">
                 <cema-input
@@ -146,6 +151,7 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import CemaInput from '../form/CemaInput';
+import { SUPPLY_OPERATION_TYPE } from '../../constants';
 
 export default {
   name: 'SupplyOperationModal',
@@ -173,7 +179,13 @@ export default {
   emits: ['modalSuccess'],
   computed: {
     ...mapState('supplyOperation', ['supplyOperation', 'edit', 'availableSupply', 'price', 'totalOperation']),
-
+    operationsTypes() {
+      let list = [];
+      for (const key in SUPPLY_OPERATION_TYPE) {
+        list.push({ back: key, name: SUPPLY_OPERATION_TYPE[key] });
+      }
+      return list;
+    },
     errorSaveHelper() {
       return {
         transactionDate: !this.supplyOperation.transactionDate,

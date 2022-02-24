@@ -96,15 +96,6 @@ const actions = {
     async saveSupplyOperation({ dispatch, rootState }, { edit, supplyOperation }) {
         supplyOperation.establishmentCuig = rootState.auth.user.user.establishmentCuig;
         let SupplyOperationToSave = Object.assign({}, supplyOperation);
-        if (supplyOperation.operationType == 'Compra') {
-            SupplyOperationToSave.operationType = 'buy'
-        } else {
-            if (supplyOperation.operationType == 'Consumo') {
-                SupplyOperationToSave.operationType = 'use'
-            } else {
-                SupplyOperationToSave.operationType = 'loss'
-            }
-        }
 
         SupplyOperationToSave.operatorUserName = rootState.auth.user.user.userName;
 

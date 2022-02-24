@@ -87,3 +87,9 @@ export const FILTERS = {
         "field": "category"
     },
 }
+
+export const SUPPLY_OPERATION_TYPE = {
+    'buy': 'Compra',
+    'use': "Consumo",
+    'loss': "Perdida"
+};

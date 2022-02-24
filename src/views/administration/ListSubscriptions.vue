@@ -38,9 +38,7 @@
         </tbody>
       </table>
     </div>
-    <div class="d-flex justify-content-center">
-      <list-pagination @call-change-page="this.searchSubscriptions" :headers="this.headers"></list-pagination>
-    </div>
+    <list-pagination @call-change-page="this.searchSubscriptions" :headers="this.headers"></list-pagination>
   </div>
   <establishment-modal modalId="establishmentModal" :hide-actions="true"></establishment-modal>
 </template>
@@ -81,7 +79,7 @@ export default {
       this.subscriptions = null;
       this.listSubscriptions({ page: page, size: LIST_SIZE }).then((response) => {
         this.subscriptions = response.data;
-        //this.headers = this.parsePageHeaders(response.headers);
+        this.headers = this.parsePageHeaders(response.headers);
       });
     },
     openMyEstablishmentModal() {
