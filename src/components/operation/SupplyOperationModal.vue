@@ -92,7 +92,7 @@
                   :error-data="{
                     required: true,
                     errorStatus: errorSave.amount,
-                    errorMessage: validateAmount()['message'],
+                    errorMessage: validateAmount['message'],
                   }"
                 ></cema-input>
               </div>
@@ -191,7 +191,17 @@ export default {
         transactionDate: !this.supplyOperation.transactionDate,
         operationType: !this.supplyOperation.operationType,
         supplyName: !this.supplyOperation.supplyName,
-        amount: !this.validateAmount()['isValid'],
+        amount: this.validateAmount['isValid'],
+      };
+    },
+    validateAmount() {
+      let amount = !this.supplyOperation.amount;
+      let condition =
+        this.supplyOperation.operationType !== 'buy' && this.supplyOperation.amount > this.availableSupply;
+      console.log(amount, condition);
+      return {
+        isValid: amount || condition,
+        message: condition ? 'La cantidad no puede ser mayor a la disponible' : 'Ingrese la cantidad',
       };
     },
   },
@@ -214,20 +224,6 @@ export default {
     clean() {
       this.errorSave = {};
       this.clearSupplyOperationData();
-    },
-    validateAmount() {
-      let message = 'Ingrese la cantidad';
-      console.log('Suply Operation: ' + this.supplyOperation);
-      let isValid = !!this.supplyOperation.amount;
-      if (
-        isValid &&
-        this.supplyOperation.amount > this.availableSupply &&
-        this.supplyOperation.operationType != 'Compra'
-      ) {
-        message = 'La cantidad no puede ser mayor a la disponible';
-        isValid = false;
-      }
-      return { isValid: isValid, message: message };
     },
     saveModal() {
       this.errorSave = this.errorSaveHelper;
