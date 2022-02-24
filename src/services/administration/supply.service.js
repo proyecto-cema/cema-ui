@@ -13,8 +13,8 @@ class SupplyService {
         }
     }
 
-    getSupply (supply, cuig) {
-        return httpOperation.get('supply/'+ encodeURIComponent(supply.name),
+    getSupply (supplyName, cuig) {
+        return httpOperation.get('supply/'+ encodeURIComponent(supplyName),
             { params:{cuig: cuig}, headers: authHeader() }
         )
     }
@@ -25,7 +25,7 @@ class SupplyService {
         )
     }
 
-    getSuppliesList (page=0, size=10, supplyData={}) {
+    getSuppliesList (page=0, size=10, supplyData={establishmentCuig:null}) {
         return httpOperation.post('supply/search', supplyData, { params:{page: page, size: size}, headers: authHeader() })
     }
 

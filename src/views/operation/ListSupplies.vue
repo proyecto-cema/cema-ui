@@ -214,8 +214,8 @@ export default {
         this.deleted = {};
       }
       if (this.supplies.length % 10 === 0) {
+        this.headers.currentPage += this.headers.totalPages;
         this.headers.totalPages += 1;
-        this.headers.currentPage += 1;
         this.headers.totalElements += 1;
         this.supplies = [];
       }
