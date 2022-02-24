@@ -74,17 +74,13 @@ function prepareGroupedDataSets({ list, value, groupBy, multiple, displayNames }
         labels.add(element.year);
         if( !(element[groupBy] in datasets)){
             color = generateRandomColor(i)
-            let data = [];
-            for (let j = 0; j < labels.size-1; j++) {
-                data.push(0);
-            }
             if(groupBy === 'year') {
                 color = generateRandomColor(0)
                 color2 = generateRandomColor(1)
                 datasets[element[groupBy]] = {
                     label: `${element[groupBy]}`,
                     borderWidth: 1,
-                    data: data,
+                    data: [],
                     backgroundColor: [color2+"0.2)", color+"0.2)"],
                     borderColor: [color2+"1)", color+"1)"]
                 };
@@ -92,11 +88,14 @@ function prepareGroupedDataSets({ list, value, groupBy, multiple, displayNames }
                 datasets[element[groupBy]] = {
                     label: `${element[groupBy]}`,
                     borderWidth: 1,
-                    data: data,
+                    data: [],
                     backgroundColor: color+"0.2)",
                     borderColor: color+"1)"
                 };
             }
+        }
+        while (datasets[element[groupBy]].data.length < labels.size-1) {
+            datasets[element[groupBy]].data.push(0);
         }
         datasets[element[groupBy]].data.push(element[value]);
         if(groupBy === 'year'){
