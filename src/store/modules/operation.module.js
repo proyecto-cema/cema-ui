@@ -69,12 +69,12 @@ const actions = {
             }
         );
     },
-    async saveOperation({dispatch,rootState}, {edit, operation}){
+    async saveOperation({dispatch, rootState}, {edit, operation}){
         operation.establishmentCuig = rootState.auth.user.user.establishmentCuig;
         let saveOperation = Object.assign({}, operation);
         saveOperation.operatorUserName = rootState.auth.user.user.userName;
 
-        await BovineOperationService.setOperation(saveOperation, edit).then(
+        return BovineOperationService.setOperation(saveOperation, edit).then(
             () => {
                 console.log(edit ? "Edited": "Created", "Operation:", operation)
                 return Promise.resolve(operation);
@@ -83,6 +83,17 @@ const actions = {
                 dispatch("showError", {error: error, errors: OPERATION_ERRORS}, {root:true});
                 return Promise.reject(error);
             }
+        );
+    },
+    async getOperationMetrics({dispatch, rootState}){
+        return BovineOperationService.getOperationTotals(rootState.auth.user.user.establishmentCuig).then(
+          (response) => {
+              return Promise.resolve(response.data);
+          },
+          error => {
+              dispatch("showError", {error: error, errors: OPERATION_ERRORS}, {root:true});
+              return Promise.reject(error);
+          }
         );
     }
 }

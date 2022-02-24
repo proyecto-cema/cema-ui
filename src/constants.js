@@ -55,9 +55,9 @@ export const REPORTING_VERSION = process.env.VUE_APP_REPORTING_VERSION
 export const OPERATION_VERSION = process.env.VUE_APP_OPERATION_VERSION
 
 export const REPORTING_SELECTOR = {
-    "batch": { value: "weight", groupBy: "batchName" },
+    "batch": { value: "weight", groupBy: "category" },
     "weight": { value: "weight", groupBy: "category" },
-    "performance": { value: ["liveWeight", "spending"], groupBy: null, multiple: true, displayNames: ["Peso(Kg)", "Costo($)"] },
+    "performance": { value: ["spending", "liveWeight", "cost"], groupBy: null, multiple: true, displayNames: ["Costo($)", "Peso(Kg)", "Costo x Kg"] },
     "income": { value: ["spending", "earnings"], groupBy: null, multiple: true, displayNames: ["Gastos", "Ingresos"] },
     "pregnancy": { value: "percentage", groupBy: "year" },
     "feed": { value: "foodEaten", groupBy: "category" },
