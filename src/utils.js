@@ -16,7 +16,11 @@ export default {
             return moment(String(date), format).toISOString(true);
         },
         replaceFormat(date, format1 = "DD/MM/YYYY", format2 = "YYYY-MM-DD") {
-            return moment(String(date), format1).format(format2);
+            console.log(date);
+            console.log(String(date));
+            let momentDate = moment(String(date), format1)
+            console.log(momentDate.format(format2).toString());
+            return momentDate.format(format2).toString();
         },
         getMomentToday(format="YYYY-MM-DD"){
             return moment().format(format);

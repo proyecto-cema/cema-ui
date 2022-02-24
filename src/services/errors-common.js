@@ -73,4 +73,5 @@ export const ILLNESS_ERRORS = {
   404: {type: "Server", message: "Enfermedad no encontrada"},
   409: {type: "Server", message: "La enfermedad que esta intentando registrar ya existe"},
   422: {type: "Server", message: "La fecha de inicio de enfermedad no puede ser mayor a la de finalización"},
+  "special": {type: "Server", message: "No se puede registrar la misma enfermedad para el mismo bovino en fechas que se solapan"},
 };

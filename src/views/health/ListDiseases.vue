@@ -3,7 +3,7 @@
     <div id="disease">
       <div class="text-center">
         <br />
-        <h3>Listado De Enfermedades</h3>
+        <h3>Listado de Enfermedades</h3>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
           <button class="btn btn-secondary text-white" type="button" v-on:click="openAddDiseaseModal(null)">
             + Nueva Enfermedad
