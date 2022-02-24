@@ -5,7 +5,7 @@ export const chartIterator = [
     {
         classes: "col-12",
         endpoint: "performance",
-        chartTypes: ['line', 'bar'],
+        chartTypes: ['bar', 'filled-line', 'line'],
         title: "Rendimiento anual del alimento por kilogramo vivo",
         dates: {decrement: 5, yearsTo: yearNow}
     },

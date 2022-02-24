@@ -78,6 +78,22 @@ export default {
         console.log(data);
         let addType = true;
         this.chartData.options.plugins.title.text = this.title;
+        if (this.endpoint === 'performance') {
+          let max = Math.max(...data.datasets.cost.data);
+          this.chartData.options['scales'] = {
+            fixed: {
+              position: 'left',
+            },
+            percentage: {
+              min: 0,
+              max: Math.floor(max) + 1,
+              position: 'right',
+            },
+          };
+          data.datasets.liveWeight.yAxisID = 'fixed';
+          data.datasets.spending.yAxisID = 'fixed';
+          data.datasets.cost.yAxisID = 'percentage';
+        }
         if (this.chartType.length === 1) {
           this.chartData.type = this.chartType[0];
           addType = false;
@@ -102,9 +118,9 @@ export default {
               },
             },
           };
-          if (this.chartType[count] === 'line') {
+          if (this.chartType[count] === 'filled-line') {
             extra = {
-              type: this.chartType[count],
+              type: 'line',
               fill: true,
               ...extra,
             };
