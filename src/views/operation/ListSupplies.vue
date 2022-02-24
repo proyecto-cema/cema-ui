@@ -69,6 +69,7 @@
             <th scope="col">Categoria</th>
             <th scope="col">Precio</th>
             <th scope="col">Unidad</th>
+            <th scope="col">Disponible</th>
             <th class="text-end" scope="col">Acciones</th>
           </tr>
           <tr v-else>
@@ -81,6 +82,7 @@
             <td>{{ supply.categoryName }}</td>
             <td>{{ supply.price }}</td>
             <td>{{ supply.units }}</td>
+            <td>{{ supply.available }}</td>
             <td class="text-end">
               <font-awesome-icon class="me-2" icon="edit" @click.stop="openAddSupplyModal(index, supply)">
               </font-awesome-icon>
@@ -153,6 +155,7 @@ export default {
   data() {
     return {
       supplies: [],
+      availableSupplies: [],
       headers: { totalPages: 0, currentPage: 0, totalElements: 0 },
       deleted: {},
       deleteModal: null,
@@ -178,6 +181,7 @@ export default {
   },
   methods: {
     ...mapActions('supply', ['listCategories', 'listSupplies', 'setupEditSupply', 'deleteSupply', 'makeDefaultSupply']),
+    ...mapActions('supplyOperation', ['getSupplyOperationAvailableForName']),
     ...mapActions(['showSuccess']),
     setIndexForName(index, name) {
       this.deleted = {
@@ -250,7 +254,26 @@ export default {
         this.headers.totalPages = parseInt(response.headers['total-pages']);
         this.headers.currentPage = parseInt(response.headers['current-page']);
         this.headers.totalElements = parseInt(response.headers['total-elements']);
+        this.searchAvailable();
       });
+    },
+
+    AsignarDisponibilidad(name, available) {
+      for (var i = 0; this.supplies.length > i; i++) {
+        if (this.supplies[i].name == name) {
+          this.supplies[i].available = available;
+        }
+      }
+    },
+    async searchAvailable() {
+      for (var i = 0; this.supplies.length > i; i++) {
+        this.getSupplyOperationAvailableForName(this.supplies[i].name).then((response) => {
+          this.availableSupplies.push({ name: response.data.supplyName, available: response.data.available });
+          console.log('Available' + response.data.available);
+          this.AsignarDisponibilidad(response.data.supplyName, response.data.available);
+        });
+      }
+      console.log(this.availableSupplies);
     },
     async searchCategoriesName() {
       console.log('here');
