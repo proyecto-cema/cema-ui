@@ -135,14 +135,6 @@ export default {
 
       this.addSupplyOperationModal.show();
     },
-
-    // addSupplyOperationToList({ supplyOperation, edit }) {
-    //   console.log(supplyOperation, edit);
-    //   if (!edit && this.supplyOperationsLength < 10) {
-    //     this.supplyOperations.push(supplyOperation);
-    //   }
-    // },
-
     async searchSupplyOperations(page = 0, size = 10) {
       this.supplliesOperations = null;
 
@@ -171,17 +163,7 @@ export default {
     },
     addSupplyOperationToList({ supplyOperation, edit }) {
       console.log(supplyOperation, edit);
-      let helperDeleted = { ...this.deleted };
-      if (edit) {
-        this.supplliesOperations.splice(helperDeleted.index, 1);
-      }
-      if (this.supplliesOperations.length % 10 === 0) {
-        this.headers.totalPages += 1;
-        this.headers.currentPage += 1;
-        this.headers.totalElements += 1;
-        this.supplliesOperations = [];
-      }
-      this.supplliesOperations.push(supplyOperation);
+      this.searchSupplyOperations(this.headers.currentPage);
     },
   },
 };
