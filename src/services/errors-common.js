@@ -57,6 +57,7 @@ export const SUPPLY_ERRORS = {
   ...COMMON_ERRORS,
   404: {type: "Server", message: "Insumo no encontrada"},
   409: {type: "Server", message: "El Insumo que esta intentando registrar ya existe"},
+  422: {type: "Server", message: "No se puede eliminar este insumo porque tiene operaciones asociadas"},
 };
 export const SUPPLY_OPERATION_ERRORS = {
   ...COMMON_ERRORS,
