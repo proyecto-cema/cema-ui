@@ -259,9 +259,11 @@ export default {
     },
 
     AsignarDisponibilidad(name, available) {
-      for (var i = 0; this.supplies.length > i; i++) {
-        if (this.supplies[i].name == name) {
-          this.supplies[i].available = available;
+      if (this.supplies != null || this.supplies != []) {
+        for (var i = 0; this.supplies.length > i; i++) {
+          if (this.supplies[i].name == name) {
+            this.supplies[i].available = available;
+          }
         }
       }
     },
