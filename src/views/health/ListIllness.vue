@@ -2,7 +2,7 @@
   <div class="tab-pane fade show active" id="illness-list" role="tabpanel" aria-labelledby="illness-tab">
     <div class="text-center">
       <br />
-      <h3>Listado De Seguimiento de Enfermedades</h3>
+      <h3>Listado de Seguimiento de Enfermedades</h3>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
         <button class="btn btn-secondary text-white" type="button" v-on:click="openAddIllnessModal(null)">
           + Nueva Seguimiento de Enfermedad
@@ -148,7 +148,6 @@ export default {
     ConfirmationModal,
     IllnessModal,
   },
-  props: {},
   mounted() {
     this.searchIllnesses(0, 10);
     this.addIllnessModal = new Modal(document.getElementById('addIllnessModal'));
@@ -180,12 +179,9 @@ export default {
     },
     addIllnessToList({ illness, edit }) {
       console.log(illness, edit);
-      let helperDeleted = { ...this.deleted };
-      if (edit) {
-        this.illnesses.splice(helperDeleted.index, 1);
-        this.deleted = {};
+      if (!edit) {
+        this.illnesses.push(illness);
       }
-      this.illnesses.push(illness);
     },
     deleteIllnessForm(id) {
       let index = null;

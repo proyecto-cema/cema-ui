@@ -13,7 +13,6 @@
                 <div class="col-12 mb-3">
                   <cema-input
                     v-model="activityData.name"
-                    required
                     input-title="Nombre"
                     input-id="name"
                     type="text"
@@ -177,6 +176,7 @@ export default {
     ...mapActions('bovine', ['setCuigToDefault']),
     ...mapActions(['showSuccess']),
     validate() {
+      console.log(this.activityData);
       this.errorSave = {};
       this.errorSave['activityName'] = !this.activityData.name;
       this.errorSave['workerUserName'] = !this.activityData.workerUserName;
@@ -185,7 +185,9 @@ export default {
       this.errorSave['bovineBatch'] = this.activityData.extraData.isBatch && !this.activityData.extraData.batchName;
       this.errorSave['bovineTag'] =
         !this.activityData.extraData.isBatch &&
-        (this.activityData.extraData.bovineTag === SEARCH_DEFAULT_TAG || !this.activityData.extraData.bovineTag);
+        (this.activityData.extraData.bovineTag === SEARCH_DEFAULT_TAG ||
+          !this.activityData.extraData.bovineTag ||
+          this.activityData.extraData.bovineTag === 'Bovino no encontrado');
       let validations = this.activityMap.validations;
       for (const key in validations) {
         this.errorSave[key] = VALIDATIONS[validations[key]](this.activityData.extraData[key]);

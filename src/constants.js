@@ -8,34 +8,34 @@ export const REGEX_SPACES = /^\S+$/;
 export const MAXIMUM_TOASTS = 4;
 export const MAXIMUM_NOTIFICATIONS_TOASTS = 4;
 export const VALIDATIONS = {
-    is_null: (element) => {return !element},
-    lt_zero: (element) => {return element<0},
+    is_not_null: (element) => { return !element },
+    lt_zero_and_null: (element) => { return (element != null && element<0) },
 }
 export const ACTIVITIES_EXTRA_DATA = {
     "Inoculation": {
         displayName: "Vacunación", backendName: "Inoculation",
         url: "inoculations", componentName: "VaccinationForm",
-        validations: { "drug": "is_null", "dose": "lt_zero" }, style: "bg-success text-white", color:"green"
+        validations: { "drug": "is_not_null", "dose": "lt_zero_and_null" }, style: "bg-success text-white", color:"green"
     },
     "Weighing": {
         displayName: "Pesaje", backendName: "Weighing",
         url: "weightings", componentName: "WeighingForm",
-        validations: {"weight": "lt_zero"}, style: "bg-warning text-white", color:"yellow"
+        validations: {"weight": "lt_zero_and_null"}, style: "bg-warning text-white", color:"yellow"
     },
     "Ultrasound": {
         displayName: "Tacto", backendName: "Ultrasound",
         url: "ultrasounds", componentName: "UltrasoundForm",
-        validations: {"serviceNumber": "lt_zero"}, style: "bg-info text-white", color:"blue"
+        validations: {"serviceNumber": "lt_zero_and_null"}, style: "bg-info text-white", color:"blue"
     },
     "Movement": {
         displayName: "Movimiento", backendName: "Movement",
         url: "movements", componentName: "MovementForm",
-        validations: { "locationName": "is_null" }, style: "bg-danger text-white", color:"red"
+        validations: { "locationName": "is_not_null" }, style: "bg-danger text-white", color:"red"
     },
     "Feeding": {
         displayName: "Alimentación", backendName: "Feeding",
         url: "feedings", componentName: "FeedingForm",
-        validations: { "food": "is_null", "amount": "lt_zero" }, style: "bg-primary text-white", color:"gray"
+        validations: { "amount": "lt_zero_and_null" }, style: "bg-primary text-white", color:"gray"
     }
 };
 export const SEARCH_DEFAULT_TAG = "Seleccione la caravana";
@@ -57,9 +57,9 @@ export const OPERATION_VERSION = process.env.VUE_APP_OPERATION_VERSION
 export const HEALTH_VERSION = process.env.VUE_APP_HEALTH_VERSION
 
 export const REPORTING_SELECTOR = {
-    "batch": { value: "weight", groupBy: "batchName" },
+    "batch": { value: "weight", groupBy: "category" },
     "weight": { value: "weight", groupBy: "category" },
-    "performance": { value: ["liveWeight", "spending"], groupBy: null, multiple: true, displayNames: ["Peso(Kg)", "Costo($)"] },
+    "performance": { value: ["spending", "liveWeight", "cost"], groupBy: null, multiple: true, displayNames: ["Costo($)", "Peso(Kg)", "Costo x Kg"] },
     "income": { value: ["spending", "earnings"], groupBy: null, multiple: true, displayNames: ["Gastos", "Ingresos"] },
     "pregnancy": { value: "percentage", groupBy: "year" },
     "feed": { value: "foodEaten", groupBy: "category" },
@@ -80,6 +80,18 @@ export const BOVINE_CATEGORIES = {
 export const FILTERS = {
     "active": {
         "type": "not in",
-        "filterSet": new Set(['Muerto', 'Vendido'])
-    }
+        "filterSet": new Set(['Muerto', 'Vendido']),
+        "field": "status"
+    },
+    "cows_only": {
+        "type": "in",
+        "filterSet": new Set(['Vaca']),
+        "field": "category"
+    },
 }
+
+export const SUPPLY_OPERATION_TYPE = {
+    'buy': 'Compra',
+    'use': "Consumo",
+    'loss': "Perdida"
+};

@@ -39,9 +39,13 @@
               {{ currentUser['user']['name'] + ' ' + currentUser['user']['lastName'] }}
             </a>
             <div aria-labelledby="dropdownUser" class="dropdown-menu dropdown-menu-dark bg-primary dropdown-menu-end">
-              <a class="nav-link dropdown-item" @click.prevent="showEstablishment">
+              <a class="nav-link dropdown-item" @click.prevent="showEstablishment" v-if="currentRole > 0">
                 <font-awesome-icon class="ms-2" icon="building" />
-                Ver Mi Establecimiento
+                Mi Establecimiento
+              </a>
+              <a class="nav-link dropdown-item" @click.prevent="showUserData">
+                <font-awesome-icon class="ms-2" icon="user" />
+                Mi Perfil
               </a>
               <a class="nav-link dropdown-item" @click.prevent="logOut">
                 <font-awesome-icon class="ms-2" icon="sign-out-alt" />
@@ -56,9 +60,16 @@
 </template>
 <script>
 import { mapActions, mapState } from 'vuex';
+import { Modal } from 'bootstrap';
+import { ROLE_REPRESENTATION } from '../constants';
 
 export default {
   name: 'NavBar',
+  data() {
+    return {
+      myUserModal: null,
+    };
+  },
   mounted() {
     if (this.currentUser) {
       this.setEstablishmentData(this.currentUser.user.establishmentCuig).then(
@@ -78,15 +89,23 @@ export default {
       );
       this.getNotifications(this.currentUser.user.establishmentCuig);
     }
+    this.myUserModal = Modal.getOrCreateInstance(document.getElementById('myDataUserModal'));
   },
   computed: {
     ...mapState(['sidenav', 'establishmentData']),
     currentUser() {
       return this.$store.state.auth.user;
     },
+    currentRole() {
+      if (this.currentUser) {
+        return ROLE_REPRESENTATION[this.currentUser.user.role.toUpperCase()];
+      }
+      return null;
+    },
   },
   methods: {
     ...mapActions(['setSideNav', 'setEstablishmentData', 'getNotifications']),
+    ...mapActions('user', ['setupEditUser']),
     toggleSideNav() {
       this.setSideNav();
     },
@@ -99,6 +118,10 @@ export default {
         name: 'ListSubscriptions',
         params: { modal: true },
       });
+    },
+    showUserData() {
+      this.setupEditUser(this.currentUser.user);
+      this.myUserModal.show();
     },
   },
 };

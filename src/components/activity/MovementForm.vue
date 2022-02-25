@@ -4,7 +4,6 @@
     <cema-input
       v-model="activityData.extraData.locationName"
       component-type="select"
-      required
       :error-data="{ required: true, errorStatus: errorSave.locationName, errorMessage: 'Seleccione una ubicación' }"
       input-title="Ubicación"
       input-id="location"

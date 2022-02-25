@@ -45,7 +45,7 @@
               <form @submit.prevent="">
                 <div class="row ms-2 me-2">
                   <div class="mb-3 col-12 col-md-12">
-                    <tag-search :error-save="errorSave" v-model="illness.bovineTag" :filters="['active']" />
+                    <tag-search :error-save="errorSave" :filters="['active']" />
                   </div>
                   <div class="mb-3 col-12 col-md-12">
                     <cema-input
@@ -155,7 +155,7 @@
           </button>
           <button
             class="btn btn-secondary text-white"
-            :disabled="!illness.bovineTag"
+            :disabled="!activityData.extraData.bovineTag"
             type="button"
             @click="saveModal()"
           >
@@ -198,6 +198,7 @@ export default {
   },
   computed: {
     ...mapState('illness', ['illness', 'edit']),
+    ...mapState('activity', ['activityData']),
     errorSaveHelper() {
       return {
         bovineTag: !this.illness.bovineTag,
@@ -229,6 +230,8 @@ export default {
       this.clean();
     },
     saveModal() {
+      this.illness.bovineTag = this.activityData.extraData.bovineTag;
+      console.log(this.illness);
       this.errorSave = this.errorSaveHelper;
       if (this.checkErrors(this.errorSave)) {
         console.error(this.errorSave);

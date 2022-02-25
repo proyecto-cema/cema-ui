@@ -36,10 +36,23 @@ const actions = {
         commit('setSupply', { previousName: proxySupply.name, ...proxySupply});
         commit('setEdit', true);
     },
+    async getSupply({rootState},name){
+        return SupplyService.getSupply(name, rootState.auth.user.user.establishmentCuig).then(
+            response => {
+                console.log(response);
+                return Promise.resolve(response);
+            },
+            error => {
+                dispatch("showError", {error: error, errors: SUPPLY_ERRORS}, {root:true});
+                return Promise.reject(error);
+            }
+        ); 
+        
+    },
     async saveSupply({state, dispatch, rootState}){
         console.log(state.supplyData, "Editing: ", state.edit);
         if (!state.supplyData.establishmentCuig){
-            state.supplyData.establishmentCuig = rootState.bovine.selectedCuig;
+            state.supplyData.establishmentCuig = rootState.auth.user.user.establishmentCuig;
         }
 
         return SupplyService.setSupply(state.supplyData, state.edit).then(
@@ -53,7 +66,9 @@ const actions = {
             }
         );
     },
-    async listSupplies({dispatch}, data) {
+    async listSupplies({dispatch, rootState}, data) {
+        data.search={"establishmentCuig":rootState.auth.user.user.establishmentCuig}
+        console.log("DATASEARCH: "+data.search)
         return SupplyService.getSuppliesList(data.page, data.size, data.search).then(
             response => {
                 console.log(response.data);

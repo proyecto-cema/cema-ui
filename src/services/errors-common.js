@@ -5,6 +5,7 @@ const COMMON_ERRORS = {
 };
 export const LOGIN_ERRORS = {
   400: { type: 'establishment', message: 'Su establecimiento no es válido'},
+  409: { type: 'invalid-user', message: 'Su usuario no esta deshabilitado'},
   401: { type: 'password', message: 'Contraseña incorrecta' },
   404: { type: 'UserPass', message: 'Usuario o Contraseña incorrectos' },
 };
@@ -63,9 +64,14 @@ export const DISEASE_ERRORS = {
   422: {type: "Server", message: "No se puede elimiar porque hay bovinos con esta enfermdad"},
   409: {type: "Server", message: "La enfermedad que esta intentando registrar ya existe"},
 };
+export const SUPPLY_OPERATION_ERRORS = {
+  ...COMMON_ERRORS,
+  404: {type: "Server", message: "Operacion de insumo no encontrada"},
+};
 export const ILLNESS_ERRORS = {
   ...COMMON_ERRORS,
   404: {type: "Server", message: "Enfermedad no encontrada"},
   409: {type: "Server", message: "La enfermedad que esta intentando registrar ya existe"},
   422: {type: "Server", message: "La fecha de inicio de enfermedad no puede ser mayor a la de finalización"},
+  "special": {type: "Server", message: "No se puede registrar la misma enfermedad para el mismo bovino en fechas que se solapan"},
 };

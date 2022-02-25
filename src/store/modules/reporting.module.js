@@ -1,6 +1,6 @@
 import ReportingService from '../../services/reporting/reporting.service';
 import {REPORTING_SELECTOR} from "../../constants";
-import { ADMINISTRATION_ERRORS, REPORTING_ERRORS } from '../../services/errors-common';
+import { REPORTING_ERRORS } from '../../services/errors-common';
 
 const state = {
 }
@@ -22,7 +22,7 @@ function prepareMultipleDataSets(list, values, displayNames) {
         labels.add(element.year);
         for (let j = 0; j < values.length; j++) {
             if(!(values[j] in datasets)){
-                color = generateRandomColor(j)
+                color = generateRandomColor(j);
                 datasets[values[j]] = {
                     label: `${displayNames[j]}`,
                     borderWidth: 1,
@@ -34,7 +34,7 @@ function prepareMultipleDataSets(list, values, displayNames) {
             datasets[values[j]].data.push(element[values[j]]);
         }
     }
-    return {labels: labels, datasets: datasets}
+    return {labels: labels, datasets: datasets};
 }
 
 
@@ -94,9 +94,17 @@ function prepareGroupedDataSets({ list, value, groupBy, multiple, displayNames }
                 };
             }
         }
+        while (datasets[element[groupBy]].data.length < labels.size-1) {
+            datasets[element[groupBy]].data.push(0);
+        }
         datasets[element[groupBy]].data.push(element[value]);
         if(groupBy === 'year'){
             datasets[element[groupBy]].data.push(100-element[value]);
+        }
+    }
+    for (const datasetsKey in datasets) {
+        while(datasets[datasetsKey].data.length < labels.size){
+            datasets[datasetsKey].data.push(0);
         }
     }
     return {labels: labels, datasets: datasets}

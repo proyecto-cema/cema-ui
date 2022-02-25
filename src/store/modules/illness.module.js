@@ -44,8 +44,11 @@ const actions = {
     clearIllnessData({commit}) {
         commit('setIllness', null);
         commit('setEdit', false);
+        commit('activity/setActivity', null, { root: true });
+        commit('activity/setEdit', false, { root: true });
     },
     setupEditIllness({commit}, proxyIllness){
+        commit('activity/setActivity', { extraData: { bovineTag: proxyIllness.bovineTag } }, { root: true });
         commit('setIllness', proxyIllness);
         commit('setEdit', true);
     },
@@ -57,18 +60,23 @@ const actions = {
         let saveIllness = Object.assign({}, state.illness);
         saveIllness.endingDate = utils.methods.replaceFormat(saveIllness.endingDate, "YYYY-MM-DD", "YYYY-MM-DD HH:mm:ss")
         saveIllness.startingDate = utils.methods.replaceFormat(saveIllness.startingDate, "YYYY-MM-DD", "YYYY-MM-DD HH:mm:ss")
-
+        console.log(state.illness, "Editing: ", state.edit);
         if (!saveIllness.establishmentCuig){
             saveIllness.establishmentCuig = rootState.auth.user.user.establishmentCuig;
         }
         return IllnessService.setIllness(saveIllness, state.edit).then(
-            response => {
+            (response) => {
                 commit('setId', response.data.id);
-                console.log("save Illness"+response);
+                console.log("save Illness", response);
                 return Promise.resolve(response);
             },
-            error => {
-                console.log("Error: "+error)
+            (error) => {
+                if(error.response){
+                    console.log(error.response);
+                    if(error.response.status === 422 && error.response.data.message.includes("already")){
+                        error.response.status = "special";
+                    }
+                }
                 dispatch("showError", {error: error, errors: ILLNESS_ERRORS}, {root:true});
                 return Promise.reject(error);
             }

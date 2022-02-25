@@ -1,9 +1,9 @@
 <template>
-  <div class="col-lg-3 col-md-6 col-12 mt-3">
+  <div class="col-lg-3 col-6 mt-3">
     <div class="active-report-card pt-1 pb-1 pe-1 ps-3">
       <div class="row">
-        <img class="col-7" :src="imageDisplay" :alt="altDisplay" />
-        <div class="col-5 d-flex flex-column text-center">
+        <img class="col-lg-7 d-none d-lg-block" :src="imageDisplay" :alt="altDisplay" />
+        <div class="col-lg-5 col-12 d-flex flex-column text-center">
           <h1>
             <b>{{ activeQuantity }}</b>
           </h1>

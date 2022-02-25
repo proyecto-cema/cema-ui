@@ -59,6 +59,9 @@ const actions = {
         delete saveActivity.extraData;
         delete saveActivity.isBatch;
         saveActivity.executionDate = utils.methods.momentDateToJavaDate(state.activityData.executionDate);
+        console.log("============");
+        console.log(saveActivity);
+        console.log("============");
         return ActivityService.setActivity(saveActivity, state.edit, url).then(
             response => {
                 console.log(response);

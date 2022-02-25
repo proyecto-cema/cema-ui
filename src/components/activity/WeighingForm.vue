@@ -6,7 +6,7 @@
     <cema-input
       v-model="activityData.extraData.weight"
       :error-data="{
-        required: true,
+        required: false,
         errorStatus: errorSave.weight,
         errorMessage: 'Ingrese un número válido',
       }"
