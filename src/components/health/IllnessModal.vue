@@ -51,6 +51,7 @@
                     <cema-input
                       v-model="illness.diseaseName"
                       component-type="select"
+                      :disabled="edit"
                       input-title="Enfermedad"
                       input-id="diseaseName"
                       :error-data="{
@@ -68,6 +69,7 @@
                   <div class="mb-6 col-12 col-md-6">
                     <cema-input
                       v-model="illness.startingDate"
+                      :readonly="edit"
                       required
                       :error-data="{
                         required: true,
