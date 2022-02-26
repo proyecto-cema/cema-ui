@@ -16,14 +16,14 @@ module.exports = {
       },
     },
     {
-      urlPattern: new RegExp('https://qa.proyecto-cema.com/(bovine|users|activity|administration|economic|health)'),
+      urlPattern: new RegExp('https://(qa.|www.)*proyecto-cema.com/(bovine|users|activity|administration|economic|health)'),
       handler: 'NetworkFirst',
       options: {
         cacheName: 'CemaCache',
       }
     },
     {
-      urlPattern: new RegExp('https://qa.proyecto-cema.com/(activity|bovine)'),
+      urlPattern: new RegExp('https://(qa.|www.)*proyecto-cema.com/(activity|bovine)'),
       handler: 'NetworkOnly',
       method: 'POST',
       options: {
@@ -36,7 +36,7 @@ module.exports = {
       },
     },
     {
-      urlPattern: new RegExp('https://qa.proyecto-cema.com/(activity|bovine)'),
+      urlPattern: new RegExp('https://(qa.|www.)*proyecto-cema.com/(activity|bovine)'),
       handler: 'NetworkOnly',
       method: 'PUT',
       options: {
