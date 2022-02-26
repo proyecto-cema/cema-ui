@@ -80,8 +80,7 @@ const actions = {
               return Promise.resolve(user);
           },
           error => {
-              dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
-              return Promise.reject(error);
+              return dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
           }
         );
     },
