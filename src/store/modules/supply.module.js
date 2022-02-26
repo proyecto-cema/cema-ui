@@ -43,8 +43,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: SUPPLY_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: SUPPLY_ERRORS}, {root:true});
             }
         ); 
         
@@ -61,8 +60,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: SUPPLY_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: SUPPLY_ERRORS}, {root:true});
             }
         );
     },
@@ -75,8 +73,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: SUPPLY_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: SUPPLY_ERRORS}, {root:true});
             }
         );
     },
@@ -87,8 +84,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: SUPPLY_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: SUPPLY_ERRORS}, {root:true});
             }
         );
     },
@@ -100,8 +96,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: SUPPLY_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: SUPPLY_ERRORS}, {root:true});
             }
         );
     },
@@ -112,8 +107,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: SUPPLY_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: SUPPLY_ERRORS}, {root:true});
             }
         );
     },

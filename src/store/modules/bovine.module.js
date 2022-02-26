@@ -1,6 +1,7 @@
 import BovineService from '../../services/bovines/bovine.service';
 import utils from "../../utils"
 import { BATCH_ERRORS, BOVINE_ERRORS } from '../../services/errors-common';
+import { OFFLINE_CODE } from '../../constants';
 
 
 const state = {
@@ -105,8 +106,7 @@ const actions = {
                 return Promise.resolve(bovine);
             },
             error => {
-                dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
             }
         );
     },
@@ -119,11 +119,16 @@ const actions = {
                 console.log(edit ? "Edited": "Created", "bovine:", bovine)
                 return Promise.resolve(bovine);
             },
-            error => {
-                dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
-                return Promise.reject(error);
+            (error) => {
+                if(!error.response){
+                    return dispatch("showWarning", {
+                        code: OFFLINE_CODE, bovine: bovine,
+                        message: `El bovino ${bovine.tag} se guardará cuando la conexión se restablezca.`,
+                    }, {root:true});
+                }
+                return dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
             }
-        );
+        )
     },
     async deleteBovine({dispatch}, {tag, cuig}) {
         return BovineService.deleteBovine(tag, cuig).then(
@@ -133,8 +138,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
             }
         );
     },
@@ -145,8 +149,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});
             }
         );
     },
@@ -158,8 +161,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: BATCH_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: BATCH_ERRORS}, {root:true});
             }
         );
     },
@@ -167,12 +169,11 @@ const actions = {
         console.log("retrieving batches for cuig:", state.selectedCuig)
         return BovineService.getBatchesList(state.selectedCuig).then(
             response => {
-                console.log(response.data);
+                console.log(response);
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: BATCH_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: BATCH_ERRORS}, {root:true});
             }
         );
     },
@@ -183,8 +184,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: BATCH_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: BATCH_ERRORS}, {root:true});
             }
         );
     },
@@ -195,8 +195,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: BATCH_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: BATCH_ERRORS}, {root:true});
             }
         );
     },
@@ -207,8 +206,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: BATCH_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: BATCH_ERRORS}, {root:true});
             }
         );
     },
@@ -225,8 +223,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: BATCH_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: BATCH_ERRORS}, {root:true});
             }
         );
     },

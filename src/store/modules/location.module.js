@@ -46,8 +46,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: LOCATION_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: LOCATION_ERRORS}, {root:true});
             }
         );
     },
@@ -58,8 +57,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: LOCATION_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: LOCATION_ERRORS}, {root:true});
             }
         );
     },
@@ -70,8 +68,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: LOCATION_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: LOCATION_ERRORS}, {root:true});
             }
         );
     },
@@ -83,8 +80,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: LOCATION_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: LOCATION_ERRORS}, {root:true});
             }
         );
     },

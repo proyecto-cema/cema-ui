@@ -64,8 +64,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: OPERATION_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: OPERATION_ERRORS}, {root:true});
             }
         );
     },
@@ -80,8 +79,7 @@ const actions = {
                 return Promise.resolve(operation);
             },
             error => {
-                dispatch("showError", {error: error, errors: OPERATION_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: OPERATION_ERRORS}, {root:true});
             }
         );
     },
@@ -91,8 +89,7 @@ const actions = {
               return Promise.resolve(response.data);
           },
           error => {
-              dispatch("showError", {error: error, errors: OPERATION_ERRORS}, {root:true});
-              return Promise.reject(error);
+              return dispatch("showError", {error: error, errors: OPERATION_ERRORS}, {root:true});
           }
         );
     }

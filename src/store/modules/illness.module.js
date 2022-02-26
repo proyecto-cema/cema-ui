@@ -77,8 +77,7 @@ const actions = {
                         error.response.status = "special";
                     }
                 }
-                dispatch("showError", {error: error, errors: ILLNESS_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: ILLNESS_ERRORS}, {root:true});
             }
         );
     },
@@ -94,8 +93,7 @@ const actions = {
                 return Promise.resolve(illness);
             },
             error => {
-                dispatch("showError", {error: error, errors: ILLNESS_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: ILLNESS_ERRORS}, {root:true});
             }
         );
     },
@@ -107,8 +105,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: ILLNESS_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: ILLNESS_ERRORS}, {root:true});
             }
         );
     },
@@ -120,8 +117,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: ILLNESS_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: ILLNESS_ERRORS}, {root:true});
             }
         );
     },

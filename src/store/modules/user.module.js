@@ -56,8 +56,7 @@ const actions = {
                 return Promise.resolve(response.data);
             },
             error => {
-                dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
             }
         );
     },
@@ -68,10 +67,8 @@ const actions = {
               return Promise.resolve(data);
           },
           error => {
-              dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
-              return Promise.reject(error);
-          }
-        );
+              return dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
+            });
     },
     async changeUser({dispatch, rootState}, { user, isSelf }){
         return UserService.changeUserData(user.userName, user).then(
@@ -83,8 +80,7 @@ const actions = {
               return Promise.resolve(user);
           },
           error => {
-              dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
-              return Promise.reject(error);
+              return dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
           }
         );
     },
@@ -102,8 +98,7 @@ const actions = {
                 return Promise.resolve(state.userList);
             },
             error => {
-                dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
             }
         );
     },
@@ -115,8 +110,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: USERS_ERRORS}, {root:true});
             }
         );
     },

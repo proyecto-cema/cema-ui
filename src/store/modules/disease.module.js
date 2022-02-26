@@ -46,8 +46,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: DISEASE_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: DISEASE_ERRORS}, {root:true});
             }
         );
     },
@@ -60,8 +59,7 @@ const actions = {
                 return Promise.resolve(disease);
             },
             error => {
-                dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: ADMINISTRATION_ERRORS}, {root:true});
             }
         );
     },
@@ -72,8 +70,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: DISEASE_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: DISEASE_ERRORS}, {root:true});
             }
         );
     },
@@ -85,8 +82,7 @@ const actions = {
                 return Promise.resolve(response);
             },
             error => {
-                dispatch("showError", {error: error, errors: DISEASE_ERRORS}, {root:true});
-                return Promise.reject(error);
+                return dispatch("showError", {error: error, errors: DISEASE_ERRORS}, {root:true});
             }
         );
     },

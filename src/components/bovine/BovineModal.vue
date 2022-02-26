@@ -35,6 +35,7 @@
 <script>
 import BovineModalContent from '../bovine/BovineModalContent';
 import { mapActions, mapState } from 'vuex';
+import { OFFLINE_CODE } from '../../constants';
 
 export default {
   name: 'BovineModal',
