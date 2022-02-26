@@ -177,11 +177,8 @@ export default {
       }
       this.addIllnessModal.show();
     },
-    addIllnessToList({ illness, edit }) {
-      console.log(illness, edit);
-      if (!edit) {
-        this.illnesses.push(illness);
-      }
+    addIllnessToList() {
+      this.searchIllnesses(this.headers.currentPage);
     },
     deleteIllnessForm(id) {
       let index = null;
