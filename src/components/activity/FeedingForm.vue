@@ -7,6 +7,7 @@
       dropdown-id="food"
       input-title="Alimento"
       @reCall="getFeedingSupplies"
+      @update:modelValue="searchAvailable"
       :error-data="{
         required: false,
         errorStatus: errorSave.food,
@@ -19,9 +20,22 @@
       fail-message="No hay alimentos registrados"
     >
     </combo-search>
+    <small>Actualmente hay disponibles: {{ supplyMaximum }}</small>
   </div>
   <div class="col-lg-6 col-12 mb-2">
-    <cema-input v-model="activityData.extraData.amount" input-title="Cantidad" input-id="amount" type="number" min="0">
+    <cema-input
+      v-model="activityData.extraData.amount"
+      input-title="Cantidad"
+      :error-data="{
+        required: true,
+        errorStatus: errorSave.amount,
+        errorMessage: 'Cantidad inválida',
+      }"
+      input-id="amount"
+      type="number"
+      min="0"
+      :max="supplyMaximum"
+    >
     </cema-input>
   </div>
 </template>
@@ -43,6 +57,7 @@ export default {
   },
   data() {
     return {
+      supplyMaximum: 0,
       supplies: [],
     };
   },
@@ -54,10 +69,12 @@ export default {
     if (!this.edit) {
       this.activityData.extraData = {
         isBatch: false,
+        supplyMaximum: 0,
       };
     }
   },
   methods: {
+    ...mapActions('supplyOperation', ['getSupplyOperationAvailableForName']),
     ...mapActions('activity', ['getFeedingSupplyList']),
     async getFeedingSupplies(searchingFor) {
       console.log('++++++++++food++++++++++');
@@ -79,6 +96,12 @@ export default {
           }
         );
       }
+    },
+    async searchAvailable(value) {
+      this.getSupplyOperationAvailableForName(value).then((response) => {
+        this.supplyMaximum = response.data.available;
+        this.activityData.extraData.supplyMaximum = this.supplyMaximum;
+      });
     },
   },
 };

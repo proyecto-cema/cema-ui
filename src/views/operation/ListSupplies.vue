@@ -155,7 +155,6 @@ export default {
   data() {
     return {
       supplies: [],
-      availableSupplies: [],
       headers: { totalPages: 0, currentPage: 0, totalElements: 0 },
       deleted: {},
       deleteModal: null,
@@ -260,25 +259,12 @@ export default {
         this.searchAvailable();
       });
     },
-
-    AsignarDisponibilidad(name, available) {
-      if (this.supplies != null || this.supplies != []) {
-        for (var i = 0; this.supplies.length > i; i++) {
-          if (this.supplies[i].name == name) {
-            this.supplies[i].available = available;
-          }
-        }
-      }
-    },
     async searchAvailable() {
-      for (var i = 0; this.supplies.length > i; i++) {
+      for (let i = 0; this.supplies.length > i; i++) {
         this.getSupplyOperationAvailableForName(this.supplies[i].name).then((response) => {
-          this.availableSupplies.push({ name: response.data.supplyName, available: response.data.available });
-          console.log('Available' + response.data.available);
-          this.AsignarDisponibilidad(response.data.supplyName, response.data.available);
+          this.supplies[i].available = response.data.available;
         });
       }
-      console.log(this.availableSupplies);
     },
     async searchCategoriesName() {
       console.log('here');
