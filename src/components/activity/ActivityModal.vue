@@ -192,6 +192,9 @@ export default {
       for (const key in validations) {
         this.errorSave[key] = VALIDATIONS[validations[key]](this.activityData.extraData[key]);
       }
+      if (this.activityData.type === 'Feeding') {
+        this.errorSave.amount = this.activityData.extraData.amount > this.activityData.extraData.supplyMaximum;
+      }
     },
     hasErrors() {
       for (let errorKey in this.errorSave) {

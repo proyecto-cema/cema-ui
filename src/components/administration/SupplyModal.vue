@@ -40,6 +40,7 @@
                       :options="categoriesName"
                       optionKey="name"
                       v-slot="{ option }"
+                      :disabled="edit"
                     >
                       {{ option.name }}
                     </cema-input>

@@ -69,6 +69,7 @@
             <th scope="col">Categoria</th>
             <th scope="col">Precio</th>
             <th scope="col">Unidad</th>
+            <th scope="col">Disponible</th>
             <th class="text-end" scope="col">Acciones</th>
           </tr>
           <tr v-else>
@@ -81,6 +82,7 @@
             <td>{{ supply.categoryName }}</td>
             <td>{{ supply.price }}</td>
             <td>{{ supply.units }}</td>
+            <td>{{ supply.available }}</td>
             <td class="text-end">
               <font-awesome-icon class="me-2" icon="edit" @click.stop="openAddSupplyModal(index, supply)">
               </font-awesome-icon>
@@ -178,6 +180,7 @@ export default {
   },
   methods: {
     ...mapActions('supply', ['listCategories', 'listSupplies', 'setupEditSupply', 'deleteSupply', 'makeDefaultSupply']),
+    ...mapActions('supplyOperation', ['getSupplyOperationAvailableForName']),
     ...mapActions(['showSuccess']),
     setIndexForName(index, name) {
       this.deleted = {
@@ -232,6 +235,9 @@ export default {
         if (helperDeleted.index % 11 === 0) {
           index_to_search -= 1;
         }
+        if (index_to_search < 0) {
+          index_to_search = 0;
+        }
         this.searchSupplies(index_to_search);
         this.deleted = {};
       });
@@ -250,7 +256,15 @@ export default {
         this.headers.totalPages = parseInt(response.headers['total-pages']);
         this.headers.currentPage = parseInt(response.headers['current-page']);
         this.headers.totalElements = parseInt(response.headers['total-elements']);
+        this.searchAvailable();
       });
+    },
+    async searchAvailable() {
+      for (let i = 0; this.supplies.length > i; i++) {
+        this.getSupplyOperationAvailableForName(this.supplies[i].name).then((response) => {
+          this.supplies[i].available = response.data.available;
+        });
+      }
     },
     async searchCategoriesName() {
       console.log('here');
