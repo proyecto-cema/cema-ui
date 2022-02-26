@@ -1,8 +1,8 @@
 {
     "name": "cema",
-    "version": "1.8.0-SNAPSHOT",
+    "version": "1.8.0-RELEASE",
     "private": true,
-    "scripts": {
+    "scripts":     {
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
         "lint": "eslint --ext .js,.vue src",
@@ -10,7 +10,7 @@
         "build-qa": "vue-cli-service build --mode qa",
         "prepare": "husky install"
     },
-    "dependencies": {
+    "dependencies":     {
         "@fortawesome/fontawesome-svg-core": "^1.2.36",
         "@fortawesome/free-regular-svg-icons": "^5.15.4",
         "@fortawesome/free-solid-svg-icons": "^5.15.4",
@@ -33,7 +33,7 @@
         "workbox-strategies": "^6.4.2",
         "workbox-window": "^6.4.2"
     },
-    "devDependencies": {
+    "devDependencies":     {
         "@babel/core": "^7.16.7",
         "@babel/eslint-parser": "^7.15.0",
         "@vue/cli-plugin-babel": "~4.5.0",
@@ -56,15 +56,9 @@
         "workbox-cli": "^6.4.2",
         "workbox-webpack-plugin": "^5.1.4"
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
-    "lint-staged": {
-        "src/**/*.{js,vue}": [
-            "eslint --fix",
-            "prettier --write"
-        ]
-    }
+    "husky": {"hooks": {"pre-commit": "lint-staged"}},
+    "lint-staged": {"src/**/*.{js,vue}":     [
+        "eslint --fix",
+        "prettier --write"
+    ]}
 }
