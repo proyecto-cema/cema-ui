@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
-import About from '../views/About.vue'
 import Dashboard from '../views/Dashboard.vue'
 import bovine from './bovine'
 import establishment from './establishment'
@@ -21,12 +20,6 @@ const localRoutes = [
     meta: { requiresAuth: true, requiredRoleLevel: 1 },
     component: Dashboard
   },
-  {
-    path: '/about',
-    name: 'About',
-    meta: { requiresAuth: true, requiredRoleLevel: null },
-    component: About
-  }
 ]
 routes = routes.concat(localRoutes, bovine, login, establishment, activity, user, location, operation, audit, supply)
 

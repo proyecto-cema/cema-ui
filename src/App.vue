@@ -27,6 +27,7 @@
       </div>
     </div>
     <user-modal modalId="myDataUserModal" :hide-actions="true"></user-modal>
+    <contact-modal modalId="contactMeModal"></contact-modal>
   </div>
   <div v-if="$route.meta.plainLayout">
     <router-view />
@@ -39,6 +40,7 @@ import NavBar from './components/NavBar';
 import ToastMessage from './components/ToastMessage';
 import { mapState } from 'vuex';
 import UserModal from './components/administration/UserModal';
+import ContactModal from './components/ContactModal';
 
 export default {
   name: 'App',
@@ -48,6 +50,7 @@ export default {
     NavBar,
     SideBar,
     UserModal,
+    ContactModal,
   },
   created() {
     if (this.$workbox) {

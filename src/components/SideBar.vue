@@ -115,11 +115,13 @@ export default {
   },
   mounted() {
     this.myUserModal = Modal.getOrCreateInstance(document.getElementById('myDataUserModal'));
+    this.contactModal = Modal.getOrCreateInstance(document.getElementById('contactMeModal'));
     let items;
     if (this.currentUser) {
       items = [
         { name: 'Mi Establecimiento', clickable: true, clickAction: this.showEstablishment, roleRequirement: 1 },
         { name: 'Mi Perfil', clickable: true, clickAction: this.showUserData, roleRequirement: 0 },
+        { name: 'Contáctanos', clickable: true, clickAction: this.showContactModal, roleRequirement: 0 },
         { name: 'Cerrar Sesión', clickable: true, clickAction: this.logOut, roleRequirement: 0 },
       ];
       this.sidenavItems.push({
@@ -159,6 +161,9 @@ export default {
     showUserData() {
       this.setupEditUser(this.currentUser.user);
       this.myUserModal.show();
+    },
+    showContactModal() {
+      this.contactModal.show();
     },
     navItemCollapse(index) {
       this.sidenavItems = this.sidenavItems.map((item, i) => {

@@ -43,7 +43,7 @@
                   <label style="color: white">¿Por primera vez en <b>CEMA</b>?</label>
                 </div>
                 <div class="col-md-5 in-line negrita">
-                  <a class="nav-link text-secondary" href="mailto:proyecto-cema@outlook.com">Contáctanos</a>
+                  <a class="nav-link text-secondary" :href="this.mailToRef" target="_blank">Contáctanos</a>
                 </div>
               </div>
             </div>
@@ -65,11 +65,24 @@ export default {
       pass: '',
       loading: false,
       redirect: '',
+      mailBody:
+        'Hola, soy ____, y estoy interesado en ser parte de CEMA.' +
+        '\nMis datos de contacto son:' +
+        '\n\t- Telefono:' +
+        '\n\t- Nombre completo:' +
+        '\nMuchas Gracias.',
+      mailSubject: 'Deseo saber más sobre CEMA',
+      mail: 'proyecto-cema@outlook.com',
     };
   },
   computed: {
     bloquear() {
       return this.pass.length <= 3;
+    },
+    mailToRef() {
+      return `mailto:${this.mail}?subject=${encodeURIComponent(this.mailSubject)}&body=${encodeURIComponent(
+        this.mailBody
+      )}`;
     },
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
