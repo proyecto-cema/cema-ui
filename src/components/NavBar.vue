@@ -47,6 +47,10 @@
                 <font-awesome-icon class="ms-2" icon="user" />
                 Mi Perfil
               </a>
+              <a class="nav-link dropdown-item" @click.prevent="showContactModal">
+                <font-awesome-icon class="ms-2" icon="envelope" />
+                Contáctanos
+              </a>
               <a class="nav-link dropdown-item" @click.prevent="logOut">
                 <font-awesome-icon class="ms-2" icon="sign-out-alt" />
                 Cerrar Sesión
@@ -90,6 +94,7 @@ export default {
       this.getNotifications(this.currentUser.user.establishmentCuig);
     }
     this.myUserModal = Modal.getOrCreateInstance(document.getElementById('myDataUserModal'));
+    this.contactModal = Modal.getOrCreateInstance(document.getElementById('contactMeModal'));
   },
   computed: {
     ...mapState(['sidenav', 'establishmentData']),
@@ -118,6 +123,9 @@ export default {
         name: 'ListSubscriptions',
         params: { modal: true },
       });
+    },
+    showContactModal() {
+      this.contactModal.show();
     },
     showUserData() {
       this.setupEditUser(this.currentUser.user);

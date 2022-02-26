@@ -92,7 +92,7 @@
                       v-model.trim="user.phone"
                       maxlength="15"
                       required
-                      input-title="Telefono"
+                      input-title="Teléfono"
                       :input-id="`${modalId}-userPhone`"
                       type="text"
                     ></cema-input>
