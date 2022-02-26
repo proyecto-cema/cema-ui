@@ -236,6 +236,9 @@ export default {
         if (helperDeleted.index % 11 === 0) {
           index_to_search -= 1;
         }
+        if (index_to_search < 0) {
+          index_to_search = 0;
+        }
         this.searchSupplies(index_to_search);
         this.deleted = {};
       });
