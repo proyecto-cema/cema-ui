@@ -43,7 +43,7 @@
                   <label style="color: white">¿Por primera vez en <b>CEMA</b>?</label>
                 </div>
                 <div class="col-md-5 in-line negrita">
-                  <a class="nav-link text-secondary" :href="this.mailToRef">Contáctanos</a>
+                  <a class="nav-link text-secondary" :href="this.mailToRef" target="_blank">Contáctanos</a>
                 </div>
               </div>
             </div>

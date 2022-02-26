@@ -151,12 +151,13 @@ export default {
       this.mailData.mailSubject = `Consulta de ${this.currentUser.user.name} ${this.currentUser.user.lastName} (${this.currentRole})`;
       this.mailData.mailBody =
         this.bugData.description +
+        '\n\nLa siguiente información es para uso interno:' +
         `\nEmail: ${this.userData.email}` +
         `\nTeléfono: ${this.userData.phone}` +
         `\nCUIG: ${this.currentUser.user.establishmentCuig}` +
         `\nUsuario: ${this.currentUser.user.userName}` +
         `\nRol: ${this.currentRole}`;
-      window.location.href = this.mailToRef;
+      window.open(this.mailToRef, '_blank');
       this.showSuccess('Se abrirá su gestor de correos con la información del email.');
       this.clean();
     },
