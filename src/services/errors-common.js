@@ -58,7 +58,20 @@ export const SUPPLY_ERRORS = {
   404: {type: "Server", message: "Insumo no encontrada"},
   409: {type: "Server", message: "El Insumo que esta intentando registrar ya existe"},
 };
+export const DISEASE_ERRORS = {
+  ...COMMON_ERRORS,
+  404: {type: "Server", message: "Enfermedad no encontrada"},
+  422: {type: "Server", message: "No se puede elimiar porque hay bovinos con esta enfermdad"},
+  409: {type: "Server", message: "La enfermedad que esta intentando registrar ya existe"},
+};
 export const SUPPLY_OPERATION_ERRORS = {
   ...COMMON_ERRORS,
   404: {type: "Server", message: "Operacion de insumo no encontrada"},
+};
+export const ILLNESS_ERRORS = {
+  ...COMMON_ERRORS,
+  404: {type: "Server", message: "Enfermedad no encontrada"},
+  409: {type: "Server", message: "La enfermedad que esta intentando registrar ya existe"},
+  422: {type: "Server", message: "La fecha de inicio de enfermedad no puede ser mayor a la de finalización"},
+  "special": {type: "Server", message: "No se puede registrar la misma enfermedad para el mismo bovino en fechas que se solapan"},
 };

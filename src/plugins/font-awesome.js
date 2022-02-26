@@ -28,6 +28,7 @@ import {
     faBuilding,
     faTrashRestore,
     faUserSlash,
+    faVirus,
     faEnvelope
 } from '@fortawesome/free-solid-svg-icons'
 import {
@@ -65,6 +66,7 @@ library.add(
     faBuilding,
     faTrashRestore,
     faUserSlash,
+    faVirus,
     faEnvelope
 )
 
