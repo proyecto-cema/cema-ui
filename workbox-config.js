@@ -35,5 +35,18 @@ module.exports = {
         },
       },
     },
+    {
+      urlPattern: new RegExp('https://qa.proyecto-cema.com/(activity|bovine)'),
+      handler: 'NetworkOnly',
+      method: 'PUT',
+      options: {
+        backgroundSync: {
+          name: 'cema-edit-queue',
+          options: {
+            maxRetentionTime: 24 * 60 * 60,
+          },
+        },
+      },
+    },
   ],
 };

@@ -123,7 +123,7 @@ const actions = {
                 if(!error.response){
                     return dispatch("showWarning", {
                         code: OFFLINE_CODE, bovine: bovine,
-                        message: `El bovino ${bovine.tag} se creará cuando la conexión se restablezca.`,
+                        message: `El bovino ${bovine.tag} se guardará cuando la conexión se restablezca.`,
                     }, {root:true});
                 }
                 return dispatch("showError", {error: error, errors: BOVINE_ERRORS}, {root:true});

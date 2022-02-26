@@ -1,6 +1,7 @@
 import ActivityService from '../../services/activity/activity.service';
 import utils from "../../utils"
 import { ACTIVITY_ERRORS, SUPPLY_ERRORS } from '../../services/errors-common';
+import { ACTIVITIES_EXTRA_DATA, OFFLINE_CODE } from '../../constants';
 
 const state = {
     activityData: {
@@ -68,6 +69,12 @@ const actions = {
                 return Promise.resolve(response.data);
             },
             error => {
+                if(!error.response){
+                    return dispatch("showWarning", {
+                        code: OFFLINE_CODE, activity: saveActivity,
+                        message: `La actividad de ${ACTIVITIES_EXTRA_DATA[saveActivity.type].displayName} para la fecha ${state.activityData.executionDate} se guardará cuando la conexión se restablezca.`,
+                    }, {root:true});
+                }
                 return dispatch("showError", {error: error, errors: ACTIVITY_ERRORS}, {root:true});
             }
         );
