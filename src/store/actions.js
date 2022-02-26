@@ -49,7 +49,7 @@ export default {
         let toast;
         console.log(error);
         if(!error.response){
-            toast = getWarningStructure(null);
+            toast = getWarningStructure(error.config.method=='get'? 'No tenemos datos almacenados(offline) para tu petición.':null);
         }else{
             toast = getHttpError(errors, error.response.status);
         }

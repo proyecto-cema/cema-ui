@@ -16,53 +16,10 @@ module.exports = {
       },
     },
     {
-      urlPattern: new RegExp('https://qa.proyecto-cema.com/bovine'),
-      handler: 'StaleWhileRevalidate',
+      urlPattern: new RegExp('https://qa.proyecto-cema.com/(bovine|users|activity|administration|economic|health)'),
+      handler: 'NetworkFirst',
       options: {
-        cacheName: 'CemaBovine',
-        expiration: {
-          maxEntries: 1000,
-        },
-      }
-    },
-    {
-      urlPattern: new RegExp('https://qa.proyecto-cema.com/users'),
-      handler: 'StaleWhileRevalidate',
-      options: {
-        cacheName: 'CemaUser',
-        expiration: {
-          maxEntries: 1000,
-        },
-      }
-    },
-    {
-      urlPattern: new RegExp('https://qa.proyecto-cema.com/activity'),
-      handler: 'StaleWhileRevalidate',
-      options: {
-        cacheName: 'CemaActivity',
-        expiration: {
-          maxEntries: 1000,
-        },
-      }
-    },
-    {
-      urlPattern: new RegExp('https://qa.proyecto-cema.com/administration'),
-      handler: 'StaleWhileRevalidate',
-      options: {
-        cacheName: 'CemaAdministration',
-        expiration: {
-          maxEntries: 1000,
-        },
-      }
-    },
-    {
-      urlPattern: new RegExp('https://qa.proyecto-cema.com/economic'),
-      handler: 'StaleWhileRevalidate',
-      options: {
-        cacheName: 'CemaEconomic',
-        expiration: {
-          maxEntries: 1000,
-        },
+        cacheName: 'CemaCache',
       }
     },
     {
