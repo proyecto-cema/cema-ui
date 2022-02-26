@@ -207,6 +207,9 @@ export default {
           console.log('Created', data.name);
           this.successCall(`El lote ${data.name} se creo correctamente.`);
           this.$emit('addBovinesToBatch', data.name);
+          this.searchBatches();
+          this.dismissModal();
+          this.batchSelected = data.name;
         });
       } else {
         this.addBatchBovines({ batch: this.batchSelected, listBovinesSelected: bovineList }).then((batch) => {
