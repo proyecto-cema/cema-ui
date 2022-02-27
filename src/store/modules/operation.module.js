@@ -50,11 +50,14 @@ const actions = {
         commit('setOperation', null);
         commit('setIsSell', null);
         commit('setEdit', false);
+        commit('activity/setActivity', null, { root: true });
+        commit('activity/setEdit', false, { root: true });
     },
     setupEditOperation({commit}, proxyOperation){
         proxyOperation.transactionDate = utils.methods.javaDateToMomentDate(proxyOperation.transactionDate, 'YYYY-MM-DD');
         commit('setOperation', proxyOperation);
         commit('setIsSell', proxyOperation.operationType);
+        commit('activity/setActivity', { extraData: { bovineTag: proxyOperation.bovineTag } }, { root: true });
         commit('setEdit', true);
     },
     async listOperations({dispatch, rootState},data) {
