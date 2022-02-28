@@ -66,6 +66,7 @@ const actions = {
         return ActivityService.setActivity(saveActivity, state.edit, url).then(
             response => {
                 console.log(response);
+                dispatch("setupEditActivity", saveActivity);
                 return Promise.resolve(response.data);
             },
             error => {
