@@ -65,9 +65,12 @@ const actions = {
         );
     },
     async listSupplies({dispatch, rootState}, data) {
-        data.search["establishmentCuig"] = rootState.auth.user.user.establishmentCuig
+        let search = {
+            ...data.search,
+            establishmentCuig: rootState.auth.user.user.establishmentCuig
+        }
         console.log("DATASEARCH: ", data.search)
-        return SupplyService.getSuppliesList(data.page, data.size, data.search).then(
+        return SupplyService.getSuppliesList(data.page, data.size, search).then(
             response => {
                 console.log(response.data);
                 return Promise.resolve(response);

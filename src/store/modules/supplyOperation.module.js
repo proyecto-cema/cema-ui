@@ -11,7 +11,7 @@ const state = {
         id: null,
         operationType: "",
         operatorUserName: null,
-        supplyName: null,
+        supplyName: "",
         transactionDate: null
     },
     availableSupply:null,
@@ -29,7 +29,7 @@ const mutations = {
             id: null,
             operationType: "",
             operatorUserName: null,
-            supplyName: null,
+            supplyName: "",
             transactionDate: null
         } : payload
     },
