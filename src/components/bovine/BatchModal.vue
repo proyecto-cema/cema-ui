@@ -58,7 +58,7 @@
                     <div class="col-12 mb-3">
                       <cema-input
                         v-model.trim="batch.name"
-                        maxlength="10"
+                        maxlength="50"
                         required
                         :error-data="{
                           required: true,
