@@ -69,6 +69,8 @@ export default {
         if (bovines.length === 0) {
           this.activityData.extraData.bovineTag = 'Bovino no encontrado';
           this.searchBovines();
+        } else if (bovines.length === 1) {
+          this.callUpdate(tag);
         }
       });
     },
