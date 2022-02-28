@@ -1,6 +1,6 @@
 <template>
   <div class="col-12 mb-2">
-    <tag-search :error-save="errorSave" :filters="['active']" @update:modelValue="setGenre()" />
+    <tag-search :error-save="errorSave" :filters="['active']" @call-update="setGenre" />
   </div>
   <div class="col-lg-6 col-12 mb-2">
     <cema-input
@@ -18,7 +18,11 @@
     </cema-input>
   </div>
   <div class="col-lg-6 col-12 mb-2">
-    <category-selector :bovine="activityData.extraData" @update-category="updateCategory"></category-selector>
+    <category-selector
+      :disabled="activityData.extraData['category']"
+      :bovine="activityData.extraData"
+      @update-category="updateCategory"
+    ></category-selector>
   </div>
   <div class="col-lg-12 col-12 mb-2">
     <cema-input
