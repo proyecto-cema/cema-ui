@@ -84,12 +84,7 @@
                 </cema-input>
               </div>
               <div class="mb-3 col-12 col-md-6">
-                <tag-search
-                  :error-save="errorSave"
-                  v-model="operation.bovineTag"
-                  v-if="!edit && extraData.isSell"
-                  :filters="['active']"
-                />
+                <tag-search :error-save="errorSave" v-if="!edit && extraData.isSell" :filters="['active']" />
                 <label v-if="edit">Caravana relacionada: {{ operation.bovineTag }}</label>
               </div>
             </div>
@@ -181,6 +176,7 @@ export default {
   computed: {
     ...mapState('operation', ['operation', 'edit', 'extraData']),
     ...mapState('bovine', ['bovine']),
+    ...mapState('activity', ['activityData']),
 
     validateSellerOrBuyerName() {
       let valid = true;
@@ -241,6 +237,7 @@ export default {
       this.nextStep = true;
     },
     async formValidateOperation() {
+      this.operation.bovineTag = this.activityData.extraData.bovineTag;
       this.errorSave = this.errorSaveHelper;
       if (this.errorSave.transactionDate || this.errorSave.amount || this.errorSave.sellerBuyerName) {
         console.error(this.errorSave);
