@@ -36,7 +36,7 @@
             <tbody>
               <tr v-for="disease in diseases" :key="disease.name">
                 <td>{{ disease.name }}</td>
-                <td>{{ disease.description }}</td>
+                <td class="text-start">{{ disease.description }}</td>
                 <td>{{ disease.duration }}</td>
                 <td class="text-end">
                   <font-awesome-icon class="me-2" icon="edit" @click.stop="openAddDiseaseModal(disease)">
