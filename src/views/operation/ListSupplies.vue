@@ -248,7 +248,8 @@ export default {
     },
     async searchSupplies(page = 0, size = 10) {
       this.supplies = null;
-      this.listSupplies({ page: page, size: size, search: this.search }).then((response) => {
+      let search = { ...this.search };
+      this.listSupplies({ page: page, size: size, search: search }).then((response) => {
         this.supplies = response.data;
 
         console.log(response);

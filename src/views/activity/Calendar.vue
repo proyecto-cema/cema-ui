@@ -1,8 +1,7 @@
 <template>
   <div class="text-center section">
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 mt-3">
-      <button class="btn btn-secondary text-white" type="button"
-              v-on:click="openActivityModal()">
+      <button class="btn btn-secondary text-white" type="button" v-on:click="openActivityModal()">
         + Nueva Actividad
       </button>
     </div>
@@ -21,18 +20,22 @@
           ></cema-input>
         </div>
         <div class="col-12 col-md-6 col-lg-6">
-          <cema-input v-model="search.type" component-type="select" 
-                              input-title="Tipo de actividad" input-id="Type" :label="false"
-                              :options="activitiesOptions" optionKey="backendName">
-                    <template v-slot:default="{ option }">
-                      {{ option.displayName }}
-                    </template>
-                  </cema-input>
+          <cema-input
+            v-model="search.type"
+            component-type="select"
+            input-title="Tipo de actividad"
+            input-id="Type"
+            :label="false"
+            :options="activitiesOptions"
+            optionKey="backendName"
+          >
+            <template v-slot:default="{ option }">
+              {{ option.displayName }}
+            </template>
+          </cema-input>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-2">
-          <button class="btn btn-primary text-white"
-                  type="button"
-                  v-on:click="this.clearSearchActivityData()">
+          <button class="btn btn-primary text-white" type="button" v-on:click="this.clearSearchActivityData()">
             Restablecer
           </button>
           <button class="btn btn-secondary text-white" type="button" @click="this.searchActivities()">Buscar</button>
@@ -198,13 +201,10 @@ export default {
       this.activityModal.show();
     },
     savedActivity() {
-      this.activityModal.hide();
-      //TODO: replace for partial update
       this.searchActivities();
     },
     deletedActivity() {
       this.activityModal.hide();
-      //TODO: replace for partial update
       this.searchActivities();
     },
   },

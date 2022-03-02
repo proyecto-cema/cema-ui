@@ -98,6 +98,17 @@ export default {
           ],
         },
         {
+          name: 'Salud',
+          isCollapsible: true,
+          expanded: false,
+          icon: 'heartbeat',
+          roleRequirement: 0,
+          items: [
+            { name: 'Enfermedades', isCollapsible: false, route: 'ListDiseases', roleRequirement: 0 },
+            { name: 'Seguimiento', isCollapsible: false, route: 'ListIllness', roleRequirement: 0 },
+          ],
+        },
+        {
           name: 'Administración',
           isCollapsible: true,
           expanded: false,
@@ -107,18 +118,7 @@ export default {
             { name: 'Subscripciones', isCollapsible: false, route: 'ListSubscriptions', roleRequirement: 1 },
             { name: 'Usuarios', isCollapsible: false, route: 'ListUser', roleRequirement: 1 },
             { name: 'Establecimientos', isCollapsible: false, route: 'ListEstablishments', roleRequirement: 2 },
-            { name: 'Auditoria', isCollapsible: false, route: 'ListAudits', roleRequirement: 2 },
-          ],
-        },
-        {
-          name: 'Salud',
-          isCollapsible: true,
-          expanded: false,
-          icon: 'heartbeat',
-          roleRequirement: 0,
-          items: [
-            { name: 'Enfermedades', isCollapsible: false, route: 'ListDiseases', roleRequirement: 0 },
-            { name: 'Seguimiento', isCollapsible: false, route: 'ListIllness', roleRequirement: 0 },
+            { name: 'Auditoria', isCollapsible: false, route: 'ListAudits', roleRequirement: 1 },
           ],
         },
       ],

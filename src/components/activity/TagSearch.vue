@@ -10,6 +10,7 @@
         option-name="tag"
         :options="bovines"
         :defaultName="default_search"
+        @update:modelValue="callUpdate"
       >
       </combo-search>
     </div>
@@ -26,6 +27,7 @@ import ImageSearch from '../form/ImageSearch';
 
 export default {
   name: 'tag-search',
+  emits: ['callUpdate'],
   data() {
     return {
       bovines: [],
@@ -58,12 +60,17 @@ export default {
   },
   methods: {
     ...mapActions('bovine', ['listBovines']),
+    callUpdate(value) {
+      this.$emit('callUpdate', value);
+    },
     finishTagHandle(tag) {
       this.activityData.extraData.bovineTag = tag;
       this.searchBovines(tag).then((bovines) => {
         if (bovines.length === 0) {
           this.activityData.extraData.bovineTag = 'Bovino no encontrado';
           this.searchBovines();
+        } else if (bovines.length === 1) {
+          this.callUpdate(tag);
         }
       });
     },

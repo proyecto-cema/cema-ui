@@ -182,11 +182,6 @@ export default {
       this.clearOperationData();
       if (operation) {
         console.log(operation);
-        if (operation.operationType === 'sell') {
-          this.results.income -= operation.amount;
-        } else {
-          this.results.expenses -= operation.amount;
-        }
         this.setupEditOperation(operation);
       }
       this.addOperationModal.show();
@@ -208,13 +203,8 @@ export default {
     },
     addOperationToList({ operation, edit }) {
       console.log(operation, edit);
-      if (edit) {
-        if (operation.operationType === 'sell') {
-          this.results.income += operation.amount;
-        } else {
-          this.results.expenses += operation.amount;
-        }
-      } else if (this.operationsLength < 10) {
+      this.obtainMetrics();
+      if (!edit && this.operationsLength < 10) {
         this.operations.push(operation);
       }
     },

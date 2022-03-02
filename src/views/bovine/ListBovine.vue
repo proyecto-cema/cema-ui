@@ -13,13 +13,12 @@
         + Nuevo Bovino
       </button>
     </div>
-    <form @submit.prevent="">
+    <form @submit.prevent="this.searchBovines()">
       <div class="row">
         <div class="col-12 col-md-6 col-lg-6">
           <cema-input
             v-model.trim="search.tag"
             component-type="input"
-            required
             maxlength="10"
             input-title="Caravana"
             input-id="bovineTagSearch"
@@ -32,7 +31,6 @@
           <cema-input
             v-model="search.genre"
             component-type="select"
-            required
             input-title="Sexo"
             input-id="bovineGenreSearch"
             :label="false"
@@ -47,7 +45,6 @@
           <cema-input
             v-model.trim="search.description"
             component-type="input"
-            required
             input-title="Descripción"
             input-id="bovineDescriptionSearch"
             :label="false"
@@ -59,7 +56,7 @@
           <button class="btn btn-primary text-white" type="button" @click="this.clearSearchBovineData()">
             Restablecer
           </button>
-          <button class="btn btn-secondary text-white" type="button" @click="this.searchBovines()">Buscar</button>
+          <button class="btn btn-secondary text-white" type="submit">Buscar</button>
         </div>
       </div>
     </form>

@@ -128,10 +128,12 @@ export default {
   methods: {
     ...mapActions(['showSuccess']),
     initialData() {
-      this.userData = {
-        email: this.currentUser.user.email,
-        phone: this.currentUser.user.phone,
-      };
+      if (this.currentUser) {
+        this.userData = {
+          email: this.currentUser.user.email,
+          phone: this.currentUser.user.phone,
+        };
+      }
     },
     clean() {
       console.log('Cleaning contact data');
